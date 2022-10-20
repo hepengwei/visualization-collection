@@ -1,0 +1,50 @@
+.container {
+  button {
+    width: 160px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: #4cc9f0;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    position: relative;
+
+    &::before {
+      top: 0;
+      left: 0;
+    }
+
+    &::after {
+      bottom: 0;
+      right: 0;
+    }
+
+    &::before,
+    &::after {
+      position: absolute;
+      content: "";
+      border: 2px solid transparent;
+      width: 0;
+      height: 0;
+    }
+
+    &:hover::before {
+      width: 100%;
+      height: 100%;
+      border-top-color: #4cc9f0;
+      border-right-color: #4cc9f0;
+      transition: width 0.3s ease-out, height 0.3s ease-out 0.3s;
+    }
+
+    &:hover::after {
+      width: 100%;
+      height: 100%;
+      border-bottom-color: #4cc9f0;
+      border-left-color: #4cc9f0;
+      transition: width 0.3s ease-out, height 0.3s ease-out 0.3s;
+    }
+  }
+}
