@@ -5,6 +5,8 @@ import Header from "@/layout/Header";
 import Menus from "@/layout/Menus";
 import styles from "./index.module.less";
 
+const defaultPageUrl = "/css/dynamicButtons";
+
 const Home = () => {
   const contentRoutes = useRoutes(contentRoutesConfig);
   const location = useLocation();
@@ -13,7 +15,7 @@ const Home = () => {
   useEffect(() => {
     const { pathname } = location;
     if (!pathname || pathname === "/") {
-      navigate("/css/dynamicButtons");
+      navigate(defaultPageUrl);
     }
   }, [location]);
 

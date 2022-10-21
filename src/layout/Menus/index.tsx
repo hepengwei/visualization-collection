@@ -3,7 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  PieChartOutlined,
+  BuildOutlined,
+  FormatPainterOutlined,
   PlayCircleOutlined,
   LineChartOutlined,
   RocketOutlined,
@@ -31,7 +32,11 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem("CSS动效", "css", <PieChartOutlined />, [
+  getItem("Html视觉", "html", <BuildOutlined />, [
+    getItem("复杂布局", "complexLayout"),
+    getItem("敬请期待", "htmlComingSoon"),
+  ]),
+  getItem("CSS动效", "css", <FormatPainterOutlined />, [
     getItem("动效按钮", "dynamicButtons"),
     getItem("敬请期待", "cssComingSoon"),
   ]),
@@ -91,7 +96,7 @@ const Menus: React.FC = () => {
         {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
       </Button>
       <Menu
-        defaultOpenKeys={["css", "canvas"]}
+        defaultOpenKeys={["html", "css", "canvas"]}
         selectedKeys={selectedKeys}
         mode="inline"
         theme="dark"

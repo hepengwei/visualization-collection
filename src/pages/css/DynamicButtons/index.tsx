@@ -8,6 +8,8 @@ import NeonButton from "./components/NeonButton";
 import BorderAnimationButton from "./components/BorderAnimationButton";
 import BorderAnimationButton2 from "./components/BorderAnimationButton2";
 import TranslateBgButton from "./components/TranslateBgButton";
+import RoundedGradientButton from "./components/RoundedGradientButton";
+import MirrorSideButton from "./components/MirrorSideButton";
 import styles from "./index.module.less";
 
 const { GridBox } = GridContent;
@@ -103,7 +105,16 @@ const DynamicButtons = () => {
             <TranslateBgButton />
           </div>
         </GridBox>
-
+        <GridBox key="8">
+          <div className={styles.box}>
+            <RoundedGradientButton />
+          </div>
+        </GridBox>
+        <GridBox key="9">
+          <div className={styles.box}>
+            <MirrorSideButton />
+          </div>
+        </GridBox>
       </GridContent>
     </div>
   );
