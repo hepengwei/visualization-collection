@@ -9,6 +9,7 @@ import ThreejsComingSoon from "pages/threejs/ThreejsComingSoon";
 import Home from "pages/Home";
 import ComplexLayout from "@/pages/html/ComplexLayout";
 import DynamicButtons from "pages/css/DynamicButtons";
+import RichDynamicEffect from "pages/css/RichDynamicEffect";
 import GlassMimicry from '@/pages/html/GlassMimicry';
 import Searchlight from "pages/canvas/Searchlight";
 import GlobuleInteraction from "pages/canvas/GlobuleInteraction";
@@ -39,6 +40,10 @@ export const contentRoutes: RouteObject[] = [
       {
         path: "/css/dynamicButtons",
         element: <DynamicButtons />,
+      },
+      {
+        path: "/css/richDynamicEffect",
+        element: <RichDynamicEffect />,
       },
       {
         path: "/css/cssComingSoon",

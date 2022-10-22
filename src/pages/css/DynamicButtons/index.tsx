@@ -20,7 +20,7 @@ const DynamicButtons = () => {
   return (
     <div className={styles.container}>
       <GridContent
-        differentScreenCols={[10, 8, 6, 5, 4]}
+        differentScreenCols={[8, 7, 6, 5, 4]}
         rowSpace={4}
         colSpace={4}
       >

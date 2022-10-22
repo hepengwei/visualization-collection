@@ -1,14 +1,32 @@
 .container {
   height: 100%;
   background-image: linear-gradient(to bottom, #001529ee, #001529);
+  overflow-y: auto;
 
-  button{
-    margin-left: 16px;
-    margin-top: 16px;
+  .top {
+    display: flex;
+    padding: 0 16px;
+    align-items: center;
+    height: 60px;
+    button {
+      margin-bottom: 0 !important;
+    }
   }
 
-  .menuLabel{
+  .menuLabel {
     width: 110px;
     margin-bottom: 0;
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    border-radius: 4px;
+    background-color: #444444;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    width: 8px;
+    border-radius: 4px;
+    background-color: #999999;
   }
 }

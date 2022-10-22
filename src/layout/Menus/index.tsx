@@ -39,6 +39,7 @@ const items: MenuItem[] = [
   ]),
   getItem("CSS动效", "css", <FormatPainterOutlined />, [
     getItem("动效按钮", "dynamicButtons"),
+    getItem("丰富动效", "richDynamicEffect"),
     getItem("敬请期待", "cssComingSoon"),
   ]),
   getItem("Canvas动效", "canvas", <PlayCircleOutlined />, [
@@ -89,13 +90,16 @@ const Menus: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <Button
-        type="primary"
-        onClick={toggleCollapsed}
-        style={{ marginBottom: 16 }}
-      >
-        {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-      </Button>
+      <div className={styles.top}>
+        <Button
+          type="primary"
+          onClick={toggleCollapsed}
+          style={{ marginBottom: 16 }}
+        >
+          {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+        </Button>
+      </div>
+
       <Menu
         defaultOpenKeys={["html", "css", "canvas"]}
         selectedKeys={selectedKeys}
