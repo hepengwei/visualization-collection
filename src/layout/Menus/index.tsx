@@ -33,6 +33,7 @@ function getItem(
 
 const items: MenuItem[] = [
   getItem("Html视觉", "html", <BuildOutlined />, [
+    getItem("玻璃拟态", "glassMimicry"),
     getItem("复杂布局", "complexLayout"),
     getItem("敬请期待", "htmlComingSoon"),
   ]),

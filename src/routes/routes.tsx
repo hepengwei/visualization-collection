@@ -9,6 +9,7 @@ import ThreejsComingSoon from "pages/threejs/ThreejsComingSoon";
 import Home from "pages/Home";
 import ComplexLayout from "@/pages/html/ComplexLayout";
 import DynamicButtons from "pages/css/DynamicButtons";
+import GlassMimicry from '@/pages/html/GlassMimicry';
 import Searchlight from "pages/canvas/Searchlight";
 import GlobuleInteraction from "pages/canvas/GlobuleInteraction";
 import KillPlanetGame from "@/pages/canvas/KillPlanetGame";
@@ -18,6 +19,10 @@ export const contentRoutes: RouteObject[] = [
   {
     path: "/html",
     children: [
+      {
+        path: "/html/glassMimicry",
+        element: <GlassMimicry />,
+      },
       {
         path: "/html/complexLayout",
         element: <ComplexLayout />,

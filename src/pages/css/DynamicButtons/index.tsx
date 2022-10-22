@@ -1,5 +1,7 @@
-import React, { useRef, useEffect } from "react";
-import ReactDOM from "react-dom";
+/**
+ * 动效按钮
+ */
+import React from "react";
 import GridContent from "components/GridContent";
 import TiltButton from "./components/TiltButton";
 import RotateBgButton from "./components/RotateBgButton";
@@ -13,54 +15,8 @@ import MirrorSideButton from "./components/MirrorSideButton";
 import styles from "./index.module.less";
 
 const { GridBox } = GridContent;
-const speedDeg = 0.01;
-const r = 0.5;
 
 const DynamicButtons = () => {
-  const tiltButton = useRef(null);
-  const frameId = useRef(0);
-
-  const rotateBg = () => {
-    // @ts-ignore
-    if (tiltButton.current && tiltButton.current.current) {
-      const nativeNode = ReactDOM.findDOMNode(
-        // @ts-ignore
-        tiltButton.current.current
-      ) as HTMLButtonElement;
-      if (nativeNode) {
-        const bgPos = nativeNode.style.backgroundPosition;
-        if (!bgPos) {
-          nativeNode.style.backgroundPosition = "0% 50%";
-        } else {
-          const arr = bgPos.split(" ");
-          let x = Number(arr[0].substring(0, arr[0].length - 1)) / 100 - r;
-          const oldX = x;
-          let y = Number(arr[1].substring(0, arr[1].length - 1)) / 100 - r;
-
-          x = x * Math.cos(speedDeg) - y * Math.sin(speedDeg);
-          y = y * Math.cos(speedDeg) + x * Math.sin(speedDeg);
-
-          nativeNode.style.backgroundPosition = `${(x + r) * 100}% ${
-            (y + r) * 100
-          }%`;
-        }
-
-        frameId.current = requestAnimationFrame(rotateBg);
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (tiltButton.current) {
-      frameId.current = requestAnimationFrame(rotateBg);
-    }
-    return () => {
-      if (frameId.current) {
-        cancelAnimationFrame(frameId.current);
-      }
-    };
-  }, []);
-
   return (
     <div className={styles.container}>
       <GridContent
