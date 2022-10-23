@@ -1,3 +1,6 @@
+/**
+ * 动态时钟
+ */
 import React, { useEffect, useRef } from "react";
 
 const canvasWidth = 400;

@@ -1,3 +1,6 @@
+/**
+ * 探照灯效果
+ */
 import React, { useEffect, useRef } from "react";
 import SphereCollision from "sphere-collision";
 import type { SphereCollisionC, GlobuleC } from "sphere-collision/types";

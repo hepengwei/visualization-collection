@@ -1,0 +1,66 @@
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+  .content {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    @smallBoxWidth: 400px;
+    @smallBoxHeight: 280px;
+    @floatBoxWidth: 160px;
+    @floatBoxHeight: 120px;
+
+    .smallBox {
+      position: relative;
+      width: @smallBoxWidth;
+      height: @smallBoxHeight;
+      z-index: 1;
+
+      .mask {
+        position: absolute;
+        display: block;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        cursor: move;
+      }
+
+      .floatBox {
+        position: absolute;
+        width: @floatBoxWidth;
+        height: @floatBoxHeight;
+        background-color: #ffffcc50;
+        border: 1px solid #ccc;
+        cursor: move;
+      }
+
+      img {
+        width: 100%;
+      }
+    }
+
+    .bigBox {
+      width: @floatBoxWidth * 3;
+      height: @floatBoxHeight * 3;
+      overflow: hidden;
+      margin-left: 40px;
+      position: relative;
+      z-index: 1;
+
+      img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1000px;
+        height: 700px;
+        z-index: 5;
+      }
+    }
+  }
+}

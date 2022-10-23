@@ -7,7 +7,7 @@ export interface GridContentProps {
   rowSpace?: number; // 每行间距
   colSpace?: number; // 每列间距
   className?: string;
-  children: ReactElement[];
+  children: ReactElement | ReactElement[];
 }
 
 const GridContent = (props: GridContentProps) => {
@@ -51,9 +51,13 @@ const GridContent = (props: GridContentProps) => {
           marginRight: `${colSpace / 2}px`,
         }}
       >
-        {children.map((Item: ReactElement) => {
-          return React.cloneElement(Item, { rowSpace, colSpace });
-        })}
+        {Object.prototype.toString.call(children) === "[object Array]"
+          ? (children as ReactElement[]).map((Item: ReactElement) => {
+              return React.cloneElement(Item, { rowSpace, colSpace });
+            })
+          : children
+          ? children
+          : null}
       </div>
     </div>
   );

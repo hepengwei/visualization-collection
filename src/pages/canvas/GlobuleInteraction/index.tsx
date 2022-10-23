@@ -1,3 +1,6 @@
+/**
+ * 球体碰撞交互效果
+ */
 import React, { useEffect, useRef } from "react";
 import SphereCollision from "sphere-collision";
 import type {

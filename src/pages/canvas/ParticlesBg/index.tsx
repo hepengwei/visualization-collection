@@ -1,4 +1,7 @@
 // @ts-nocheck
+/**
+ * 动态粒子背景
+ */
 import React, { useEffect } from "react";
 import "particles.js";
 import particlesParams from "./particlesParams";

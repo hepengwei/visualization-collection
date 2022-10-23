@@ -1,3 +1,6 @@
+/**
+ * 消灭行星小游戏
+ */
 import React, { useRef, useEffect, useState } from "react";
 import SphereCollision from "sphere-collision";
 import type { SphereCollisionC, GlobuleC } from "sphere-collision/types";

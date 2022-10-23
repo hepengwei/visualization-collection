@@ -1,5 +1,5 @@
 /**
- * 玻璃拟态
+ * 视觉设计
  */
 import React from "react";
 import GridContent from "components/GridContent";
@@ -9,7 +9,7 @@ import styles from "./index.module.less";
 
 const { GridBox } = GridContent;
 
-const GlassMimicry = () => {
+const VisualDesign = () => {
   return (
     <div className={styles.container}>
       <GridContent
@@ -32,4 +32,4 @@ const GlassMimicry = () => {
   );
 };
 
-export default GlassMimicry;
+export default VisualDesign;
