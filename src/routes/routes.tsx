@@ -1,4 +1,3 @@
-// import { Suspense, lazy } from "react";
 import React from "react";
 import { RouteObject } from "react-router-dom";
 import HtmlComingSoon from "@/pages/html/HtmlComingSoon";
@@ -10,7 +9,8 @@ import Home from "pages/Home";
 import ComplexLayout from "@/pages/html/ComplexLayout";
 import DynamicButtons from "pages/css/DynamicButtons";
 import RichDynamicEffect from "pages/css/RichDynamicEffect";
-import GlassMimicry from '@/pages/html/GlassMimicry';
+import GlassMimicry from "@/pages/html/GlassMimicry";
+import DynamicClock from "pages/canvas/DynamicClock";
 import Searchlight from "pages/canvas/Searchlight";
 import GlobuleInteraction from "pages/canvas/GlobuleInteraction";
 import KillPlanetGame from "@/pages/canvas/KillPlanetGame";
@@ -54,6 +54,10 @@ export const contentRoutes: RouteObject[] = [
   {
     path: "/canvas",
     children: [
+      {
+        path: "/canvas/dynamicClock",
+        element: <DynamicClock />,
+      },
       {
         path: "/canvas/searchlight",
         element: <Searchlight />,

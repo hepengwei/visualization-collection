@@ -43,6 +43,7 @@ const items: MenuItem[] = [
     getItem("敬请期待", "cssComingSoon"),
   ]),
   getItem("Canvas动效", "canvas", <PlayCircleOutlined />, [
+    getItem("动态时钟", "dynamicClock"),
     getItem("探照灯效果", "searchlight"),
     getItem("球体碰撞交互效果", "globuleInteraction"),
     getItem("消灭行星小游戏", "killPlanetGame"),
