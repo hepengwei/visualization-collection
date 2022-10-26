@@ -1,0 +1,118 @@
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @boxWidth: 400px;
+  @boxHeight: 400px;
+  @defaultCropBoxWidth: 150px;
+  @defaultCropBoxHeight: 150px;
+  @dotWidth: 6px;
+
+  .leftBox {
+    width: @boxWidth;
+    height: @boxHeight;
+    border: 1px solid #000;
+    position: relative;
+
+    .img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      -webkit-user-drag: none !important;
+      user-select: none;
+    }
+
+    .img1 {
+      .img;
+      opacity: 0.5;
+    }
+
+    .img2 {
+      .img;
+      clip: rect(0, @defaultCropBoxWidth, @defaultCropBoxHeight, 0);
+    }
+
+    .cropBox {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: @defaultCropBoxWidth;
+      height: @defaultCropBoxHeight;
+      border: 1px solid #fff;
+      cursor: all-scroll;
+
+      .dot {
+        position: absolute;
+        width: @dotWidth;
+        height: @dotWidth;
+        background-color: #fff;
+      }
+
+      .leftUp {
+        top: -(@dotWidth / 2);
+        left: -(@dotWidth / 2);
+        cursor: nw-resize;
+      }
+      .up {
+        top: -(@dotWidth / 2);
+        left: 50%;
+        margin-left: -(@dotWidth / 2);
+        cursor: n-resize;
+      }
+      .rightUp {
+        top: -(@dotWidth / 2);
+        right: -(@dotWidth / 2);
+        cursor: ne-resize;
+      }
+      .right {
+        top: 50%;
+        margin-top: -(@dotWidth / 2);
+        right: -(@dotWidth / 2);
+        cursor: e-resize;
+      }
+      .rightDown {
+        bottom: -(@dotWidth / 2);
+        right: -(@dotWidth / 2);
+        cursor: se-resize;
+      }
+      .down {
+        bottom: -(@dotWidth / 2);
+        left: 50%;
+        margin-left: -(@dotWidth / 2);
+        cursor: s-resize;
+      }
+      .leftDown {
+        bottom: -(@dotWidth / 2);
+        left: -(@dotWidth / 2);
+        cursor: sw-resize;
+      }
+      .left {
+        top: 50%;
+        margin-top: -(@dotWidth / 2);
+        left: -(@dotWidth / 2);
+        cursor: w-resize;
+      }
+    }
+  }
+
+  .rightBox {
+    width: @boxWidth;
+    height: @boxHeight;
+    margin-left: 50px;
+    position: relative;
+
+    img {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      clip: rect(0, @defaultCropBoxWidth, @defaultCropBoxHeight, 0);
+      -webkit-user-drag: none !important;
+      user-select: none;
+    }
+  }
+}
