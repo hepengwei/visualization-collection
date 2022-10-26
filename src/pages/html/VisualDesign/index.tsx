@@ -5,6 +5,7 @@ import React from "react";
 import GridContent from "components/GridContent";
 import GlassMimicry1 from "./components/GlassMimicry1";
 import GlassMimicry2 from "./components/GlassMimicry2";
+import MixBlendMode from "./components/MixBlendMode";
 import styles from "./index.module.less";
 
 const { GridBox } = GridContent;
@@ -25,6 +26,11 @@ const VisualDesign = () => {
         <GridBox key="2">
           <div className={styles.box}>
             <GlassMimicry2 />
+          </div>
+        </GridBox>
+        <GridBox key="2">
+          <div className={styles.box}>
+            <MixBlendMode />
           </div>
         </GridBox>
       </GridContent>
