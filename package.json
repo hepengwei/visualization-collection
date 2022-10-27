@@ -56,6 +56,6 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.2",
     "react-tilt": "^0.1.4",
-    "sphere-collision": "^1.0.0"
+    "sphere-collision": "^1.0.2"
   }
 }
