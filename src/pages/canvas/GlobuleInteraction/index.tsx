@@ -11,7 +11,7 @@ import type {
 import bubble from "images/bubble.png";
 
 let canvasWidth = 0; // 画布宽度
-let canvasHeight= 0; // 画布高度
+let canvasHeight = 0; // 画布高度
 const canvasBgColor = "#111111"; // 画布背景颜色
 const globuleNum = 8; // 球的总数量
 const oneRowGlobuleNum = 4; // 每行显示球的数量

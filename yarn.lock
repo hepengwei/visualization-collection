@@ -5067,10 +5067,10 @@ spdy@^4.0.2:
     select-hose "^2.0.0"
     spdy-transport "^3.0.0"
 
-sphere-collision@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/sphere-collision/-/sphere-collision-1.0.0.tgz#2e6c9b482b9d0c4b50cb76c02d4b6b9446012f09"
-  integrity sha512-Gp6Ks5cAnrJx+IKyGBdc17evlS7q30pOsNySCE2RZ83VU6pOUlFzOOd+0n5Npm/b/KbbfE1s7/osu/0KDVv75g==
+sphere-collision@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/sphere-collision/-/sphere-collision-1.0.2.tgz#d385286e817053f1de018ba69be06f636e54916e"
+  integrity sha512-0+J6rbmPIMkuoyUyYt/Li2m40IUe8xVOBDZvB/9whzAzvFd7vfq8L/xNh+poGUC/FEs6iZSqwXYc72usR3bMBw==
 
 stable@^0.1.8:
   version "0.1.8"
