@@ -111,8 +111,7 @@ const GlobuleInteraction = () => {
         ctx,
         canvas,
         globuleOptionsList,
-        true,
-        beforeDrawGlobules
+        { monitorMousePos: true, beforeDrawGlobules }
       );
 
       sphereCollisionRef.current = sphereCollision;

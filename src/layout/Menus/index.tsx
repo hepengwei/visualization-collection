@@ -48,6 +48,7 @@ const items: MenuItem[] = [
     getItem("探照灯效果", "searchlight"),
     getItem("球体碰撞交互效果", "globuleInteraction"),
     getItem("消灭行星小游戏", "killPlanetGame"),
+    getItem("球体自由落体交互效果", "freeFallingBody"),
     getItem("动态粒子背景", "particlesBg"),
     getItem("敬请期待", "canvasComingSoon"),
   ]),

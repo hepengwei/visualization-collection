@@ -213,9 +213,10 @@ const KillPlanetGame = () => {
             afterCalculateNextFrameGlobule: checkoutPlayerCollision,
           },
         ],
-        false,
-        beforeDrawGlobules,
-        afterDrawGlobules
+        {
+          beforeDrawGlobules,
+          afterDrawGlobules,
+        }
       );
 
       sphereCollisionRef.current = sphereCollision;
