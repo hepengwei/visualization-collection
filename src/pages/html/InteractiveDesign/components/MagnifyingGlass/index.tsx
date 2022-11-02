@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import ReactDOM from "react-dom";
-import watch from "images/watch.png";
+import watch from "images/html/watch.png";
 import styles from "./index.module.less";
 
 const MagnifyingGlass = () => {

@@ -8,7 +8,7 @@ import type {
   GlobuleC,
   GlobuleOptions,
 } from "sphere-collision/types";
-import bubble from "images/bubble.png";
+import bubble from "images/canvas/bubble.png";
 
 let canvasWidth = 0; // 画布宽度
 let canvasHeight = 0; // 画布高度

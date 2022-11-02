@@ -1,5 +1,5 @@
 import React from "react";
-import Telegram from "images/Telegram.svg";
+import Telegram from "images/css/Telegram.svg";
 import styles from "./index.module.less";
 
 

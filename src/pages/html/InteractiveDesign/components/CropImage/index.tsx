@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
-import flower from "images/flower.jpg";
+import flower from "images/html/flower.jpg";
 import styles from "./index.module.less";
 
 enum Contact {
