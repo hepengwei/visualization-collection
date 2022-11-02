@@ -66,8 +66,7 @@ const Searchlight = () => {
             afterDrawGlobule,
           },
         ],
-        false,
-        beforeDrawGlobules
+        { beforeDrawGlobules }
       );
 
       sphereCollisionRef.current = sphereCollision;
@@ -106,8 +105,7 @@ const Searchlight = () => {
             afterDrawGlobule,
           },
         ],
-        false,
-        beforeDrawGlobules
+        { beforeDrawGlobules }
       );
 
       sphereCollisionRef2.current = sphereCollision2;

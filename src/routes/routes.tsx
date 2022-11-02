@@ -15,6 +15,7 @@ import DynamicClock from "pages/canvas/DynamicClock";
 import Searchlight from "pages/canvas/Searchlight";
 import GlobuleInteraction from "pages/canvas/GlobuleInteraction";
 import KillPlanetGame from "pages/canvas/KillPlanetGame";
+import FreeFallingBody from 'pages/canvas/FreeFallingBody';
 import ParticlesBg from "pages/canvas/ParticlesBg";
 
 export const contentRoutes: RouteObject[] = [
@@ -74,6 +75,10 @@ export const contentRoutes: RouteObject[] = [
       {
         path: "/canvas/killPlanetGame",
         element: <KillPlanetGame />,
+      },
+      {
+        path: "/canvas/freeFallingBody",
+        element: <FreeFallingBody />,
       },
       {
         path: "/canvas/particlesBg",
