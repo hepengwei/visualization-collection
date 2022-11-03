@@ -16,9 +16,9 @@ const InteractiveDesign = () => {
       <div className={styles.box}>
         <CropImage />
       </div>
-      {/* <div className={styles.box}>
+      <div className={styles.box}>
         <DragShopping />
-      </div> */}
+      </div>
     </div>
   );
 };
