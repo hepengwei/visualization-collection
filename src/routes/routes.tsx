@@ -16,6 +16,7 @@ import Searchlight from "pages/canvas/Searchlight";
 import GlobuleInteraction from "pages/canvas/GlobuleInteraction";
 import KillPlanetGame from "pages/canvas/KillPlanetGame";
 import FreeFallingBody from 'pages/canvas/FreeFallingBody';
+import CountDown from 'pages/canvas/CountDown';
 import ParticlesBg from "pages/canvas/ParticlesBg";
 
 export const contentRoutes: RouteObject[] = [
@@ -79,6 +80,10 @@ export const contentRoutes: RouteObject[] = [
       {
         path: "/canvas/freeFallingBody",
         element: <FreeFallingBody />,
+      },
+      {
+        path: "/canvas/countDown",
+        element: <CountDown />,
       },
       {
         path: "/canvas/particlesBg",
