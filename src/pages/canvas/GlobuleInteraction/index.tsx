@@ -85,6 +85,8 @@ const GlobuleInteraction = () => {
           initX: xNow,
           initY: yNow,
           radius: globuleRadius,
+          color: "transparent",
+          isPureColor: true,
           bgImg: bubble,
           collisionLossV,
           moveLossV,
