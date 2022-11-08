@@ -1,0 +1,144 @@
+.container {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  background-color: #000013;
+  position: relative;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @innerHeadHeight: 100px;
+
+  .content {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .firstPage {
+      height: 100vh;
+      box-sizing: border-box;
+      position: sticky;
+      top: 0;
+    }
+
+    .swiper {
+      width: 100%;
+      height: 100vh - @headHeight;
+      box-sizing: border-box;
+      background-color: #000013;
+      overflow: hidden;
+      position: sticky;
+      top: 100px;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      :global {
+        .swiper-wrapper {
+          width: 100%;
+          .swiper-slide {
+            width: 100%;
+            height: 100vh - @headHeight;
+            box-sizing: border-box;
+            border-top: 1px solid #ffffffaa;
+            display: flex;
+            align-items: center;
+            background-color: #000013;
+            overflow: hidden;
+          }
+        }
+      }
+    }
+  }
+
+  .head {
+    height: 100px;
+    position: fixed;
+    top: @headHeight;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    padding: 13px 30px 0;
+    background-color: transparent;
+    z-index: 101;
+    pointer-events: none;
+
+    .bgBox {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 100;
+      .bg {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        z-index: 100;
+        pointer-events: none;
+        p {
+          font-size: 34px;
+          line-height: 34px;
+          height: 28px;
+          font-family: "Net-Azonix" !important;
+        }
+      }
+    }
+
+    .left {
+      font-size: 22px;
+      font-weight: 500;
+      display: flex;
+      .logo {
+        height: 32px;
+        width: 32px;
+        background-color: #666;
+        border-radius: 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .appName {
+        display: inline-block;
+        height: 32px;
+        line-height: 24px;
+        font-size: 24px;
+        font-weight: 500;
+        margin-left: 8px;
+      }
+    }
+
+    .right {
+      display: flex;
+      .btn {
+        font-size: 14px;
+        font-weight: 500;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        padding: 0 8px;
+        margin-left: 8px;
+        pointer-events: all;
+        cursor: pointer;
+
+        &:hover {
+          background-image: linear-gradient(132deg, #d628fe 1%, #35a2fd 95%);
+          border-radius: 1px;
+        }
+      }
+    }
+  }
+}

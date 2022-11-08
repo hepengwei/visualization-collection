@@ -36,12 +36,11 @@ const items: MenuItem[] = [
     getItem("视觉设计", "visualDesign"),
     getItem("交互设计", "interactiveDesign"),
     getItem("复杂布局", "complexLayout"),
-    getItem("敬请期待", "htmlComingSoon"),
+    getItem("应用页面框架", "appPageFrame"),
   ]),
   getItem("CSS动效", "css", <FormatPainterOutlined />, [
     getItem("动效按钮", "dynamicButtons"),
     getItem("丰富动效", "richDynamicEffect"),
-    getItem("敬请期待", "cssComingSoon"),
   ]),
   getItem("Canvas动效", "canvas", <PlayCircleOutlined />, [
     getItem("动态时钟", "dynamicClock"),
@@ -51,7 +50,6 @@ const items: MenuItem[] = [
     getItem("球体自由落体交互效果", "freeFallingBody"),
     getItem("炫酷倒计时动画", "countDown"),
     getItem("动态粒子背景", "particlesBg"),
-    getItem("敬请期待", "canvasComingSoon"),
   ]),
   getItem("Echarts交互", "echarts", <LineChartOutlined />, [
     getItem("敬请期待", "echartsComingSoon"),

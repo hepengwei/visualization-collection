@@ -9,14 +9,15 @@ import ThreejsComingSoon from "pages/threejs/ThreejsComingSoon";
 import VisualDesign from "pages/html/VisualDesign";
 import InteractiveDesign from "pages/html/InteractiveDesign";
 import ComplexLayout from "pages/html/ComplexLayout";
+import AppPageFrame from "pages/html/AppPageFrame";
 import DynamicButtons from "pages/css/DynamicButtons";
 import RichDynamicEffect from "pages/css/RichDynamicEffect";
 import DynamicClock from "pages/canvas/DynamicClock";
 import Searchlight from "pages/canvas/Searchlight";
 import GlobuleInteraction from "pages/canvas/GlobuleInteraction";
 import KillPlanetGame from "pages/canvas/KillPlanetGame";
-import FreeFallingBody from 'pages/canvas/FreeFallingBody';
-import CountDown from 'pages/canvas/CountDown';
+import FreeFallingBody from "pages/canvas/FreeFallingBody";
+import CountDown from "pages/canvas/CountDown";
 import ParticlesBg from "pages/canvas/ParticlesBg";
 
 export const contentRoutes: RouteObject[] = [
@@ -36,8 +37,8 @@ export const contentRoutes: RouteObject[] = [
         element: <ComplexLayout />,
       },
       {
-        path: "/html/htmlComingSoon",
-        element: <HtmlComingSoon />,
+        path: "/html/appPageFrame",
+        element: <AppPageFrame />,
       },
     ],
   },
@@ -51,10 +52,6 @@ export const contentRoutes: RouteObject[] = [
       {
         path: "/css/richDynamicEffect",
         element: <RichDynamicEffect />,
-      },
-      {
-        path: "/css/cssComingSoon",
-        element: <CssComingSoon />,
       },
     ],
   },
@@ -88,10 +85,6 @@ export const contentRoutes: RouteObject[] = [
       {
         path: "/canvas/particlesBg",
         element: <ParticlesBg />,
-      },
-      {
-        path: "/canvas/canvasComingSoon",
-        element: <CanvasComingSoon />,
       },
     ],
   },

@@ -87,7 +87,10 @@ module.exports = function (webpackEnv) {
         },
         {
           test: cssRegex,
-          include: [resolveApp("src"), resolveApp("node_modules", "antd", "dist")],
+          include: [
+            resolveApp("src"),
+            resolveApp("node_modules", "antd", "dist"),
+          ],
           exclude: cssModuleRegex,
           use: getStyleLoaders({
             importLoaders: 1,
@@ -113,32 +116,48 @@ module.exports = function (webpackEnv) {
         {
           test: lessRegex,
           exclude: lessModuleRegex,
-          use: getStyleLoaders(
+          use: [
+            ...getStyleLoaders(
+              {
+                importLoaders: 3,
+                sourceMap: isEnvDevelopment,
+                modules: {
+                  mode: "icss",
+                },
+              },
+              "less-loader"
+            ),
             {
-              importLoaders: 3,
-              sourceMap: isEnvDevelopment,
-              modules: {
-                mode: "icss",
+              loader: "style-resources-loader",
+              options: {
+                patterns: resolveApp("src/global.less"),
               },
             },
-            "less-loader"
-          ),
+          ],
           // Remove this when webpack adds a warning or an error for this.
           sideEffects: true,
         },
         {
           test: lessModuleRegex,
-          use: getStyleLoaders(
+          use: [
+            ...getStyleLoaders(
+              {
+                importLoaders: 3,
+                sourceMap: isEnvDevelopment,
+                modules: {
+                  mode: "local",
+                  getLocalIdent: getCSSModuleLocalIdent,
+                },
+              },
+              "less-loader"
+            ),
             {
-              importLoaders: 3,
-              sourceMap: isEnvDevelopment,
-              modules: {
-                mode: "local",
-                getLocalIdent: getCSSModuleLocalIdent,
+              loader: "style-resources-loader",
+              options: {
+                patterns: resolveApp("src/global.less"),
               },
             },
-            "less-loader"
-          ),
+          ],
         },
         {
           test: /\.(png|jpe?g|gif)$/,
