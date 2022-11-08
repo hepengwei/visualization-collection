@@ -6,6 +6,9 @@ import GridContent from "components/GridContent";
 import GlassMimicry1 from "./components/GlassMimicry1";
 import GlassMimicry2 from "./components/GlassMimicry2";
 import MixBlendMode from "./components/MixBlendMode";
+import SwitchingText from "./components/SwitchingText";
+import Typed1 from "./components/Typed1";
+import Typed2 from "./components/Typed2";
 import styles from "./index.module.less";
 
 const { GridBox } = GridContent;
@@ -28,9 +31,24 @@ const VisualDesign = () => {
             <GlassMimicry2 />
           </div>
         </GridBox>
-        <GridBox key="2">
+        <GridBox key="3">
           <div className={styles.box}>
             <MixBlendMode />
+          </div>
+        </GridBox>
+        <GridBox key="4">
+          <div className={styles.box}>
+            <SwitchingText />
+          </div>
+        </GridBox>
+        <GridBox key="5">
+          <div className={styles.box}>
+            <Typed1 />
+          </div>
+        </GridBox>
+        <GridBox key="6">
+          <div className={styles.box}>
+            <Typed2 />
           </div>
         </GridBox>
       </GridContent>
