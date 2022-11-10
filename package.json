@@ -7,8 +7,8 @@
     "dev": "webpack serve -c scripts/webpack.dev.js",
     "build": "webpack -c scripts/webpack.prod.js"
   },
+  "license": "MIT",
   "author": "River",
-  "license": "ISC",
   "browserslist": {
     "production": [
       ">0.2%",
