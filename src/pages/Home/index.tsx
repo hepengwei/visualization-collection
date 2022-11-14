@@ -6,7 +6,7 @@ import Header from "@/layout/Header";
 import Menus from "@/layout/Menus";
 import styles from "./index.module.less";
 
-const defaultPageUrl = "/css/dynamicButtons";
+const defaultPageUrl = "/html/visualDesign"; // 默认首页
 
 const Home = () => {
   const contentRoutes = useRoutes(contentRoutesConfig);

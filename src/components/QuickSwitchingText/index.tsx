@@ -41,10 +41,6 @@ const QuickSwitchingText = (
   const startSwitchingTime = useRef<number>(0);
   const prevShowTime = useRef<number>(0);
 
-  useImperativeHandle(ref, () => ({
-    restart,
-  }));
-
   const loop = useCallback(() => {
     const now = new Date().getTime();
     if (now - startSwitchingTime.current >= duration) {
@@ -71,9 +67,15 @@ const QuickSwitchingText = (
   }, []);
 
   const restart = () => {
-    if (showIndex.current !== -1) return;
+    frameId.current && cancelAnimationFrame(frameId.current);
+    showIndex.current = 0;
+    setShowText(textList[0]);
     start();
   };
+
+  useImperativeHandle(ref, () => ({
+    restart,
+  }));
 
   useEffect(() => {
     start();
