@@ -1,5 +1,6 @@
 import React, { useState, useRef, useMemo, useEffect } from "react";
 import ReactDOM from "react-dom";
+import { useGlobalContext } from "@/globalContext";
 import Swiper from "swiper";
 import { useDebounceFn } from "ahooks";
 import Page1 from "./components/Page1";
@@ -8,7 +9,6 @@ import Page3 from "./components/Page3";
 import Page4 from "./components/Page4";
 import styles from "./index.module.less";
 
-const headHeight = 60; // 外顶部高度
 const innerHeadHeight = 100; // 内顶部区域高度
 const bgHeight = 30; // 顶部中间文字高度
 const pageNum = 4; // 总页面
@@ -20,6 +20,7 @@ enum SwitchPageType {
 }
 
 const AppPageFrame = () => {
+  const { menuWidth } = useGlobalContext();
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [containerHeight, setContainerHeight] = useState<number>(0);
@@ -290,10 +291,10 @@ const AppPageFrame = () => {
           scrollTop >= containerHeight - innerHeadHeight
             ? {
                 borderBottom: "1px solid #ffffff99",
-                left: "204px",
-                width: "calc(100% - 204px)",
+                left: `${menuWidth}px`,
+                width: `calc(100% - ${menuWidth}px)`,
               }
-            : { left: "204px", width: "calc(100% - 204px)" }
+            : { left: `${menuWidth}px`, width: `calc(100% - ${menuWidth}px)` }
         }
       >
         <div className={styles.bgBox}>

@@ -1,4 +1,11 @@
-import React, { useMemo, useState } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+  useRef,
+  useCallback,
+} from "react";
+import ReactDOM from "react-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   MenuFoldOutlined,
@@ -9,9 +16,12 @@ import {
   LineChartOutlined,
   RocketOutlined,
 } from "@ant-design/icons";
-import type { MenuProps } from "antd";
+import { useDebounceFn } from "ahooks";
 import { Button, Menu } from "antd";
+import type { MenuProps } from "antd";
+import { useGlobalContext } from "@/globalContext";
 import styles from "./index.module.less";
+import { container } from "webpack";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -62,7 +72,24 @@ const items: MenuItem[] = [
 const Menus: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState<boolean>(false);
+  const globalContext = useGlobalContext();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const updateMenuWidth = useCallback(
+    useDebounceFn(
+      () => {
+        const containerNode = ReactDOM.findDOMNode(
+          containerRef.current
+        ) as HTMLDivElement;
+        if (containerNode) {
+          globalContext.setMenuWidth(containerNode.clientWidth);
+        }
+      },
+      { wait: 360 }
+    ).run,
+    []
+  );
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
@@ -90,8 +117,20 @@ const Menus: React.FC = () => {
     return result;
   }, [location]);
 
+  useEffect(() => {
+    updateMenuWidth();
+  }, [collapsed]);
+
+  useEffect(() => {
+    window.addEventListener("resize", updateMenuWidth);
+
+    return () => {
+      window.removeEventListener("resize", updateMenuWidth);
+    };
+  }, []);
+
   return (
-    <div className={styles.container}>
+    <div className={styles.container} ref={containerRef}>
       <div className={styles.top}>
         <Button
           type="primary"
