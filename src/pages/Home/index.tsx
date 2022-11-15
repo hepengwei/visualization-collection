@@ -2,6 +2,7 @@
 import React, { useEffect, useRef } from "react";
 import { useRoutes, useLocation, useNavigate } from "react-router-dom";
 import { contentRoutes as contentRoutesConfig } from "@/routes/routes";
+import { GlobalProvider } from "@/globalContext";
 import Header from "@/layout/Header";
 import Menus from "@/layout/Menus";
 import styles from "./index.module.less";
@@ -31,14 +32,16 @@ const Home = () => {
     <div className={styles.container}>
       <Header />
       <div className={styles.container_body}>
-        <Menus />
-        <div
-          className={styles.container_content}
-          onScroll={onScroll}
-          ref={contentRef}
-        >
-          {contentRoutes}
-        </div>
+        <GlobalProvider>
+          <Menus />
+          <div
+            className={styles.container_content}
+            onScroll={onScroll}
+            ref={contentRef}
+          >
+            {contentRoutes}
+          </div>
+        </GlobalProvider>
       </div>
     </div>
   );

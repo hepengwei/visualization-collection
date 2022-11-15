@@ -31,7 +31,6 @@ const articles = [
     href: "https://juejin.cn/post/7134952028870017060",
   },
 ];
-const moveSpeed = 32;
 const cursorDefaultRadius = 10;
 const cursorBigRadius = 40;
 const cursorMoveVCoefficient = 0.12;
@@ -75,7 +74,6 @@ const MouseHover = () => {
     const containerNode = ReactDOM.findDOMNode(
       containerRef.current
     ) as HTMLDivElement;
-    console.log(444, containerNode.offsetTop);
     const { offsetLeft = 0, offsetTop = 0 } = containerNode;
     mousePos.current = {
       mouseX: clientX - offsetLeft,

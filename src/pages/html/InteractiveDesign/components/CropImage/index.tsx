@@ -17,8 +17,6 @@ enum Contact {
 const CropImage = () => {
   const leftBoxWidth = useRef<number>(0);
   const leftBoxHeight = useRef<number>(0);
-  const leftBoxLeft = useRef<number>(0);
-  const leftBoxTop = useRef<number>(0);
   const isKeyDown = useRef<boolean>(false);
   const contact = useRef<Contact>();
   const isGetar = useRef<boolean>(false);
@@ -51,7 +49,11 @@ const CropImage = () => {
   //right移动
   const rightMove = (e: React.MouseEvent) => {
     let x = e.clientX; //鼠标X坐标
-    const minX = leftBoxLeft.current;
+    const leftBoxNode = ReactDOM.findDOMNode(
+      leftBoxRef.current
+    ) as HTMLDivElement;
+    const { left } = getPosition(leftBoxNode);
+    const minX = left;
     const maxX = minX + leftBoxWidth.current - 4;
     if (x > maxX) {
       x = maxX;
@@ -71,7 +73,11 @@ const CropImage = () => {
   const upMove = (e: React.MouseEvent) => {
     // @ts-ignore
     let y = e.clientY + window.scrollTop; //鼠标纵坐标
-    const minY = leftBoxTop.current;
+    const leftBoxNode = ReactDOM.findDOMNode(
+      leftBoxRef.current
+    ) as HTMLDivElement;
+    const { top } = getPosition(leftBoxNode);
+    const minY = top;
     const cropBoxNode = ReactDOM.findDOMNode(
       cropBoxRef.current
     ) as HTMLDivElement;
@@ -90,10 +96,14 @@ const CropImage = () => {
   //left移动
   const leftMove = (e: React.MouseEvent) => {
     let x = e.clientX; //鼠标横坐标
+    const leftBoxNode = ReactDOM.findDOMNode(
+      leftBoxRef.current
+    ) as HTMLDivElement;
+    const { left } = getPosition(leftBoxNode);
+    const minX = left;
     const cropBoxNode = ReactDOM.findDOMNode(
       cropBoxRef.current
     ) as HTMLDivElement;
-    const minX = leftBoxLeft.current;
     const mainX = getPosition(cropBoxNode).left;
     const maxX = mainX + cropBoxNode.offsetWidth - 4;
     if (x < minX) {
@@ -110,7 +120,11 @@ const CropImage = () => {
   const downMove = (e: React.MouseEvent) => {
     // @ts-ignore
     let y = e.clientY + window.scrollTop;
-    const minY = leftBoxTop.current;
+    const leftBoxNode = ReactDOM.findDOMNode(
+      leftBoxRef.current
+    ) as HTMLDivElement;
+    const { top } = getPosition(leftBoxNode);
+    const minY = top;
     const maxY = minY + leftBoxHeight.current - 4;
     if (y < minY) {
       y = minY;
@@ -249,9 +263,6 @@ const CropImage = () => {
     const { offsetWidth, offsetHeight } = leftBoxNode;
     leftBoxWidth.current = offsetWidth;
     leftBoxHeight.current = offsetHeight;
-    const { left, top } = getPosition(leftBoxNode);
-    leftBoxLeft.current = left;
-    leftBoxTop.current = top;
   }, []);
 
   return (
