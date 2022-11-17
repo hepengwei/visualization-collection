@@ -14,6 +14,7 @@
       "@/*": ["./src/*"],
       "pages/*": ["./src/pages/*"],
       "components/*": ["./src/components/*"],
+      "constants/*": ["./src/constants/*"],
       "images/*": ["./src/images/*"],
       "utils/*": ["./src/utils/*"],
       "routes/*": ["./src/routes/*"]

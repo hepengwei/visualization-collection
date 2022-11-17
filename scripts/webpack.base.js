@@ -73,6 +73,7 @@ module.exports = function (webpackEnv) {
         "@": resolveApp("src"),
         pages: resolveApp("src/pages"),
         components: resolveApp("src/components"),
+        constants: resolveApp("src/constants"),
         images: resolveApp("src/images"),
         utils: resolveApp("src/utils"),
         routes: resolveApp("src/routes"),
