@@ -21,7 +21,6 @@ import { Button, Menu } from "antd";
 import type { MenuProps } from "antd";
 import { useGlobalContext } from "@/globalContext";
 import styles from "./index.module.less";
-import { container } from "webpack";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -62,6 +61,7 @@ const items: MenuItem[] = [
     getItem("动态粒子背景", "particlesBg"),
   ]),
   getItem("Echarts交互", "echarts", <LineChartOutlined />, [
+    getItem("柱状图", "bar"),
     getItem("敬请期待", "echartsComingSoon"),
   ]),
   getItem("Three.js3D", "threejs", <RocketOutlined />, [
@@ -142,7 +142,7 @@ const Menus: React.FC = () => {
       </div>
 
       <Menu
-        defaultOpenKeys={["html", "css", "canvas"]}
+        defaultOpenKeys={["html", "css", "canvas", "echarts"]}
         selectedKeys={selectedKeys}
         mode="inline"
         theme="dark"

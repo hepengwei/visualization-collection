@@ -1,9 +1,6 @@
 import React from "react";
 import { RouteObject } from "react-router-dom";
 import Home from "pages/Home";
-import HtmlComingSoon from "pages/html/HtmlComingSoon";
-import CssComingSoon from "pages/css/CssComingSoon";
-import CanvasComingSoon from "pages/canvas/CanvasComingSoon";
 import EchartsComingSoon from "pages/echarts/EchartsComingSoon";
 import ThreejsComingSoon from "pages/threejs/ThreejsComingSoon";
 import VisualDesign from "pages/html/VisualDesign";
@@ -19,6 +16,7 @@ import KillPlanetGame from "pages/canvas/KillPlanetGame";
 import FreeFallingBody from "pages/canvas/FreeFallingBody";
 import CountDown from "pages/canvas/CountDown";
 import ParticlesBg from "pages/canvas/ParticlesBg";
+import Bar from "pages/echarts/Bar";
 
 export const contentRoutes: RouteObject[] = [
   {
@@ -91,6 +89,10 @@ export const contentRoutes: RouteObject[] = [
   {
     path: "/echarts",
     children: [
+      {
+        path: "/echarts/bar",
+        element: <Bar />,
+      },
       {
         path: "/echarts/echartsComingSoon",
         element: <EchartsComingSoon />,
