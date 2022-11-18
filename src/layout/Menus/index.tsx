@@ -62,6 +62,7 @@ const items: MenuItem[] = [
   ]),
   getItem("Echarts交互", "echarts", <LineChartOutlined />, [
     getItem("柱状图", "bar"),
+    getItem("饼图", "pie"),
     getItem("敬请期待", "echartsComingSoon"),
   ]),
   getItem("Three.js3D", "threejs", <RocketOutlined />, [

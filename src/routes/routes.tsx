@@ -17,6 +17,7 @@ import FreeFallingBody from "pages/canvas/FreeFallingBody";
 import CountDown from "pages/canvas/CountDown";
 import ParticlesBg from "pages/canvas/ParticlesBg";
 import Bar from "pages/echarts/Bar";
+import Pie from "pages/echarts/Pie";
 
 export const contentRoutes: RouteObject[] = [
   {
@@ -92,6 +93,10 @@ export const contentRoutes: RouteObject[] = [
       {
         path: "/echarts/bar",
         element: <Bar />,
+      },
+      {
+        path: "/echarts/pie",
+        element: <Pie />,
       },
       {
         path: "/echarts/echartsComingSoon",
