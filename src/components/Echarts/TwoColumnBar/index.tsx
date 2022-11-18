@@ -203,7 +203,7 @@ const TwoColumnBar = (props: Bar1Propos) => {
   const chartOptions = useMemo(() => {
     const options = getBaseOptions();
     const { dataSource } = data;
-    if (!dataSource || JSON.stringify(dataSource) === "{}") return options;
+    if (!dataSource) return options;
     // 添加水印
     // options.graphic = getGraphic();
     options.dataset = { source: dataSource };
