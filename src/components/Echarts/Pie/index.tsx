@@ -1,62 +1,22 @@
-import React, { useRef, useMemo, useEffect, useCallback } from "react";
-import * as echarts from "echarts/core";
-import {
-  DatasetComponent,
-  DatasetComponentOption,
-  DataZoomComponent,
-  DataZoomComponentOption,
-  GridComponent,
-  GridComponentOption,
-  LegendComponent,
-  LegendComponentOption,
-  TitleComponent,
-  TitleComponentOption,
-  ToolboxComponent,
-  ToolboxComponentOption,
-  TooltipComponent,
-  TooltipComponentOption,
-  GraphicComponent,
-} from "echarts/components";
-import { PieChart, PieSeriesOption } from "echarts/charts";
-import { UniversalTransition } from "echarts/features";
-import { SVGRenderer } from "echarts/renderers";
+import React, { useRef, useMemo } from "react";
+import echarts from "@/utils/echarts.config";
+import type { ChartOptions } from "@/utils/echarts.config";
 import { ECHART_COMMON_COLOR } from "constants/common";
-import { format } from "date-fns";
-import numberFormat from "../../../utils";
+import numberFormat from "utils/numberFormat";
+import BasicEchart from "../BasicEchart";
 
-echarts.use([
-  DatasetComponent,
-  DataZoomComponent,
-  GridComponent,
-  LegendComponent,
-  TitleComponent,
-  ToolboxComponent,
-  TooltipComponent,
-  PieChart,
-  UniversalTransition,
-  SVGRenderer,
-  GraphicComponent,
-]);
-
-export type MyChartOption = echarts.ComposeOption<
-  | DatasetComponentOption
-  | DataZoomComponentOption
-  | GridComponentOption
-  | LegendComponentOption
-  | TitleComponentOption
-  | ToolboxComponentOption
-  | TooltipComponentOption
-  | PieSeriesOption
->;
-
-interface Bar1Propos {
-  data: Record<string, any>;
+interface PieProps {
+  data: {
+    dataSource: Record<string, any>[];
+  };
   style?: Record<string, any>;
+  onHoverChange?: (params: any) => void;
+  onClickChange?: (params: any) => void;
 }
 
 // 获取整个图表的基础配置
 const getBaseOptions = () => {
-  const baseOptions: MyChartOption = {
+  const baseOptions: ChartOptions = {
     color: ECHART_COMMON_COLOR,
     legend: {
       type: "scroll",
@@ -94,6 +54,7 @@ const getBaseOptions = () => {
         label: {
           show: false,
           position: "center",
+          fontSize: 26,
           formatter: (params: any) => {
             if (params && params.value) {
               return `{value|${numberFormat(params.value[1], true)}}\n\n${
@@ -102,20 +63,19 @@ const getBaseOptions = () => {
             }
             return "";
           },
-
           rich: {
             value: {
               color: "#fff",
               fontWeight: "bold",
-              fontSize: 14,
+              fontSize: 28,
             },
           },
         },
         emphasis: {
           label: {
             show: true,
-            fontSize: 12,
-            color: "#fff",
+            fontSize: 20,
+            color: "#ccc",
             fontWeight: "normal",
           },
         },
@@ -131,13 +91,12 @@ const getBaseOptions = () => {
   return baseOptions;
 };
 
-const Pie = (props: Bar1Propos) => {
-  const {
-    data, // 数据
-    style = { width: "100%", height: "100%" }, // 样式
-  } = props;
-
-  const chartRef = useRef<HTMLDivElement>(null);
+const Pie = ({
+  data, // 数据
+  style, // 样式
+  onHoverChange, // 鼠标hover事件
+  onClickChange, // 点击事件
+}: PieProps) => {
   const chartInstance = useRef<echarts.EChartsType | null>(null);
 
   // 图表最终的配置数据
@@ -151,48 +110,15 @@ const Pie = (props: Bar1Propos) => {
     return options;
   }, [data]);
 
-  //初始化图表，设置配置项
-  const renderChart = useCallback(() => {
-    if (chartRef.current) {
-      const render = echarts.getInstanceByDom(chartRef.current);
-      if (render) {
-        chartInstance.current = render;
-      } else {
-        chartInstance.current = echarts?.init(chartRef.current, undefined, {
-          renderer: "canvas",
-        });
-      }
-      //设置配置项
-      chartInstance.current.setOption(chartOptions);
-    }
-  }, [chartOptions]);
-
-  useEffect(() => {
-    renderChart();
-
-    return () => {
-      const { current } = chartInstance;
-      if (current) {
-        current.dispose();
-      }
-    };
-  }, [chartOptions]);
-
-  // 监听屏幕变化，重绘图表
-  useEffect(() => {
-    const handleResize = () => {
-      const chart = chartInstance?.current;
-      if (chart) {
-        chart.resize();
-      }
-    };
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  return <div ref={chartRef} style={style} />;
+  return (
+    <BasicEchart
+      options={chartOptions}
+      style={style}
+      onClickChange={onClickChange}
+      onHoverChange={onHoverChange}
+      ref={chartInstance}
+    />
+  );
 };
 
 export default Pie;
