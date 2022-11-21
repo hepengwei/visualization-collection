@@ -9,9 +9,19 @@ import MixBlendMode from "./components/MixBlendMode";
 import SwitchingText from "./components/SwitchingText";
 import Typed1 from "./components/Typed1";
 import Typed2 from "./components/Typed2";
+import AutoEllipsisText from "./components/AutoEllipsisText";
 import styles from "./index.module.less";
 
 const { GridBox } = GridContent;
+const gridboxList = [
+  { element: <GlassMimicry1 /> },
+  { element: <GlassMimicry2 /> },
+  { element: <MixBlendMode /> },
+  { element: <SwitchingText /> },
+  { element: <Typed1 /> },
+  { element: <Typed2 /> },
+  { element: <AutoEllipsisText /> },
+];
 
 const VisualDesign = () => {
   return (
@@ -21,7 +31,14 @@ const VisualDesign = () => {
         rowSpace={4}
         colSpace={4}
       >
-        <GridBox key="1">
+        {gridboxList.map(
+          (item: { element: React.ReactNode }, index: number) => (
+            <GridBox key={index}>
+              <div className={styles.box}>{item.element}</div>
+            </GridBox>
+          )
+        )}
+        {/* <GridBox key="1">
           <div className={styles.box}>
             <GlassMimicry1 />
           </div>
@@ -51,6 +68,11 @@ const VisualDesign = () => {
             <Typed2 />
           </div>
         </GridBox>
+        <GridBox key="7">
+          <div className={styles.box}>
+            <Typed2 />
+          </div>
+        </GridBox> */}
       </GridContent>
     </div>
   );
