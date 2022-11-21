@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { subDays } from "date-fns";
 import TwoColumnBar from "components/Echarts/TwoColumnBar";
-import styles from "./index.module.less";
+import styles from "../../index.module.less";
 
-const Bar1 = () => {
-  const [echartData, setEchartData] = useState<Record<string, any>[]>([]);
+const Bar2 = () => {
+  const [echartData, setEchartData] = useState<any[]>([]);
 
   const getData = () => {
     const data: [
@@ -29,10 +28,10 @@ const Bar1 = () => {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.echart}>
       <TwoColumnBar data={{ dataSource: echartData }} />
     </div>
   );
 };
 
-export default Bar1;
+export default Bar2;

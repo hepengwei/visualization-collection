@@ -24,10 +24,7 @@ const zeroReg = /([0])\1{2}/;
  * @param zeroNoNA boolean 是否不讲0转换成N/A
  * @returns string
  */
-export const numberFormat = (
-  value: string | number,
-  zeroNoNA: boolean = false
-) => {
+const numberFormat = (value: string | number, zeroNoNA: boolean = false) => {
   if (isEmpty(value) || isNil(value)) return "N/A";
 
   const bnValue = new BigNumber(value);
@@ -131,3 +128,5 @@ const formatZero = (value: BigNumber.Value) => {
   }
   return `0{${zeros.length + 1}}${data.splice(zeros.length + 1, 4).join("")}`;
 };
+
+export default numberFormat;

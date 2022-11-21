@@ -5,6 +5,7 @@ import React from "react";
 import GridContent from "components/GridContent";
 import Bar1 from "./components/Bar1";
 import Bar2 from "./components/Bar2";
+import Bar3 from "./components/Bar3";
 import styles from "./index.module.less";
 
 const { GridBox } = GridContent;
@@ -25,6 +26,11 @@ const Bar = () => {
         <GridBox key="2">
           <div className={styles.box}>
             <Bar2 />
+          </div>
+        </GridBox>
+        <GridBox key="3">
+          <div className={styles.box}>
+            <Bar3 />
           </div>
         </GridBox>
       </GridContent>

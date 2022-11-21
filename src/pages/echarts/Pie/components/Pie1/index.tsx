@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Pie from "components/Echarts/Pie";
-import styles from "./index.module.less";
+import styles from "../../index.module.less";
 
 const Pie1 = () => {
   const [echartData, setEchartData] = useState<Record<string, any>[]>([]);
@@ -21,7 +21,7 @@ const Pie1 = () => {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.echart}>
       <Pie data={{ dataSource: echartData }} />
     </div>
   );
