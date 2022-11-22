@@ -10,6 +10,8 @@ import SwitchingText from "./components/SwitchingText";
 import Typed1 from "./components/Typed1";
 import Typed2 from "./components/Typed2";
 import AutoEllipsisText from "./components/AutoEllipsisText";
+import FilterCSS from "./components/FilterCSS";
+import BgFusion from "./components/BgFusion";
 import styles from "./index.module.less";
 
 const { GridBox } = GridContent;
@@ -21,6 +23,8 @@ const gridboxList = [
   { element: <Typed1 /> },
   { element: <Typed2 /> },
   { element: <AutoEllipsisText /> },
+  { element: <FilterCSS /> },
+  { element: <BgFusion /> },
 ];
 
 const VisualDesign = () => {
@@ -38,41 +42,6 @@ const VisualDesign = () => {
             </GridBox>
           )
         )}
-        {/* <GridBox key="1">
-          <div className={styles.box}>
-            <GlassMimicry1 />
-          </div>
-        </GridBox>
-        <GridBox key="2">
-          <div className={styles.box}>
-            <GlassMimicry2 />
-          </div>
-        </GridBox>
-        <GridBox key="3">
-          <div className={styles.box}>
-            <MixBlendMode />
-          </div>
-        </GridBox>
-        <GridBox key="4">
-          <div className={styles.box}>
-            <SwitchingText />
-          </div>
-        </GridBox>
-        <GridBox key="5">
-          <div className={styles.box}>
-            <Typed1 />
-          </div>
-        </GridBox>
-        <GridBox key="6">
-          <div className={styles.box}>
-            <Typed2 />
-          </div>
-        </GridBox>
-        <GridBox key="7">
-          <div className={styles.box}>
-            <Typed2 />
-          </div>
-        </GridBox> */}
       </GridContent>
     </div>
   );
