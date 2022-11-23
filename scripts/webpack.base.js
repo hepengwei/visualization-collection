@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const fs = require("fs");
 const path = require("path");
 const getCSSModuleLocalIdent = require("react-dev-utils/getCSSModuleLocalIdent");
+const ESLintWebpackPlugin = require("eslint-webpack-plugin");
 
 const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
@@ -190,6 +191,9 @@ module.exports = function (webpackEnv) {
       ],
     },
     plugins: [
+      new ESLintWebpackPlugin({
+        context: resolveApp("src"),
+      }),
       new MiniCssExtractPlugin({
         filename: "styles/[name].css",
       }),
