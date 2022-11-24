@@ -48,3 +48,4 @@ export const getFixedWidthText = (
   document.body.removeChild(span);
   return returnText;
 };
+

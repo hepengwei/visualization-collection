@@ -2,11 +2,12 @@
   width: 100%;
   min-height: 100%;
   background-image: linear-gradient(135deg, #224141, #162a2a);
-  padding: 2px;
+  padding: 4px 2px;
   overflow-y: auto;
 
   .box {
     display: flex;
+    flex: 1;
     align-items: center;
     justify-content: center;
     border: 3px solid #35a2fd44;
@@ -14,6 +15,11 @@
     background-image: linear-gradient(to right, #04182C, #000c17, #04182C);
     color: #ffffff;
     position: relative;
-    margin: 4px 2px;
+    margin: 2px;
+    overflow: hidden;
+  }
+
+  .multipleColumnsBox{
+    display: flex;
   }
 }
