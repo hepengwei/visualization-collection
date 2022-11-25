@@ -19,7 +19,7 @@ import {
 import { useDebounceFn } from "ahooks";
 import { Button, Menu } from "antd";
 import type { MenuProps } from "antd";
-import { useGlobalContext } from "@/globalContext";
+import { useGlobalContext } from "@/hooks/useGlobalContext";
 import styles from "./index.module.less";
 
 type MenuItem = Required<MenuProps>["items"][number];

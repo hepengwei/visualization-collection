@@ -7,7 +7,7 @@ export interface GlobalContextProps {
   setMenuWidth: (menuWidth: number) => void;
 }
 
-export const GlobalContext = React.createContext<GlobalContextProps>({
+const GlobalContext = React.createContext<GlobalContextProps>({
   headHeight: 0,
   setHeadHeight: () => {},
   menuWidth: 0,

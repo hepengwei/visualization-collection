@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from "react";
 import { useRoutes, useLocation, useNavigate } from "react-router-dom";
 import { contentRoutes as contentRoutesConfig } from "@/routes/routes";
-import { GlobalProvider } from "@/globalContext";
+import { GlobalProvider } from "@/hooks/useGlobalContext";
 import Header from "@/layout/Header";
 import Menus from "@/layout/Menus";
 import styles from "./index.module.less";

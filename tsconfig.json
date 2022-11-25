@@ -17,7 +17,7 @@
       "constants/*": ["./src/constants/*"],
       "images/*": ["./src/images/*"],
       "utils/*": ["./src/utils/*"],
-      "routes/*": ["./src/routes/*"]
+      "routes/*": ["./src/routes/*"],
     } /* Specify a set of entries that re-map imports to additional lookup locations. */,
     "resolveJsonModule": true /* Enable importing .json files. */,
     "allowJs": true /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,

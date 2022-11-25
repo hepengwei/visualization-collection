@@ -1,8 +1,8 @@
 import React, { useState, useRef, useMemo, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { useGlobalContext } from "@/globalContext";
 import Swiper from "swiper";
 import { useDebounceFn } from "ahooks";
+import { useGlobalContext } from "@/hooks/useGlobalContext";
 import Page1 from "./components/Page1";
 import Page2 from "./components/Page2";
 import Page3 from "./components/Page3";

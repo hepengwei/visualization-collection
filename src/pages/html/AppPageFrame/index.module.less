@@ -28,6 +28,7 @@
       box-sizing: border-box;
       position: sticky;
       top: 0;
+      background-image: linear-gradient(135deg, #224141, #162a2a);
     }
 
     .swiper {
@@ -52,8 +53,14 @@
             border-top: 1px solid #ffffffaa;
             display: flex;
             align-items: center;
-            background-color: #000013;
             overflow: hidden;
+
+            &:nth-of-type(2n - 1) {
+              background-color: #333;
+            }
+            &:nth-of-type(2n - 2) {
+              background-color: #666;
+            }
           }
         }
       }
