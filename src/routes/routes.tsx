@@ -5,6 +5,7 @@ import EchartsComingSoon from "pages/echarts/EchartsComingSoon";
 import ThreejsComingSoon from "pages/threejs/ThreejsComingSoon";
 import VisualDesign from "pages/html/VisualDesign";
 import InteractiveDesign from "pages/html/InteractiveDesign";
+import BackgroundEffect from "pages/html/BackgroundEffect";
 import ComplexLayout from "pages/html/ComplexLayout";
 import AppPageFrame from "pages/html/AppPageFrame";
 import DynamicButtons from "pages/css/DynamicButtons";
@@ -30,6 +31,10 @@ export const contentRoutes: RouteObject[] = [
       {
         path: "/html/interactiveDesign",
         element: <InteractiveDesign />,
+      },
+      {
+        path: "/html/backgroundEffect",
+        element: <BackgroundEffect />,
       },
       {
         path: "/html/complexLayout",

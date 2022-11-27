@@ -64,8 +64,8 @@ const GridContent = (props: GridContentProps) => {
 };
 
 export interface GridBoxProps {
-  key: number | string;
   children: ReactNode;
+  key?: number | string;
   className?: string;
   rowSpace?: number; // 每行间距
   colSpace?: number; // 每列间距
