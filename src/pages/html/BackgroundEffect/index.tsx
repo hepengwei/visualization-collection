@@ -1,26 +1,27 @@
 /**
- * 饼图
+ * 背景效果
  */
 import React from "react";
 import GridContent from "components/GridContent";
-import Pie1 from "./components/Pie1";
 import styles from "./index.module.less";
 
 const { GridBox } = GridContent;
-const gridboxList = [{ element: <Pie1 /> }];
+const gridboxList = new Array(7).fill("1");
 
-const Pie = () => {
+const BackgroundEffect = () => {
   return (
     <div className={styles.container}>
       <GridContent
-        differentScreenCols={[2, 2, 2, 1, 1]}
-        rowSpace={4}
-        colSpace={4}
+        differentScreenCols={[4, 3, 3, 2, 2]}
+        rowSpace={8}
+        colSpace={8}
       >
         {gridboxList.map(
           (item: { element: React.ReactNode }, index: number) => (
             <GridBox key={index}>
-              <div className={styles.box}>{item.element}</div>
+              <div className={styles.box}>
+                <div className={styles[`bg${index + 1}`]} />
+              </div>
             </GridBox>
           )
         )}
@@ -29,4 +30,4 @@ const Pie = () => {
   );
 };
 
-export default Pie;
+export default BackgroundEffect;

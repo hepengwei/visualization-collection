@@ -9,6 +9,11 @@ import Bar3 from "./components/Bar3";
 import styles from "./index.module.less";
 
 const { GridBox } = GridContent;
+const gridboxList = [
+  { element: <Bar1 /> },
+  { element: <Bar2 /> },
+  { element: <Bar3 /> },
+];
 
 const Bar = () => {
   return (
@@ -18,21 +23,13 @@ const Bar = () => {
         rowSpace={4}
         colSpace={4}
       >
-        <GridBox key="1">
-          <div className={styles.box}>
-            <Bar1 />
-          </div>
-        </GridBox>
-        <GridBox key="2">
-          <div className={styles.box}>
-            <Bar2 />
-          </div>
-        </GridBox>
-        <GridBox key="3">
-          <div className={styles.box}>
-            <Bar3 />
-          </div>
-        </GridBox>
+        {gridboxList.map(
+          (item: { element: React.ReactNode }, index: number) => (
+            <GridBox key={index}>
+              <div className={styles.box}>{item.element}</div>
+            </GridBox>
+          )
+        )}
       </GridContent>
     </div>
   );

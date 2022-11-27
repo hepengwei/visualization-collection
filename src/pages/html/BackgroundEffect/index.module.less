@@ -1,0 +1,151 @@
+.container {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  background-image: linear-gradient(135deg, #224141, #162a2a);
+  padding: 2px 6px 4px;
+
+  .box {
+    height: 460px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #35a2fd44;
+    overflow: hidden;
+  }
+
+  .bg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .bg1 {
+    .bg;
+    background-image: repeating-linear-gradient(
+        107deg,
+        hsla(82, 0%, 5%, 0.15) 0px,
+        hsla(82, 0%, 5%, 0.15) 0px,
+        transparent 0px,
+        transparent 1px,
+        hsla(82, 0%, 5%, 0.15) 1px,
+        hsla(82, 0%, 5%, 0.15) 3px,
+        transparent 3px,
+        transparent 4px,
+        hsla(82, 0%, 5%, 0.15) 4px,
+        hsla(82, 0%, 5%, 0.15) 7px
+      ),
+      repeating-linear-gradient(
+        191deg,
+        hsla(82, 0%, 5%, 0.15) 0px,
+        hsla(82, 0%, 5%, 0.15) 0px,
+        transparent 0px,
+        transparent 1px,
+        hsla(82, 0%, 5%, 0.15) 1px,
+        hsla(82, 0%, 5%, 0.15) 3px,
+        transparent 3px,
+        transparent 4px,
+        hsla(82, 0%, 5%, 0.15) 4px,
+        hsla(82, 0%, 5%, 0.15) 7px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        hsla(82, 0%, 5%, 0.15) 0px,
+        hsla(82, 0%, 5%, 0.15) 0px,
+        transparent 0px,
+        transparent 1px,
+        hsla(82, 0%, 5%, 0.15) 1px,
+        hsla(82, 0%, 5%, 0.15) 3px,
+        transparent 3px,
+        transparent 4px,
+        hsla(82, 0%, 5%, 0.15) 4px,
+        hsla(82, 0%, 5%, 0.15) 7px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        hsla(82, 0%, 5%, 0.15) 0px,
+        hsla(82, 0%, 5%, 0.15) 0px,
+        transparent 0px,
+        transparent 1px,
+        hsla(82, 0%, 5%, 0.15) 1px,
+        hsla(82, 0%, 5%, 0.15) 3px,
+        transparent 3px,
+        transparent 4px,
+        hsla(82, 0%, 5%, 0.15) 4px,
+        hsla(82, 0%, 5%, 0.15) 7px
+      ),
+      linear-gradient(90deg, rgb(45, 45, 45), rgb(45, 45, 45));
+  }
+
+  .bg2 {
+    .bg;
+    background-color: #fff;
+    background-image: linear-gradient(
+      90deg,
+      rgba(66, 66, 66, 0.5) 50%,
+      transparent 0
+    );
+    background-size: 50px 100%;
+  }
+
+  .bg3 {
+    .bg;
+    background-color: #fff;
+    background-image: linear-gradient(rgba(66, 66, 66, 0.5) 50%, transparent 0),
+      linear-gradient(to right, rgba(66, 66, 66, 0.5) 50%, transparent 0);
+    background-size: 50px 50px;
+  }
+
+  .bg4 {
+    .bg;
+    background-color: #fff;
+    background-image: repeating-linear-gradient(
+      60deg,
+      rgba(66, 66, 66, 0.5) 5%,
+      transparent 0 10%,
+      rgba(66, 66, 66, 0.5) 0 15%
+    );
+  }
+
+  .bg5 {
+    .bg;
+    background-color: #fff;
+    background-image: repeating-linear-gradient(
+      60deg,
+      rgba(66, 66, 66, 0.5) 5%,
+      transparent 10%,
+      rgba(66, 66, 66, 0.5) 15%
+    );
+    background-size: 50px 50px;
+  }
+
+  .bg6 {
+    .bg;
+    background-color: #55f;
+    background-image: linear-gradient(#fff 2px, transparent 0),
+      linear-gradient(to right, #fff 2px, transparent 0),
+      linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 0),
+      linear-gradient(to right, rgba(255, 255, 255, 0.3) 1px, transparent 0);
+    background-size: 60px 60px, 60px 60px, 20px 20px, 20px 20px;
+  }
+
+  .bg7 {
+    .bg;
+    background: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 25%,
+        #f55 0,
+        #f55 50%
+      ),
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 25%,
+        #55f 0,
+        #55f 50%
+      ),
+      #efb;
+    background-size: 200px 200px;
+    background-blend-mode: multiply;
+  }
+}

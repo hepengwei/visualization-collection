@@ -15,6 +15,24 @@ import MirrorSideButton from "./components/MirrorSideButton";
 import styles from "./index.module.less";
 
 const { GridBox } = GridContent;
+const gridboxList = [
+  {
+    element: (
+      <TiltButton className={styles.btn} color="#4E90FE">
+        <span className={styles.btnText}>Button</span>
+      </TiltButton>
+    ),
+    className: styles.box1,
+  },
+  { element: <RotateBgButton /> },
+  { element: <IconMoveButton /> },
+  { element: <NeonButton /> },
+  { element: <BorderAnimationButton /> },
+  { element: <BorderAnimationButton2 /> },
+  { element: <TranslateBgButton /> },
+  { element: <RoundedGradientButton /> },
+  { element: <MirrorSideButton /> },
+];
 
 const DynamicButtons = () => {
   return (
@@ -24,53 +42,24 @@ const DynamicButtons = () => {
         rowSpace={4}
         colSpace={4}
       >
-        <GridBox key="1">
-          <div className={`${styles.box} ${styles.box1}`}>
-            <TiltButton className={styles.btn} color="#4E90FE">
-              <span className={styles.btnText}>Button</span>
-            </TiltButton>
-          </div>
-        </GridBox>
-        <GridBox key="2">
-          <div className={styles.box}>
-            <RotateBgButton />
-          </div>
-        </GridBox>
-        <GridBox key="3">
-          <div className={styles.box}>
-            <IconMoveButton />
-          </div>
-        </GridBox>
-        <GridBox key="4">
-          <div className={styles.box}>
-            <NeonButton />
-          </div>
-        </GridBox>
-        <GridBox key="5">
-          <div className={styles.box}>
-            <BorderAnimationButton />
-          </div>
-        </GridBox>
-        <GridBox key="6">
-          <div className={styles.box}>
-            <BorderAnimationButton2 />
-          </div>
-        </GridBox>
-        <GridBox key="7">
-          <div className={styles.box}>
-            <TranslateBgButton />
-          </div>
-        </GridBox>
-        <GridBox key="8">
-          <div className={styles.box}>
-            <RoundedGradientButton />
-          </div>
-        </GridBox>
-        <GridBox key="9">
-          <div className={styles.box}>
-            <MirrorSideButton />
-          </div>
-        </GridBox>
+        {gridboxList.map(
+          (
+            item: { element: React.ReactNode; className?: string },
+            index: number
+          ) => (
+            <GridBox key={index}>
+              <div
+                className={
+                  item.className
+                    ? `${styles.box} ${item.className}`
+                    : styles.box
+                }
+              >
+                {item.element}
+              </div>
+            </GridBox>
+          )
+        )}
       </GridContent>
     </div>
   );

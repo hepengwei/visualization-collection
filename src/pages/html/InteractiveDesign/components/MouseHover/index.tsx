@@ -173,8 +173,9 @@ const MouseHover = () => {
             onMouseLeave={onMouseLeaveItem}
           />
           <div className={styles.right}>
-            {articles.map((article: Article) => (
+            {articles.map((article: Article, index: number) => (
               <a
+                key={index}
                 href={article.href}
                 target="_blank"
                 onMouseEnter={onMouseEnterItem}

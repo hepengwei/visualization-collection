@@ -8,21 +8,21 @@ import DragShopping from "./components/DragShopping";
 import MouseHover from "./components/MouseHover";
 import styles from "./index.module.less";
 
+const boxList = [
+  { element: <MagnifyingGlass /> },
+  { element: <CropImage /> },
+  { element: <DragShopping /> },
+  { element: <MouseHover /> },
+];
+
 const InteractiveDesign = () => {
   return (
     <div className={styles.container}>
-      <div className={styles.box}>
-        <MagnifyingGlass />
-      </div>
-      <div className={styles.box}>
-        <CropImage />
-      </div>
-      <div className={styles.box}>
-        <DragShopping />
-      </div>
-      <div className={styles.box}>
-        <MouseHover />
-      </div>
+      {boxList.map((item: { element: React.ReactNode }, index: number) => (
+        <div className={styles.box} key={index}>
+          {item.element}
+        </div>
+      ))}
     </div>
   );
 };
