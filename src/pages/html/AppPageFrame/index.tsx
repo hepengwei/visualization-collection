@@ -290,7 +290,7 @@ const AppPageFrame = () => {
         style={
           scrollTop >= containerHeight - innerHeadHeight
             ? {
-                borderBottom: "1px solid #ffffff99",
+                borderBottom: "1px solid #999",
                 left: `${menuWidth}px`,
                 width: `calc(100% - ${menuWidth}px)`,
               }
