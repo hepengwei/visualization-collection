@@ -148,4 +148,39 @@
     background-size: 200px 200px;
     background-blend-mode: multiply;
   }
+
+  .bg8 {
+    .bg;
+    background-image: repeating-conic-gradient(#000 0 5%, #fff 5% 10%);
+  }
+
+  .bg9 {
+    .bg;
+    background-color: #fff;
+    background-image: repeating-conic-gradient(#000 0 1%, #0000 0 2%);
+  }
+
+  .bg10 {
+    .bg;
+    background-image: repeating-conic-gradient(
+      red 0deg 30deg,
+      yellow 30deg 60deg,
+      blue 60deg 90deg
+    );
+  }
+
+  .bg11 {
+    .bg;
+    background: repeating-radial-gradient(#000 0 0.0001%, #fff 0 0.0002%) 60%
+        60%/1000px 1000px,
+      repeating-conic-gradient(#000 0 0.0001%, #fff 0 0.0002%) 40% 40%/1000px
+        1000px;
+    background-blend-mode: difference;
+  }
+
+  .bg12 {
+    .bg;
+    background: repeating-conic-gradient(#bf4d28 0 0.00005%, #e1f5c4 0 0.00017%)
+      0 0/5000px 4000px;
+  }
 }
