@@ -1,7 +1,8 @@
 /**
  * 动效按钮
  */
-import React from "react";
+import React, { useEffect } from "react";
+import { useGlobalContext } from "@/hooks/useGlobalContext";
 import GridContent from "components/GridContent";
 import TiltButton from "./components/TiltButton";
 import RotateBgButton from "./components/RotateBgButton";
@@ -35,6 +36,12 @@ const gridboxList = [
 ];
 
 const DynamicButtons = () => {
+  const { setScrollTop } = useGlobalContext();
+
+  useEffect(() => {
+    setScrollTop(0);
+  }, []);
+
   return (
     <div className={styles.container}>
       <GridContent

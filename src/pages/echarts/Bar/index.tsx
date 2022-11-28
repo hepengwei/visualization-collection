@@ -1,7 +1,8 @@
 /**
  * 柱状图
  */
-import React from "react";
+import React, { useEffect } from "react";
+import { useGlobalContext } from "@/hooks/useGlobalContext";
 import GridContent from "components/GridContent";
 import Bar1 from "./components/Bar1";
 import Bar2 from "./components/Bar2";
@@ -16,6 +17,12 @@ const gridboxList = [
 ];
 
 const Bar = () => {
+  const { setScrollTop } = useGlobalContext();
+
+  useEffect(() => {
+    setScrollTop(0);
+  }, []);
+
   return (
     <div className={styles.container}>
       <GridContent

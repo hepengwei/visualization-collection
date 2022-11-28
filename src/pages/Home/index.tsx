@@ -10,7 +10,7 @@ import styles from "./index.module.less";
 const defaultPageUrl = "/html/visualDesign"; // 默认首页
 
 const Home = () => {
-  const { setScrollTop, setHeadHeight } = useGlobalContext();
+  const { setScrollTop, setScrollContentRef } = useGlobalContext();
   const contentRoutes = useRoutes(contentRoutesConfig);
   const location = useLocation();
   const navigate = useNavigate();
@@ -26,6 +26,10 @@ const Home = () => {
       navigate(defaultPageUrl);
     }
   }, [location]);
+
+  useEffect(() => {
+    setScrollContentRef(contentRef);
+  }, []);
 
   return (
     <div className={styles.container}>

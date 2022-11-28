@@ -1,7 +1,8 @@
 /**
  * 背景效果
  */
-import React from "react";
+import React, { useEffect } from "react";
+import { useGlobalContext } from "@/hooks/useGlobalContext";
 import GridContent from "components/GridContent";
 import styles from "./index.module.less";
 
@@ -9,6 +10,12 @@ const { GridBox } = GridContent;
 const gridboxList = new Array(7).fill("1");
 
 const BackgroundEffect = () => {
+  const { setScrollTop } = useGlobalContext();
+
+  useEffect(() => {
+    setScrollTop(0);
+  }, []);
+
   return (
     <div className={styles.container}>
       <GridContent

@@ -1,7 +1,8 @@
 /**
  * 交互设计
  */
-import React from "react";
+import React, { useEffect } from "react";
+import { useGlobalContext } from "@/hooks/useGlobalContext";
 import MagnifyingGlass from "./components/MagnifyingGlass";
 import CropImage from "./components/CropImage";
 import DragShopping from "./components/DragShopping";
@@ -16,6 +17,12 @@ const boxList = [
 ];
 
 const InteractiveDesign = () => {
+  const { setScrollTop } = useGlobalContext();
+
+  useEffect(() => {
+    setScrollTop(0);
+  }, []);
+
   return (
     <div className={styles.container}>
       {boxList.map((item: { element: React.ReactNode }, index: number) => (
