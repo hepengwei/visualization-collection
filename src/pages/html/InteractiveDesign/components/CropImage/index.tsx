@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
+import { useGlobalContext } from "@/hooks/useGlobalContext";
 import flower from "images/flower.jpg";
 import styles from "./index.module.less";
 
@@ -15,6 +16,7 @@ enum Contact {
 }
 
 const CropImage = () => {
+  const { scrollTop } = useGlobalContext();
   const leftBoxWidth = useRef<number>(0);
   const leftBoxHeight = useRef<number>(0);
   const isKeyDown = useRef<boolean>(false);
@@ -72,7 +74,8 @@ const CropImage = () => {
   //up移动
   const upMove = (e: React.MouseEvent) => {
     // @ts-ignore
-    let y = e.clientY + window.scrollTop; //鼠标纵坐标
+    // let y = e.clientY + window.scrollTop; //鼠标纵坐标
+    let y = e.clientY + scrollTop; //鼠标纵坐标
     const leftBoxNode = ReactDOM.findDOMNode(
       leftBoxRef.current
     ) as HTMLDivElement;
@@ -119,7 +122,8 @@ const CropImage = () => {
   //down移动
   const downMove = (e: React.MouseEvent) => {
     // @ts-ignore
-    let y = e.clientY + window.scrollTop;
+    // let y = e.clientY + window.scrollTop;
+    let y = e.clientY + scrollTop;
     const leftBoxNode = ReactDOM.findDOMNode(
       leftBoxRef.current
     ) as HTMLDivElement;

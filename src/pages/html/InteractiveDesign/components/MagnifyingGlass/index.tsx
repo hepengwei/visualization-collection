@@ -1,9 +1,11 @@
 import React, { useRef, useState } from "react";
 import ReactDOM from "react-dom";
+import { useGlobalContext } from "@/hooks/useGlobalContext";
 import watch from "images/html/watch.png";
 import styles from "./index.module.less";
 
 const MagnifyingGlass = () => {
+  const { scrollTop, headHeight } = useGlobalContext();
   const smallBoxRef = useRef<HTMLDivElement>(null);
   const floatBoxRef = useRef<HTMLDivElement>(null);
   const bigBoxRef = useRef<HTMLDivElement>(null);
@@ -25,7 +27,16 @@ const MagnifyingGlass = () => {
     const { offsetWidth: floatBoxWidth, offsetHeight: floatBoxHeight } =
       floatBoxNode;
     let left = e.clientX - smallBoxNode.offsetLeft - floatBoxWidth / 2;
-    let top = e.clientY - smallBoxNode.offsetTop - floatBoxHeight / 2;
+    let top = 0;
+    if (scrollTop < smallBoxNode.offsetTop - headHeight) {
+      top = e.clientY - floatBoxHeight / 2 - smallBoxNode.offsetTop - scrollTop;
+    } else {
+      top =
+        e.clientY -
+        headHeight -
+        floatBoxHeight / 2 +
+        (scrollTop - smallBoxNode.offsetTop + headHeight);
+    }
     if (left < 0) {
       left = 0;
     } else if (left > smallBoxWidth - floatBoxWidth) {
