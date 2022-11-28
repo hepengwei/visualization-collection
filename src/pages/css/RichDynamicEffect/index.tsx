@@ -6,6 +6,7 @@ import { useGlobalContext } from "@/hooks/useGlobalContext";
 import DynamicTime from "./components/DynamicTime";
 import ChargingAnimation from "./components/ChargingAnimation";
 import ZongziLoading from "./components/ZongziLoading";
+import BoxReflect from "./components/BoxReflect";
 import styles from "./index.module.less";
 
 const RichDynamicEffect = () => {
@@ -26,6 +27,9 @@ const RichDynamicEffect = () => {
         </div>
         <div className={styles.box}>
           <ZongziLoading />
+        </div>
+        <div className={styles.box}>
+          <BoxReflect />
         </div>
       </div>
     </div>
