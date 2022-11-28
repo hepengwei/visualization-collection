@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import ReactDOM from "react-dom";
+import { useGlobalContext } from "@/hooks/useGlobalContext";
 import discuss from "images/html/discuss.jpg";
 import styles from "./index.module.less";
 
@@ -36,6 +37,7 @@ const cursorBigRadius = 40;
 const cursorMoveVCoefficient = 0.12;
 
 const MouseHover = () => {
+  const { scrollTop } = useGlobalContext();
   const containerRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
   const [showCursor, setShowCursor] = useState<boolean>(false);
@@ -56,7 +58,7 @@ const MouseHover = () => {
     mousePos.current = {
       mouseX: clientX - offsetLeft,
       // @ts-ignore
-      mouseY: clientY - (offsetTop - window.scrollTop),
+      mouseY: clientY - (offsetTop - scrollTop),
     };
     const cursorNode = ReactDOM.findDOMNode(
       cursorRef.current
@@ -78,7 +80,7 @@ const MouseHover = () => {
     mousePos.current = {
       mouseX: clientX - offsetLeft,
       // @ts-ignore
-      mouseY: clientY - (offsetTop - window.scrollTop),
+      mouseY: clientY - (offsetTop - scrollTop),
     };
   };
 
@@ -92,7 +94,7 @@ const MouseHover = () => {
     mousePos.current = {
       mouseX: clientX - offsetLeft,
       // @ts-ignore
-      mouseY: clientY - (offsetTop - window.scrollTop),
+      mouseY: clientY - (offsetTop - scrollTop),
     };
   };
 
