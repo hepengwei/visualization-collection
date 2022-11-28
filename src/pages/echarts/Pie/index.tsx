@@ -1,7 +1,8 @@
 /**
  * 饼图
  */
-import React from "react";
+import React, { useEffect } from "react";
+import { useGlobalContext } from "@/hooks/useGlobalContext";
 import GridContent from "components/GridContent";
 import Pie1 from "./components/Pie1";
 import styles from "./index.module.less";
@@ -10,6 +11,12 @@ const { GridBox } = GridContent;
 const gridboxList = [{ element: <Pie1 /> }];
 
 const Pie = () => {
+  const { setScrollTop } = useGlobalContext();
+
+  useEffect(() => {
+    setScrollTop(0);
+  }, []);
+
   return (
     <div className={styles.container}>
       <GridContent

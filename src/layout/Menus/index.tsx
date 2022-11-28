@@ -75,7 +75,7 @@ const Menus: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [collapsed, setCollapsed] = useState<boolean>(false);
-  const globalContext = useGlobalContext();
+  const { setMenuWidth } = useGlobalContext();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const updateMenuWidth = useCallback(
@@ -85,7 +85,7 @@ const Menus: React.FC = () => {
           containerRef.current
         ) as HTMLDivElement;
         if (containerNode) {
-          globalContext.setMenuWidth(containerNode.clientWidth);
+          setMenuWidth(containerNode.clientWidth);
         }
       },
       { wait: 360 }

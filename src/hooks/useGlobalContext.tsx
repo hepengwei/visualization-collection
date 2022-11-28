@@ -1,12 +1,20 @@
-import React, { PropsWithChildren, useContext, useMemo, useState } from "react";
+import React, {
+  PropsWithChildren,
+  useContext,
+  useState,
+  RefObject,
+  useCallback,
+} from "react";
 
 export interface GlobalContextProps {
   headHeight: number;
-  setHeadHeight?: (headHeight: number) => void;
+  setHeadHeight: (headHeight: number) => void;
   menuWidth: number;
   setMenuWidth: (menuWidth: number) => void;
   scrollTop: number;
-  setScrollTop: (y: number) => void;
+  setScrollTop: (y?: number) => void;
+  scrollContentRef: RefObject<HTMLDivElement | null>;
+  setScrollContentRef: (scrollRef: RefObject<HTMLDivElement>) => void;
 }
 
 const GlobalContext = React.createContext<GlobalContextProps>({
@@ -16,12 +24,31 @@ const GlobalContext = React.createContext<GlobalContextProps>({
   setMenuWidth: () => {},
   scrollTop: 0,
   setScrollTop: () => {},
+  scrollContentRef: React.createRef(),
+  setScrollContentRef: () => {},
 });
 
+let scrollContentRef = React.createRef<HTMLDivElement | null>();
+
 export const GlobalProvider = (props: PropsWithChildren<{}>) => {
-  const [headHeight, setHeadHeight] = useState<number>(60);
+  const [headHeight, setHeadHeight] = useState<number>(0);
   const [menuWidth, setMenuWidth] = useState<number>(0);
-  const [scrollTop, setScrollTop] = useState<number>(0);
+  const [scrollTop, setSTop] = useState<number>(0);
+
+  const setScrollTop = useCallback((y: number = 0) => {
+    setSTop(y);
+    if (scrollContentRef.current) {
+      if ((scrollContentRef.current as HTMLDivElement).scrollTop !== y) {
+        (scrollContentRef.current as HTMLDivElement).scrollTop = y;
+      }
+    }
+  }, []);
+
+  const setScrollContentRef = (scrollRef: RefObject<HTMLDivElement>) => {
+    if (scrollRef) {
+      scrollContentRef = scrollRef;
+    }
+  };
 
   return (
     <GlobalContext.Provider
@@ -32,6 +59,8 @@ export const GlobalProvider = (props: PropsWithChildren<{}>) => {
         setHeadHeight,
         setMenuWidth,
         setScrollTop,
+        scrollContentRef,
+        setScrollContentRef,
       }}
     >
       {props.children}

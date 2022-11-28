@@ -1,7 +1,8 @@
 /**
  * 视觉设计
  */
-import React from "react";
+import React, { useEffect } from "react";
+import { useGlobalContext } from "@/hooks/useGlobalContext";
 import GridContent from "components/GridContent";
 import GlassMimicry1 from "./components/GlassMimicry1";
 import GlassMimicry2 from "./components/GlassMimicry2";
@@ -28,6 +29,12 @@ const gridboxList = [
 ];
 
 const VisualDesign = () => {
+  const { setScrollTop } = useGlobalContext();
+
+  useEffect(() => {
+    setScrollTop(0);
+  }, []);
+
   return (
     <div className={styles.container}>
       <GridContent
