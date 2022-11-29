@@ -7,6 +7,7 @@ import DynamicTime from "./components/DynamicTime";
 import ChargingAnimation from "./components/ChargingAnimation";
 import ZongziLoading from "./components/ZongziLoading";
 import BoxReflect from "./components/BoxReflect";
+import TextAnimation from "./components/TextAnimation";
 import styles from "./index.module.less";
 
 const RichDynamicEffect = () => {
@@ -31,6 +32,9 @@ const RichDynamicEffect = () => {
         <div className={styles.box}>
           <BoxReflect />
         </div>
+      </div>
+      <div className={styles.box}>
+        <TextAnimation />
       </div>
     </div>
   );
