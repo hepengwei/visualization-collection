@@ -8,6 +8,7 @@ import ChargingAnimation from "./components/ChargingAnimation";
 import ZongziLoading from "./components/ZongziLoading";
 import BoxReflect from "./components/BoxReflect";
 import TextAnimation from "./components/TextAnimation";
+import DisplayTextInSmoke from "./components/DisplayTextInSmoke";
 import styles from "./index.module.less";
 
 const RichDynamicEffect = () => {
@@ -35,6 +36,9 @@ const RichDynamicEffect = () => {
       </div>
       <div className={styles.box}>
         <TextAnimation />
+      </div>
+      <div className={styles.box}>
+        <DisplayTextInSmoke />
       </div>
     </div>
   );
