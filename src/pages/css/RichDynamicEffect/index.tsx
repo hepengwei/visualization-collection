@@ -9,6 +9,7 @@ import ZongziLoading from "./components/ZongziLoading";
 import BoxReflect from "./components/BoxReflect";
 import TextAnimation from "./components/TextAnimation";
 import DisplayTextInSmoke from "./components/DisplayTextInSmoke";
+import PlayVideoInText from "./components/PlayVideoInText";
 import styles from "./index.module.less";
 
 const RichDynamicEffect = () => {
@@ -39,6 +40,9 @@ const RichDynamicEffect = () => {
       </div>
       <div className={styles.box}>
         <DisplayTextInSmoke />
+      </div>
+      <div className={styles.box}>
+        <PlayVideoInText />
       </div>
     </div>
   );

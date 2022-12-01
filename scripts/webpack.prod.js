@@ -18,6 +18,11 @@ const prodConfig = {
           to: "smoke.mp4",
           toType: "file",
         },
+        {
+          from: path.join(__dirname, "../public", "vista.mp4"),
+          to: "vista.mp4",
+          toType: "file",
+        },
       ],
     }),
   ],
