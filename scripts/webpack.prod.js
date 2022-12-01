@@ -1,3 +1,4 @@
+const fs = require("fs");
 const path = require("path");
 const { merge } = require("webpack-merge");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
@@ -5,6 +6,9 @@ const getBaseConfig = require("./webpack.base");
 
 process.env.BABEL_ENV = "production";
 process.env.NODE_ENV = "production";
+
+const appDirectory = fs.realpathSync(process.cwd());
+const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
 const prodConfig = {
   output: {
@@ -14,14 +18,13 @@ const prodConfig = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.join(__dirname, "../public", "smoke.mp4"),
-          to: "smoke.mp4",
-          toType: "file",
-        },
-        {
-          from: path.join(__dirname, "../public", "vista.mp4"),
-          to: "vista.mp4",
-          toType: "file",
+          from: resolveApp("public"),
+          to: resolveApp("build/public"),
+          globOptions: {
+            dot: true,
+            gitignore: true,
+            ignore: ["**/*.html"],
+          },
         },
       ],
     }),

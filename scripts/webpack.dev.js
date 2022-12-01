@@ -1,5 +1,5 @@
+const fs = require("fs");
 const { merge } = require("webpack-merge");
-const path = require("path");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const getBaseConfig = require("./webpack.base");
 
@@ -10,7 +10,7 @@ const devConfig = {
   devtool: "eval-cheap-module-source-map",
   devServer: {
     static: {
-      directory: path.join(__dirname, "../public"),
+      directory: fs.realpathSync(process.cwd()),
     },
     hot: true,
     compress: false,
