@@ -14,7 +14,7 @@ const PlayVideoInText = () => {
         playsInline
         webkit-playsinline="true"
       >
-        <source src="vista.mp4"></source>
+        <source src="public/vista.mp4"></source>
       </video>
       <p>River</p>
     </div>

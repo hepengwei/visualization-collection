@@ -34,7 +34,7 @@ const DisplayTextInSmoke = () => {
         webkit-playsinline="true"
         ref={videoRef}
       >
-        <source src="smoke.mp4"></source>
+        <source src="public/smoke.mp4"></source>
       </video>
       <p ref={pRef}>
         <span className={styles.span1}>H</span>
