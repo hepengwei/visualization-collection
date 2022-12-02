@@ -17,5 +17,8 @@ module.exports = {
     "comma-dangle": 0,
     semi: [1, "always"],
     quotes: 0,
+    "space-before-function-paren": 0,
+    camelcase: 0,
+    eqeqeq: 1,
   },
 };

@@ -60,6 +60,7 @@ const items: MenuItem[] = [
     getItem("球体自由落体交互效果", "freeFallingBody"),
     getItem("炫酷倒计时动画", "countDown"),
     getItem("动态粒子背景", "particlesBg"),
+    getItem("水波荡漾效果", "rippleFloatOnTheWater"),
   ]),
   getItem("Echarts交互", "echarts", <LineChartOutlined />, [
     getItem("柱状图", "bar"),
