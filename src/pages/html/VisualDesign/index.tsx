@@ -13,6 +13,7 @@ import Typed2 from "./components/Typed2";
 import AutoEllipsisText from "./components/AutoEllipsisText";
 import FilterCSS from "./components/FilterCSS";
 import BgFusion from "./components/BgFusion";
+import MyLogo from "./components/MyLogo";
 import styles from "./index.module.less";
 
 const { GridBox } = GridContent;
@@ -26,6 +27,7 @@ const gridboxList = [
   { element: <AutoEllipsisText /> },
   { element: <FilterCSS /> },
   { element: <BgFusion /> },
+  { element: <MyLogo /> },
 ];
 
 const VisualDesign = () => {
