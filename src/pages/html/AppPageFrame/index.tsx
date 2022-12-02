@@ -1,3 +1,6 @@
+/**
+ * 应用页面框架
+ */
 import React, { useState, useRef, useMemo, useEffect } from "react";
 import ReactDOM from "react-dom";
 import Swiper from "swiper";
@@ -71,7 +74,7 @@ const AppPageFrame = () => {
     }
   };
 
-  // 第二页切换到首页
+  // 首页切换到第二页
   const moveTop = () => {
     if (!currentMoveDirection.current) {
       currentMoveDirection.current = "toTop";
@@ -80,7 +83,7 @@ const AppPageFrame = () => {
     }
   };
 
-  // 首页切换到第二页
+  // 第二页切换到首页
   const moveBottom = () => {
     if (!currentMoveDirection.current) {
       currentMoveDirection.current = "toBottom";
@@ -211,11 +214,13 @@ const AppPageFrame = () => {
     switch (anchor) {
       case "SecondPage":
         const anchorPageTop1 = (containerHeight - innerHeadHeight) * 1;
-        if (scrollTop !== 0) {
+        if (swiper.current && swiper.current.activeIndex > 0) {
           isOwnScroll.current = true;
           containerNode.scrollTop = anchorPageTop1;
           setScrollTop(anchorPageTop1);
-          swiper.current?.slideTo(0);
+          swiper.current.slideTo(0);
+        } else if (scrollTop !== anchorPageTop1) {
+          moveTop();
         }
         break;
       case "ThirdPage":
