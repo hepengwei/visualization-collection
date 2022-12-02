@@ -17,6 +17,7 @@ import KillPlanetGame from "pages/canvas/KillPlanetGame";
 import FreeFallingBody from "pages/canvas/FreeFallingBody";
 import CountDown from "pages/canvas/CountDown";
 import ParticlesBg from "pages/canvas/ParticlesBg";
+import RippleFloatOnTheWater from "pages/canvas/RippleFloatOnTheWater";
 import Bar from "pages/echarts/Bar";
 import Pie from "pages/echarts/Pie";
 
@@ -89,6 +90,10 @@ export const contentRoutes: RouteObject[] = [
       {
         path: "/canvas/particlesBg",
         element: <ParticlesBg />,
+      },
+      {
+        path: "/canvas/rippleFloatOnTheWater",
+        element: <RippleFloatOnTheWater />,
       },
     ],
   },
