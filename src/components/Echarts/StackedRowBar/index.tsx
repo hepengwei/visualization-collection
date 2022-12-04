@@ -43,6 +43,7 @@ const getBaseOptions = () => {
         overflow: "truncate",
         fontSize: 13,
         color: "#808191",
+        fontFamily: "SourceHanSansCN-Medium",
         fontWeight: 500,
       },
     },
@@ -72,6 +73,10 @@ const getBaseOptions = () => {
         label: {
           show: false, // 不显示指示器的文字
         },
+      },
+      axisLabel: {
+        color: "#808191",
+        fontSize: 13,
       },
     },
     series: [

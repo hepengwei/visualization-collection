@@ -62,6 +62,7 @@ const items: MenuItem[] = [
     getItem("动态粒子背景", "particlesBg"),
     getItem("水波荡漾效果", "rippleFloatOnTheWater"),
     getItem("花卉绽放动画", "flowerBloom"),
+    getItem("代码背景墙", "codeBgWall"),
   ]),
   getItem("Echarts交互", "echarts", <LineChartOutlined />, [
     getItem("柱状图", "bar"),
