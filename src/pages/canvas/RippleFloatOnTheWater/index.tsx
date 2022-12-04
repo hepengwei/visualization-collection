@@ -11,6 +11,8 @@ let canvasHeight = 600;
 const RippleFloatOnTheWater = () => {
   const boxRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const waterRippleRef = useRef<WaterRipple | null>(null);
+  const timerRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (boxRef.current && canvasRef.current) {
@@ -27,10 +29,11 @@ const RippleFloatOnTheWater = () => {
         background: waterImg,
         boxRef,
       });
+      waterRippleRef.current = waterRipple;
 
       waterRipple.animate();
 
-      setInterval(() => {
+      timerRef.current = window.setInterval(() => {
         const x = Math.floor(canvasWidth * Math.random());
         const y = Math.floor(canvasHeight * Math.random());
         waterRipple.ripple(x, y);
@@ -38,6 +41,11 @@ const RippleFloatOnTheWater = () => {
 
       waterRipple.addMousemove();
     }
+
+    return () => {
+      timerRef.current && clearInterval(timerRef.current);
+      waterRippleRef.current?.stop();
+    };
   }, []);
 
   return (
