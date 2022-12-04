@@ -25,6 +25,7 @@ const getBaseOptions = () => {
         overflow: "truncate",
         fontSize: 13,
         color: "#808191",
+        fontFamily: "SourceHanSansCN-Medium",
         fontWeight: 500,
       },
     },
@@ -51,6 +52,7 @@ const getBaseOptions = () => {
         type: "category",
         axisLabel: {
           color: "#808191",
+          fontFamily: "SourceHanSansCN-Medium",
           fontWeight: 500,
           fontSize: 12,
           rotate: 45,

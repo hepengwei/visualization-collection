@@ -34,6 +34,7 @@ const getBaseOptions = () => {
         overflow: "truncate",
         color: "#808191",
         fontSize: 14,
+        fontFamily: "SourceHanSansCN-Medium",
         fontWeight: 500,
       },
       selectedMode: true,
@@ -66,6 +67,7 @@ const getBaseOptions = () => {
           rich: {
             value: {
               color: "#fff",
+              fontFamily: "SourceHanSansCN-Bold",
               fontWeight: "bold",
               fontSize: 28,
             },

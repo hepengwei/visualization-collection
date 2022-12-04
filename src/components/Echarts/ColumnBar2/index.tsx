@@ -33,6 +33,7 @@ const getBaseOptions = () => {
       },
     },
     tooltip: {
+      show: true,
       trigger: "axis",
       enterable: true, // 鼠标可进入提示框浮层中
       showDelay: 5, // 显示延迟，添加显示延迟可以避免频繁切换，单位ms

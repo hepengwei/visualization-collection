@@ -8,6 +8,7 @@ const ComingSoon = () => {
         height: "100%",
         color: "#ffffff",
         fontSize: "24px",
+        fontFamily: "SourceHanSansCN-Medium",
         fontWeight: 500,
         display: "flex",
         justifyContent: "center",

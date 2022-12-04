@@ -85,6 +85,7 @@ const getBaseOptions = () => {
       },
       axisLabel: {
         color: "#808191",
+        fontFamily: "SourceHanSansCN-Medium",
         fontWeight: 500,
         fontSize: 12,
         formatter: "{MM}-{dd}",
@@ -106,6 +107,7 @@ const getBaseOptions = () => {
       },
       axisLabel: {
         color: "#808191",
+        fontFamily: "SourceHanSansCN-Medium",
         fontWeight: 500,
       },
     },
@@ -116,6 +118,7 @@ const getBaseOptions = () => {
         label: {
           show: false, // 每个图形块上不显示数值
           color: "#808191",
+          fontFamily: "SourceHanSansCN-Medium",
           fontWeight: 500,
           position: "top",
         },
