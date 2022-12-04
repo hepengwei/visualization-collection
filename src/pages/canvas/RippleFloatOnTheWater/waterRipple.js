@@ -167,7 +167,7 @@ class WaterRipple {
       "mousemove",
       this.throttle((e) => {
         const { top, left } = this.canvas.getBoundingClientRect();
-        this.ripple(Math.floor(e.layerX - left), Math.floor(e.layerY - top));
+        this.ripple(Math.floor(e.clientX - left), Math.floor(e.clientY - top));
       }, this.mousemove_interval)
     );
   }

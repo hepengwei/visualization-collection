@@ -18,6 +18,7 @@ import FreeFallingBody from "pages/canvas/FreeFallingBody";
 import CountDown from "pages/canvas/CountDown";
 import ParticlesBg from "pages/canvas/ParticlesBg";
 import RippleFloatOnTheWater from "pages/canvas/RippleFloatOnTheWater";
+import FlowerBloom from "pages/canvas/FlowerBloom";
 import Bar from "pages/echarts/Bar";
 import Pie from "pages/echarts/Pie";
 
@@ -94,6 +95,10 @@ export const contentRoutes: RouteObject[] = [
       {
         path: "/canvas/rippleFloatOnTheWater",
         element: <RippleFloatOnTheWater />,
+      },
+      {
+        path: "/canvas/flowerBloom",
+        element: <FlowerBloom />,
       },
     ],
   },
