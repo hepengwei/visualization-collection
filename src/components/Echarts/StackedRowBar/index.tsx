@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useRef, useMemo, memo } from "react";
-import echarts from "@/utils/echarts.config";
+import React, { useCallback, useRef, useMemo, memo } from "react";
+import echarts, { getGraphic } from "@/utils/echarts.config";
 import type { ChartOptions } from "@/utils/echarts.config";
 import {
   DatasetComponentOption,
@@ -24,6 +24,8 @@ interface StackedRowBarProps {
 const getBaseOptions = () => {
   const baseOptions: ChartOptions = {
     color: ECHART_COMMON_COLOR,
+    // @ts-ignore
+    graphic: getGraphic(),
     tooltip: {
       show: true,
       // trigger: 'axis', // 坐标轴触发

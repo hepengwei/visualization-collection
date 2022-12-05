@@ -1,5 +1,5 @@
 import React, { useRef, useMemo, useEffect, useCallback } from "react";
-import echarts from "@/utils/echarts.config";
+import echarts, {getGraphic} from "@/utils/echarts.config";
 import type { ChartOptions } from "@/utils/echarts.config";
 import { ECHART_COMMON_COLOR } from "constants/common";
 import { format } from "date-fns";
@@ -19,6 +19,8 @@ interface ColumnBarProps {
 const getBaseOptions = () => {
   const baseOptions: ChartOptions = {
     color: ECHART_COMMON_COLOR,
+    // @ts-ignore
+    graphic: getGraphic(),
     tooltip: {
       show: true,
       trigger: "axis",
