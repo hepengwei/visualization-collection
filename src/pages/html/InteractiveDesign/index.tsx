@@ -7,6 +7,7 @@ import MagnifyingGlass from "./components/MagnifyingGlass";
 import CropImage from "./components/CropImage";
 import DragShopping from "./components/DragShopping";
 import MouseHover from "./components/MouseHover";
+import SlideButtonTab from "./components/SlideButtonTab";
 import styles from "./index.module.less";
 
 const boxList = [
@@ -14,6 +15,7 @@ const boxList = [
   { element: <CropImage /> },
   { element: <DragShopping /> },
   { element: <MouseHover /> },
+  { element: <SlideButtonTab /> },
 ];
 
 const InteractiveDesign = () => {
