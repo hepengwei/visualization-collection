@@ -24,9 +24,11 @@ import {
   BarSeriesOption,
   PieChart,
   PieSeriesOption,
+  GraphSeriesOption,
 } from "echarts/charts";
-import { LabelLayout, UniversalTransition} from "echarts/features";
-import { CanvasRenderer, } from "echarts/renderers";
+import { LabelLayout, UniversalTransition } from "echarts/features";
+import { CanvasRenderer } from "echarts/renderers";
+import riverGrey from "images/river_grey.png";
 
 echarts.use([
   DatasetComponent,
@@ -58,5 +60,23 @@ export type ChartOptions = echarts.ComposeOption<
   | BarSeriesOption
   | PieSeriesOption
 >;
+
+export const getGraphic = () => {
+  return [
+    {
+      type: "image",
+      left: "center",
+      top: "middle", // 相对父元素居中
+      z: 900,
+      style: {
+        image: riverGrey,
+        width: 450,
+        height: 103,
+        opacity: 0.1,
+      },
+      silent: true,
+    },
+  ];
+};
 
 export default echarts;

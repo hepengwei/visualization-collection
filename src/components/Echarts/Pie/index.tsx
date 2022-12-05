@@ -1,5 +1,5 @@
 import React, { useRef, useMemo } from "react";
-import echarts from "@/utils/echarts.config";
+import echarts, { getGraphic } from "@/utils/echarts.config";
 import type { ChartOptions } from "@/utils/echarts.config";
 import { ECHART_COMMON_COLOR } from "constants/common";
 import numberFormat from "utils/numberFormat";
@@ -18,6 +18,8 @@ interface PieProps {
 const getBaseOptions = () => {
   const baseOptions: ChartOptions = {
     color: ECHART_COMMON_COLOR,
+    // @ts-ignore
+    graphic: getGraphic(),
     legend: {
       type: "scroll",
       height: "88%",

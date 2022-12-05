@@ -1,5 +1,5 @@
-import React, { useRef, useMemo, useEffect, useCallback } from "react";
-import echarts from "@/utils/echarts.config";
+import React, { useRef, useMemo } from "react";
+import echarts, { getGraphic } from "@/utils/echarts.config";
 import type { ChartOptions } from "@/utils/echarts.config";
 import { ECHART_COMMON_COLOR } from "constants/common";
 import numberFormat from "utils/numberFormat";
@@ -17,7 +17,8 @@ interface TwoColumnBarProps {
 // 获取整个图表的基础配置
 const getBaseOptions = () => {
   const baseOptions: ChartOptions = {
-    // graphic: getGraphic(),
+    // @ts-ignore
+    graphic: getGraphic(),
     color: ECHART_COMMON_COLOR,
     legend: {
       show: true,
