@@ -66,7 +66,6 @@ const SlideButtonTab = () => {
           );
         })}
       </div>
-      <div className={styles.box}></div>
     </div>
   );
 };

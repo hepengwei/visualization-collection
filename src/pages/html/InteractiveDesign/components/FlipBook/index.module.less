@@ -1,0 +1,90 @@
+.container {
+  width: 100%;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @paperWidth: 353px;
+  @paperHeight: 500px;
+
+  .pages {
+    display: flex;
+    width: @paperWidth * 2;
+    height: @paperHeight;
+    position: relative;
+    .paper {
+      display: flex;
+      width: @paperWidth;
+      height: @paperHeight;
+      position: absolute;
+      top: 0;
+      left: @paperWidth;
+      transform-style: preserve-3d;
+      transform-origin: left center;
+
+      &[data-left] {
+        z-index: 4;
+      }
+
+      &[data-right] {
+        z-index: 4;
+
+        & + .paper {
+          z-index: 3;
+        }
+      }
+
+      .page {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        transform-origin: center;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .left-show-front-page,
+      .right-show-back-page {
+        z-index: 3;
+        transform: scale(-1, 1) translateZ(3px);
+      }
+      .left-show-back-page,
+      .right-show-front-page {
+        z-index: 4;
+        transform: translateZ(4px);
+      }
+
+      .left-hide-front-page {
+        z-index: 2;
+        transform: scale(-1, 1);
+      }
+      .left-hide-back-page {
+        z-index: 1;
+      }
+      .right-hide-front-page {
+        z-index: 2;
+      }
+      .right-hide-back-page {
+        z-index: 1;
+        transform: scale(-1, 1);
+      }
+    }
+  }
+  .btns {
+    margin-top: 60px;
+    display: flex;
+
+    .btn {
+      &:not(:first-child) {
+        margin-left: 50px;
+      }
+    }
+  }
+}
