@@ -8,6 +8,7 @@ import CropImage from "./components/CropImage";
 import DragShopping from "./components/DragShopping";
 import MouseHover from "./components/MouseHover";
 import SlideButtonTab from "./components/SlideButtonTab";
+import FlipBook from "./components/FlipBook";
 import styles from "./index.module.less";
 
 const boxList = [
@@ -16,6 +17,7 @@ const boxList = [
   { element: <DragShopping /> },
   { element: <MouseHover /> },
   { element: <SlideButtonTab /> },
+  { element: <FlipBook /> },
 ];
 
 const InteractiveDesign = () => {
