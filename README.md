@@ -3,7 +3,7 @@
 一个专注于前端视觉效果的集合应用(持续更新，点下关注，有更新及时通知)
 </div>
 
-## 应用展示
+## 应用展示(部分效果)
 * 视觉设计
 <img src="./src/images/readme/visualDesign.gif" alt="" width={1200}/>
 
