@@ -9,6 +9,7 @@ import DragShopping from "./components/DragShopping";
 import MouseHover from "./components/MouseHover";
 import SlideButtonTab from "./components/SlideButtonTab";
 import FlipBook from "./components/FlipBook";
+import Switchs from "./components/Switchs";
 import styles from "./index.module.less";
 
 const boxList = [
@@ -18,6 +19,7 @@ const boxList = [
   { element: <MouseHover /> },
   { element: <SlideButtonTab /> },
   { element: <FlipBook /> },
+  { element: <Switchs /> },
 ];
 
 const InteractiveDesign = () => {
