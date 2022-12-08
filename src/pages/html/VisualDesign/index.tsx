@@ -14,6 +14,7 @@ import AutoEllipsisText from "./components/AutoEllipsisText";
 import FilterCSS from "./components/FilterCSS";
 import BgFusion from "./components/BgFusion";
 import MyLogo from "./components/MyLogo";
+import ShearAngle from "./components/ShearAngle";
 import styles from "./index.module.less";
 
 const { GridBox } = GridContent;
@@ -28,6 +29,7 @@ const gridboxList = [
   { element: <FilterCSS /> },
   { element: <BgFusion /> },
   { element: <MyLogo /> },
+  { element: <ShearAngle /> },
 ];
 
 const VisualDesign = () => {
