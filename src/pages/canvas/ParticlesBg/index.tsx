@@ -13,7 +13,12 @@ const ParticlesBg = (props) => {
 
   return (
     <div
-      style={{ width: "100%", height: "100%", backgroundColor: "#000000" }}
+      style={{
+        boxSizing: "border-box",
+        width: "100%",
+        height: "100%",
+        backgroundColor: "#000000",
+      }}
       id="particles-js"
     >
       {props.children}
