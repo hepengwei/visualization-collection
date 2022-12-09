@@ -5,8 +5,17 @@ import React, { useState } from "react";
 import { Button } from "antd";
 import { FolderAddOutlined } from "@ant-design/icons";
 import Tabs from "./components/Tabs";
-import { getImageSizeStr } from "utils/imageUtil";
+import { sizeTostr, getImageWidthHeight } from "utils/imageUtil";
 import styles from "./index.module.less";
+
+interface ImgInfo {
+  name: string;
+  type: string;
+  size: number;
+  imgUrl: string;
+  width?: number;
+  height?: number;
+}
 
 const tabsList = [
   { id: "basicOperation", label: "基础操作" },
@@ -16,7 +25,7 @@ const tabsList = [
 const GameImage = () => {
   const [selectedTabId, setSelectedTabId] = useState<string>(tabsList[0].id);
   const [imgDragOver, setImgDragOver] = useState<boolean>(false);
-  const [imgInfo, setImgInfo] = useState<Record<string, any> | null>(null);
+  const [imgInfo, setImgInfo] = useState<ImgInfo | null>(null);
 
   const onTabsChange = (tabId: string | number) => {
     setSelectedTabId(tabId as string);
@@ -31,13 +40,28 @@ const GameImage = () => {
       if (typeArr[0] !== "image") return;
       var reader = new FileReader();
       reader.onload = (e: any) => {
-        const imgInfo = {
-          name: file.name,
-          type: file.type,
-          size: file.size,
-          imgUrl: e.target.result,
-        };
-        setImgInfo(imgInfo);
+        const imgUrl = e.target.result;
+        getImageWidthHeight(imgUrl)
+          .then((res) => {
+            const imgInfo = {
+              name: file.name,
+              type: file.type,
+              size: file.size,
+              width: res.width,
+              height: res.height,
+              imgUrl,
+            };
+            setImgInfo(imgInfo);
+          })
+          .catch(() => {
+            const imgInfo = {
+              name: file.name,
+              type: file.type,
+              size: file.size,
+              imgUrl,
+            };
+            setImgInfo(imgInfo);
+          });
       };
       reader.readAsDataURL(file);
     }
@@ -94,7 +118,13 @@ const GameImage = () => {
                   格式：{imgInfo.type.split("/")[1].toUpperCase()}
                 </div>
                 <div className={styles.item}>
-                  大小：{getImageSizeStr(imgInfo.size)}
+                  尺寸：
+                  {imgInfo.width && imgInfo.height
+                    ? `${imgInfo.width}x${imgInfo.height}`
+                    : "未知"}
+                </div>
+                <div className={styles.item}>
+                  大小：{sizeTostr(imgInfo.size)}
                 </div>
               </div>
             </div>
