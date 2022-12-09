@@ -13,6 +13,7 @@ import {
   BuildOutlined,
   FormatPainterOutlined,
   PlayCircleOutlined,
+  FileImageOutlined,
   LineChartOutlined,
   RocketOutlined,
 } from "@ant-design/icons";
@@ -64,6 +65,7 @@ const items: MenuItem[] = [
     getItem("花卉绽放动画", "flowerBloom"),
     getItem("代码背景墙", "codeBgWall"),
   ]),
+  getItem("图片处理工具", "gameImage", <FileImageOutlined />),
   getItem("Echarts交互", "echarts", <LineChartOutlined />, [
     getItem("柱状图", "bar"),
     getItem("饼图", "pie"),

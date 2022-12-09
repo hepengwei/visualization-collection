@@ -63,9 +63,9 @@ const Switch = (props: SwitchProps) => {
               }
             : {
                 width: `${height * 0.2}px`,
-                height: `${height * 0.8}px`,
+                height: `${height * 0.7}px`,
                 borderRadius: `${(height * 0.2) / 2}px`,
-                top: `${height * 0.1}px`,
+                top: `${height * 0.15}px`,
                 left: `${width - height / 2}px`,
               }
         }

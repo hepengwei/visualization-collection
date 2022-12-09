@@ -63,8 +63,9 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.8.0",
     "ahooks": "^3.7.2",
-    "antd": "^4.23.5",
+    "antd": "^5.0.5",
     "bignumber.js": "^9.1.0",
     "date-fns": "^2.29.3",
     "echarts": "^5.4.0",

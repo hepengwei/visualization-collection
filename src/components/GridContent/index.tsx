@@ -48,7 +48,7 @@ const GridContent = (props: GridContentProps) => {
         style={{
           width: `calc(100% + ${colSpace}px)`,
           marginLeft: `${-(colSpace / 2)}px`,
-          marginRight: `${colSpace / 2}px`,
+          marginRight: `${-(colSpace / 2)}px`,
         }}
       >
         {Object.prototype.toString.call(children) === "[object Array]"
@@ -77,6 +77,7 @@ const GridBox = (props: GridBoxProps) => {
     <div
       key={key}
       style={{
+        boxSizing: "border-box",
         width: "100%",
         padding: `${rowSpace / 2}px ${colSpace / 2}px`,
       }}

@@ -20,6 +20,7 @@ import ParticlesBg from "pages/canvas/ParticlesBg";
 import RippleFloatOnTheWater from "pages/canvas/RippleFloatOnTheWater";
 import FlowerBloom from "pages/canvas/FlowerBloom";
 import CodeBgWall from "pages/canvas/CodeBgWall";
+import GameImage from 'pages/GameImage';
 import Bar from "pages/echarts/Bar";
 import Pie from "pages/echarts/Pie";
 
@@ -106,6 +107,10 @@ export const contentRoutes: RouteObject[] = [
         element: <CodeBgWall />,
       },
     ],
+  },
+  {
+    path: "/gameImage",
+    element: <GameImage />,
   },
   {
     path: "/echarts",
