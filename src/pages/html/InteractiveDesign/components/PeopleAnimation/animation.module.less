@@ -1,0 +1,115 @@
+.container {
+  width: 490px;
+  height: 920px;
+  position: relative;
+  pointer-events: all;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  user-select: none;
+
+  .content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    .people {
+      width: 420px;
+      margin-top: 40px;
+      -webkit-user-drag: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .giftBox {
+      width: 36%;
+      height: 32%;
+      position: absolute;
+      top: 480px;
+      left: 212px;
+      cursor: pointer;
+
+      .coin {
+        opacity: 0;
+        position: absolute;
+        width: 30%;
+        height: 30%;
+        -webkit-user-drag: none;
+        -webkit-user-select: none;
+        user-select: none;
+        top: 0;
+        left: 0;
+      }
+      .gift {
+        width: 100%;
+        height: 100%;
+        -webkit-user-drag: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1800px) and (max-width: 2300px) {
+  .container {
+    width: 420px;
+    height: 800px;
+    .content {
+      .people {
+        width: 360px;
+      }
+      .giftBox {
+        width: 34%;
+        height: 30%;
+        top: 418px;
+        left: 185px;
+        .coin {
+          width: 27%;
+          height: 27%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1800px) {
+  .container {
+    width: 380px;
+    height: 650px;
+    .content {
+      .people {
+        width: 300px;
+      }
+      .giftBox {
+        width: 32%;
+        height: 27%;
+        top: 358px;
+        left: 156px;
+        .coin {
+          width: 26%;
+          height: 26%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .container {
+    width: 340px;
+    height: 620px;
+    .content {
+      .people {
+        width: 270px;
+      }
+      .giftBox {
+        width: 32%;
+        height: 28%;
+        top: 322px;
+        left: 140px;
+        .coin {
+          width: 28%;
+          height: 28%;
+        }
+      }
+    }
+  }
+}

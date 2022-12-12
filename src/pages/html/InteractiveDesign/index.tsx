@@ -10,6 +10,7 @@ import MouseHover from "./components/MouseHover";
 import SlideButtonTab from "./components/SlideButtonTab";
 import FlipBook from "./components/FlipBook";
 import Switchs from "./components/Switchs";
+import PeopleAnimation from "./components/PeopleAnimation";
 import styles from "./index.module.less";
 
 const boxList = [
@@ -20,6 +21,7 @@ const boxList = [
   { element: <SlideButtonTab /> },
   { element: <FlipBook /> },
   { element: <Switchs /> },
+  { element: <PeopleAnimation /> },
 ];
 
 const InteractiveDesign = () => {
