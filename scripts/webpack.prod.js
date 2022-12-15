@@ -19,7 +19,7 @@ const prodConfig = {
       patterns: [
         {
           from: resolveApp("public"),
-          to: resolveApp("build/public"),
+          to: resolveApp("docs/public"),
           globOptions: {
             dot: true,
             gitignore: true,

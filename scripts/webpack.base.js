@@ -64,7 +64,7 @@ module.exports = function (webpackEnv) {
     entry: resolveApp("src/index.tsx"),
     output: {
       filename: "[name].js",
-      path: resolveApp("build"),
+      path: resolveApp("docs"),
     },
     resolve: {
       modules: [resolveApp("src"), "node_modules"],
