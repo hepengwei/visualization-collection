@@ -15,6 +15,8 @@ import FilterCSS from "./components/FilterCSS";
 import BgFusion from "./components/BgFusion";
 import MyLogo from "./components/MyLogo";
 import ShearAngle from "./components/ShearAngle";
+import Honeycomb from "./components/Honeycomb";
+import PizzaPie from "./components/PizzaPie";
 import styles from "./index.module.less";
 
 const { GridBox } = GridContent;
@@ -30,6 +32,9 @@ const gridboxList = [
   { element: <BgFusion /> },
   { element: <MyLogo /> },
   { element: <ShearAngle /> },
+  { element: <ShearAngle /> },
+  { element: <Honeycomb /> },
+  { element: <PizzaPie /> },
 ];
 
 const VisualDesign = () => {

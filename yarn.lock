@@ -6064,10 +6064,10 @@ spdy@^4.0.2:
     select-hose "^2.0.0"
     spdy-transport "^3.0.0"
 
-sphere-collision@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/sphere-collision/-/sphere-collision-1.1.3.tgz#3d876c84e44a998744bc8ed3f2771e4a53f56469"
-  integrity sha512-IbITINlXhD0EiXiUL5DDLuVPZj24Dbprc8m6PUkJ1dAkdFlIQEh/xvtn5ranTNbxBSH3q3TO1ywOlFa3k3uh+Q==
+sphere-collision@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/sphere-collision/-/sphere-collision-1.1.4.tgz#b39132c54a4978b16448f47cd245bd1b7c5c5ee3"
+  integrity sha512-eE3sbcFjmLPa8PfnfqKle8umN7ZcC2RTXhn7Kb0jEpi3+Arnw5hZAn2k/BXj5o00p0ZBB4/3pMWE/Ocq1/NFrg==
 
 ssr-window@^4.0.0, ssr-window@^4.0.2:
   version "4.0.2"
