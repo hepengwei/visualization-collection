@@ -13,6 +13,7 @@ import BorderAnimationButton2 from "./components/BorderAnimationButton2";
 import TranslateBgButton from "./components/TranslateBgButton";
 import RoundedGradientButton from "./components/RoundedGradientButton";
 import MirrorSideButton from "./components/MirrorSideButton";
+import ShakeButton from "./components/ShakeButton";
 import styles from "./index.module.less";
 
 const { GridBox } = GridContent;
@@ -33,6 +34,7 @@ const gridboxList = [
   { element: <TranslateBgButton /> },
   { element: <RoundedGradientButton /> },
   { element: <MirrorSideButton /> },
+  { element: <ShakeButton /> },
 ];
 
 const DynamicButtons = () => {
