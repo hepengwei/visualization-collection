@@ -46,9 +46,7 @@
     font-weight: 500;
     letter-spacing: 0.2em;
 
-    @videoDuration: 7s;
-
-    .span {
+    @mixin span {
       opacity: 0;
       display: inline-block;
 
@@ -86,12 +84,12 @@
     }
 
     .span1 {
-      .span;
+      @include span;
       animation: textAnimation1 1s linear forwards;
     }
 
     .span2 {
-      .span;
+      @include span;
       animation: textAnimation2 1s linear forwards;
     }
 

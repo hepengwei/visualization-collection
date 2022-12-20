@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import discuss from "images/html/discuss.jpg";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 interface Article {
   name: string;

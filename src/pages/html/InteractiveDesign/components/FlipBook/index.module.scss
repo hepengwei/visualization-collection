@@ -6,21 +6,21 @@
   justify-content: center;
   align-items: center;
 
-  @paperWidth: 353px;
-  @paperHeight: 500px;
+  $paperWidth: 353px;
+  $paperHeight: 500px;
 
   .pages {
     display: flex;
-    width: @paperWidth * 2;
-    height: @paperHeight;
+    width: $paperWidth * 2;
+    height: $paperHeight;
     position: relative;
     .paper {
       display: flex;
-      width: @paperWidth;
-      height: @paperHeight;
+      width: $paperWidth;
+      height: $paperHeight;
       position: absolute;
       top: 0;
-      left: @paperWidth;
+      left: $paperWidth;
       transform-style: preserve-3d;
       transform-origin: left center;
 

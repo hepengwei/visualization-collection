@@ -8,7 +8,7 @@
     font-size: 24px;
     color: #4cc9f0;
     background-color: transparent;
-    border: none;
+    border: 2px solid transparent;
     cursor: pointer;
     position: relative;
 
@@ -24,6 +24,7 @@
 
     &::before,
     &::after {
+      box-sizing: border-box;
       position: absolute;
       content: "";
       border: 2px solid transparent;
@@ -36,7 +37,7 @@
       height: 100%;
       border-top-color: #4cc9f0;
       border-right-color: #4cc9f0;
-      transition: width 0.3s ease-out, height 0.3s ease-out 0.3s;
+      transition: width 0.2s ease-out, height 0.2s ease-out 0.2s;
     }
 
     &:hover::after {
@@ -44,7 +45,8 @@
       height: 100%;
       border-bottom-color: #4cc9f0;
       border-left-color: #4cc9f0;
-      transition: width 0.3s ease-out, height 0.3s ease-out 0.3s;
+      transition: border-color 0s ease-out 0.4s, width 0.2s ease-out 0.4s,
+        height 0.2s ease-out 0.6s;
     }
   }
 }

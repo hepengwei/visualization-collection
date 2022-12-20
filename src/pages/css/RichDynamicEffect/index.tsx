@@ -10,7 +10,7 @@ import BoxReflect from "./components/BoxReflect";
 import TextAnimation from "./components/TextAnimation";
 import DisplayTextInSmoke from "./components/DisplayTextInSmoke";
 import PlayVideoInText from "./components/PlayVideoInText";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const RichDynamicEffect = () => {
   const { setScrollTop } = useGlobalContext();

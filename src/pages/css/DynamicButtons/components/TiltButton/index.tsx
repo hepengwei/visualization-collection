@@ -6,7 +6,7 @@ import React, {
   Ref,
 } from "react";
 import Tilt from "react-tilt";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 interface TiltButtonProps {
   children: ReactNode;

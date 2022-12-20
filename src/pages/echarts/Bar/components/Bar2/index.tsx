@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TwoColumnBar from "components/Echarts/TwoColumnBar";
-import styles from "../../index.module.less";
+import styles from "../../index.module.scss";
 
 const Bar2 = () => {
   const [echartData, setEchartData] = useState<any[]>([]);

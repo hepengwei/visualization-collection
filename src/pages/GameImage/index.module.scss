@@ -8,7 +8,7 @@
   background-color: #eff5f5;
   padding: 40px 20px;
 
-  @primaryColor: #2320e5;
+  $primaryColor: #2320e5;
 
   .content {
     width: 1000px;
@@ -63,7 +63,7 @@
           width: 200px;
           height: 52px;
           line-height: 52px;
-          background-color: @primaryColor !important;
+          background-color: $primaryColor !important;
           font-size: 14px;
           font-family: SourceHanSansCN-Medium !important;
           cursor: pointer;

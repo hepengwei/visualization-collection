@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import flower from "images/flower.jpg";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 enum Contact {
   "leftUp",

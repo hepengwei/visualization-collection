@@ -8,7 +8,7 @@ import paper5 from "images/html/paper5.png";
 import paper6 from "images/html/paper6.png";
 import paper7 from "images/html/paper7.png";
 import paper8 from "images/html/paper8.png";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const pagesList = [
   [paper1, paper2],

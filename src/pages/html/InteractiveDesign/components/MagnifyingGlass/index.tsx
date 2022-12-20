@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import watch from "images/html/watch.png";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const MagnifyingGlass = () => {
   const { scrollTop, headHeight } = useGlobalContext();

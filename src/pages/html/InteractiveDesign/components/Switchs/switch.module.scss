@@ -4,17 +4,17 @@
   cursor: pointer;
   position: relative;
 
-  @transition:all 0.4s;
+  $transition: all 0.4s;
 
   .box {
     position: absolute;
     background-color: #355dff;
     overflow: hidden;
-    transition: @transition;
+    transition: $transition;
   }
 
   .icon {
     position: absolute;
-    transition: @transition;
+    transition: $transition;
   }
 }

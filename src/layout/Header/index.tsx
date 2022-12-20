@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const Header: React.FC = () => {
   const { setHeadHeight } = useGlobalContext();

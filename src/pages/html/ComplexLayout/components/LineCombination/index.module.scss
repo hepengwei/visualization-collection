@@ -7,27 +7,27 @@
   border-radius: 10px;
   overflow: hidden;
 
-  @boxHeight: 200px;
-  @blackBoxWidth: 42px;
-  @pointWidth: 8px;
-  @radius: 8px;
+  $boxHeight: 200px;
+  $blackBoxWidth: 42px;
+  $pointWidth: 8px;
+  $radius: 8px;
   .blackBox {
     background-color: transparent;
     border-bottom: 1px solid #bb3dfe50;
-    border-bottom-left-radius: @radius;
-    border-bottom-right-radius: @radius;
-    width: @blackBoxWidth;
+    border-bottom-left-radius: $radius;
+    border-bottom-right-radius: $radius;
+    width: $blackBoxWidth;
     height: 114px;
-    margin: 0 -1px -@radius;
-    transform: translateY(@boxHeight);
+    margin: 0 -1px (-$radius);
+    transform: translateY($boxHeight);
     animation: entrance_totop 0.6s 1 forwards 0s alternate;
     position: relative;
 
     .blackBoxPoint {
       position: absolute;
-      left: @radius;
+      left: $radius;
       bottom: -1px;
-      width: @pointWidth;
+      width: $pointWidth;
       height: 1px;
       background-color: #ffffff;
       box-shadow: 0 0 10px 3px #ffffff;
@@ -66,18 +66,18 @@
     border-left: 1px solid transparent;
     border-right: 1px solid transparent;
     border-image: linear-gradient(#3f9afd, #bb3dfe50) 2;
-    clip-path: inset(0 round @radius);
+    clip-path: inset(0 round $radius);
     position: relative;
     pointer-events: all;
-    transform: translateY(@boxHeight);
+    transform: translateY($boxHeight);
     animation: entrance_totop 0.6s 1 forwards 0s alternate;
 
     .whiteBoxPoint {
       position: absolute;
       left: -1px;
-      bottom: @radius;
+      bottom: $radius;
       width: 1px;
-      height: @pointWidth;
+      height: $pointWidth;
       background-color: #ffffff;
       box-shadow: 0 0 10px 5px #ffffff;
       visibility: hidden;
@@ -88,10 +88,10 @@
       position: absolute;
       top: 0;
       left: 0;
-      width: @radius;
-      height: @radius;
+      width: $radius;
+      height: $radius;
       border: 1px solid #3f9afd;
-      border-top-left-radius: @radius;
+      border-top-left-radius: $radius;
       border-right: 1px solid transparent;
       border-bottom: 1px solid transparent;
       margin: -1px;
@@ -101,10 +101,10 @@
       position: absolute;
       top: 0;
       right: 0;
-      width: @radius;
-      height: @radius;
+      width: $radius;
+      height: $radius;
       border: 1px solid #3f9afd;
-      border-top-right-radius: @radius;
+      border-top-right-radius: $radius;
       border-left: 1px solid transparent;
       border-bottom: 1px solid transparent;
       margin: -1px;
@@ -123,14 +123,14 @@
     .value {
       font-size: 32px;
       font-weight: 500;
-      transform: translateY(@boxHeight);
+      transform: translateY($boxHeight);
       animation: entrance_totop 1.6s 1 forwards 0.3s alternate;
     }
   }
 
   @keyframes entrance_totop {
     0% {
-      transform: translateY(@boxHeight);
+      transform: translateY($boxHeight);
       opacity: 0;
     }
     100% {

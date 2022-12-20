@@ -1,7 +1,7 @@
 import React, {
   useLayoutEffect,
 } from "react";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const list = new Array(15).fill("1");
 

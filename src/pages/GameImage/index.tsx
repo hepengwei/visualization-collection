@@ -6,7 +6,7 @@ import { Button } from "antd";
 import { FolderAddOutlined } from "@ant-design/icons";
 import Tabs from "./components/Tabs";
 import { sizeTostr, getImageWidthHeight } from "utils/imageUtil";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 interface ImgInfo {
   name: string;

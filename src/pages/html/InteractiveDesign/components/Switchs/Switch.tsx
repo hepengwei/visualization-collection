@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from "react";
-import styles from "./switch.module.less";
+import styles from "./switch.module.scss";
 
 interface SwitchProps {
   open?: boolean;

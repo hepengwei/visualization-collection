@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 interface TabItem {
   id: string | number;

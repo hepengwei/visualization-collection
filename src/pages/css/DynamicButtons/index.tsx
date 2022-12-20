@@ -14,7 +14,7 @@ import TranslateBgButton from "./components/TranslateBgButton";
 import RoundedGradientButton from "./components/RoundedGradientButton";
 import MirrorSideButton from "./components/MirrorSideButton";
 import ShakeButton from "./components/ShakeButton";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const { GridBox } = GridContent;
 const gridboxList = [

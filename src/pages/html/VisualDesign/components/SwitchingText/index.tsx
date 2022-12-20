@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { Button } from "antd";
 import QuickSwitchingText from "components/QuickSwitchingText";
 import type { QuickSwitchingTextRef } from "components/QuickSwitchingText";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const MixBlendMode = () => {
   const quickSwitchingTextRef = useRef<QuickSwitchingTextRef>(null);

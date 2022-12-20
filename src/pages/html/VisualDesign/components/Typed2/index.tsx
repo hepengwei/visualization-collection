@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import Typed from "typed.js";
 import { Button } from "antd";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const Typed2 = () => {
   const pRef = useRef<HTMLParagraphElement>(null);

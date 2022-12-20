@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { subDays } from "date-fns";
 import ColumnBar from "components/Echarts/ColumnBar";
-import styles from "../../index.module.less";
+import styles from "../../index.module.scss";
 
 const Bar1 = () => {
   const [echartData, setEchartData] = useState<any[]>([]);

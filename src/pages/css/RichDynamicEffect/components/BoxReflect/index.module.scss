@@ -12,14 +12,14 @@
     justify-content: space-between;
     align-items: center;
 
-    @color: #0ebeff;
+    $color: #0ebeff;
 
-    .btn {
+    @mixin btn {
       z-index: 0;
       width: 160px;
       height: 80px;
       line-height: 80px;
-      color: @color;
+      color: $color;
       font-size: 24px;
       border-radius: 10px;
       text-align: center;
@@ -33,12 +33,12 @@
 
       &:hover {
         color: #fff;
-        box-shadow: 0 0 5px @color, 0 0 25px @color;
+        box-shadow: 0 0 5px $color, 0 0 25px $color;
 
         &::after,
         &::before {
           transition: 0.3s;
-          background-color: @color;
+          background-color: $color;
         }
       }
 
@@ -56,13 +56,13 @@
         background-repeat: no-repeat;
         background-size: 50% 50%;
         background-position: 0 0;
-        background-image: conic-gradient(@color, @color);
+        background-image: conic-gradient($color, $color);
         animation: rotate 2s linear infinite;
       }
     }
 
     .btn1 {
-      .btn;
+      @include btn;
       &::after {
         content: "";
         box-sizing: border-box;
@@ -78,7 +78,7 @@
     }
 
     .btn2 {
-      .btn;
+      @include btn;
       filter: hue-rotate(90deg);
     }
 

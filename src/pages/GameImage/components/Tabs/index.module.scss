@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
 
-  @primaryColor: #2320e5;
+  $primaryColor: #2320e5;
 
   .tabItem {
     display: flex;
@@ -20,7 +20,7 @@
   }
 
   .actived {
-    background-color: @primaryColor !important;
+    background-color: $primaryColor !important;
     color: #fff;
   }
 }

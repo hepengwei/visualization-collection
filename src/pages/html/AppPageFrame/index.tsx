@@ -10,7 +10,7 @@ import Page1 from "./components/Page1";
 import Page2 from "./components/Page2";
 import Page3 from "./components/Page3";
 import Page4 from "./components/Page4";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const innerHeadHeight = 100; // 内顶部区域高度
 const bgHeight = 30; // 顶部中间文字高度

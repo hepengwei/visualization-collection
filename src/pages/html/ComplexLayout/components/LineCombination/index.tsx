@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import ReactDOM from "react-dom";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const pointWidth = 8;
 const boxRadius = 8;

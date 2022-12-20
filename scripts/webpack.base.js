@@ -10,8 +10,8 @@ const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
-const lessRegex = /\.less$/;
-const lessModuleRegex = /\.module\.less$/;
+const sassRegex = /\.(scss|sass)$/;
+const sassModuleRegex = /\.module\.(scss|sass)$/;
 
 module.exports = function (webpackEnv) {
   const isEnvDevelopment = webpackEnv === "development";
@@ -116,8 +116,8 @@ module.exports = function (webpackEnv) {
           }),
         },
         {
-          test: lessRegex,
-          exclude: lessModuleRegex,
+          test: sassRegex,
+          exclude: sassModuleRegex,
           use: [
             ...getStyleLoaders(
               {
@@ -127,12 +127,12 @@ module.exports = function (webpackEnv) {
                   mode: "icss",
                 },
               },
-              "less-loader"
+              "sass-loader"
             ),
             {
               loader: "style-resources-loader",
               options: {
-                patterns: resolveApp("src/global.less"),
+                patterns: resolveApp("src/global.scss"),
               },
             },
           ],
@@ -140,7 +140,7 @@ module.exports = function (webpackEnv) {
           sideEffects: true,
         },
         {
-          test: lessModuleRegex,
+          test: sassModuleRegex,
           use: [
             ...getStyleLoaders(
               {
@@ -151,12 +151,12 @@ module.exports = function (webpackEnv) {
                   getLocalIdent: getCSSModuleLocalIdent,
                 },
               },
-              "less-loader"
+              "sass-loader"
             ),
             {
               loader: "style-resources-loader",
               options: {
-                patterns: resolveApp("src/global.less"),
+                patterns: resolveApp("src/global.scss"),
               },
             },
           ],

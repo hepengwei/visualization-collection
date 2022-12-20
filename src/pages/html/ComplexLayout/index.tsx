@@ -4,7 +4,7 @@
 import React, { useEffect } from "react";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import LineCombination from "./components/LineCombination";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const boxList = [{ element: <LineCombination /> }];
 

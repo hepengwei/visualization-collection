@@ -4,7 +4,7 @@
 import React, { useEffect } from "react";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import GridContent from "components/GridContent";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const { GridBox } = GridContent;
 const gridboxList = new Array(12).fill("1");

@@ -7,11 +7,11 @@
   background-color: #000;
   position: relative;
 
-  @duration: 4.2s;
-  @delay: -2s;
-  @filter: drop-shadow(0px 0px 8px rgba(252, 233, 124, 0.8));
+  $duration: 4.2s;
+  $delay: -2s;
+  $filter: drop-shadow(0px 0px 8px rgba(252, 233, 124, 0.8));
 
-  .loadingItem {
+  @mixin loadingItem {
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -19,7 +19,7 @@
     left: 50%;
     top: 50%;
     margin: -30px 0 0 -30px;
-    filter: @filter;
+    filter: $filter;
     svg {
       width: 100%;
       height: 100%;
@@ -29,22 +29,22 @@
   .content {
     width: 230px;
     height: 230px;
-    animation: rotate @duration @delay infinite, mix @duration @delay infinite;
+    animation: rotate $duration $delay infinite, mix $duration $delay infinite;
     position: relative;
 
     .loadingItem1 {
-      .loadingItem;
-      animation: itemMove1 @duration @delay infinite;
+      @include loadingItem;
+      animation: itemMove1 $duration $delay infinite;
     }
 
     .loadingItem2 {
-      .loadingItem;
-      animation: itemMove2 @duration @delay infinite;
+      @include loadingItem;
+      animation: itemMove2 $duration $delay infinite;
     }
 
     .loadingItem3 {
-      .loadingItem;
-      animation: itemMove3 @duration @delay infinite;
+      @include loadingItem;
+      animation: itemMove3 $duration $delay infinite;
     }
 
     @keyframes itemMove1 {
@@ -132,9 +132,9 @@
   }
 
   .loadingResult {
-    .loadingItem;
+    @include loadingItem;
     filter: drop-shadow(0px 0px 8px rgba(252, 233, 124, 0.5));
-    animation: show @duration @delay infinite;
+    animation: show $duration $delay infinite;
   }
 
   @keyframes show {
