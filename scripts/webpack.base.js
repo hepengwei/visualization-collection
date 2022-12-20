@@ -33,6 +33,23 @@ module.exports = function (webpackEnv) {
           postcssOptions: {
             ident: "postcss",
             config: false,
+            plugins: [
+              [
+                "postcss-preset-env",
+                {
+                  autoprefixer: {
+                    flexbox: "no-2009",
+                    grid: true,
+                  },
+                  stage: 0, // 使用实验阶段的特性
+                  features: {
+                    "all-property": true,
+                    "custom-properties": true,
+                    "nesting-rules": true,
+                  },
+                },
+              ],
+            ],
           },
           sourceMap: isEnvDevelopment,
         },
