@@ -6,11 +6,11 @@
   align-items: center;
   background-image: linear-gradient(to right, #04182c, #000c17, #04182c);
 
-  @width: 300px;
+  $width: 300px;
 
   .box1 {
-    width: @width;
-    height: @width;
+    width: $width;
+    height: $width;
 
     @property --m-0 {
       syntax: "<number>";
@@ -34,28 +34,28 @@
     }
     -webkit-mask: linear-gradient(
         90deg,
-        rgba(0, 0, 0, var(--m-0)),
-        rgba(0, 0, 0, var(--m-0))
+        rgba(0, 0, 0, var(--m-0, 1)),
+        rgba(0, 0, 0, var(--m-0, 1))
       ),
       linear-gradient(
         90deg,
-        rgba(0, 0, 0, var(--m-1)),
-        rgba(0, 0, 0, var(--m-1))
+        rgba(0, 0, 0, var(--m-1, 1)),
+        rgba(0, 0, 0, var(--m-1, 1))
       ),
       linear-gradient(
         90deg,
-        rgba(0, 0, 0, var(--m-2)),
-        rgba(0, 0, 0, var(--m-2))
+        rgba(0, 0, 0, var(--m-2, 1)),
+        rgba(0, 0, 0, var(--m-2, 1))
       ),
       linear-gradient(
         90deg,
-        rgba(0, 0, 0, var(--m-3)),
-        rgba(0, 0, 0, var(--m-3))
+        rgba(0, 0, 0, var(--m-3, 1)),
+        rgba(0, 0, 0, var(--m-3, 1))
       );
     -webkit-mask-size: 50% 50%;
     -webkit-mask-position: left top, right top, left bottom, right bottom;
     -webkit-mask-repeat: no-repeat;
-    transition: --m-0 0.3s, --m-1 0.15s 0.1s, --m-2 0.25s 0.21s,
+    transition: --m-0 0.3s 0, --m-1 0.15s 0.1s, --m-2 0.25s 0.21s,
       --m-3 0.19s 0.15s;
     &:hover {
       --m-0: 0;
@@ -66,8 +66,8 @@
   }
 
   .box2 {
-    width: @width;
-    height: @width;
+    width: $width;
+    height: $width;
     margin-left: 20px;
   }
 }

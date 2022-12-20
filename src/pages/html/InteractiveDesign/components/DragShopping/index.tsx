@@ -6,7 +6,7 @@ import book3 from "images/html/book3.jpg";
 import book4 from "images/html/book4.jpg";
 import book5 from "images/html/book5.jpg";
 import book6 from "images/html/book6.jpg";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const { GridBox } = GridContent;
 

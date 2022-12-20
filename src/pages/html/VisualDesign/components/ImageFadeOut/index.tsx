@@ -1,6 +1,6 @@
 import React from "react";
 import flower from "images/flower.jpg";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const ImageFadeOut = () => {
   return (

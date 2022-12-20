@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import StackedRowBar from "components/Echarts/StackedRowBar";
-import styles from "../../index.module.less";
+import styles from "../../index.module.scss";
 
 const Bar3 = () => {
   const [echartData, setEchartData] = useState<Record<string, any>>({});

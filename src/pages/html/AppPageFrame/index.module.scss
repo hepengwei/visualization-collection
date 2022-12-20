@@ -9,7 +9,7 @@
     display: none;
   }
 
-  @innerHeadHeight: 100px;
+  $innerHeadHeight: 100px;
 
   .content {
     position: absolute;
@@ -34,7 +34,7 @@
 
     .swiper {
       width: 100%;
-      height: 100vh - @headHeight;
+      height: calc(100vh - $headHeight);
       box-sizing: border-box;
       background-color: #000013;
       overflow: hidden;
@@ -49,7 +49,7 @@
           width: 100%;
           .swiper-slide {
             width: 100%;
-            height: 100vh - @headHeight;
+            height: calc(100vh - $headHeight);
             box-sizing: border-box;
             border-top: 1px solid #999;
             display: flex;
@@ -71,7 +71,7 @@
   .head {
     height: 100px;
     position: fixed;
-    top: @headHeight;
+    top: $headHeight;
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;

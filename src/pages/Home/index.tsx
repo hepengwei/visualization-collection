@@ -5,7 +5,7 @@ import { contentRoutes as contentRoutesConfig } from "@/routes/routes";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import Header from "@/layout/Header";
 import Menus from "@/layout/Menus";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const defaultPageUrl = "/html/visualDesign"; // 默认首页
 

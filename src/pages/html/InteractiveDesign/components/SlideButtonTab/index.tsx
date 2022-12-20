@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const btnList = new Array(4).fill(0);
 const contentPaddingLeft = 16;

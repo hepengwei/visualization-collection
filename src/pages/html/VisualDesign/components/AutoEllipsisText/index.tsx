@@ -1,6 +1,6 @@
 import React from "react";
 import EllipsisText from "components/EllipsisText";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const EllipsisText1 = () => {
   const text =

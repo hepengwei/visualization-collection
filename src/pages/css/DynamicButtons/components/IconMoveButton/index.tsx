@@ -1,6 +1,6 @@
 import React from "react";
 import Telegram from "images/css/Telegram.svg";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 
 const IconMoveButton = () => {

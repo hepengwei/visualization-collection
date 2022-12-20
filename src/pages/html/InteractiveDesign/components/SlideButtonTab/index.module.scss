@@ -6,19 +6,31 @@
   align-items: center;
   perspective: 500px;
 
-  @contentPaddingTop: 12px;
-  @contentPaddingLeft: 16px;
-  @btnMarginLeftRight: 8px;
+  $contentPaddingTop: 12px;
+  $contentPaddingLeft: 16px;
+  $btnMarginLeftRight: 8px;
 
   .content {
-    --groove-left: @contentPaddingLeft;
-    --wraper-rotate: 0deg;
-    --btnWidth: 0;
+    @property --groove-left {
+      syntax: "<length>";
+      initial-value: $contentPaddingLeft;
+      inherits: false;
+    }
+    @property --wraper-rotate {
+      syntax: "<angle>";
+      initial-value: 0deg;
+      inherits: false;
+    }
+    @property --btnWidth {
+      syntax: "<length>";
+      initial-value: 0px;
+      inherits: false;
+    }
 
     position: relative;
     width: 600px;
     height: 80px;
-    padding: @contentPaddingTop @contentPaddingLeft;
+    padding: $contentPaddingTop $contentPaddingLeft;
     border-radius: 12px;
     overflow: hidden;
     background-color: #e2e6eb;
@@ -32,10 +44,10 @@
     &::before {
       content: "";
       position: absolute;
-      left: var(--groove-left);
-      top: @contentPaddingTop;
+      left: var(--groove-left, $contentPaddingLeft);
+      top: $contentPaddingTop;
       width: var(--btnWidth);
-      height: calc(100% - (@contentPaddingTop * 2));
+      height: calc(100% - ($contentPaddingTop * 2));
       border-radius: 12px;
       box-shadow: inset 8px 8px 6px #d9dce6, inset -5px -5px 15px #f5f9fd,
         inset -5px -5px 15px #f5f9fd, inset 7px 7px 6px #d9dce6;
@@ -55,10 +67,10 @@
       transition: color 1.2s linear 0.4s; // 添加文字颜色过渡效果
       animation: txtOutScale 0.6s linear; // 添加按钮未选中动画
       &:not(:first-child) {
-        margin-left: @btnMarginLeftRight;
+        margin-left: $btnMarginLeftRight;
       }
       &:not(:last-child) {
-        margin-right: @btnMarginLeftRight;
+        margin-right: $btnMarginLeftRight;
       }
     }
 

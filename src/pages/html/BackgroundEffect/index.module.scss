@@ -15,13 +15,13 @@
     overflow: hidden;
   }
 
-  .bg {
+  @mixin bg {
     width: 100%;
     height: 100%;
   }
 
   .bg1 {
-    .bg;
+    @include bg;
     background-image: repeating-linear-gradient(
         107deg,
         hsla(82, 0%, 5%, 0.15) 0px,
@@ -78,7 +78,7 @@
   }
 
   .bg2 {
-    .bg;
+    @include bg;
     background-color: #fff;
     background-image: linear-gradient(
       90deg,
@@ -89,7 +89,7 @@
   }
 
   .bg3 {
-    .bg;
+    @include bg;
     background-color: #fff;
     background-image: linear-gradient(rgba(66, 66, 66, 0.5) 50%, transparent 0),
       linear-gradient(to right, rgba(66, 66, 66, 0.5) 50%, transparent 0);
@@ -97,7 +97,7 @@
   }
 
   .bg4 {
-    .bg;
+    @include bg;
     background-color: #fff;
     background-image: repeating-linear-gradient(
       60deg,
@@ -108,7 +108,7 @@
   }
 
   .bg5 {
-    .bg;
+    @include bg;
     background-color: #fff;
     background-image: repeating-linear-gradient(
       60deg,
@@ -120,7 +120,7 @@
   }
 
   .bg6 {
-    .bg;
+    @include bg;
     background-color: #55f;
     background-image: linear-gradient(#fff 2px, transparent 0),
       linear-gradient(to right, #fff 2px, transparent 0),
@@ -130,7 +130,7 @@
   }
 
   .bg7 {
-    .bg;
+    @include bg;
     background: repeating-linear-gradient(
         -45deg,
         transparent,
@@ -151,18 +151,18 @@
   }
 
   .bg8 {
-    .bg;
+    @include bg;
     background-image: repeating-conic-gradient(#000 0 5%, #fff 5% 10%);
   }
 
   .bg9 {
-    .bg;
+    @include bg;
     background-color: #fff;
     background-image: repeating-conic-gradient(#000 0 1%, #0000 0 2%);
   }
 
   .bg10 {
-    .bg;
+    @include bg;
     background-image: repeating-conic-gradient(
       red 0deg 30deg,
       yellow 30deg 60deg,
@@ -171,7 +171,7 @@
   }
 
   .bg11 {
-    .bg;
+    @include bg;
     background: repeating-radial-gradient(#000 0 0.0001%, #fff 0 0.0002%) 60%
         60%/1000px 1000px,
       repeating-conic-gradient(#000 0 0.0001%, #fff 0 0.0002%) 40% 40%/1000px
@@ -180,7 +180,7 @@
   }
 
   .bg12 {
-    .bg;
+    @include bg;
     background: repeating-conic-gradient(#bf4d28 0 0.00005%, #e1f5c4 0 0.00017%)
       0 0/5000px 4000px;
   }

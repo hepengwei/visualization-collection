@@ -5,7 +5,7 @@ import scenery3 from "images/html/scenery3.jpg";
 import scenery4 from "images/html/scenery4.jpg";
 import scenery5 from "images/html/scenery5.jpg";
 import scenery6 from "images/html/scenery6.jpg";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const Honeycomb = () => {
   return (

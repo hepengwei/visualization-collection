@@ -3,7 +3,7 @@
   height: 100%;
   .container_body {
     display: flex;
-    height: calc(100% - @headHeight);
+    height: calc(100% - $headHeight);
     .container_content {
       width: 100%;
       min-height: 100%;

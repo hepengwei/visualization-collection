@@ -7,7 +7,7 @@ import GridContent from "components/GridContent";
 import Bar1 from "./components/Bar1";
 import Bar2 from "./components/Bar2";
 import Bar3 from "./components/Bar3";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const { GridBox } = GridContent;
 const gridboxList = [

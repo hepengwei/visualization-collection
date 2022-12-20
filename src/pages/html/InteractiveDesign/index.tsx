@@ -11,7 +11,7 @@ import SlideButtonTab from "./components/SlideButtonTab";
 import FlipBook from "./components/FlipBook";
 import Switchs from "./components/Switchs";
 import PeopleAnimation from "./components/PeopleAnimation";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const boxList = [
   { element: <MagnifyingGlass /> },

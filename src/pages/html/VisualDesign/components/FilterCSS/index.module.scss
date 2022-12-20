@@ -6,7 +6,7 @@
   align-items: center;
   background-image: linear-gradient(to right, #04182c, #000c17, #04182c);
 
-  .base {
+  @mixin base {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,14 +19,14 @@
   }
 
   .left {
-    .base;
+    @include base;
     &:hover {
       filter: brightness(1.1) contrast(110%);
     }
   }
 
   .right {
-    .base;
+    @include base;
     margin-left: 40px;
     &:hover {
       filter: grayscale(100%);

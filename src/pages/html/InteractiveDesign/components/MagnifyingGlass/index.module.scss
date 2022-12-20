@@ -9,15 +9,15 @@
     display: flex;
     justify-content: center;
 
-    @smallBoxWidth: 400px;
-    @smallBoxHeight: 280px;
-    @floatBoxWidth: 160px;
-    @floatBoxHeight: 120px;
+    $smallBoxWidth: 400px;
+    $smallBoxHeight: 280px;
+    $floatBoxWidth: 160px;
+    $floatBoxHeight: 120px;
 
     .smallBox {
       position: relative;
-      width: @smallBoxWidth;
-      height: @smallBoxHeight;
+      width: $smallBoxWidth;
+      height: $smallBoxHeight;
       z-index: 1;
 
       .mask {
@@ -33,8 +33,8 @@
 
       .floatBox {
         position: absolute;
-        width: @floatBoxWidth;
-        height: @floatBoxHeight;
+        width: $floatBoxWidth;
+        height: $floatBoxHeight;
         background-color: #ffffcc50;
         border: 1px solid #ccc;
         cursor: move;
@@ -46,8 +46,8 @@
     }
 
     .bigBox {
-      width: @floatBoxWidth * 3;
-      height: @floatBoxHeight * 3;
+      width: $floatBoxWidth * 3;
+      height: $floatBoxHeight * 3;
       overflow: hidden;
       margin-left: 40px;
       position: relative;

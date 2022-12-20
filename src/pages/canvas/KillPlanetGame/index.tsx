@@ -4,7 +4,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import SphereCollision from "sphere-collision";
 import type { SphereCollisionC, GlobuleC } from "sphere-collision/types";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const canvasBgColor = "rgba(0, 0, 0, .2)"; // 动画时背景颜色
 const playerRadius = 20; // 玩家小球半径

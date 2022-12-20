@@ -2,7 +2,7 @@ import React from "react";
 import Switch from "./Switch";
 import sun from "images/html/sun.png";
 import moon from "images/html/moon.png";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const Switchs = () => {
   return (

@@ -3,7 +3,7 @@ import StickyRice from "images/css/StickyRice.svg";
 import RedDates from "images/css/RedDates.svg";
 import ReedLeaves from "images/css/ReedLeaves.svg";
 import Zongzi from "images/css/Zongzi.svg";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const ZongziLoading = () => {
   return (

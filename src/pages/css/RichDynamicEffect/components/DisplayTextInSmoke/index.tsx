@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { Button } from "antd";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const DisplayTextInSmoke = () => {
   const videoRef = useRef<HTMLVideoElement>(null);

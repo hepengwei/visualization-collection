@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import styles from "./index.module.less";
+import React from "react";
+import styles from "./index.module.scss";
 
 const TextAnimation = () => {
   return (

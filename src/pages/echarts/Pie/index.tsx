@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import GridContent from "components/GridContent";
 import Pie1 from "./components/Pie1";
-import styles from "./index.module.less";
+import styles from "./index.module.scss";
 
 const { GridBox } = GridContent;
 const gridboxList = [{ element: <Pie1 /> }];

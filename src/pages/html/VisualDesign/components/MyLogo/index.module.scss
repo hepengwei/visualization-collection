@@ -5,14 +5,14 @@
   flex: 1;
   justify-content: center;
   align-items: center;
-  @backgroundColor: #000;
-  background-color: @backgroundColor;
+  $backgroundColor: #000;
+  background-color: $backgroundColor;
 
-  @logoWidth: 100px;
+  $logoWidth: 100px;
 
-  #box(@logoColor) {
-    width: @logoWidth;
-    height: @logoWidth;
+  @mixin box($logoColor) {
+    width: $logoWidth;
+    height: $logoWidth;
     position: relative;
 
     .leftTopRect {
@@ -20,9 +20,9 @@
       position: absolute;
       left: 0;
       top: 0;
-      width: (@logoWidth / 2);
-      height: (@logoWidth / 2);
-      background-color: @logoColor;
+      width: calc($logoWidth / 2);
+      height: calc($logoWidth / 2);
+      background-color: $logoColor;
       z-index: 1;
     }
 
@@ -32,9 +32,9 @@
       left: 0;
       top: 0;
       border-radius: 50%;
-      width: @logoWidth;
-      height: @logoWidth;
-      background-color: @logoColor;
+      width: $logoWidth;
+      height: $logoWidth;
+      background-color: $logoColor;
       z-index: 2;
     }
 
@@ -44,10 +44,10 @@
       left: 0;
       right: 0;
       top: 20%;
-      width: (@logoWidth / 3);
-      height: (@logoWidth / 3);
+      width: calc($logoWidth / 3);
+      height: calc($logoWidth / 3);
       margin: 0 auto;
-      background-color: @backgroundColor;
+      background-color: $backgroundColor;
       border-radius: 50%;
       z-index: 2;
     }
@@ -58,29 +58,26 @@
       left: 0;
       right: 0;
       bottom: 0;
-      width: (@logoWidth / 3);
-      height: (@logoWidth / 3);
+      width: calc($logoWidth / 3);
+      height: calc($logoWidth / 3);
       border-radius: 4px;
       margin: 0 auto;
-      background-color: @backgroundColor;
+      background-color: $backgroundColor;
       z-index: 2;
     }
   }
 
   .box1 {
-    @logoColor: #10a19d;
-    #box(@logoColor);
+    @include box(#10a19d);
   }
 
   .box2 {
-    @logoColor: #d23369;
-    #box(@logoColor);
+    @include box(#d23369);
     margin-left: 50px;
   }
 
   .box3 {
-    @logoColor: #393e46;
-    #box(@logoColor);
+    @include box(#393e46);
     margin-left: 50px;
   }
 }

@@ -20,7 +20,7 @@
       aspect-ratio: 1;
       object-fit: cover;
       transition: 0.35s;
-      filter: grayscale();
+      filter: grayscale(1);
       cursor: pointer;
 
       &:nth-child(1) {

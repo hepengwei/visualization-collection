@@ -9,7 +9,7 @@ import coin4 from "images/html/coin4.png";
 import coin5 from "images/html/coin5.png";
 import coin6 from "images/html/coin6.png";
 import coin7 from "images/html/coin7.png";
-import styles from "./animation.module.less";
+import styles from "./animation.module.scss";
 
 let coinMaxTop = 600;
 const a = 80; // 椭圆轨迹的长半径
