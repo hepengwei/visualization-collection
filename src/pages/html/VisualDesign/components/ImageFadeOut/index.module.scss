@@ -17,46 +17,71 @@
       initial-value: 1;
       inherits: false;
     }
+
     @property --m-1 {
       syntax: "<number>";
       initial-value: 1;
       inherits: false;
     }
+
     @property --m-2 {
       syntax: "<number>";
       initial-value: 1;
       inherits: false;
     }
+
     @property --m-3 {
       syntax: "<number>";
       initial-value: 1;
       inherits: false;
     }
+
     -webkit-mask: linear-gradient(
         90deg,
-        rgba(0, 0, 0, var(--m-0, 1)),
-        rgba(0, 0, 0, var(--m-0, 1))
+        rgba(0, 0, 0, var(--m-0)),
+        rgba(0, 0, 0, var(--m-0))
       ),
       linear-gradient(
         90deg,
-        rgba(0, 0, 0, var(--m-1, 1)),
-        rgba(0, 0, 0, var(--m-1, 1))
+        rgba(0, 0, 0, var(--m-1)),
+        rgba(0, 0, 0, var(--m-1))
       ),
       linear-gradient(
         90deg,
-        rgba(0, 0, 0, var(--m-2, 1)),
-        rgba(0, 0, 0, var(--m-2, 1))
+        rgba(0, 0, 0, var(--m-2)),
+        rgba(0, 0, 0, var(--m-2))
       ),
       linear-gradient(
         90deg,
-        rgba(0, 0, 0, var(--m-3, 1)),
-        rgba(0, 0, 0, var(--m-3, 1))
+        rgba(0, 0, 0, var(--m-3)),
+        rgba(0, 0, 0, var(--m-3))
       );
-    -webkit-mask-size: 50% 50%;
-    -webkit-mask-position: left top, right top, left bottom, right bottom;
-    -webkit-mask-repeat: no-repeat;
-    transition: --m-0 0.3s 0, --m-1 0.15s 0.1s, --m-2 0.25s 0.21s,
+    mask: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, var(--m-0)),
+        rgba(0, 0, 0, var(--m-0))
+      ),
+      linear-gradient(
+        90deg,
+        rgba(0, 0, 0, var(--m-1)),
+        rgba(0, 0, 0, var(--m-1))
+      ),
+      linear-gradient(
+        90deg,
+        rgba(0, 0, 0, var(--m-2)),
+        rgba(0, 0, 0, var(--m-2))
+      ),
+      linear-gradient(
+        90deg,
+        rgba(0, 0, 0, var(--m-3)),
+        rgba(0, 0, 0, var(--m-3))
+      );
+    mask-size: 50% 50%;
+    mask-repeat: no-repeat;
+    mask-position: left top, right top, left bottom, bottom right;
+    transition: --m-0 0.3s 0s, --m-1 0.15s 0.1s, --m-2 0.25s 0.21s,
       --m-3 0.19s 0.15s;
+
     &:hover {
       --m-0: 0;
       --m-1: 0;

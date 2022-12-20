@@ -17,7 +17,7 @@ import MyLogo from "./components/MyLogo";
 import ShearAngle from "./components/ShearAngle";
 import Honeycomb from "./components/Honeycomb";
 import PizzaPie from "./components/PizzaPie";
-import ImageFadeOut from "./components/ImageFadeOut";
+// import ImageFadeOut from "./components/ImageFadeOut";
 import styles from "./index.module.scss";
 
 const { GridBox } = GridContent;
@@ -36,7 +36,7 @@ const gridboxList = [
   { element: <ShearAngle /> },
   { element: <Honeycomb /> },
   { element: <PizzaPie /> },
-  { element: <ImageFadeOut /> },
+  // { element: <ImageFadeOut /> },
 ];
 
 const VisualDesign = () => {

@@ -42,7 +42,7 @@
       top: 0;
       bottom: 0;
       border-radius: 20px;
-      background: linear-gradient(
+      background-image: linear-gradient(
         to top left,
         rgba(90, 149, 207, 0.5),
         rgba(58, 76, 99, 0.8)
@@ -78,7 +78,11 @@
     position: absolute;
     left: 50%;
     bottom: 20px;
-    background: linear-gradient(to top left, rgb(135 116 249), rgb(75 162 237));
+    background-image: linear-gradient(
+      to top left,
+      rgb(135, 116, 249),
+      rgb(75, 162, 237)
+    );
     border-radius: 80px;
   }
   .rect {
@@ -87,7 +91,7 @@
     position: absolute;
     right: 50%;
     top: 20px;
-    background: linear-gradient(
+    background-image: linear-gradient(
       to top left,
       rgba(135, 116, 249, 0.9),
       rgba(75, 162, 237, 0.9)
