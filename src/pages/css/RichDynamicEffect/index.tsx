@@ -4,6 +4,7 @@
 import React, { useEffect } from "react";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import DynamicTime from "./components/DynamicTime";
+import FlopTime from "./components/FlopTime";
 import ChargingAnimation from "./components/ChargingAnimation";
 import ZongziLoading from "./components/ZongziLoading";
 import BoxReflect from "./components/BoxReflect";
@@ -21,8 +22,13 @@ const RichDynamicEffect = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.box}>
-        <DynamicTime />
+      <div className={styles.multipleColumnsBox}>
+        <div className={styles.box}>
+          <DynamicTime />
+        </div>
+        <div className={styles.box}>
+          <FlopTime />
+        </div>
       </div>
       <div className={styles.multipleColumnsBox}>
         <div className={styles.box}>

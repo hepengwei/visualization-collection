@@ -1,0 +1,121 @@
+.container {
+  height: 240px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .content {
+    display: flex;
+    .flip {
+      width: 60px;
+      height: 100px;
+      line-height: 100px;
+      margin: 0 4px;
+      border: solid 1px #000;
+      border-radius: 10px;
+      background-color: #000;
+      font-size: 66px;
+      color: #fff;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      position: relative;
+
+      .digital {
+        &::before,
+        &::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          right: 0;
+          background-color: #000;
+          overflow: hidden;
+          color: #fff;
+          box-sizing: border-box;
+        }
+        &::before {
+          top: 0;
+          bottom: 50%;
+          border-radius: 10px 10px 0 0;
+          border-bottom: solid 1px #333;
+        }
+        &::after {
+          top: 50%;
+          bottom: 0;
+          border-radius: 0 0 10px 10px;
+          line-height: 0;
+        }
+      }
+
+      .front {
+        &::before {
+          z-index: 3;
+        }
+        &::after {
+          z-index: 1;
+        }
+      }
+
+      .back {
+        &::before {
+          z-index: 1;
+        }
+        &::after {
+          z-index: 2;
+          transform-origin: 50% 0%;
+          transform: perspective(160px) rotateX(180deg);
+        }
+      }
+
+      @for $i from 0 to 10 {
+        .number#{$i} {
+          &::before,
+          &::after {
+            content: "#{$i}";
+          }
+        }
+      }
+    }
+
+    .down.go {
+      .front {
+        &::before {
+          transform-origin: 50% 100%;
+          animation: frontFlipDown 0.6s ease-in-out both;
+          box-shadow: 0 -2px 6px rgba(255, 255, 255, 0.3);
+          backface-visibility: hidden;
+        }
+      }
+      .back {
+        &::after {
+          animation: backFlipDown 0.6s ease-in-out both;
+        }
+      }
+    }
+
+    .dot {
+      height: 100px;
+      line-height: 100px;
+      margin: 0 10px;
+      font-size: 24px;
+    }
+
+    @keyframes frontFlipDown {
+      0% {
+        transform: perspective(160px) rotateX(0deg);
+      }
+
+      100% {
+        transform: perspective(160px) rotateX(-180deg);
+      }
+    }
+
+    @keyframes backFlipDown {
+      0% {
+        transform: perspective(160px) rotateX(180deg);
+      }
+
+      100% {
+        transform: perspective(160px) rotateX(0deg);
+      }
+    }
+  }
+}
