@@ -159,8 +159,6 @@ const ColumnBar = ({
     const options = getBaseOptions();
     const { dataSource } = data;
     if (!dataSource) return options;
-    // 添加水印
-    // options.graphic = getGraphic();
     options.dataset = { source: dataSource };
     return options;
   }, [data]);
