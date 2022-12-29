@@ -1,11 +1,10 @@
 import React, { useRef, useMemo } from "react";
 import echarts, { getGraphic } from "@/utils/echarts.config";
 import type { ChartOptions } from "@/utils/echarts.config";
-import { ECHART_COMMON_COLOR } from "constants/common";
 import numberFormat from "utils/numberFormat";
 import BasicEchart from "../BasicEchart";
 
-interface TwoColumnBarProps {
+interface ColumnLineBarProps {
   data: {
     dataSource: any[];
   };
@@ -19,33 +18,20 @@ const getBaseOptions = () => {
   const baseOptions: ChartOptions = {
     // @ts-ignore
     graphic: getGraphic(),
-    color: ECHART_COMMON_COLOR,
+    color: ["#F76F69", "#7C51ED"],
     legend: {
-      show: true,
-      textStyle: {
-        overflow: "truncate",
-        fontSize: 13,
-        color: "#808191",
-        fontFamily: "SourceHanSansCN-Medium",
-        fontWeight: 500,
-      },
+      show: false,
     },
     tooltip: {
       trigger: "axis",
-      axisPointer: {
-        type: "cross",
-        crossStyle: {
-          color: "#999",
-        },
-      },
       textStyle: {
         fontWeight: 400,
       },
     },
     grid: {
-      left: 60,
+      left: 20,
       right: 20,
-      top: 40,
+      top: 20,
       bottom: 60,
     },
     xAxis: [
@@ -56,77 +42,49 @@ const getBaseOptions = () => {
           fontFamily: "SourceHanSansCN-Medium",
           fontWeight: 500,
           fontSize: 12,
-          rotate: 45,
+          margin: 30,
+        },
+        axisLine: {
+          show: false,
+        },
+        axisTick: {
+          show: false,
         },
       },
     ],
     yAxis: [
       {
         type: "value",
-        splitLine: {
-          show: true,
-          lineStyle: {
-            color: ["rgba(159,173,242,0.2)"],
-            width: 1,
-            type: "dashed",
-          },
-        },
-        axisLabel: {
-          show: true,
-          color: "#808191",
-          fontSize: 12,
-          formatter: function (value: any) {
-            return numberFormat(value, true) as string;
-          },
-        },
+        show: false,
       },
-      //   {
-      //     type: "value",
-      //     name: "",
-      //     splitLine: {
-      //       show: false,
-      //       lineStyle: {
-      //         color: ["rgba(159,173,242,0.20)"],
-      //         width: 1,
-      //         type: "dashed",
-      //       },
-      //     },
-      //     axisLabel: {
-      //       formatter: function (value: any) {
-      //         return `$${numberFormat(value, true)}`;
-      //       },
-      //     },
-      //   },
     ],
     series: [
       {
         type: "bar",
         barWidth: 18,
-        stack: "one",
         tooltip: {
           valueFormatter: function (value: any) {
             return `$${numberFormat(value, true)}`;
           },
         },
-      },
-      {
-        type: "bar",
-        barWidth: 18,
-        stack: "one",
-        tooltip: {
-          valueFormatter: function (value) {
-            return `$${numberFormat(+value, true)}`;
-          },
+        itemStyle: {
+          borderRadius: 9,
         },
       },
       {
         type: "line",
-        yAxisIndex: 0,
-        // yAxisIndex: 1,
+        smooth: true,
+        symbol: "none",
         tooltip: {
           valueFormatter: function (value: any) {
             return `$${numberFormat(value, true)}`;
           },
+        },
+        lineStyle: {
+          width: 4,
+        },
+        areaStyle: {
+          color: "rgba(124,81,237,0.1)",
         },
       },
     ],
@@ -137,12 +95,12 @@ const getBaseOptions = () => {
   return baseOptions;
 };
 
-const TwoColumnBar = ({
+const ColumnLineBar = ({
   data, // 数据
   style, // 样式
   onHoverChange, // 鼠标hover事件
   onClickChange, // 点击事件
-}: TwoColumnBarProps) => {
+}: ColumnLineBarProps) => {
   const chartInstance = useRef<echarts.EChartsType | null>(null);
 
   // 图表最终的配置数据
@@ -165,4 +123,4 @@ const TwoColumnBar = ({
   );
 };
 
-export default TwoColumnBar;
+export default ColumnLineBar;
