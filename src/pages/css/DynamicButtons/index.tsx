@@ -14,6 +14,7 @@ import TranslateBgButton from "./components/TranslateBgButton";
 import RoundedGradientButton from "./components/RoundedGradientButton";
 import MirrorSideButton from "./components/MirrorSideButton";
 import ShakeButton from "./components/ShakeButton";
+import Skew3DButton from "./components/Skew3DButton";
 import styles from "./index.module.scss";
 
 const { GridBox } = GridContent;
@@ -35,6 +36,7 @@ const gridboxList = [
   { element: <RoundedGradientButton /> },
   { element: <MirrorSideButton /> },
   { element: <ShakeButton /> },
+  { element: <Skew3DButton /> },
 ];
 
 const DynamicButtons = () => {
