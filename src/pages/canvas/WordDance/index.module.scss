@@ -2,6 +2,7 @@
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
@@ -16,5 +17,10 @@
     right: 0;
     margin: auto;
     visibility: hidden;
+  }
+
+  .tip {
+    margin-top: 20px;
+    color: #666;
   }
 }

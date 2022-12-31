@@ -87,6 +87,9 @@ const CodeBgWall = () => {
         <source src="public/dance.mp4"></source>
       </video>
       <canvas ref={canvasRef}>您的浏览器版本过低，请更新浏览器</canvas>
+      <div className={styles.tip}>
+        由于CORS策略，只有本地运行项目才能正常播放
+      </div>
     </div>
   );
 };
