@@ -64,6 +64,7 @@ const items: MenuItem[] = [
     getItem("水波荡漾效果", "rippleFloatOnTheWater"),
     getItem("花卉绽放动画", "flowerBloom"),
     getItem("代码背景墙", "codeBgWall"),
+    getItem("文字跳舞", "wordDance"),
   ]),
   getItem("图片处理工具", "gameImage", <FileImageOutlined />),
   getItem("Echarts交互", "echarts", <LineChartOutlined />, [
