@@ -24,3 +24,91 @@ export const getImageWidthHeight: GetImageWidthHeightFn = (url: string) => {
     image.src = url;
   });
 };
+
+// 左右翻转
+export const flipSideToSide = (imageData: ImageData) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        newImgData[startIndex] = data[(y * width + width - x - 1) * 4];
+        newImgData[startIndex + 1] = data[(y * width + width - x - 1) * 4 + 1];
+        newImgData[startIndex + 2] = data[(y * width + width - x - 1) * 4 + 2];
+        newImgData[startIndex + 3] = data[(y * width + width - x - 1) * 4 + 3];
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
+    return newImageData;
+  }
+  return null;
+};
+
+// 上下翻转
+export const flipUpsideDown = (imageData: ImageData) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        newImgData[startIndex] = data[((height - y - 1) * width + x) * 4];
+        newImgData[startIndex + 1] =
+          data[((height - y - 1) * width + x) * 4 + 1];
+        newImgData[startIndex + 2] =
+          data[((height - y - 1) * width + x) * 4 + 2];
+        newImgData[startIndex + 3] =
+          data[((height - y - 1) * width + x) * 4 + 3];
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
+    return newImageData;
+  }
+  return null;
+};
+
+// 灰化
+export const toGrey = (imageData: ImageData) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        const avgColor =
+          (data[startIndex] + data[startIndex + 1] + data[startIndex + 2]) / 3;
+        newImgData[startIndex] = avgColor;
+        newImgData[startIndex + 1] = avgColor;
+        newImgData[startIndex + 2] = avgColor;
+        newImgData[startIndex + 3] = data[startIndex + 3];
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
+    return newImageData;
+  }
+  return null;
+};
+
+// 黑白化
+export const toBlackAndWhite = (imageData: ImageData) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        const avgColor =
+          (data[startIndex] + data[startIndex + 1] + data[startIndex + 2]) / 3;
+        const newColor = avgColor > 127 ? 255 : 0;
+        newImgData[startIndex] = newColor;
+        newImgData[startIndex + 1] = newColor;
+        newImgData[startIndex + 2] = newColor;
+        newImgData[startIndex + 3] = data[startIndex + 3];
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
+    return newImageData;
+  }
+  return null;
+};
