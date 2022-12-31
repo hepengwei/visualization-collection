@@ -106,5 +106,17 @@
         }
       }
     }
+
+    .operationBtns {
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+      .operationBtn {
+        margin-right: 10px;
+        font-family: SourceHanSansCN-Medium !important;
+        font-weight: 500;
+        border-radius: 4px;
+      }
+    }
   }
 }
