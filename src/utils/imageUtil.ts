@@ -68,6 +68,49 @@ export const flipUpsideDown = (imageData: ImageData) => {
   return null;
 };
 
+// 左旋转
+export const leftRotate = (imageData: ImageData) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let x = 0; x < width; x++) {
+      for (let y = 0; y < height; y++) {
+        const startIndex = (x * height + y) * 4;
+        newImgData[startIndex] = data[(y * width + width - x - 1) * 4];
+        newImgData[startIndex + 1] = data[(y * width + width - x - 1) * 4 + 1];
+        newImgData[startIndex + 2] = data[(y * width + width - x - 1) * 4 + 2];
+        newImgData[startIndex + 3] = data[(y * width + width - x - 1) * 4 + 3];
+      }
+    }
+    const newImageData = new ImageData(newImgData, height, width);
+    return newImageData;
+  }
+  return null;
+};
+
+// 右旋转
+export const rightRotate = (imageData: ImageData) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let x = 0; x < width; x++) {
+      for (let y = 0; y < height; y++) {
+        const startIndex = (x * height + y) * 4;
+        newImgData[startIndex] = data[((height - y - 1) * width + x) * 4];
+        newImgData[startIndex + 1] =
+          data[((height - y - 1) * width + x) * 4 + 1];
+        newImgData[startIndex + 2] =
+          data[((height - y - 1) * width + x) * 4 + 2];
+        newImgData[startIndex + 3] =
+          data[((height - y - 1) * width + x) * 4 + 3];
+      }
+    }
+    const newImageData = new ImageData(newImgData, height, width);
+    return newImageData;
+  }
+  return null;
+};
+
 // 灰化
 export const toGrey = (imageData: ImageData) => {
   if (imageData) {

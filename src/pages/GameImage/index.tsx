@@ -11,6 +11,8 @@ import {
   getImageWidthHeight,
   flipSideToSide,
   flipUpsideDown,
+  leftRotate,
+  rightRotate,
   toGrey,
   toBlackAndWhite,
 } from "utils/imageUtil";
@@ -35,6 +37,14 @@ interface ImgStatusInfo {
     doing: boolean;
     imageData: ImageData | null;
   };
+  leftRotateStatus: {
+    doing: boolean;
+    imageData: ImageData | null;
+  };
+  rightRotateStatus: {
+    doing: boolean;
+    imageData: ImageData | null;
+  };
   toGreyStatus: {
     doing: boolean;
     imageData: ImageData | null;
@@ -53,8 +63,11 @@ const tabsList = [
 const defaultImgStatus = {
   flipSideToSideStatus: { doing: false, imageData: null },
   flipUpsideDownStatus: { doing: false, imageData: null },
+  leftRotateStatus: { doing: false, imageData: null },
+  rightRotateStatus: { doing: false, imageData: null },
   toGreyStatus: { doing: false, imageData: null },
   toBlackAndWhiteStatus: { doing: false, imageData: null },
+  
 };
 
 const GameImage = () => {
@@ -223,6 +236,47 @@ const GameImage = () => {
     }
   };
 
+  // 点击左旋转
+  const onLeftRotate = () => {
+    const { leftRotateStatus } = imgStatusInfo.current;
+    if (leftRotateStatus && leftRotateStatus.imageData) {
+      exportImage(leftRotateStatus.imageData);
+    } else if (leftRotateStatus.doing) {
+      return;
+    } else if (imgInfo?.imageData) {
+      leftRotateStatus.doing = true;
+      const newImageData = leftRotate(imgInfo.imageData);
+      if (newImageData) {
+        leftRotateStatus.imageData = newImageData;
+        exportImage(newImageData);
+      } else {
+        message.error("转换失败");
+      }
+      leftRotateStatus.doing = false;
+    }
+  };
+
+  
+  // 点击右旋转
+  const onRightRotate = () => {
+    const { rightRotateStatus } = imgStatusInfo.current;
+    if (rightRotateStatus && rightRotateStatus.imageData) {
+      exportImage(rightRotateStatus.imageData);
+    } else if (rightRotateStatus.doing) {
+      return;
+    } else if (imgInfo?.imageData) {
+      rightRotateStatus.doing = true;
+      const newImageData = rightRotate(imgInfo.imageData);
+      if (newImageData) {
+        rightRotateStatus.imageData = newImageData;
+        exportImage(newImageData);
+      } else {
+        message.error("转换失败");
+      }
+      rightRotateStatus.doing = false;
+    }
+  };
+
   // 点击灰化
   const onToGrey = () => {
     const { toGreyStatus } = imgStatusInfo.current;
@@ -328,6 +382,20 @@ const GameImage = () => {
               onClick={onFlipUpsideDown}
             >
               上下翻转
+            </Button>
+            <Button
+              type="primary"
+              className={styles.operationBtn}
+              onClick={onLeftRotate}
+            >
+              左旋转
+            </Button>
+            <Button
+              type="primary"
+              className={styles.operationBtn}
+              onClick={onRightRotate}
+            >
+              右旋转
             </Button>
             <Button
               type="primary"
