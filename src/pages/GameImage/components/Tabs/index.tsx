@@ -8,8 +8,8 @@ interface TabItem {
 
 interface TabsProps {
   data: TabItem[];
-  selectedTabId: string | number;
-  onChange: (tabId: string | number) => void;
+  selectedTabId: any;
+  onChange: (tabId: any) => void;
 }
 
 const Tabs = (props: TabsProps) => {

@@ -1,80 +1,45 @@
 /**
  * 图片处理工具
  */
-import React, { useRef, useState } from "react";
-import { Button, message } from "antd";
-import { cloneDeep } from "lodash-es";
+import React, { useState } from "react";
+import { Button } from "antd";
 import { FolderAddOutlined } from "@ant-design/icons";
 import Tabs from "./components/Tabs";
-import {
-  sizeTostr,
-  getImageWidthHeight,
-  flipSideToSide,
-  flipUpsideDown,
-  leftRotate,
-  rightRotate,
-  toGrey,
-  toBlackAndWhite,
-} from "utils/imageUtil";
+import { getImageWidthHeight } from "utils/imageUtil";
+import BasicOperation from "./components/BasicOperation";
+import Clip from "./components/Clip";
 import styles from "./index.module.scss";
 
-interface ImgInfo {
+export interface ImgInfo {
   name: string;
   type: string;
   size: number;
   imgUrl: string;
-  width?: number;
-  height?: number;
+  width: number;
+  height: number;
   imageData?: ImageData;
 }
 
-interface ImgStatusInfo {
-  flipSideToSideStatus: {
-    doing: boolean;
-    imageData: ImageData | null;
-  };
-  flipUpsideDownStatus: {
-    doing: boolean;
-    imageData: ImageData | null;
-  };
-  leftRotateStatus: {
-    doing: boolean;
-    imageData: ImageData | null;
-  };
-  rightRotateStatus: {
-    doing: boolean;
-    imageData: ImageData | null;
-  };
-  toGreyStatus: {
-    doing: boolean;
-    imageData: ImageData | null;
-  };
-  toBlackAndWhiteStatus: {
-    doing: boolean;
-    imageData: ImageData | null;
-  };
+enum TabId {
+  "basicOperation",
+  "clip",
+  "addWatermark",
+  "coverWithMosaics",
+  "photoCompression",
 }
 
 const tabsList = [
-  { id: "basicOperation", label: "基础操作" },
-  { id: "photoCompression", label: "图片压缩" },
+  { id: TabId.basicOperation, label: "基础操作" },
+  { id: TabId.clip, label: "裁剪" },
+  { id: TabId.addWatermark, label: "添加水印" },
+  { id: TabId.coverWithMosaics, label: "打马赛克" },
+  { id: TabId.photoCompression, label: "图片压缩" },
 ];
 
-const defaultImgStatus = {
-  flipSideToSideStatus: { doing: false, imageData: null },
-  flipUpsideDownStatus: { doing: false, imageData: null },
-  leftRotateStatus: { doing: false, imageData: null },
-  rightRotateStatus: { doing: false, imageData: null },
-  toGreyStatus: { doing: false, imageData: null },
-  toBlackAndWhiteStatus: { doing: false, imageData: null },
-  
-};
-
 const GameImage = () => {
-  const [selectedTabId, setSelectedTabId] = useState<string>(tabsList[0].id);
+  const [selectedTabId, setSelectedTabId] = useState<TabId>(tabsList[0].id);
   const [imgDragOver, setImgDragOver] = useState<boolean>(false);
   const [imgInfo, setImgInfo] = useState<ImgInfo | null>(null);
-  const imgStatusInfo = useRef<ImgStatusInfo>(cloneDeep(defaultImgStatus));
 
   // 获取图片二进制数据
   const getCanvasImgData = (
@@ -120,8 +85,8 @@ const GameImage = () => {
     });
   };
 
-  const onTabsChange = (tabId: string | number) => {
-    setSelectedTabId(tabId as string);
+  const onTabsChange = (tabId: TabId) => {
+    setSelectedTabId(tabId);
   };
 
   const getImgInfo = (files: FileList) => {
@@ -155,18 +120,11 @@ const GameImage = () => {
             setImgInfo(imgInfo);
           })
           .catch(() => {
-            const imgInfo = {
-              name: file.name,
-              type: file.type,
-              size: file.size,
-              imgUrl,
-            };
-            setImgInfo(imgInfo);
+            setImgInfo(null);
           });
       };
       reader.readAsDataURL(file);
     }
-    imgStatusInfo.current = cloneDeep(defaultImgStatus);
   };
 
   const onUploadChange = (e: any) => {
@@ -196,127 +154,6 @@ const GameImage = () => {
     getImgInfo(files);
   };
 
-  // 点击左右翻转
-  const onFlipSideToSide = () => {
-    const { flipSideToSideStatus } = imgStatusInfo.current;
-    if (flipSideToSideStatus && flipSideToSideStatus.imageData) {
-      exportImage(flipSideToSideStatus.imageData);
-    } else if (flipSideToSideStatus.doing) {
-      return;
-    } else if (imgInfo?.imageData) {
-      imgStatusInfo.current.flipSideToSideStatus.doing = true;
-      const newImageData = flipSideToSide(imgInfo.imageData);
-      if (newImageData) {
-        imgStatusInfo.current.flipSideToSideStatus.imageData = newImageData;
-        exportImage(newImageData);
-      } else {
-        message.error("转换失败");
-      }
-      imgStatusInfo.current.flipSideToSideStatus.doing = false;
-    }
-  };
-
-  // 点击上下翻转
-  const onFlipUpsideDown = () => {
-    const { flipUpsideDownStatus } = imgStatusInfo.current;
-    if (flipUpsideDownStatus && flipUpsideDownStatus.imageData) {
-      exportImage(flipUpsideDownStatus.imageData);
-    } else if (flipUpsideDownStatus.doing) {
-      return;
-    } else if (imgInfo?.imageData) {
-      flipUpsideDownStatus.doing = true;
-      const newImageData = flipUpsideDown(imgInfo.imageData);
-      if (newImageData) {
-        flipUpsideDownStatus.imageData = newImageData;
-        exportImage(newImageData);
-      } else {
-        message.error("转换失败");
-      }
-      flipUpsideDownStatus.doing = false;
-    }
-  };
-
-  // 点击左旋转
-  const onLeftRotate = () => {
-    const { leftRotateStatus } = imgStatusInfo.current;
-    if (leftRotateStatus && leftRotateStatus.imageData) {
-      exportImage(leftRotateStatus.imageData);
-    } else if (leftRotateStatus.doing) {
-      return;
-    } else if (imgInfo?.imageData) {
-      leftRotateStatus.doing = true;
-      const newImageData = leftRotate(imgInfo.imageData);
-      if (newImageData) {
-        leftRotateStatus.imageData = newImageData;
-        exportImage(newImageData);
-      } else {
-        message.error("转换失败");
-      }
-      leftRotateStatus.doing = false;
-    }
-  };
-
-  
-  // 点击右旋转
-  const onRightRotate = () => {
-    const { rightRotateStatus } = imgStatusInfo.current;
-    if (rightRotateStatus && rightRotateStatus.imageData) {
-      exportImage(rightRotateStatus.imageData);
-    } else if (rightRotateStatus.doing) {
-      return;
-    } else if (imgInfo?.imageData) {
-      rightRotateStatus.doing = true;
-      const newImageData = rightRotate(imgInfo.imageData);
-      if (newImageData) {
-        rightRotateStatus.imageData = newImageData;
-        exportImage(newImageData);
-      } else {
-        message.error("转换失败");
-      }
-      rightRotateStatus.doing = false;
-    }
-  };
-
-  // 点击灰化
-  const onToGrey = () => {
-    const { toGreyStatus } = imgStatusInfo.current;
-    if (toGreyStatus && toGreyStatus.imageData) {
-      exportImage(toGreyStatus.imageData);
-    } else if (toGreyStatus.doing) {
-      return;
-    } else if (imgInfo?.imageData) {
-      toGreyStatus.doing = true;
-      const newImageData = toGrey(imgInfo.imageData);
-      if (newImageData) {
-        toGreyStatus.imageData = newImageData;
-        exportImage(newImageData);
-      } else {
-        message.error("转换失败");
-      }
-      toGreyStatus.doing = false;
-    }
-  };
-
-  // 点击黑白化
-  const onToBlackAndWhite = () => {
-    const { toBlackAndWhiteStatus } = imgStatusInfo.current;
-    if (toBlackAndWhiteStatus && toBlackAndWhiteStatus.imageData) {
-      exportImage(toBlackAndWhiteStatus.imageData);
-    } else if (toBlackAndWhiteStatus.doing) {
-      return;
-    } else if (imgInfo?.imageData) {
-      toBlackAndWhiteStatus.doing = true;
-      const newImageData = toBlackAndWhite(imgInfo.imageData);
-      if (newImageData) {
-        toBlackAndWhiteStatus.imageData = newImageData;
-        exportImage(newImageData);
-      } else {
-        message.error("转换失败");
-      }
-      toBlackAndWhiteStatus.doing = false;
-    }
-  };
-
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -325,33 +162,14 @@ const GameImage = () => {
           selectedTabId={selectedTabId}
           onChange={onTabsChange}
         />
-        <div
-          className={styles.imgBox}
-          style={{ borderColor: imgDragOver ? "green" : "#2320e5" }}
-          onDragOver={onDragOver}
-          onDragLeave={onDragLeave}
-          onDrop={onDrop}
-        >
-          {imgInfo ? (
-            <div className={styles.fileBox}>
-              <img src={imgInfo.imgUrl} alt="" />
-              <div className={styles.fileInfo}>
-                <div className={styles.item}>文件名：{imgInfo.name}</div>
-                <div className={styles.item}>
-                  格式：{imgInfo.type.split("/")[1].toUpperCase()}
-                </div>
-                <div className={styles.item}>
-                  尺寸：
-                  {imgInfo.width && imgInfo.height
-                    ? `${imgInfo.width}x${imgInfo.height}`
-                    : "未知"}
-                </div>
-                <div className={styles.item}>
-                  大小：{sizeTostr(imgInfo.size)}
-                </div>
-              </div>
-            </div>
-          ) : (
+        {!imgInfo && (
+          <div
+            className={styles.imgBox}
+            style={{ borderColor: imgDragOver ? "green" : "#2320e5" }}
+            onDragOver={onDragOver}
+            onDragLeave={onDragLeave}
+            onDrop={onDrop}
+          >
             <div className={styles.emptyBox}>
               <Button type="primary" className={styles.uploadBtn}>
                 <FolderAddOutlined />
@@ -365,53 +183,20 @@ const GameImage = () => {
               <p className={styles.text}>或将文件拖到此处</p>
               <p className={styles.tips}>支持jpg、jpeg、png格式</p>
             </div>
-          )}
-        </div>
-        {imgInfo && (
-          <div className={styles.operationBtns}>
-            <Button
-              type="primary"
-              className={styles.operationBtn}
-              onClick={onFlipSideToSide}
-            >
-              左右翻转
-            </Button>
-            <Button
-              type="primary"
-              className={styles.operationBtn}
-              onClick={onFlipUpsideDown}
-            >
-              上下翻转
-            </Button>
-            <Button
-              type="primary"
-              className={styles.operationBtn}
-              onClick={onLeftRotate}
-            >
-              左旋转
-            </Button>
-            <Button
-              type="primary"
-              className={styles.operationBtn}
-              onClick={onRightRotate}
-            >
-              右旋转
-            </Button>
-            <Button
-              type="primary"
-              className={styles.operationBtn}
-              onClick={onToGrey}
-            >
-              灰化
-            </Button>
-            <Button
-              type="primary"
-              className={styles.operationBtn}
-              onClick={onToBlackAndWhite}
-            >
-              黑白化
-            </Button>
           </div>
+        )}
+        {imgInfo && selectedTabId === TabId.basicOperation && (
+          <BasicOperation
+            imgInfo={imgInfo}
+            exportImage={exportImage}
+            imgDragOver={imgDragOver}
+            onDragOver={onDragOver}
+            onDragLeave={onDragLeave}
+            onDrop={onDrop}
+          />
+        )}
+        {imgInfo && selectedTabId === TabId.clip && (
+          <Clip imgInfo={imgInfo} exportImage={exportImage} />
         )}
       </div>
     </div>

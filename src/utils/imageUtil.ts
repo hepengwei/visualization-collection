@@ -155,3 +155,89 @@ export const toBlackAndWhite = (imageData: ImageData) => {
   }
   return null;
 };
+
+// 裁剪矩形图
+export const clipRect = (
+  imageData: ImageData,
+  newWidth: number,
+  newHeight: number,
+  top: number,
+  left: number,
+  retainOriginalSize = false
+) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    let finalLeft = left;
+    let finalTop = top;
+    let finalWidth = newWidth;
+    let finalHeight = newHeight;
+    if (finalLeft < 0) {
+      finalLeft = 0;
+    } else if (finalLeft > width) {
+      finalLeft = width;
+    }
+    if (finalTop < 0) {
+      finalTop = 0;
+    } else if (finalTop > height) {
+      finalTop = height;
+    }
+    if (finalWidth < 1) {
+      finalWidth = 1;
+    } else if (finalWidth > width) {
+      finalWidth = width;
+    }
+    if (finalHeight < 1) {
+      finalHeight = 1;
+    } else if (finalHeight > height) {
+      finalHeight = height;
+    }
+    if (finalLeft + finalWidth > width) {
+      finalWidth = width - finalLeft;
+    }
+    if (finalTop + finalHeight > height) {
+      finalHeight = height - finalTop;
+    }
+    // 保留原尺寸
+    if (retainOriginalSize) {
+      const newImgData = new Uint8ClampedArray(data.length);
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          const startIndex = (y * width + x) * 4;
+          if (
+            x >= left &&
+            x <= left + newWidth &&
+            y >= top &&
+            y <= top + newHeight
+          ) {
+            newImgData[startIndex] = data[startIndex];
+            newImgData[startIndex + 1] = data[startIndex + 1];
+            newImgData[startIndex + 2] = data[startIndex + 2];
+            newImgData[startIndex + 3] = data[startIndex + 3];
+          } else {
+            newImgData[startIndex] = 0;
+            newImgData[startIndex + 1] = 0;
+            newImgData[startIndex + 2] = 0;
+            newImgData[startIndex + 3] = 0;
+          }
+        }
+      }
+      const newImageData = new ImageData(newImgData, width, height);
+      return newImageData;
+    } else {
+      const newImgData = new Uint8ClampedArray(finalWidth * finalHeight * 4);
+      for (let y = top; y <= top + finalHeight; y++) {
+        for (let x = left; x <= left + finalWidth; x++) {
+          const startIndex = ((y - top) * finalWidth + x - left) * 4;
+          const startIndex2 = (y * width + x) * 4;
+          newImgData[startIndex] = data[startIndex2];
+          newImgData[startIndex + 1] = data[startIndex2 + 1];
+          newImgData[startIndex + 2] = data[startIndex2 + 2];
+          newImgData[startIndex + 3] = data[startIndex2 + 3];
+        }
+      }
+      const newImageData = new ImageData(newImgData, finalWidth, finalHeight);
+      return newImageData;
+    }
+  }
+  return null;
+};
