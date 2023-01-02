@@ -11,7 +11,8 @@
   $primaryColor: #2320e5;
 
   .content {
-    width: 1000px;
+    min-width: 1000px;
+    max-width: 1350px;
     display: flex;
     flex-direction: column;
 
@@ -112,7 +113,7 @@
       align-items: center;
       margin-top: 20px;
       .operationBtn {
-        margin-right: 10px;
+        margin-right: 12px;
         font-family: SourceHanSansCN-Medium !important;
         font-weight: 500;
         border-radius: 4px;
