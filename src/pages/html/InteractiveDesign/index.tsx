@@ -11,9 +11,10 @@ import SlideButtonTab from "./components/SlideButtonTab";
 import FlipBook from "./components/FlipBook";
 import Switchs from "./components/Switchs";
 import PeopleAnimation from "./components/PeopleAnimation";
+// import TranslateZScroll from "./components/TranslateZScroll";
 import styles from "./index.module.scss";
 
-const boxList = [
+const boxList = [ 
   { element: <MagnifyingGlass /> },
   { element: <CropImage /> },
   { element: <DragShopping /> },
@@ -22,6 +23,7 @@ const boxList = [
   { element: <FlipBook /> },
   { element: <Switchs /> },
   { element: <PeopleAnimation /> },
+  // { element: <TranslateZScroll /> },
 ];
 
 const InteractiveDesign = () => {
