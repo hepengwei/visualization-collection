@@ -154,6 +154,10 @@ const GameImage = () => {
     getImgInfo(files);
   };
 
+  const onClear = () => {
+    setImgInfo(null);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -193,10 +197,19 @@ const GameImage = () => {
             onDragOver={onDragOver}
             onDragLeave={onDragLeave}
             onDrop={onDrop}
+            onClear={onClear}
           />
         )}
         {imgInfo && selectedTabId === TabId.clip && (
-          <Clip imgInfo={imgInfo} exportImage={exportImage} />
+          <Clip
+            imgInfo={imgInfo}
+            exportImage={exportImage}
+            imgDragOver={imgDragOver}
+            onDragOver={onDragOver}
+            onDragLeave={onDragLeave}
+            onDrop={onDrop}
+            onClear={onClear}
+          />
         )}
       </div>
     </div>
