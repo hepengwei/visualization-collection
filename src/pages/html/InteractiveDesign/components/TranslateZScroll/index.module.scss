@@ -1,0 +1,77 @@
+.container {
+  width: 100%;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+    // .scroll {
+    //   width: 700px;
+    //   height: 120vh;
+    //   background-color: #aaa;
+    // }
+
+    // @scroll-timeline box-move {
+    //   source: selector("#g-scroll");
+    //   orientation: "vertical";
+    // }
+
+  .content {
+    width: 700px;
+    height: 400px;
+    transform-style: preserve-3d;
+    perspective: 200px;
+    overflow: hidden;
+    // position: relative;
+    position: fixed;
+
+    // @property --phase {
+    //   syntax: "<length>";
+    //   inherits: false;
+    //   initial-value: 15px;
+    // }
+    --phase: 15px;
+
+    .box {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+      transform-style: preserve-3d;
+      transform: translateY(calc(-60% + 100px)) translateZ(var(--phase))
+        rotateX(90deg);
+      transform-origin: bottom center;
+      //   animation-name: move;
+      //   animation-duration: 1s;
+      //   animation-timeline: box-move;
+        animation: move 10s infinite linear;
+
+      .item {
+        width: 400px;
+        height: 200px;
+        background-color: #fff;
+        transform: rotateX(-90deg);
+      }
+
+    //   @keyframes move {
+    //     0% {
+    //       --phase: 0;
+    //     }
+    //     100% {
+    //       --phase: calc(100vh + 100px);
+    //     }
+    //   }
+
+        @keyframes move {
+          100% {
+            transform: translateY(calc(-60% + 100px))
+              translateZ(calc(100vh + 120px)) rotateX(90deg);
+          }
+        }
+    }
+  }
+}

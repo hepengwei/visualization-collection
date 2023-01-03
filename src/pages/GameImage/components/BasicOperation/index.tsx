@@ -1,7 +1,7 @@
 /**
  * 图片处理工具
  */
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { Button, message } from "antd";
 import { cloneDeep } from "lodash-es";
 import {
@@ -23,6 +23,7 @@ interface BasicOperationProps {
   onDragOver: (e: React.DragEvent) => void;
   onDragLeave: (e: React.DragEvent) => void;
   onDrop: (e: React.DragEvent) => void;
+  onClear: () => void;
 }
 
 interface ImgStatusInfo {
@@ -62,8 +63,15 @@ const defaultImgStatus = {
 };
 
 const BasicOperation = (props: BasicOperationProps) => {
-  const { imgInfo, exportImage, imgDragOver, onDragOver, onDragLeave, onDrop } =
-    props;
+  const {
+    imgInfo,
+    exportImage,
+    imgDragOver,
+    onDragOver,
+    onDragLeave,
+    onDrop,
+    onClear,
+  } = props;
   const imgStatusInfo = useRef<ImgStatusInfo>(cloneDeep(defaultImgStatus));
 
   // 点击左右翻转
@@ -217,47 +225,52 @@ const BasicOperation = (props: BasicOperationProps) => {
         </div>
       </div>
       <div className={styles.operationBtns}>
-        <Button
-          type="primary"
-          className={styles.operationBtn}
-          onClick={onFlipSideToSide}
-        >
-          左右翻转
-        </Button>
-        <Button
-          type="primary"
-          className={styles.operationBtn}
-          onClick={onFlipUpsideDown}
-        >
-          上下翻转
-        </Button>
-        <Button
-          type="primary"
-          className={styles.operationBtn}
-          onClick={onLeftRotate}
-        >
-          左旋转
-        </Button>
-        <Button
-          type="primary"
-          className={styles.operationBtn}
-          onClick={onRightRotate}
-        >
-          右旋转
-        </Button>
-        <Button
-          type="primary"
-          className={styles.operationBtn}
-          onClick={onToGrey}
-        >
-          灰化
-        </Button>
-        <Button
-          type="primary"
-          className={styles.operationBtn}
-          onClick={onToBlackAndWhite}
-        >
-          黑白化
+        <div>
+          <Button
+            type="primary"
+            className={styles.operationBtn}
+            onClick={onFlipSideToSide}
+          >
+            左右翻转
+          </Button>
+          <Button
+            type="primary"
+            className={styles.operationBtn}
+            onClick={onFlipUpsideDown}
+          >
+            上下翻转
+          </Button>
+          <Button
+            type="primary"
+            className={styles.operationBtn}
+            onClick={onLeftRotate}
+          >
+            左旋转
+          </Button>
+          <Button
+            type="primary"
+            className={styles.operationBtn}
+            onClick={onRightRotate}
+          >
+            右旋转
+          </Button>
+          <Button
+            type="primary"
+            className={styles.operationBtn}
+            onClick={onToGrey}
+          >
+            灰化
+          </Button>
+          <Button
+            type="primary"
+            className={styles.operationBtn}
+            onClick={onToBlackAndWhite}
+          >
+            黑白化
+          </Button>
+        </div>
+        <Button ghost type="primary" onClick={onClear}>
+          清空
         </Button>
       </div>
     </div>

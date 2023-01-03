@@ -12,6 +12,11 @@ import styles from "./index.module.scss";
 interface ClipProps {
   imgInfo: ImgInfo;
   exportImage: (imageData: ImageData) => void;
+  imgDragOver: boolean;
+  onDragOver: (e: React.DragEvent) => void;
+  onDragLeave: (e: React.DragEvent) => void;
+  onDrop: (e: React.DragEvent) => void;
+  onClear: () => void;
 }
 
 enum Contact {
@@ -25,16 +30,32 @@ enum Contact {
   "left",
 }
 
+const clipBoxMinWidthHeight = 10; // 裁剪框的最小宽高
+
 const Clip = (props: ClipProps) => {
-  const { imgInfo, exportImage } = props;
+  const {
+    imgInfo,
+    exportImage,
+    imgDragOver,
+    onDragOver,
+    onDragLeave,
+    onDrop,
+    onClear,
+  } = props;
   const { scrollTop } = useGlobalContext();
   const [imgSizeQualified, setImgSizeQualified] = useState<boolean>(false);
   const [retainOriginalSize, setRetainOriginalSize] = useState<boolean>(false);
   const doingClip = useRef<boolean>(false);
   const clipBoxRef = useRef<HTMLDivElement>(null);
 
-  const defaultWidth = Math.max(Math.floor(imgInfo.width / 2), 10);
-  const defaultHeight = Math.max(Math.floor(imgInfo.height / 2), 10);
+  const defaultWidth = Math.max(
+    Math.floor(imgInfo.width / 2),
+    clipBoxMinWidthHeight
+  );
+  const defaultHeight = Math.max(
+    Math.floor(imgInfo.height / 2),
+    clipBoxMinWidthHeight
+  );
   const [clipBoxWidth, setClipBoxWidth] = useState<number>(defaultWidth);
   const [clipBoxHeight, setClipBoxHeight] = useState<number>(defaultHeight);
   const [clipBoxTop, setClipBoxTop] = useState<number>(0);
@@ -89,7 +110,9 @@ const Clip = (props: ClipProps) => {
     const widthBefore = clipBoxWidth - 2;
     const mainX = getPosition(clipBoxNode).left;
     const addWidth = x - widthBefore - mainX;
-    setClipBoxWidth(Math.floor(widthBefore + addWidth));
+    setClipBoxWidth(
+      Math.max(Math.floor(widthBefore + addWidth), clipBoxMinWidthHeight)
+    );
   };
 
   //up移动
@@ -111,9 +134,16 @@ const Clip = (props: ClipProps) => {
     } else if (y > maxY) {
       y = maxY;
     }
-    setClipBoxTop(Math.floor(clipBoxTop + y - mainY));
+    setClipBoxTop(
+      Math.min(
+        Math.floor(clipBoxTop + y - mainY),
+        leftBoxHeight.current - clipBoxMinWidthHeight
+      )
+    );
     const heightBefore = clipBoxHeight;
-    setClipBoxHeight(Math.floor(heightBefore + mainY - y));
+    setClipBoxHeight(
+      Math.max(Math.floor(heightBefore + mainY - y), clipBoxMinWidthHeight)
+    );
   };
 
   //left移动
@@ -135,9 +165,16 @@ const Clip = (props: ClipProps) => {
     } else if (x > maxX) {
       x = maxX;
     }
-    setClipBoxLeft(Math.floor(clipBoxLeft + x - mainX));
+    setClipBoxLeft(
+      Math.min(
+        Math.floor(clipBoxLeft + x - mainX),
+        leftBoxWidth.current - clipBoxMinWidthHeight
+      )
+    );
     const widthBefore = clipBoxWidth;
-    setClipBoxWidth(Math.floor(widthBefore + mainX - x));
+    setClipBoxWidth(
+      Math.max(Math.floor(widthBefore + mainX - x), clipBoxMinWidthHeight)
+    );
   };
 
   //down移动
@@ -161,7 +198,9 @@ const Clip = (props: ClipProps) => {
     const heightBefore = clipBoxHeight - 2;
     const mainY = getPosition(clipBoxNode).top;
     const addHeight = y - heightBefore - mainY;
-    setClipBoxHeight(Math.floor(heightBefore + addHeight));
+    setClipBoxHeight(
+      Math.max(Math.floor(heightBefore + addHeight), clipBoxMinWidthHeight)
+    );
   };
 
   const onMouseMove = (e: React.MouseEvent) => {
@@ -228,7 +267,7 @@ const Clip = (props: ClipProps) => {
   const onMouseDownDot = (e: React.MouseEvent, cont: Contact) => {
     e.stopPropagation();
     // @ts-ignore
-    e.target.style.backgroundColor = "red";
+    e.target.style.backgroundColor = "#DC0000";
     isKeyDown.current = true;
     contact.current = cont;
   };
@@ -249,7 +288,7 @@ const Clip = (props: ClipProps) => {
     isGetar.current = false;
     if (clipBoxRef.current) {
       Array.prototype.forEach.call(clipBoxRef.current.children, (item) => {
-        item.style.backgroundColor = "#fff";
+        item.style.backgroundColor = "#FF8E9E";
       });
     }
   };
@@ -258,16 +297,43 @@ const Clip = (props: ClipProps) => {
     const { width, height } = imgInfo;
     if (width <= 20 || height <= 20) {
       message.error("请选20x20以上尺寸的图片");
+      setImgSizeQualified(false);
       return;
     } else if (width >= 1350 || height >= 1350) {
       message.error("请选择1350x1350以下尺寸的图片");
+      setImgSizeQualified(false);
       return;
     }
-    setImgSizeQualified(true);
-  }, []);
+
+    const defaultWidth = Math.max(
+      Math.floor(imgInfo.width / 2),
+      clipBoxMinWidthHeight
+    );
+    const defaultHeight = Math.max(
+      Math.floor(imgInfo.height / 2),
+      clipBoxMinWidthHeight
+    );
+    setClipBoxWidth(defaultWidth);
+    setClipBoxHeight(defaultHeight);
+    setClipBoxLeft(0);
+    setClipBoxTop(0);
+    if (imgSizeQualified) {
+      if (leftBoxRef.current) {
+        const leftBoxNode = ReactDOM.findDOMNode(
+          leftBoxRef.current
+        ) as HTMLDivElement;
+        const { offsetWidth, offsetHeight } = leftBoxNode;
+        leftBoxWidth.current = offsetWidth;
+        leftBoxHeight.current = offsetHeight;
+      }
+    } else {
+      setImgSizeQualified(true);
+    }
+    setRetainOriginalSize(false);
+  }, [imgInfo]);
 
   useEffect(() => {
-    if (imgSizeQualified && leftBoxRef.current && clipBoxRef.current) {
+    if (imgSizeQualified && leftBoxRef.current) {
       const leftBoxNode = ReactDOM.findDOMNode(
         leftBoxRef.current
       ) as HTMLDivElement;
@@ -299,7 +365,13 @@ const Clip = (props: ClipProps) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.imgBox}>
+      <div
+        className={styles.imgBox}
+        style={{ borderColor: imgDragOver ? "green" : "#2320e5" }}
+        onDragOver={onDragOver}
+        onDragLeave={onDragLeave}
+        onDrop={onDrop}
+      >
         {imgSizeQualified && (
           <div
             className={styles.content}
@@ -364,22 +436,27 @@ const Clip = (props: ClipProps) => {
         )}
       </div>
       <div className={styles.operationBtns}>
-        <Checkbox
-          className={styles.operationBtn}
-          checked={retainOriginalSize}
-          onChange={(e) => {
-            setRetainOriginalSize(e.target.checked);
-          }}
-        >
-          是否保留原尺寸
-        </Checkbox>
-        <Button
-          type="primary"
-          className={styles.operationBtn}
-          onClick={onClip}
-          disabled={!imgSizeQualified}
-        >
-          裁剪
+        <div>
+          <Checkbox
+            className={styles.operationBtn}
+            checked={retainOriginalSize}
+            onChange={(e) => {
+              setRetainOriginalSize(e.target.checked);
+            }}
+          >
+            是否保留原尺寸
+          </Checkbox>
+          <Button
+            type="primary"
+            className={styles.operationBtn}
+            onClick={onClip}
+            disabled={!imgSizeQualified}
+          >
+            裁剪
+          </Button>
+        </div>
+        <Button ghost type="primary" onClick={onClear}>
+          清空
         </Button>
       </div>
     </div>
