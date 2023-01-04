@@ -1,0 +1,111 @@
+.container {
+  width: 100%;
+  height: 360px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(to right, #04182c, #000c17, #04182c);
+
+  $bg: #edf1f5;
+
+  .content {
+    width: 230px;
+    height: 230px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background-color: $bg;
+    box-shadow: 0px 20px 30px rgba(100, 131, 177, 0.2);
+    border: 1px solid #fff;
+
+    $boxWidth: 200px;
+    .box {
+      width: $boxWidth;
+      height: $boxWidth;
+      position: relative;
+
+      $backBg: #c5ccda;
+      $backShadow: #fff;
+      $gap: 30px;
+      $inner: $boxWidth - $gap;
+      /* 环形stroke宽度 */
+      $stroke: 20px;
+      /* svg环形宽度 */
+      $circle: calc($inner - $stroke);
+      $center: calc($circle - $stroke);
+
+      .circleOuter {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        box-shadow: 6px 6px 8px $backBg, -6px -6px 8px $backShadow;
+        background: $bg;
+        position: relative;
+
+        &::before {
+          content: "";
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          border-radius: 50%;
+          background: $bg;
+          width: $inner;
+          height: $inner;
+          box-shadow: inset 8px 8px 10px $backBg,
+            inset -4px -4px 8px $backShadow;
+        }
+
+        &::after {
+          content: "";
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          border-radius: 50%;
+          background: $bg;
+          width: $center;
+          height: $center;
+          box-shadow: 6px 6px 8px $backBg, -2px -2px 8px $backShadow;
+        }
+      }
+
+      svg {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        //旋转90deg
+        transform: rotate(-90deg);
+
+        circle {
+          position: absolute;
+          //设置垂直居中
+          $z: calc($boxWidth / 2);
+          $c: calc($circle / 2);
+          transform: translate(calc($z - $c), calc($z - $c));
+          cy: calc($circle / 2);
+          cx: calc($circle / 2);
+          r: calc($circle / 2);
+          fill: none;
+          stroke-linecap: round;
+          stroke-dasharray: calc(3.14 * $circle);
+          stroke-dashoffset: calc(3.14 * $circle);
+          stroke-width: $stroke;
+        }
+      }
+
+      .num {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        color: #497241;
+        font-size: 30px;
+      }
+    }
+  }
+}
