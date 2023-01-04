@@ -15,6 +15,7 @@ import FilterCSS from "./components/FilterCSS";
 import BgFusion from "./components/BgFusion";
 import MyLogo from "./components/MyLogo";
 import ShearAngle from "./components/ShearAngle";
+import AnnulusLoading from "./components/AnnulusLoading";
 import Honeycomb from "./components/Honeycomb";
 import PizzaPie from "./components/PizzaPie";
 // import ImageFadeOut from "./components/ImageFadeOut";
@@ -33,7 +34,7 @@ const gridboxList = [
   { element: <BgFusion /> },
   { element: <MyLogo /> },
   { element: <ShearAngle /> },
-  { element: <ShearAngle /> },
+  { element: <AnnulusLoading /> },
   { element: <Honeycomb /> },
   { element: <PizzaPie /> },
   // { element: <ImageFadeOut /> },
