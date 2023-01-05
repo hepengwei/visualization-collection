@@ -21,6 +21,7 @@ import PizzaPie from "./components/PizzaPie";
 // import ImageFadeOut from "./components/ImageFadeOut";
 import AnnulusProgressBar from "./components/AnnulusProgressBar";
 import AudioLoading from "./components/AudioLoading";
+import SudokuImageAnimation from "./components/SudokuImageAnimation";
 import styles from "./index.module.scss";
 
 const { GridBox } = GridContent;
@@ -42,6 +43,7 @@ const gridboxList = [
   // { element: <ImageFadeOut /> },
   { element: <AnnulusProgressBar /> },
   { element: <AudioLoading /> },
+  { element: <SudokuImageAnimation /> },
 ];
 
 const VisualDesign = () => {
