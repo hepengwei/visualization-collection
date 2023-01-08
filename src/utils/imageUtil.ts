@@ -156,14 +156,25 @@ export const toBlackAndWhite = (imageData: ImageData) => {
   return null;
 };
 
-// 裁剪矩形图
+/**
+ * 裁剪矩形图
+ * @param imageData ImageData源数据
+ * @param newWidth 新图的宽度（retainOriginalSize为true时，宽度为imageData.width）
+ * @param newHeight 新图的高度（retainOriginalSize为true时，高度为imageData.height）
+ * @param top 新图相对于原图顶部的起始位置
+ * @param left 新图相对于原图左侧的起始位置
+ * @param retainOriginalSize 是否保留为原图的宽高 (宽高继承原图，多余部分用白色或透明色填充)
+ * @param imageType 图片类型 (retainOriginalSize为true时必须传该值)
+ * @returns ImageData | null
+ */
 export const clipRect = (
   imageData: ImageData,
   newWidth: number,
   newHeight: number,
   top: number,
   left: number,
-  retainOriginalSize = false
+  retainOriginalSize = false,
+  imageType?: string
 ) => {
   if (imageData) {
     const { data, width, height } = imageData;
@@ -214,10 +225,13 @@ export const clipRect = (
             newImgData[startIndex + 2] = data[startIndex + 2];
             newImgData[startIndex + 3] = data[startIndex + 3];
           } else {
-            newImgData[startIndex] = 0;
-            newImgData[startIndex + 1] = 0;
-            newImgData[startIndex + 2] = 0;
-            newImgData[startIndex + 3] = 0;
+            newImgData[startIndex] = 255;
+            newImgData[startIndex + 1] = 255;
+            newImgData[startIndex + 2] = 255;
+            newImgData[startIndex + 3] =
+              imageType && ["JPG", "JPEG"].includes(imageType.toUpperCase())
+                ? 255
+                : 0;
           }
         }
       }

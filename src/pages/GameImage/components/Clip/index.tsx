@@ -353,7 +353,8 @@ const Clip = (props: ClipProps) => {
       clipBoxHeight,
       clipBoxTop,
       clipBoxLeft,
-      retainOriginalSize
+      retainOriginalSize,
+      imgInfo.fileType
     );
     if (newImageData) {
       exportImage(newImageData);

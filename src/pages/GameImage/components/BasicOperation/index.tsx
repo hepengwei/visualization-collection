@@ -212,7 +212,7 @@ const BasicOperation = (props: BasicOperationProps) => {
           <div className={styles.fileInfo}>
             <div className={styles.item}>文件名：{imgInfo.name}</div>
             <div className={styles.item}>
-              格式：{imgInfo.type.split("/")[1].toUpperCase()}
+              格式：{imgInfo.fileType}
             </div>
             <div className={styles.item}>
               尺寸：

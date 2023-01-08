@@ -5,14 +5,14 @@ import React, { useState } from "react";
 import { Button } from "antd";
 import { FolderAddOutlined } from "@ant-design/icons";
 import Tabs from "./components/Tabs";
-import { getImageWidthHeight } from "utils/imageUtil";
+import { fileOrBlobToDataURL, getImageType } from "utils/fileUtil";
 import BasicOperation from "./components/BasicOperation";
 import Clip from "./components/Clip";
 import styles from "./index.module.scss";
 
 export interface ImgInfo {
   name: string;
-  type: string;
+  fileType: string;
   size: number;
   imgUrl: string;
   width: number;
@@ -70,19 +70,32 @@ const GameImage = () => {
     canvas.width = width;
     canvas.height = height;
     ctx.putImageData(imageData, 0, 0, 0, 0, width, height);
-    canvas.toBlob((blob: Blob | null) => {
-      if (blob) {
-        var a = document.createElement("a");
-        a.style.visibility = "hidden";
-        document.body.appendChild(a);
-        a.download = imgInfo?.name || "image";
-        // a.download = `${imgInfo?.name}.${imgInfo?.type.split("/")[1]}`;
-        a.href = window.URL.createObjectURL(blob);
-
-        a.click();
-        document.body.removeChild(a);
-      }
-    });
+    canvas.toBlob(
+      (blob: Blob | null) => {
+        if (blob) {
+          var a = document.createElement("a");
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          let imgName = "image";
+          if (imgInfo && imgInfo.name) {
+            const arr = imgInfo.name.split(".");
+            if (arr.length > 1) {
+              arr.splice(arr.length - 1, 1, imgInfo.fileType.toLowerCase());
+              imgName = arr.join(".");
+            } else {
+              arr.push(imgInfo.fileType.toLowerCase());
+              imgName = arr.join(".");
+            }
+          }
+          a.download = imgName;
+          a.href = window.URL.createObjectURL(blob);
+          a.click();
+          document.body.removeChild(a);
+        }
+      },
+      `image/${imgInfo?.fileType.toLowerCase() || "png"}`,
+      1
+    );
   };
 
   const onTabsChange = (tabId: TabId) => {
@@ -96,34 +109,46 @@ const GameImage = () => {
       const { type } = file;
       const typeArr = type.split("/");
       if (typeArr[0] !== "image") return;
+      let fileType = typeArr[1].toUpperCase();
       var reader = new FileReader();
       reader.onload = function (e: any) {
-        const imgUrl = e.target.result;
-        getImageWidthHeight(imgUrl)
-          .then((res) => {
-            const width = res.width;
-            const height = res.height;
-            const imgInfo: ImgInfo = {
-              name: file.name,
-              type: file.type,
-              size: file.size,
-              width,
-              height,
-              imgUrl,
+        const buffer = e.target.result;
+        const imageType = getImageType(buffer);
+        if (imageType) {
+          fileType = imageType;
+        }
+        const blob = new Blob([buffer]);
+        fileOrBlobToDataURL(blob, function (dataUrl: string | null) {
+          if (dataUrl) {
+            const image = new Image();
+            image.onload = function () {
+              const width = image.width;
+              const height = image.height;
+              const imgInfo: ImgInfo = {
+                name: file.name,
+                fileType,
+                size: file.size,
+                width,
+                height,
+                imgUrl: dataUrl,
+              };
+              const imageData = getCanvasImgData(dataUrl, width, height);
+              if (imageData) {
+                imgInfo.imageData = imageData;
+              }
+
+              setImgInfo(imgInfo);
             };
-
-            const imageData = getCanvasImgData(imgUrl, width, height);
-            if (imageData) {
-              imgInfo.imageData = imageData;
-            }
-
-            setImgInfo(imgInfo);
-          })
-          .catch(() => {
+            image.onerror = function () {
+              setImgInfo(null);
+            };
+            image.src = dataUrl;
+          } else {
             setImgInfo(null);
-          });
+          }
+        });
       };
-      reader.readAsDataURL(file);
+      reader.readAsArrayBuffer(file);
     }
   };
 
