@@ -1,6 +1,3 @@
-/**
- * 图片处理工具
- */
 import React, { useRef, useEffect } from "react";
 import { Button, message } from "antd";
 import { cloneDeep } from "lodash-es";

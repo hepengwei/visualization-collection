@@ -1,12 +1,9 @@
-/**
- * 图片处理工具
- */
 import React, { useRef, useEffect, useState } from "react";
 import { Checkbox, InputNumber, Button, message } from "antd";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
 import { sizeTostr, changeSize } from "utils/imageUtil";
 import { ImgInfo } from "../../index";
 import styles from "../../index.module.scss";
-import { CheckboxChangeEvent } from "antd/es/checkbox";
 
 interface ChangeSizeProps {
   imgInfo: ImgInfo;
