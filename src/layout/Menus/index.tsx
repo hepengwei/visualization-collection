@@ -52,6 +52,7 @@ const items: MenuItem[] = [
   getItem("CSS动效", "css", <FormatPainterOutlined />, [
     getItem("动效按钮", "dynamicButtons"),
     getItem("丰富动效", "richDynamicEffect"),
+    getItem("音乐可视化", "musicVisualization"),
   ]),
   getItem("Canvas动效", "canvas", <PlayCircleOutlined />, [
     getItem("动态时钟", "dynamicClock"),
@@ -66,7 +67,6 @@ const items: MenuItem[] = [
     getItem("代码背景墙", "codeBgWall"),
     getItem("文字跳舞", "wordDance"),
   ]),
-  getItem("图片处理工具", "gameImage", <FileImageOutlined />),
   getItem("Echarts交互", "echarts", <LineChartOutlined />, [
     getItem("柱状图", "bar"),
     getItem("饼图", "pie"),
@@ -75,6 +75,7 @@ const items: MenuItem[] = [
   getItem("Three.js3D", "threejs", <RocketOutlined />, [
     getItem("敬请期待", "threejsComingSoon"),
   ]),
+  getItem("图片处理工具", "gameImage", <FileImageOutlined />),
 ];
 
 const Menus: React.FC = () => {
@@ -150,7 +151,7 @@ const Menus: React.FC = () => {
       </div>
 
       <Menu
-        defaultOpenKeys={["html", "css", "canvas", "echarts"]}
+        defaultOpenKeys={["html"]}
         selectedKeys={selectedKeys}
         mode="inline"
         theme="dark"

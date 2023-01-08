@@ -10,6 +10,7 @@ import ComplexLayout from "pages/html/ComplexLayout";
 import AppPageFrame from "pages/html/AppPageFrame";
 import DynamicButtons from "pages/css/DynamicButtons";
 import RichDynamicEffect from "pages/css/RichDynamicEffect";
+import MusicVisualization from "pages/css/MusicVisualization";
 import DynamicClock from "pages/canvas/DynamicClock";
 import Searchlight from "pages/canvas/Searchlight";
 import GlobuleInteraction from "pages/canvas/GlobuleInteraction";
@@ -61,6 +62,10 @@ export const contentRoutes: RouteObject[] = [
       {
         path: "/css/richDynamicEffect",
         element: <RichDynamicEffect />,
+      },
+      {
+        path: "/css/musicVisualization",
+        element: <MusicVisualization />,
       },
     ],
   },

@@ -80,6 +80,7 @@ const BasicOperation = (props: BasicOperationProps) => {
     if (flipSideToSideStatus && flipSideToSideStatus.imageData) {
       exportImage(flipSideToSideStatus.imageData);
     } else if (flipSideToSideStatus.doing) {
+      message.warning("正在努力工作,请稍后");
       return;
     } else if (imgInfo?.imageData) {
       imgStatusInfo.current.flipSideToSideStatus.doing = true;
@@ -100,6 +101,7 @@ const BasicOperation = (props: BasicOperationProps) => {
     if (flipUpsideDownStatus && flipUpsideDownStatus.imageData) {
       exportImage(flipUpsideDownStatus.imageData);
     } else if (flipUpsideDownStatus.doing) {
+      message.warning("正在努力工作,请稍后");
       return;
     } else if (imgInfo?.imageData) {
       flipUpsideDownStatus.doing = true;
@@ -120,6 +122,7 @@ const BasicOperation = (props: BasicOperationProps) => {
     if (leftRotateStatus && leftRotateStatus.imageData) {
       exportImage(leftRotateStatus.imageData);
     } else if (leftRotateStatus.doing) {
+      message.warning("正在努力工作,请稍后");
       return;
     } else if (imgInfo?.imageData) {
       leftRotateStatus.doing = true;
@@ -140,6 +143,7 @@ const BasicOperation = (props: BasicOperationProps) => {
     if (rightRotateStatus && rightRotateStatus.imageData) {
       exportImage(rightRotateStatus.imageData);
     } else if (rightRotateStatus.doing) {
+      message.warning("正在努力工作,请稍后");
       return;
     } else if (imgInfo?.imageData) {
       rightRotateStatus.doing = true;
@@ -160,6 +164,7 @@ const BasicOperation = (props: BasicOperationProps) => {
     if (toGreyStatus && toGreyStatus.imageData) {
       exportImage(toGreyStatus.imageData);
     } else if (toGreyStatus.doing) {
+      message.warning("正在努力工作,请稍后");
       return;
     } else if (imgInfo?.imageData) {
       toGreyStatus.doing = true;
@@ -180,6 +185,7 @@ const BasicOperation = (props: BasicOperationProps) => {
     if (toBlackAndWhiteStatus && toBlackAndWhiteStatus.imageData) {
       exportImage(toBlackAndWhiteStatus.imageData);
     } else if (toBlackAndWhiteStatus.doing) {
+      message.warning("正在努力工作,请稍后");
       return;
     } else if (imgInfo?.imageData) {
       toBlackAndWhiteStatus.doing = true;
@@ -211,9 +217,7 @@ const BasicOperation = (props: BasicOperationProps) => {
           <img src={imgInfo.imgUrl} alt="" />
           <div className={styles.fileInfo}>
             <div className={styles.item}>文件名：{imgInfo.name}</div>
-            <div className={styles.item}>
-              格式：{imgInfo.fileType}
-            </div>
+            <div className={styles.item}>格式：{imgInfo.fileType}</div>
             <div className={styles.item}>
               尺寸：
               {imgInfo.width && imgInfo.height

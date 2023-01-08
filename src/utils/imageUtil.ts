@@ -255,3 +255,31 @@ export const clipRect = (
   }
   return null;
 };
+
+// 修改尺寸
+export const changeSize = (
+  imgUrl: string,
+  width: number,
+  height: number,
+  newWidth: number,
+  newHeight: number,
+  maxWidthHeight = 10000
+) => {
+  if (imgUrl) {
+    const img = new Image();
+    img.src = imgUrl;
+    const canvas = document.createElement("canvas") as HTMLCanvasElement;
+    const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+    canvas.width = maxWidthHeight;
+    canvas.height = maxWidthHeight;
+    ctx.drawImage(img, 0, 0, width, height, 0, 0, newWidth, newHeight);
+    const newImageData = ctx.getImageData(
+      0,
+      0,
+      newWidth,
+      newHeight
+    ) as ImageData;
+    return newImageData;
+  }
+  return null;
+};
