@@ -2,10 +2,11 @@
  * 图片处理工具
  */
 import React, { useRef, useEffect, useState } from "react";
-import { InputNumber, Button, message } from "antd";
+import { Checkbox, InputNumber, Button, message } from "antd";
 import { sizeTostr, changeSize } from "utils/imageUtil";
 import { ImgInfo } from "../../index";
 import styles from "../../index.module.scss";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
 
 interface ChangeSizeProps {
   imgInfo: ImgInfo;
@@ -29,9 +30,52 @@ const ChangeSize = (props: ChangeSizeProps) => {
     onDrop,
     onClear,
   } = props;
+  const [keepOriginalProportion, setKeepOriginalProportion] =
+    useState<boolean>(false);
   const [toWidth, setToWidth] = useState<number | null>(imgInfo.width);
   const [toHeight, setToHeight] = useState<number | null>(imgInfo.height);
   const doing = useRef<boolean>(false);
+
+  // 修改是否保持原比例
+  const onKeepProportionChange = (e: CheckboxChangeEvent) => {
+    setKeepOriginalProportion(e.target.checked);
+    const { width, height } = imgInfo;
+    if (e.target.checked) {
+      if (toWidth && toHeight) {
+        setToWidth(null);
+        setToHeight(null);
+      } else if (toWidth) {
+        const newHeight = Math.floor((toWidth * height) / width);
+        setToHeight(newHeight);
+      } else if (toHeight) {
+        const newWidth = Math.floor((toHeight * width) / height);
+        setToWidth(newWidth);
+      }
+    } else if (!toWidth && !toHeight) {
+      setToWidth(width);
+      setToHeight(height);
+    }
+  };
+
+  // 修改宽度
+  const onWidthChange = (value: number | null) => {
+    setToWidth(value);
+    if (keepOriginalProportion && value) {
+      const { width, height } = imgInfo;
+      const newHeight = Math.floor((value * height) / width);
+      setToHeight(newHeight);
+    }
+  };
+
+  // 修改高度
+  const onHeightChange = (value: number | null) => {
+    setToHeight(value);
+    if (keepOriginalProportion && value) {
+      const { width, height } = imgInfo;
+      const newWidth = Math.floor((value * width) / height);
+      setToWidth(newWidth);
+    }
+  };
 
   // 点击确定
   const onOk = () => {
@@ -92,6 +136,13 @@ const ChangeSize = (props: ChangeSizeProps) => {
       </div>
       <div className={styles.operationBtns}>
         <div>
+          <Checkbox
+            className={styles.operationBtn}
+            checked={keepOriginalProportion}
+            onChange={onKeepProportionChange}
+          >
+            是否保持原比例
+          </Checkbox>
           <InputNumber
             className={styles.operationBtn}
             style={{ width: "160px" }}
@@ -100,9 +151,7 @@ const ChangeSize = (props: ChangeSizeProps) => {
             precision={0}
             value={toWidth}
             addonBefore="宽度"
-            onChange={(value: number | null) => {
-              setToWidth(value);
-            }}
+            onChange={onWidthChange}
           />
           <InputNumber
             className={styles.operationBtn}
@@ -112,9 +161,7 @@ const ChangeSize = (props: ChangeSizeProps) => {
             precision={0}
             value={toHeight}
             addonBefore="高度"
-            onChange={(value: number | null) => {
-              setToHeight(value);
-            }}
+            onChange={onHeightChange}
           />
           <Button type="primary" className={styles.operationBtn} onClick={onOk}>
             确定
