@@ -2,12 +2,13 @@
  * 图片处理工具
  */
 import React, { useState } from "react";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import { FolderAddOutlined } from "@ant-design/icons";
 import Tabs from "./components/Tabs";
 import { fileOrBlobToDataURL, getImageType } from "utils/fileUtil";
 import BasicOperation from "./components/BasicOperation";
 import Clip from "./components/Clip";
+import ChangeSize from "./components/ChangeSize";
 import styles from "./index.module.scss";
 
 export interface ImgInfo {
@@ -17,12 +18,13 @@ export interface ImgInfo {
   imgUrl: string;
   width: number;
   height: number;
-  imageData?: ImageData;
+  imageData: ImageData;
 }
 
 enum TabId {
   "basicOperation",
   "clip",
+  "changeSize",
   "addWatermark",
   "coverWithMosaics",
   "photoCompression",
@@ -31,6 +33,7 @@ enum TabId {
 const tabsList = [
   { id: TabId.basicOperation, label: "基础操作" },
   { id: TabId.clip, label: "裁剪" },
+  { id: TabId.changeSize, label: "修改尺寸" },
   { id: TabId.addWatermark, label: "添加水印" },
   { id: TabId.coverWithMosaics, label: "打马赛克" },
   { id: TabId.photoCompression, label: "图片压缩" },
@@ -124,27 +127,31 @@ const GameImage = () => {
             image.onload = function () {
               const width = image.width;
               const height = image.height;
-              const imgInfo: ImgInfo = {
-                name: file.name,
-                fileType,
-                size: file.size,
-                width,
-                height,
-                imgUrl: dataUrl,
-              };
               const imageData = getCanvasImgData(dataUrl, width, height);
               if (imageData) {
-                imgInfo.imageData = imageData;
+                const imgInfo: ImgInfo = {
+                  name: file.name,
+                  fileType,
+                  size: file.size,
+                  width,
+                  height,
+                  imgUrl: dataUrl,
+                  imageData,
+                };
+                setImgInfo(imgInfo);
+              } else {
+                setImgInfo(null);
+                message.error("解析数据失败,请更换其他图片");
               }
-
-              setImgInfo(imgInfo);
             };
             image.onerror = function () {
               setImgInfo(null);
+              message.error("解析数据失败,请更换其他图片");
             };
             image.src = dataUrl;
           } else {
             setImgInfo(null);
+            message.error("解析数据失败,请更换其他图片");
           }
         });
       };
@@ -227,6 +234,17 @@ const GameImage = () => {
         )}
         {imgInfo && selectedTabId === TabId.clip && (
           <Clip
+            imgInfo={imgInfo}
+            exportImage={exportImage}
+            imgDragOver={imgDragOver}
+            onDragOver={onDragOver}
+            onDragLeave={onDragLeave}
+            onDrop={onDrop}
+            onClear={onClear}
+          />
+        )}
+        {imgInfo && selectedTabId === TabId.changeSize && (
+          <ChangeSize
             imgInfo={imgInfo}
             exportImage={exportImage}
             imgDragOver={imgDragOver}

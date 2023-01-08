@@ -45,7 +45,7 @@ const Clip = (props: ClipProps) => {
   const { scrollTop } = useGlobalContext();
   const [imgSizeQualified, setImgSizeQualified] = useState<boolean>(false);
   const [retainOriginalSize, setRetainOriginalSize] = useState<boolean>(false);
-  const doingClip = useRef<boolean>(false);
+  const doing = useRef<boolean>(false);
   const clipBoxRef = useRef<HTMLDivElement>(null);
 
   const defaultWidth = Math.max(
@@ -343,10 +343,13 @@ const Clip = (props: ClipProps) => {
     }
   }, [imgSizeQualified]);
 
-  // 点击裁剪
-  const onClip = () => {
-    if (doingClip.current) return;
-    doingClip.current = true;
+  // 点击确定
+  const onOk = () => {
+    if (doing.current) {
+      message.warning("正在努力工作,请稍后");
+      return;
+    }
+    doing.current = true;
     const newImageData = clipRect(
       imgInfo.imageData as ImageData,
       clipBoxWidth,
@@ -359,9 +362,9 @@ const Clip = (props: ClipProps) => {
     if (newImageData) {
       exportImage(newImageData);
     } else {
-      message.error("转换失败");
+      message.error("裁剪失败");
     }
-    doingClip.current = false;
+    doing.current = false;
   };
 
   return (
@@ -450,10 +453,10 @@ const Clip = (props: ClipProps) => {
           <Button
             type="primary"
             className={styles.operationBtn}
-            onClick={onClip}
+            onClick={onOk}
             disabled={!imgSizeQualified}
           >
-            裁剪
+            确定
           </Button>
         </div>
         <Button ghost type="primary" onClick={onClear}>
