@@ -1,9 +1,6 @@
-/**
- * 图片处理工具
- */
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
-import { Button, Checkbox, message } from "antd";
+import { Button, Checkbox, InputNumber, message } from "antd";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import { clipRect } from "utils/imageUtil";
 import { ImgInfo } from "../../index";
@@ -47,6 +44,7 @@ const Clip = (props: ClipProps) => {
   const [retainOriginalSize, setRetainOriginalSize] = useState<boolean>(false);
   const doing = useRef<boolean>(false);
   const clipBoxRef = useRef<HTMLDivElement>(null);
+  const img2Ref = useRef<HTMLImageElement>(null);
 
   const defaultWidth = Math.max(
     Math.floor(imgInfo.width / 2),
@@ -128,7 +126,6 @@ const Clip = (props: ClipProps) => {
     ) as HTMLDivElement;
     const mainY = getPosition(clipBoxNode).top;
     const maxY = mainY + clipBoxNode.offsetHeight;
-    // const maxY = mainY + clipBoxNode.offsetHeight - 4;
     if (y < minY) {
       y = minY;
     } else if (y > maxY) {
@@ -159,7 +156,6 @@ const Clip = (props: ClipProps) => {
     ) as HTMLDivElement;
     const mainX = getPosition(clipBoxNode).left;
     const maxX = mainX + clipBoxNode.offsetWidth;
-    // const maxX = mainX + clipBoxNode.offsetWidth - 4;
     if (x < minX) {
       x = minX;
     } else if (x > maxX) {
@@ -186,7 +182,6 @@ const Clip = (props: ClipProps) => {
     const { top } = getPosition(leftBoxNode);
     const minY = top;
     const maxY = minY + leftBoxHeight.current;
-    // const maxY = minY + leftBoxHeight.current - 4;
     if (y < minY) {
       y = minY;
     } else if (y > maxY) {
@@ -217,14 +212,14 @@ const Clip = (props: ClipProps) => {
       if (top < 0) {
         setClipBoxTop(0);
       } else if (top > leftBoxHeight.current - offsetHeight - 2) {
-        setClipBoxTop(leftBoxHeight.current - offsetHeight - 2);
+        setClipBoxTop(Math.max(leftBoxHeight.current - offsetHeight - 2, 0));
       } else {
         setClipBoxTop(top);
       }
       if (left < 0) {
         setClipBoxLeft(0);
       } else if (left > leftBoxWidth.current - offsetWidth - 2) {
-        setClipBoxLeft(leftBoxWidth.current - offsetWidth - 2);
+        setClipBoxLeft(Math.max(leftBoxWidth.current - offsetWidth - 2, 0));
       } else {
         setClipBoxLeft(left);
       }
@@ -389,7 +384,18 @@ const Clip = (props: ClipProps) => {
             ref={contentRef}
           >
             <div className={styles.leftBox} ref={leftBoxRef}>
-              <img src={imgInfo.imgUrl} />
+              <img src={imgInfo.imgUrl} className={styles.img1} />
+              <div className={styles.mask} />
+              <img
+                src={imgInfo.imgUrl}
+                className={styles.img2}
+                style={{
+                  clip: `rect(${clipBoxTop}px, ${
+                    clipBoxLeft + clipBoxWidth
+                  }px, ${clipBoxTop + clipBoxHeight}px, ${clipBoxLeft}px)`,
+                }}
+                ref={img2Ref}
+              />
               <div
                 className={styles.clipBox}
                 style={{
@@ -450,6 +456,70 @@ const Clip = (props: ClipProps) => {
           >
             是否保留原尺寸
           </Checkbox>
+          <InputNumber
+            className={styles.operationBtn}
+            style={{ width: "160px" }}
+            min={clipBoxMinWidthHeight}
+            max={imgInfo.width}
+            precision={0}
+            value={clipBoxWidth}
+            addonBefore="裁剪宽度"
+            onChange={(value: number | null) => {
+              const { width } = imgInfo;
+              if (value && value + clipBoxLeft > width) {
+                setClipBoxLeft(width - value);
+              }
+              setClipBoxWidth(value || 0);
+            }}
+          />
+          <InputNumber
+            className={styles.operationBtn}
+            style={{ width: "160px" }}
+            min={clipBoxMinWidthHeight}
+            max={imgInfo.height}
+            precision={0}
+            value={clipBoxHeight}
+            addonBefore="裁剪高度"
+            onChange={(value: number | null) => {
+              const { height } = imgInfo;
+              if (value && value + clipBoxTop > height) {
+                setClipBoxTop(height - value);
+              }
+              setClipBoxHeight(value || 0);
+            }}
+          />
+          <InputNumber
+            className={styles.operationBtn}
+            style={{ width: "160px" }}
+            min={0}
+            max={imgInfo.width - clipBoxMinWidthHeight}
+            precision={0}
+            value={clipBoxLeft}
+            addonBefore="距离左侧"
+            onChange={(value: number | null) => {
+              setClipBoxLeft(value || 0);
+              const { width } = imgInfo;
+              if (value && value + clipBoxWidth > width) {
+                setClipBoxWidth(width - value);
+              }
+            }}
+          />
+          <InputNumber
+            className={styles.operationBtn}
+            style={{ width: "160px" }}
+            min={0}
+            max={imgInfo.height - clipBoxMinWidthHeight}
+            precision={0}
+            value={clipBoxTop}
+            addonBefore="距离顶部"
+            onChange={(value: number | null) => {
+              setClipBoxTop(value || 0);
+              const { height } = imgInfo;
+              if (value && value + clipBoxHeight > height) {
+                setClipBoxHeight(height - value);
+              }
+            }}
+          />
           <Button
             type="primary"
             className={styles.operationBtn}

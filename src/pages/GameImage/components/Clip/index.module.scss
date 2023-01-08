@@ -17,84 +17,97 @@
     background-color: rgba(255, 255, 255, 0.8);
     border: 2px dashed;
     border-radius: 4px;
-  }
 
-  .content {
-    display: flex;
+    .content {
+      display: flex;
 
-    .leftBox {
-      width: 100%;
-      height: 100%;
-      border: 1px solid #111;
-      position: relative;
-
-      img {
-        position: absolute;
-        top: 0;
-        left: 0;
+      .leftBox {
         width: 100%;
         height: 100%;
-        -webkit-user-drag: none !important;
+        border: 1px solid #111;
+        -webkit-user-drag: none;
         user-select: none;
-        pointer-events: none;
-      }
+        position: relative;
 
-      .clipBox {
-        border: 1px solid #ff8e9e;
-        cursor: all-scroll;
-
-        $halfDotWidth: calc($dotWidth / -2);
-
-        .dot {
+        .img1 {
           position: absolute;
-          width: $dotWidth;
-          height: $dotWidth;
-          background-color: #ff8e9e;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          -webkit-user-drag: none !important;
+          user-select: none;
+          pointer-events: none;
+        }
+        .mask {
+          @extend .img1;
+          background-color: rgba(0, 0, 0, 0.6);
+          z-index: 1;
+        }
+        .img2 {
+          @extend .img1;
+          z-index: 2;
         }
 
-        .leftUp {
-          top: $halfDotWidth;
-          left: $halfDotWidth;
-          cursor: nw-resize;
-        }
-        .up {
-          top: $halfDotWidth;
-          left: 50%;
-          margin-left: $halfDotWidth;
-          cursor: n-resize;
-        }
-        .rightUp {
-          top: $halfDotWidth;
-          right: $halfDotWidth;
-          cursor: ne-resize;
-        }
-        .right {
-          top: 50%;
-          margin-top: $halfDotWidth;
-          right: $halfDotWidth;
-          cursor: e-resize;
-        }
-        .rightDown {
-          bottom: $halfDotWidth;
-          right: $halfDotWidth;
-          cursor: se-resize;
-        }
-        .down {
-          bottom: $halfDotWidth;
-          left: 50%;
-          margin-left: $halfDotWidth;
-          cursor: s-resize;
-        }
-        .leftDown {
-          bottom: $halfDotWidth;
-          left: $halfDotWidth;
-          cursor: sw-resize;
-        }
-        .left {
-          top: 50%;
-          margin-top: $halfDotWidth;
-          left: $halfDotWidth;
-          cursor: w-resize;
+        .clipBox {
+          border: 1px solid #ff8e9e;
+          -webkit-user-drag: auto !important;
+          cursor: all-scroll;
+          z-index: 3;
+
+          $halfDotWidth: calc($dotWidth / -2);
+
+          .dot {
+            position: absolute;
+            width: $dotWidth;
+            height: $dotWidth;
+            background-color: #ff8e9e;
+          }
+
+          .leftUp {
+            top: $halfDotWidth;
+            left: $halfDotWidth;
+            cursor: nw-resize;
+          }
+          .up {
+            top: $halfDotWidth;
+            left: 50%;
+            margin-left: $halfDotWidth;
+            cursor: n-resize;
+          }
+          .rightUp {
+            top: $halfDotWidth;
+            right: $halfDotWidth;
+            cursor: ne-resize;
+          }
+          .right {
+            top: 50%;
+            margin-top: $halfDotWidth;
+            right: $halfDotWidth;
+            cursor: e-resize;
+          }
+          .rightDown {
+            bottom: $halfDotWidth;
+            right: $halfDotWidth;
+            cursor: se-resize;
+          }
+          .down {
+            bottom: $halfDotWidth;
+            left: 50%;
+            margin-left: $halfDotWidth;
+            cursor: s-resize;
+          }
+          .leftDown {
+            bottom: $halfDotWidth;
+            left: $halfDotWidth;
+            cursor: sw-resize;
+          }
+          .left {
+            top: 50%;
+            margin-top: $halfDotWidth;
+            left: $halfDotWidth;
+            cursor: w-resize;
+          }
         }
       }
     }

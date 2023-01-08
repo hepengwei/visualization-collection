@@ -1,6 +1,3 @@
-/**
- * 图片处理工具
- */
 import React, { useEffect, useRef, useState } from "react";
 import { Button, message } from "antd";
 import { sizeTostr, getImageWidthHeight } from "utils/imageUtil";
