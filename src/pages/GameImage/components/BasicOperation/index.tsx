@@ -9,6 +9,14 @@ import {
   rightRotate,
   toGrey,
   toBlackAndWhite,
+  toOpposite,
+  toRed,
+  toGreen,
+  toBlue,
+  toRedAndGreen,
+  toRedAndBlue,
+  toBlueAndGreen,
+  sharpen,
 } from "utils/imageUtil";
 import { ImgInfo } from "../../index";
 import styles from "../../index.module.scss";
@@ -23,31 +31,26 @@ interface BasicOperationProps {
   onClear: () => void;
 }
 
+interface Status {
+  doing: boolean;
+  imageData: ImageData | null;
+}
+
 interface ImgStatusInfo {
-  flipSideToSideStatus: {
-    doing: boolean;
-    imageData: ImageData | null;
-  };
-  flipUpsideDownStatus: {
-    doing: boolean;
-    imageData: ImageData | null;
-  };
-  leftRotateStatus: {
-    doing: boolean;
-    imageData: ImageData | null;
-  };
-  rightRotateStatus: {
-    doing: boolean;
-    imageData: ImageData | null;
-  };
-  toGreyStatus: {
-    doing: boolean;
-    imageData: ImageData | null;
-  };
-  toBlackAndWhiteStatus: {
-    doing: boolean;
-    imageData: ImageData | null;
-  };
+  flipSideToSideStatus: Status;
+  flipUpsideDownStatus: Status;
+  leftRotateStatus: Status;
+  rightRotateStatus: Status;
+  toGreyStatus: Status;
+  toBlackAndWhiteStatus: Status;
+  toOppositeStatus: Status;
+  toRedStatus: Status;
+  toGreenStatus: Status;
+  toBlueStatus: Status;
+  toRedAndGreenStatus: Status;
+  toRedAndBlueStatus: Status;
+  toBlueAndGreenStatus: Status;
+  sharpenStatus: Status;
 }
 
 const defaultImgStatus = {
@@ -57,6 +60,14 @@ const defaultImgStatus = {
   rightRotateStatus: { doing: false, imageData: null },
   toGreyStatus: { doing: false, imageData: null },
   toBlackAndWhiteStatus: { doing: false, imageData: null },
+  toOppositeStatus: { doing: false, imageData: null },
+  toRedStatus: { doing: false, imageData: null },
+  toGreenStatus: { doing: false, imageData: null },
+  toBlueStatus: { doing: false, imageData: null },
+  toRedAndGreenStatus: { doing: false, imageData: null },
+  toRedAndBlueStatus: { doing: false, imageData: null },
+  toBlueAndGreenStatus: { doing: false, imageData: null },
+  sharpenStatus: { doing: false, imageData: null },
 };
 
 const BasicOperation = (props: BasicOperationProps) => {
@@ -71,129 +82,25 @@ const BasicOperation = (props: BasicOperationProps) => {
   } = props;
   const imgStatusInfo = useRef<ImgStatusInfo>(cloneDeep(defaultImgStatus));
 
-  // 点击左右翻转
-  const onFlipSideToSide = () => {
-    const { flipSideToSideStatus } = imgStatusInfo.current;
-    if (flipSideToSideStatus && flipSideToSideStatus.imageData) {
-      exportImage(flipSideToSideStatus.imageData);
-    } else if (flipSideToSideStatus.doing) {
+  const doTask = (
+    status: Status,
+    method: (imageData: ImageData) => ImageData | null
+  ) => {
+    if (status && status.imageData) {
+      exportImage(status.imageData);
+    } else if (status.doing) {
       message.warning("正在努力工作,请稍后");
       return;
     } else if (imgInfo?.imageData) {
-      imgStatusInfo.current.flipSideToSideStatus.doing = true;
-      const newImageData = flipSideToSide(imgInfo.imageData);
+      status.doing = true;
+      const newImageData = method(imgInfo.imageData);
       if (newImageData) {
-        imgStatusInfo.current.flipSideToSideStatus.imageData = newImageData;
+        status.imageData = newImageData;
         exportImage(newImageData);
       } else {
         message.error("转换失败");
       }
-      imgStatusInfo.current.flipSideToSideStatus.doing = false;
-    }
-  };
-
-  // 点击上下翻转
-  const onFlipUpsideDown = () => {
-    const { flipUpsideDownStatus } = imgStatusInfo.current;
-    if (flipUpsideDownStatus && flipUpsideDownStatus.imageData) {
-      exportImage(flipUpsideDownStatus.imageData);
-    } else if (flipUpsideDownStatus.doing) {
-      message.warning("正在努力工作,请稍后");
-      return;
-    } else if (imgInfo?.imageData) {
-      flipUpsideDownStatus.doing = true;
-      const newImageData = flipUpsideDown(imgInfo.imageData);
-      if (newImageData) {
-        flipUpsideDownStatus.imageData = newImageData;
-        exportImage(newImageData);
-      } else {
-        message.error("转换失败");
-      }
-      flipUpsideDownStatus.doing = false;
-    }
-  };
-
-  // 点击左旋转
-  const onLeftRotate = () => {
-    const { leftRotateStatus } = imgStatusInfo.current;
-    if (leftRotateStatus && leftRotateStatus.imageData) {
-      exportImage(leftRotateStatus.imageData);
-    } else if (leftRotateStatus.doing) {
-      message.warning("正在努力工作,请稍后");
-      return;
-    } else if (imgInfo?.imageData) {
-      leftRotateStatus.doing = true;
-      const newImageData = leftRotate(imgInfo.imageData);
-      if (newImageData) {
-        leftRotateStatus.imageData = newImageData;
-        exportImage(newImageData);
-      } else {
-        message.error("转换失败");
-      }
-      leftRotateStatus.doing = false;
-    }
-  };
-
-  // 点击右旋转
-  const onRightRotate = () => {
-    const { rightRotateStatus } = imgStatusInfo.current;
-    if (rightRotateStatus && rightRotateStatus.imageData) {
-      exportImage(rightRotateStatus.imageData);
-    } else if (rightRotateStatus.doing) {
-      message.warning("正在努力工作,请稍后");
-      return;
-    } else if (imgInfo?.imageData) {
-      rightRotateStatus.doing = true;
-      const newImageData = rightRotate(imgInfo.imageData);
-      if (newImageData) {
-        rightRotateStatus.imageData = newImageData;
-        exportImage(newImageData);
-      } else {
-        message.error("转换失败");
-      }
-      rightRotateStatus.doing = false;
-    }
-  };
-
-  // 点击灰化
-  const onToGrey = () => {
-    const { toGreyStatus } = imgStatusInfo.current;
-    if (toGreyStatus && toGreyStatus.imageData) {
-      exportImage(toGreyStatus.imageData);
-    } else if (toGreyStatus.doing) {
-      message.warning("正在努力工作,请稍后");
-      return;
-    } else if (imgInfo?.imageData) {
-      toGreyStatus.doing = true;
-      const newImageData = toGrey(imgInfo.imageData);
-      if (newImageData) {
-        toGreyStatus.imageData = newImageData;
-        exportImage(newImageData);
-      } else {
-        message.error("转换失败");
-      }
-      toGreyStatus.doing = false;
-    }
-  };
-
-  // 点击黑白化
-  const onToBlackAndWhite = () => {
-    const { toBlackAndWhiteStatus } = imgStatusInfo.current;
-    if (toBlackAndWhiteStatus && toBlackAndWhiteStatus.imageData) {
-      exportImage(toBlackAndWhiteStatus.imageData);
-    } else if (toBlackAndWhiteStatus.doing) {
-      message.warning("正在努力工作,请稍后");
-      return;
-    } else if (imgInfo?.imageData) {
-      toBlackAndWhiteStatus.doing = true;
-      const newImageData = toBlackAndWhite(imgInfo.imageData);
-      if (newImageData) {
-        toBlackAndWhiteStatus.imageData = newImageData;
-        exportImage(newImageData);
-      } else {
-        message.error("转换失败");
-      }
-      toBlackAndWhiteStatus.doing = false;
+      status.doing = false;
     }
   };
 
@@ -226,51 +133,128 @@ const BasicOperation = (props: BasicOperationProps) => {
         </div>
       </div>
       <div className={styles.operationBtns}>
-        <div>
+        <div className={styles.left}>
           <Button
             type="primary"
             className={styles.operationBtn}
-            onClick={onFlipSideToSide}
+            onClick={() =>
+              doTask(imgStatusInfo.current.flipSideToSideStatus, flipSideToSide)
+            }
           >
             左右翻转
           </Button>
           <Button
             type="primary"
             className={styles.operationBtn}
-            onClick={onFlipUpsideDown}
+            onClick={() =>
+              doTask(imgStatusInfo.current.flipUpsideDownStatus, flipUpsideDown)
+            }
           >
             上下翻转
           </Button>
           <Button
             type="primary"
             className={styles.operationBtn}
-            onClick={onLeftRotate}
+            onClick={() =>
+              doTask(imgStatusInfo.current.leftRotateStatus, leftRotate)
+            }
           >
             左旋转
           </Button>
           <Button
             type="primary"
             className={styles.operationBtn}
-            onClick={onRightRotate}
+            onClick={() =>
+              doTask(imgStatusInfo.current.rightRotateStatus, rightRotate)
+            }
           >
             右旋转
           </Button>
           <Button
             type="primary"
             className={styles.operationBtn}
-            onClick={onToGrey}
+            onClick={() => doTask(imgStatusInfo.current.toGreyStatus, toGrey)}
           >
             灰化
           </Button>
           <Button
             type="primary"
             className={styles.operationBtn}
-            onClick={onToBlackAndWhite}
+            onClick={() =>
+              doTask(
+                imgStatusInfo.current.toBlackAndWhiteStatus,
+                toBlackAndWhite
+              )
+            }
           >
             黑白化
           </Button>
+          <Button
+            type="primary"
+            className={styles.operationBtn}
+            // onClick={() => doTask(imgStatusInfo.current.sharpenStatus, sharpen)}
+          >
+            锐化
+          </Button>
+          <Button
+            type="primary"
+            className={styles.operationBtn}
+            onClick={() =>
+              doTask(imgStatusInfo.current.toOppositeStatus, toOpposite)
+            }
+          >
+            反相色滤镜
+          </Button>
+          <Button
+            type="primary"
+            className={styles.operationBtn}
+            onClick={() => doTask(imgStatusInfo.current.toRedStatus, toRed)}
+          >
+            红色滤镜
+          </Button>
+          <Button
+            type="primary"
+            className={styles.operationBtn}
+            onClick={() => doTask(imgStatusInfo.current.toGreenStatus, toGreen)}
+          >
+            绿色滤镜
+          </Button>
+          <Button
+            type="primary"
+            className={styles.operationBtn}
+            onClick={() => doTask(imgStatusInfo.current.toBlueStatus, toBlue)}
+          >
+            蓝色滤镜
+          </Button>
+          <Button
+            type="primary"
+            className={styles.operationBtn}
+            onClick={() =>
+              doTask(imgStatusInfo.current.toRedAndGreenStatus, toRedAndGreen)
+            }
+          >
+            红绿色滤镜
+          </Button>
+          <Button
+            type="primary"
+            className={styles.operationBtn}
+            onClick={() =>
+              doTask(imgStatusInfo.current.toRedAndBlueStatus, toRedAndBlue)
+            }
+          >
+            红蓝色滤镜
+          </Button>
+          <Button
+            type="primary"
+            className={styles.operationBtn}
+            onClick={() =>
+              doTask(imgStatusInfo.current.toBlueAndGreenStatus, toBlueAndGreen)
+            }
+          >
+            蓝绿色滤镜
+          </Button>
         </div>
-        <Button ghost type="primary" onClick={onClear}>
+        <Button className={styles.right} ghost type="primary" onClick={onClear}>
           清空
         </Button>
       </div>

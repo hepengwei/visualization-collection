@@ -156,6 +156,185 @@ export const toBlackAndWhite = (imageData: ImageData) => {
   return null;
 };
 
+// 反相色滤镜
+export const toOpposite = (imageData: ImageData) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        newImgData[startIndex] = 255 - data[startIndex];
+        newImgData[startIndex + 1] = 255 - data[startIndex + 1];
+        newImgData[startIndex + 2] = 255 - data[startIndex + 2];
+        newImgData[startIndex + 3] = data[startIndex + 3];
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
+    return newImageData;
+  }
+  return null;
+};
+
+// 红色滤镜
+export const toRed = (imageData: ImageData) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        newImgData[startIndex] = data[startIndex];
+        newImgData[startIndex + 1] = 0;
+        newImgData[startIndex + 2] = 0;
+        newImgData[startIndex + 3] = data[startIndex + 3];
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
+    return newImageData;
+  }
+  return null;
+};
+
+// 绿色滤镜
+export const toGreen = (imageData: ImageData) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        newImgData[startIndex] = 0;
+        newImgData[startIndex + 1] = data[startIndex + 1];
+        newImgData[startIndex + 2] = 0;
+        newImgData[startIndex + 3] = data[startIndex + 3];
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
+    return newImageData;
+  }
+  return null;
+};
+
+// 蓝色滤镜
+export const toBlue = (imageData: ImageData) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        newImgData[startIndex] = 0;
+        newImgData[startIndex + 1] = 0;
+        newImgData[startIndex + 2] = data[startIndex + 2];
+        newImgData[startIndex + 3] = data[startIndex + 3];
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
+    return newImageData;
+  }
+  return null;
+};
+
+// 红绿色滤镜
+export const toRedAndGreen = (imageData: ImageData) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        newImgData[startIndex] = data[startIndex];
+        newImgData[startIndex + 1] = data[startIndex + 1];
+        newImgData[startIndex + 2] = 0;
+        newImgData[startIndex + 3] = data[startIndex + 3];
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
+    return newImageData;
+  }
+  return null;
+};
+
+// 红蓝色滤镜
+export const toRedAndBlue = (imageData: ImageData) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        newImgData[startIndex] = data[startIndex];
+        newImgData[startIndex + 1] = 0;
+        newImgData[startIndex + 2] = data[startIndex + 1];
+        newImgData[startIndex + 3] = data[startIndex + 3];
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
+    return newImageData;
+  }
+  return null;
+};
+
+// 蓝绿色滤镜
+export const toBlueAndGreen = (imageData: ImageData) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        newImgData[startIndex] = 0;
+        newImgData[startIndex + 1] = data[startIndex + 1];
+        newImgData[startIndex + 2] = data[startIndex + 1];
+        newImgData[startIndex + 3] = data[startIndex + 3];
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
+    return newImageData;
+  }
+  return null;
+};
+
+// 卷积计算
+const convolutionMatrix = (imageData: ImageData, kernel: number[]) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 1; y < height - 1; y++) {
+      for (let x = 1; x < width - 1; x++) {
+        for (let i = 0; i < 3; i++) {
+          const startIndex = (y * width + x) * i;
+          newImgData[startIndex] =
+            kernel[0] * data[startIndex - width * 4 - 4] +
+            kernel[1] * data[startIndex - width * 4] +
+            kernel[2] * data[startIndex - width * 4 + 4] +
+            kernel[3] * data[startIndex - 4] +
+            kernel[4] * data[startIndex] +
+            kernel[5] * data[startIndex + 4] +
+            kernel[6] * data[startIndex + width * 4 - 4] +
+            kernel[7] * data[startIndex + width * 4] +
+            kernel[8] * data[startIndex + width * 4 + 4];
+        }
+        newImgData[(y * width + x) * 4 + 3] = 255;
+      }
+    }
+    const newImageData = new ImageData(newImgData, width - 1, height - 1);
+    return newImageData;
+  }
+  return null;
+};
+
+// 锐化
+export const sharpen = (imageData: ImageData) => {
+  if (imageData) {
+    const kernel = [-1, -1, -1, -1, 9, -1, -1, -1, -1]; // 锐化卷积核
+    const newImageData = convolutionMatrix(imageData, kernel);
+    return newImageData;
+  }
+  return null;
+};
+
 /**
  * 裁剪矩形图
  * @param imageData ImageData源数据
