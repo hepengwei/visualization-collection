@@ -111,13 +111,23 @@
     .operationBtns {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-top: 20px;
-      .operationBtn {
-        margin-right: 12px;
-        font-family: SourceHanSansCN-Medium !important;
-        font-weight: 500;
-        border-radius: 4px;
+      margin-top: 10px;
+      .left {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        width: 936px;
+        .operationBtn {
+          margin-right: 12px;
+          font-family: SourceHanSansCN-Medium !important;
+          font-weight: 500;
+          border-radius: 4px;
+          margin-top: 10px;
+        }
+      }
+      .right {
+        width: 64px;
+        margin-top: 10px;
       }
     }
   }

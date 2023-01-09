@@ -446,7 +446,7 @@ const Clip = (props: ClipProps) => {
         )}
       </div>
       <div className={styles.operationBtns}>
-        <div>
+        <div className={styles.left}>
           <Checkbox
             className={styles.operationBtn}
             checked={retainOriginalSize}
@@ -529,7 +529,7 @@ const Clip = (props: ClipProps) => {
             确定
           </Button>
         </div>
-        <Button ghost type="primary" onClick={onClear}>
+        <Button className={styles.right} ghost type="primary" onClick={onClear}>
           清空
         </Button>
       </div>
