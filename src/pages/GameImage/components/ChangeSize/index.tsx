@@ -15,6 +15,8 @@ interface ChangeSizeProps {
   onClear: () => void;
 }
 
+const primaryColor = "#0E5E6F";
+const primaryShallowColor = "#3A8891";
 const maxWidthHeight = 10000;
 
 const ChangeSize = (props: ChangeSizeProps) => {
@@ -111,7 +113,9 @@ const ChangeSize = (props: ChangeSizeProps) => {
     <div>
       <div
         className={styles.imgBox}
-        style={{ borderColor: imgDragOver ? "green" : "#2320e5" }}
+        style={{
+          borderColor: imgDragOver ? primaryColor : primaryShallowColor,
+        }}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}

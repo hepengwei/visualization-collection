@@ -8,13 +8,25 @@
   background-color: #eff5f5;
   padding: 40px 20px;
 
-  $primaryColor: #2320e5;
+  $primaryColor: #0e5e6f;
+  $primaryShallowColor: #3a8891;
 
   .content {
     min-width: 1000px;
     max-width: 1350px;
     display: flex;
     flex-direction: column;
+
+    .tabs {
+      :global {
+        .tabs-tabItem {
+          background-color: $primaryShallowColor !important;
+        }
+        .active {
+          background-color: $primaryColor !important;
+        }
+      }
+    }
 
     .imgBox {
       width: 100%;
@@ -34,7 +46,7 @@
         align-items: center;
         padding: 20px;
         margin: auto;
-        border: 1px solid #a3d5f3;
+        border: 1px solid $primaryShallowColor;
         img {
           width: 200px;
           height: 200px;
@@ -124,10 +136,32 @@
           border-radius: 4px;
           margin-top: 10px;
         }
+        :global {
+          .ant-btn {
+            background-color: $primaryShallowColor !important;
+          }
+          .ant-input-number-wrapper {
+            height: 34px !important;
+            .ant-input-number {
+              margin-top: 0 !important;
+              height: 100% !important;
+              .ant-input-number-input-wrap {
+                height: 100% !important;
+                input {
+                  height: 100% !important;
+                }
+              }
+            }
+          }
+        }
       }
       .right {
         width: 64px;
         margin-top: 10px;
+        border: 1px solid $primaryShallowColor !important;
+        span {
+          color: $primaryShallowColor !important;
+        }
       }
     }
   }

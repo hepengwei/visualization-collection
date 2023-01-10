@@ -4,23 +4,24 @@
   display: flex;
   align-items: center;
 
-  $primaryColor: #2320e5;
-
-  .tabItem {
-    display: flex;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-    padding: 0 20px;
-    color: #333;
-    font-family: SourceHanSansCN-Medium !important;
-    font-weight: 500;
-    background-color: #A3D5F3;
-    cursor: pointer;
-  }
-
-  .actived {
-    background-color: $primaryColor !important;
-    color: #fff;
+  :global {
+    $primaryColor: #2320e5;
+    $primaryShallowColor: #a3d5f3;
+    .tabs-tabItem {
+      display: flex;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px;
+      color: #333;
+      font-family: SourceHanSansCN-Medium !important;
+      font-weight: 500;
+      background-color: $primaryShallowColor;
+      cursor: pointer;
+    }
+    .active {
+      background-color: $primaryColor;
+      color: #fff;
+    }
   }
 }

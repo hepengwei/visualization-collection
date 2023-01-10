@@ -30,6 +30,9 @@ enum TabId {
   "photoCompression",
 }
 
+const primaryColor = "#0E5E6F";
+const primaryShallowColor = "#3A8891";
+
 const tabsList = [
   { id: TabId.basicOperation, label: "基础操作" },
   { id: TabId.clip, label: "裁剪" },
@@ -194,6 +197,7 @@ const GameImage = () => {
     <div className={styles.container}>
       <div className={styles.content}>
         <Tabs
+          className={styles.tabs}
           data={tabsList}
           selectedTabId={selectedTabId}
           onChange={onTabsChange}
@@ -201,7 +205,9 @@ const GameImage = () => {
         {!imgInfo && (
           <div
             className={styles.imgBox}
-            style={{ borderColor: imgDragOver ? "green" : "#2320e5" }}
+            style={{
+              borderColor: imgDragOver ? primaryColor : primaryShallowColor,
+            }}
             onDragOver={onDragOver}
             onDragLeave={onDragLeave}
             onDrop={onDrop}
