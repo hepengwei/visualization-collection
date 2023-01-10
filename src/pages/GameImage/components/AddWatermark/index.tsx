@@ -7,10 +7,26 @@ import styles from "../../index.module.scss";
 interface ClipProps {
   imgInfo: ImgInfo;
   exportImage: (imageData: ImageData) => void;
+  imgDragOver: boolean;
+  onDragOver: (e: React.DragEvent) => void;
+  onDragLeave: (e: React.DragEvent) => void;
+  onDrop: (e: React.DragEvent) => void;
+  onClear: () => void;
 }
 
+const primaryColor = "#0E5E6F";
+const primaryShallowColor = "#3A8891";
+
 const Clip = (props: ClipProps) => {
-  const { imgInfo, exportImage } = props;
+  const {
+    imgInfo,
+    exportImage,
+    imgDragOver,
+    onDragOver,
+    onDragLeave,
+    onDrop,
+    onClear,
+  } = props;
   const [imgSizeQualified, setImgSizeQualified] = useState<boolean>(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -46,7 +62,15 @@ const Clip = (props: ClipProps) => {
 
   return (
     <div>
-      <div className={styles.imgBox}>
+      <div
+        className={styles.imgBox}
+        style={{
+          borderColor: imgDragOver ? primaryColor : primaryShallowColor,
+        }}
+        onDragOver={onDragOver}
+        onDragLeave={onDragLeave}
+        onDrop={onDrop}
+      >
         <div
           style={{
             width: `${imgInfo.width}px`,

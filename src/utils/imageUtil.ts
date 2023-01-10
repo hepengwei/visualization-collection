@@ -296,6 +296,69 @@ export const toBlueAndGreen = (imageData: ImageData) => {
   return null;
 };
 
+// 红灰色滤镜
+export const toRedAndGrey = (imageData: ImageData) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        const greyColor = (data[startIndex + 1] + data[startIndex + 2]) / 2;
+        newImgData[startIndex] = data[startIndex];
+        newImgData[startIndex + 1] = greyColor;
+        newImgData[startIndex + 2] = greyColor;
+        newImgData[startIndex + 3] = data[startIndex + 3];
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
+    return newImageData;
+  }
+  return null;
+};
+
+// 绿灰色滤镜
+export const toGreenAndGrey = (imageData: ImageData) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        const greyColor = (data[startIndex] + data[startIndex + 2]) / 2;
+        newImgData[startIndex] = greyColor;
+        newImgData[startIndex + 1] = data[startIndex + 1];
+        newImgData[startIndex + 2] = greyColor;
+        newImgData[startIndex + 3] = data[startIndex + 3];
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
+    return newImageData;
+  }
+  return null;
+};
+
+// 蓝灰色滤镜
+export const toBlueAndGrey = (imageData: ImageData) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        const greyColor = (data[startIndex] + data[startIndex + 1]) / 2;
+        newImgData[startIndex] = greyColor;
+        newImgData[startIndex + 1] = greyColor;
+        newImgData[startIndex + 2] = data[startIndex + 2];
+        newImgData[startIndex + 3] = data[startIndex + 3];
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
+    return newImageData;
+  }
+  return null;
+};
+
 // 卷积计算
 const convolutionMatrix = (imageData: ImageData, kernel: number[]) => {
   if (imageData) {

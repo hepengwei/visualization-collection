@@ -27,6 +27,8 @@ enum Contact {
   "left",
 }
 
+const primaryColor = "#0E5E6F";
+const primaryShallowColor = "#3A8891";
 const clipBoxMinWidthHeight = 10; // 裁剪框的最小宽高
 
 const Clip = (props: ClipProps) => {
@@ -366,7 +368,9 @@ const Clip = (props: ClipProps) => {
     <div className={styles.container}>
       <div
         className={styles.imgBox}
-        style={{ borderColor: imgDragOver ? "green" : "#2320e5" }}
+        style={{
+          borderColor: imgDragOver ? primaryColor : primaryShallowColor,
+        }}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}

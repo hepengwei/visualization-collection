@@ -10,18 +10,19 @@ interface TabsProps {
   data: TabItem[];
   selectedTabId: any;
   onChange: (tabId: any) => void;
+  className?: string;
 }
 
 const Tabs = (props: TabsProps) => {
-  const { data = [], selectedTabId, onChange } = props;
+  const { data = [], selectedTabId, onChange, className } = props;
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container}${className ? ` ${className}` : ""}`}>
       {data.map((tab: TabItem) => {
         return (
           <div
             key={tab.id}
-            className={`${styles.tabItem} ${
-              selectedTabId === tab.id ? styles.actived : ""
+            className={`tabs-tabItem ${
+              selectedTabId === tab.id ? "active" : ""
             }`}
             onClick={() => {
               onChange && onChange(tab.id);

@@ -4,6 +4,8 @@
   display: flex;
   flex-direction: column;
 
+  $primaryColor: #0e5e6f;
+  $primaryShallowColor: #3a8891;
   $dotWidth: 6px;
 
   .imgBox {
@@ -129,10 +131,32 @@
         border-radius: 4px;
         margin-top: 10px;
       }
+      :global {
+        .ant-btn {
+          background-color: $primaryShallowColor !important;
+        }
+        .ant-input-number-wrapper {
+          height: 34px !important;
+          .ant-input-number {
+            margin-top: 0 !important;
+            height: 100% !important;
+            .ant-input-number-input-wrap {
+              height: 100% !important;
+              input {
+                height: 100% !important;
+              }
+            }
+          }
+        }
+      }
     }
     .right {
       width: 64px;
       margin-top: 10px;
+      border: 1px solid $primaryShallowColor !important;
+      span {
+        color: $primaryShallowColor !important;
+      }
     }
   }
 }

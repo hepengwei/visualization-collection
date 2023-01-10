@@ -9,6 +9,7 @@ import {
   rightRotate,
   toGrey,
   toBlackAndWhite,
+  sharpen,
   toOpposite,
   toRed,
   toGreen,
@@ -16,7 +17,9 @@ import {
   toRedAndGreen,
   toRedAndBlue,
   toBlueAndGreen,
-  sharpen,
+  toRedAndGrey,
+  toGreenAndGrey,
+  toBlueAndGrey,
 } from "utils/imageUtil";
 import { ImgInfo } from "../../index";
 import styles from "../../index.module.scss";
@@ -43,6 +46,7 @@ interface ImgStatusInfo {
   rightRotateStatus: Status;
   toGreyStatus: Status;
   toBlackAndWhiteStatus: Status;
+  sharpenStatus: Status;
   toOppositeStatus: Status;
   toRedStatus: Status;
   toGreenStatus: Status;
@@ -50,7 +54,9 @@ interface ImgStatusInfo {
   toRedAndGreenStatus: Status;
   toRedAndBlueStatus: Status;
   toBlueAndGreenStatus: Status;
-  sharpenStatus: Status;
+  toRedAndGreyStatus: Status;
+  toGreenAndGreyStatus: Status;
+  toBlueAndGreyStatus: Status;
 }
 
 const defaultImgStatus = {
@@ -60,6 +66,7 @@ const defaultImgStatus = {
   rightRotateStatus: { doing: false, imageData: null },
   toGreyStatus: { doing: false, imageData: null },
   toBlackAndWhiteStatus: { doing: false, imageData: null },
+  sharpenStatus: { doing: false, imageData: null },
   toOppositeStatus: { doing: false, imageData: null },
   toRedStatus: { doing: false, imageData: null },
   toGreenStatus: { doing: false, imageData: null },
@@ -67,8 +74,13 @@ const defaultImgStatus = {
   toRedAndGreenStatus: { doing: false, imageData: null },
   toRedAndBlueStatus: { doing: false, imageData: null },
   toBlueAndGreenStatus: { doing: false, imageData: null },
-  sharpenStatus: { doing: false, imageData: null },
+  toRedAndGreyStatus: { doing: false, imageData: null },
+  toGreenAndGreyStatus: { doing: false, imageData: null },
+  toBlueAndGreyStatus: { doing: false, imageData: null },
 };
+
+const primaryColor = "#0E5E6F";
+const primaryShallowColor = "#3A8891";
 
 const BasicOperation = (props: BasicOperationProps) => {
   const {
@@ -112,7 +124,9 @@ const BasicOperation = (props: BasicOperationProps) => {
     <div>
       <div
         className={styles.imgBox}
-        style={{ borderColor: imgDragOver ? "green" : "#2320e5" }}
+        style={{
+          borderColor: imgDragOver ? primaryColor : primaryShallowColor,
+        }}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}
@@ -203,7 +217,7 @@ const BasicOperation = (props: BasicOperationProps) => {
               doTask(imgStatusInfo.current.toOppositeStatus, toOpposite)
             }
           >
-            反相色滤镜
+            反色滤镜
           </Button>
           <Button
             type="primary"
@@ -252,6 +266,33 @@ const BasicOperation = (props: BasicOperationProps) => {
             }
           >
             蓝绿色滤镜
+          </Button>
+          <Button
+            type="primary"
+            className={styles.operationBtn}
+            onClick={() =>
+              doTask(imgStatusInfo.current.toRedAndGreyStatus, toRedAndGrey)
+            }
+          >
+            红灰色滤镜
+          </Button>
+          <Button
+            type="primary"
+            className={styles.operationBtn}
+            onClick={() =>
+              doTask(imgStatusInfo.current.toGreenAndGreyStatus, toGreenAndGrey)
+            }
+          >
+            绿灰色滤镜
+          </Button>
+          <Button
+            type="primary"
+            className={styles.operationBtn}
+            onClick={() =>
+              doTask(imgStatusInfo.current.toBlueAndGreyStatus, toBlueAndGrey)
+            }
+          >
+            蓝灰色滤镜
           </Button>
         </div>
         <Button className={styles.right} ghost type="primary" onClick={onClear}>
