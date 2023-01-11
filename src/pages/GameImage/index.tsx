@@ -9,6 +9,7 @@ import { fileOrBlobToDataURL, getImageType } from "utils/fileUtil";
 import BasicOperation from "./components/BasicOperation";
 import Clip from "./components/Clip";
 import ChangeSize from "./components/ChangeSize";
+import ChangeBrightness from "./components/ChangeBrightness";
 import styles from "./index.module.scss";
 
 export interface ImgInfo {
@@ -25,6 +26,7 @@ enum TabId {
   "basicOperation",
   "clip",
   "changeSize",
+  "changeBrightness",
   "addWatermark",
   "coverWithMosaics",
   "photoCompression",
@@ -37,6 +39,7 @@ const tabsList = [
   { id: TabId.basicOperation, label: "基础操作" },
   { id: TabId.clip, label: "裁剪" },
   { id: TabId.changeSize, label: "修改尺寸" },
+  { id: TabId.changeBrightness, label: "改变亮度" },
   { id: TabId.addWatermark, label: "添加水印" },
   { id: TabId.coverWithMosaics, label: "打马赛克" },
   { id: TabId.photoCompression, label: "图片压缩" },
@@ -251,6 +254,17 @@ const GameImage = () => {
         )}
         {imgInfo && selectedTabId === TabId.changeSize && (
           <ChangeSize
+            imgInfo={imgInfo}
+            exportImage={exportImage}
+            imgDragOver={imgDragOver}
+            onDragOver={onDragOver}
+            onDragLeave={onDragLeave}
+            onDrop={onDrop}
+            onClear={onClear}
+          />
+        )}
+        {imgInfo && selectedTabId === TabId.changeBrightness && (
+          <ChangeBrightness
             imgInfo={imgInfo}
             exportImage={exportImage}
             imgDragOver={imgDragOver}

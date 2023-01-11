@@ -10,6 +10,7 @@ import {
   toGrey,
   toBlackAndWhite,
   sharpen,
+  marginSharpen,
   toOpposite,
   toRed,
   toGreen,
@@ -47,6 +48,7 @@ interface ImgStatusInfo {
   toGreyStatus: Status;
   toBlackAndWhiteStatus: Status;
   sharpenStatus: Status;
+  marginSharpenStatus: Status;
   toOppositeStatus: Status;
   toRedStatus: Status;
   toGreenStatus: Status;
@@ -67,6 +69,7 @@ const defaultImgStatus = {
   toGreyStatus: { doing: false, imageData: null },
   toBlackAndWhiteStatus: { doing: false, imageData: null },
   sharpenStatus: { doing: false, imageData: null },
+  marginSharpenStatus: { doing: false, imageData: null },
   toOppositeStatus: { doing: false, imageData: null },
   toRedStatus: { doing: false, imageData: null },
   toGreenStatus: { doing: false, imageData: null },
@@ -206,9 +209,18 @@ const BasicOperation = (props: BasicOperationProps) => {
           <Button
             type="primary"
             className={styles.operationBtn}
-            // onClick={() => doTask(imgStatusInfo.current.sharpenStatus, sharpen)}
+            onClick={() => doTask(imgStatusInfo.current.sharpenStatus, sharpen)}
           >
             锐化
+          </Button>
+          <Button
+            type="primary"
+            className={styles.operationBtn}
+            onClick={() =>
+              doTask(imgStatusInfo.current.marginSharpenStatus, marginSharpen)
+            }
+          >
+            边缘锐化
           </Button>
           <Button
             type="primary"

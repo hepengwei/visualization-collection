@@ -130,6 +130,8 @@
         flex-wrap: wrap;
         width: 936px;
         .operationBtn {
+          display: flex;
+          align-items: center;
           margin-right: 12px;
           font-family: SourceHanSansCN-Medium !important;
           font-weight: 500;
@@ -141,7 +143,7 @@
             background-color: $primaryShallowColor !important;
           }
           .ant-input-number-wrapper {
-            height: 34px !important;
+            height: 36px !important;
             .ant-input-number {
               margin-top: 0 !important;
               height: 100% !important;
@@ -150,6 +152,19 @@
                 input {
                   height: 100% !important;
                 }
+              }
+            }
+          }
+          .ant-slider {
+            width: 400px;
+            margin-bottom: 12px;
+          }
+          .ant-input-number {
+            height: 36px !important;
+            .ant-input-number-input-wrap {
+              height: 100% !important;
+              input {
+                height: 100% !important;
               }
             }
           }
