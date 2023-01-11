@@ -364,25 +364,30 @@ const convolutionMatrix = (imageData: ImageData, kernel: number[]) => {
   if (imageData) {
     const { data, width, height } = imageData;
     const newImgData = new Uint8ClampedArray(data.length);
-    for (let y = 1; y < height - 1; y++) {
-      for (let x = 1; x < width - 1; x++) {
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
         for (let i = 0; i < 3; i++) {
-          const startIndex = (y * width + x) * i;
-          newImgData[startIndex] =
-            kernel[0] * data[startIndex - width * 4 - 4] +
-            kernel[1] * data[startIndex - width * 4] +
-            kernel[2] * data[startIndex - width * 4 + 4] +
-            kernel[3] * data[startIndex - 4] +
-            kernel[4] * data[startIndex] +
-            kernel[5] * data[startIndex + 4] +
-            kernel[6] * data[startIndex + width * 4 - 4] +
-            kernel[7] * data[startIndex + width * 4] +
-            kernel[8] * data[startIndex + width * 4 + 4];
+          const index = startIndex + i;
+          if (x === 0 || x === width - 1 || y === 0 || y === height - 1) {
+            newImgData[index] = data[index];
+          } else {
+            newImgData[index] =
+              kernel[0] * data[index - width * 4 - 4] +
+              kernel[1] * data[index - width * 4] +
+              kernel[2] * data[index - width * 4 + 4] +
+              kernel[3] * data[index - 4] +
+              kernel[4] * data[index] +
+              kernel[5] * data[index + 4] +
+              kernel[6] * data[index + width * 4 - 4] +
+              kernel[7] * data[index + width * 4] +
+              kernel[8] * data[index + width * 4 + 4];
+          }
         }
-        newImgData[(y * width + x) * 4 + 3] = 255;
+        newImgData[startIndex + 3] = data[startIndex + 3];
       }
     }
-    const newImageData = new ImageData(newImgData, width - 1, height - 1);
+    const newImageData = new ImageData(newImgData, width, height);
     return newImageData;
   }
   return null;
@@ -392,6 +397,16 @@ const convolutionMatrix = (imageData: ImageData, kernel: number[]) => {
 export const sharpen = (imageData: ImageData) => {
   if (imageData) {
     const kernel = [-1, -1, -1, -1, 9, -1, -1, -1, -1]; // 锐化卷积核
+    const newImageData = convolutionMatrix(imageData, kernel);
+    return newImageData;
+  }
+  return null;
+};
+
+// 边缘锐化
+export const marginSharpen = (imageData: ImageData) => {
+  if (imageData) {
+    const kernel = [-1, -1, -1, -1, 8, -1, -1, -1, -1]; // 边缘化卷积核
     const newImageData = convolutionMatrix(imageData, kernel);
     return newImageData;
   }
@@ -521,6 +536,35 @@ export const changeSize = (
       newWidth,
       newHeight
     ) as ImageData;
+    return newImageData;
+  }
+  return null;
+};
+
+// 修改亮度
+export const changeBrightness = (imageData: ImageData, changeNum: number) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        newImgData[startIndex] = Math.max(
+          Math.min(data[startIndex] + changeNum, 255),
+          0
+        );
+        newImgData[startIndex + 1] = Math.max(
+          Math.min(data[startIndex + 1] + changeNum, 255),
+          0
+        );
+        newImgData[startIndex + 2] = Math.max(
+          Math.min(data[startIndex + 2] + changeNum, 255),
+          0
+        );
+        newImgData[startIndex + 3] = data[startIndex + 3];
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
     return newImageData;
   }
   return null;

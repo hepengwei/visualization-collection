@@ -82,12 +82,12 @@ const ChangeSize = (props: ChangeSizeProps) => {
       message.warning("正在努力工作,请稍后");
       return;
     }
-    doing.current = true;
     const { imgUrl, width, height } = imgInfo;
     if (!toWidth || !toHeight) {
       message.warning("请输入宽度或高度");
       return;
     }
+    doing.current = true;
     const newImageData = changeSize(
       imgUrl,
       width,
