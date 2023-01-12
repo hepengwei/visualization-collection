@@ -10,6 +10,7 @@ import BasicOperation from "./components/BasicOperation";
 import Clip from "./components/Clip";
 import ChangeSize from "./components/ChangeSize";
 import ChangeBrightness from "./components/ChangeBrightness";
+import ChangeDiaphaneity from "./components/ChangeDiaphaneity";
 import styles from "./index.module.scss";
 
 export interface ImgInfo {
@@ -27,6 +28,7 @@ enum TabId {
   "clip",
   "changeSize",
   "changeBrightness",
+  "changeDiaphaneity",
   "addWatermark",
   "coverWithMosaics",
   "photoCompression",
@@ -40,6 +42,7 @@ const tabsList = [
   { id: TabId.clip, label: "裁剪" },
   { id: TabId.changeSize, label: "修改尺寸" },
   { id: TabId.changeBrightness, label: "改变亮度" },
+  { id: TabId.changeDiaphaneity, label: "修改透明度" },
   { id: TabId.addWatermark, label: "添加水印" },
   { id: TabId.coverWithMosaics, label: "打马赛克" },
   { id: TabId.photoCompression, label: "图片压缩" },
@@ -71,7 +74,7 @@ const GameImage = () => {
   };
 
   // 导出图片
-  const exportImage = (imageData: ImageData) => {
+  const exportImage = (imageData: ImageData, exportImageType?: string) => {
     if (!imageData) return;
     const { width, height } = imageData;
     const canvas = document.createElement("canvas") as HTMLCanvasElement;
@@ -89,10 +92,20 @@ const GameImage = () => {
           if (imgInfo && imgInfo.name) {
             const arr = imgInfo.name.split(".");
             if (arr.length > 1) {
-              arr.splice(arr.length - 1, 1, imgInfo.fileType.toLowerCase());
+              arr.splice(
+                arr.length - 1,
+                1,
+                exportImageType
+                  ? exportImageType.toLowerCase()
+                  : imgInfo.fileType.toLowerCase()
+              );
               imgName = arr.join(".");
             } else {
-              arr.push(imgInfo.fileType.toLowerCase());
+              arr.push(
+                exportImageType
+                  ? exportImageType.toLowerCase()
+                  : imgInfo.fileType.toLowerCase()
+              );
               imgName = arr.join(".");
             }
           }
@@ -102,7 +115,13 @@ const GameImage = () => {
           document.body.removeChild(a);
         }
       },
-      `image/${imgInfo?.fileType.toLowerCase() || "png"}`,
+      `image/${
+        exportImageType
+          ? exportImageType.toLowerCase()
+          : imgInfo
+          ? imgInfo?.fileType.toLowerCase()
+          : "png"
+      }`,
       1
     );
   };
@@ -265,6 +284,17 @@ const GameImage = () => {
         )}
         {imgInfo && selectedTabId === TabId.changeBrightness && (
           <ChangeBrightness
+            imgInfo={imgInfo}
+            exportImage={exportImage}
+            imgDragOver={imgDragOver}
+            onDragOver={onDragOver}
+            onDragLeave={onDragLeave}
+            onDrop={onDrop}
+            onClear={onClear}
+          />
+        )}
+        {imgInfo && selectedTabId === TabId.changeDiaphaneity && (
+          <ChangeDiaphaneity
             imgInfo={imgInfo}
             exportImage={exportImage}
             imgDragOver={imgDragOver}

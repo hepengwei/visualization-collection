@@ -21,13 +21,15 @@ import {
   toRedAndGrey,
   toGreenAndGrey,
   toBlueAndGrey,
+  jpgToPng,
+  pngToJpg,
 } from "utils/imageUtil";
 import { ImgInfo } from "../../index";
 import styles from "../../index.module.scss";
 
 interface BasicOperationProps {
   imgInfo: ImgInfo;
-  exportImage: (imageData: ImageData) => void;
+  exportImage: (imageData: ImageData, exportImageType?: string) => void;
   imgDragOver: boolean;
   onDragOver: (e: React.DragEvent) => void;
   onDragLeave: (e: React.DragEvent) => void;
@@ -59,6 +61,8 @@ interface ImgStatusInfo {
   toRedAndGreyStatus: Status;
   toGreenAndGreyStatus: Status;
   toBlueAndGreyStatus: Status;
+  jpgToPngStatus: Status;
+  pngToJpgStatus: Status;
 }
 
 const defaultImgStatus = {
@@ -80,6 +84,8 @@ const defaultImgStatus = {
   toRedAndGreyStatus: { doing: false, imageData: null },
   toGreenAndGreyStatus: { doing: false, imageData: null },
   toBlueAndGreyStatus: { doing: false, imageData: null },
+  jpgToPngStatus: { doing: false, imageData: null },
+  pngToJpgStatus: { doing: false, imageData: null },
 };
 
 const primaryColor = "#0E5E6F";
@@ -99,7 +105,8 @@ const BasicOperation = (props: BasicOperationProps) => {
 
   const doTask = (
     status: Status,
-    method: (imageData: ImageData) => ImageData | null
+    method: (imageData: ImageData) => ImageData | null,
+    exportImageType?: string
   ) => {
     if (status && status.imageData) {
       exportImage(status.imageData);
@@ -111,7 +118,7 @@ const BasicOperation = (props: BasicOperationProps) => {
       const newImageData = method(imgInfo.imageData);
       if (newImageData) {
         status.imageData = newImageData;
-        exportImage(newImageData);
+        exportImage(newImageData, exportImageType);
       } else {
         message.error("转换失败");
       }
@@ -306,6 +313,28 @@ const BasicOperation = (props: BasicOperationProps) => {
           >
             蓝灰色滤镜
           </Button>
+          {["JPG", "JPEG"].includes(imgInfo.fileType) && (
+            <Button
+              type="primary"
+              className={styles.operationBtn}
+              onClick={() =>
+                doTask(imgStatusInfo.current.jpgToPngStatus, jpgToPng, "PNG")
+              }
+            >
+              JPG转PNG
+            </Button>
+          )}
+          {imgInfo.fileType === "PNG" && (
+            <Button
+              type="primary"
+              className={styles.operationBtn}
+              onClick={() =>
+                doTask(imgStatusInfo.current.pngToJpgStatus, pngToJpg, "JPEG")
+              }
+            >
+              PNG转JPG
+            </Button>
+          )}
         </div>
         <Button className={styles.right} ghost type="primary" onClick={onClear}>
           清空
