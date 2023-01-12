@@ -449,94 +449,101 @@ const Clip = (props: ClipProps) => {
           </div>
         )}
       </div>
-      <div className={styles.operationBtns}>
-        <div className={styles.left}>
-          <Checkbox
-            className={styles.operationBtn}
-            checked={retainOriginalSize}
-            onChange={(e) => {
-              setRetainOriginalSize(e.target.checked);
-            }}
-          >
-            是否保留原尺寸
-          </Checkbox>
-          <InputNumber
-            className={styles.operationBtn}
-            style={{ width: "160px" }}
-            min={clipBoxMinWidthHeight}
-            max={imgInfo.width}
-            precision={0}
-            value={clipBoxWidth}
-            addonBefore="裁剪宽度"
-            onChange={(value: number | null) => {
-              const { width } = imgInfo;
-              if (value && value + clipBoxLeft > width) {
-                setClipBoxLeft(width - value);
-              }
-              setClipBoxWidth(value || 0);
-            }}
-          />
-          <InputNumber
-            className={styles.operationBtn}
-            style={{ width: "160px" }}
-            min={clipBoxMinWidthHeight}
-            max={imgInfo.height}
-            precision={0}
-            value={clipBoxHeight}
-            addonBefore="裁剪高度"
-            onChange={(value: number | null) => {
-              const { height } = imgInfo;
-              if (value && value + clipBoxTop > height) {
-                setClipBoxTop(height - value);
-              }
-              setClipBoxHeight(value || 0);
-            }}
-          />
-          <InputNumber
-            className={styles.operationBtn}
-            style={{ width: "160px" }}
-            min={0}
-            max={imgInfo.width - clipBoxMinWidthHeight}
-            precision={0}
-            value={clipBoxLeft}
-            addonBefore="距离左侧"
-            onChange={(value: number | null) => {
-              setClipBoxLeft(value || 0);
-              const { width } = imgInfo;
-              if (value && value + clipBoxWidth > width) {
-                setClipBoxWidth(width - value);
-              }
-            }}
-          />
-          <InputNumber
-            className={styles.operationBtn}
-            style={{ width: "160px" }}
-            min={0}
-            max={imgInfo.height - clipBoxMinWidthHeight}
-            precision={0}
-            value={clipBoxTop}
-            addonBefore="距离顶部"
-            onChange={(value: number | null) => {
-              setClipBoxTop(value || 0);
-              const { height } = imgInfo;
-              if (value && value + clipBoxHeight > height) {
-                setClipBoxHeight(height - value);
-              }
-            }}
-          />
+      {imgSizeQualified && (
+        <div className={styles.operationBtns}>
+          <div className={styles.left}>
+            <Checkbox
+              className={styles.operationBtn}
+              checked={retainOriginalSize}
+              onChange={(e) => {
+                setRetainOriginalSize(e.target.checked);
+              }}
+            >
+              是否保留原尺寸
+            </Checkbox>
+            <InputNumber
+              className={styles.operationBtn}
+              style={{ width: "160px" }}
+              min={clipBoxMinWidthHeight}
+              max={imgInfo.width}
+              precision={0}
+              value={clipBoxWidth}
+              addonBefore="裁剪宽度"
+              onChange={(value: number | null) => {
+                const { width } = imgInfo;
+                if (value && value + clipBoxLeft > width) {
+                  setClipBoxLeft(width - value);
+                }
+                setClipBoxWidth(value || 0);
+              }}
+            />
+            <InputNumber
+              className={styles.operationBtn}
+              style={{ width: "160px" }}
+              min={clipBoxMinWidthHeight}
+              max={imgInfo.height}
+              precision={0}
+              value={clipBoxHeight}
+              addonBefore="裁剪高度"
+              onChange={(value: number | null) => {
+                const { height } = imgInfo;
+                if (value && value + clipBoxTop > height) {
+                  setClipBoxTop(height - value);
+                }
+                setClipBoxHeight(value || 0);
+              }}
+            />
+            <InputNumber
+              className={styles.operationBtn}
+              style={{ width: "160px" }}
+              min={0}
+              max={imgInfo.width - clipBoxMinWidthHeight}
+              precision={0}
+              value={clipBoxLeft}
+              addonBefore="距离左侧"
+              onChange={(value: number | null) => {
+                setClipBoxLeft(value || 0);
+                const { width } = imgInfo;
+                if (value && value + clipBoxWidth > width) {
+                  setClipBoxWidth(width - value);
+                }
+              }}
+            />
+            <InputNumber
+              className={styles.operationBtn}
+              style={{ width: "160px" }}
+              min={0}
+              max={imgInfo.height - clipBoxMinWidthHeight}
+              precision={0}
+              value={clipBoxTop}
+              addonBefore="距离顶部"
+              onChange={(value: number | null) => {
+                setClipBoxTop(value || 0);
+                const { height } = imgInfo;
+                if (value && value + clipBoxHeight > height) {
+                  setClipBoxHeight(height - value);
+                }
+              }}
+            />
+            <Button
+              type="primary"
+              className={styles.operationBtn}
+              onClick={onOk}
+              disabled={!imgSizeQualified}
+            >
+              确定
+            </Button>
+          </div>
           <Button
+            className={styles.right}
+            ghost
             type="primary"
-            className={styles.operationBtn}
-            onClick={onOk}
-            disabled={!imgSizeQualified}
+            onClick={onClear}
           >
-            确定
+            清空
           </Button>
         </div>
-        <Button className={styles.right} ghost type="primary" onClick={onClear}>
-          清空
-        </Button>
-      </div>
+      )}
     </div>
   );
 };

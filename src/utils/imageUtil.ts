@@ -413,6 +413,53 @@ export const marginSharpen = (imageData: ImageData) => {
   return null;
 };
 
+// JPG转PNG
+export const jpgToPng = (imageData: ImageData) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        newImgData[startIndex] = data[startIndex];
+        newImgData[startIndex + 1] = data[startIndex + 1];
+        newImgData[startIndex + 2] = data[startIndex + 2];
+        newImgData[startIndex + 3] = 255;
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
+    return newImageData;
+  }
+  return null;
+};
+
+// PNG转JPG
+export const pngToJpg = (imageData: ImageData) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        if (data[startIndex + 3] === 0) {
+          newImgData[startIndex] = 255;
+          newImgData[startIndex + 1] = 255;
+          newImgData[startIndex + 2] = 255;
+          newImgData[startIndex + 3] = 255;
+        } else {
+          newImgData[startIndex] = data[startIndex];
+          newImgData[startIndex + 1] = data[startIndex + 1];
+          newImgData[startIndex + 2] = data[startIndex + 2];
+          newImgData[startIndex + 3] = 255;
+        }
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
+    return newImageData;
+  }
+  return null;
+};
+
 /**
  * 裁剪矩形图
  * @param imageData ImageData源数据
