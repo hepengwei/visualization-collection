@@ -139,6 +139,9 @@
           margin-top: 10px;
         }
         :global {
+          .ant-checkbox {
+            top: 0;
+          }
           .ant-btn {
             background-color: $primaryShallowColor !important;
           }

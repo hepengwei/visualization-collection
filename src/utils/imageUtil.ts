@@ -616,3 +616,40 @@ export const changeBrightness = (imageData: ImageData, changeNum: number) => {
   }
   return null;
 };
+
+// 修改透明度
+export const changeDiaphaneity = (
+  imageData: ImageData,
+  value: number,
+  fixedDiaphaneity = false
+) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    console.log(4444, value, fixedDiaphaneity);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        if (data[startIndex + 3] === 0) {
+          newImgData[startIndex] = 255;
+          newImgData[startIndex + 1] = 255;
+          newImgData[startIndex + 2] = 255;
+        } else {
+          newImgData[startIndex] = data[startIndex];
+          newImgData[startIndex + 1] = data[startIndex + 1];
+          newImgData[startIndex + 2] = data[startIndex + 2];
+        }
+        let a = data[startIndex + 3];
+        if (fixedDiaphaneity) {
+          a = Math.max(Math.min(Math.floor(255 * value), 255), 0);
+        } else {
+          a = Math.max(Math.min(Math.floor(a + 255 * value), 255), 0);
+        }
+        newImgData[startIndex + 3] = a;
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
+    return newImageData;
+  }
+  return null;
+};
