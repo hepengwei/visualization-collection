@@ -359,40 +359,6 @@ export const toBlueAndGrey = (imageData: ImageData) => {
   return null;
 };
 
-// 卷积计算
-const convolutionMatrix = (imageData: ImageData, kernel: number[]) => {
-  if (imageData) {
-    const { data, width, height } = imageData;
-    const newImgData = new Uint8ClampedArray(data.length);
-    for (let y = 0; y < height; y++) {
-      for (let x = 0; x < width; x++) {
-        const startIndex = (y * width + x) * 4;
-        for (let i = 0; i < 3; i++) {
-          const index = startIndex + i;
-          if (x === 0 || x === width - 1 || y === 0 || y === height - 1) {
-            newImgData[index] = data[index];
-          } else {
-            newImgData[index] =
-              kernel[0] * data[index - width * 4 - 4] +
-              kernel[1] * data[index - width * 4] +
-              kernel[2] * data[index - width * 4 + 4] +
-              kernel[3] * data[index - 4] +
-              kernel[4] * data[index] +
-              kernel[5] * data[index + 4] +
-              kernel[6] * data[index + width * 4 - 4] +
-              kernel[7] * data[index + width * 4] +
-              kernel[8] * data[index + width * 4 + 4];
-          }
-        }
-        newImgData[startIndex + 3] = data[startIndex + 3];
-      }
-    }
-    const newImageData = new ImageData(newImgData, width, height);
-    return newImageData;
-  }
-  return null;
-};
-
 // 锐化
 export const sharpen = (imageData: ImageData) => {
   if (imageData) {
@@ -447,10 +413,19 @@ export const pngToJpg = (imageData: ImageData) => {
           newImgData[startIndex + 2] = 255;
           newImgData[startIndex + 3] = 255;
         } else {
-          newImgData[startIndex] = data[startIndex];
-          newImgData[startIndex + 1] = data[startIndex + 1];
-          newImgData[startIndex + 2] = data[startIndex + 2];
-          newImgData[startIndex + 3] = 255;
+          const newColor = colorStacks(
+            [
+              data[startIndex],
+              data[startIndex + 1],
+              data[startIndex + 2],
+              data[startIndex + 3],
+            ],
+            [255, 255, 255, 255]
+          );
+          newImgData[startIndex] = newColor[0];
+          newImgData[startIndex + 1] = newColor[1];
+          newImgData[startIndex + 2] = newColor[2];
+          newImgData[startIndex + 3] = newColor[3];
         }
       }
     }
@@ -626,7 +601,6 @@ export const changeDiaphaneity = (
   if (imageData) {
     const { data, width, height } = imageData;
     const newImgData = new Uint8ClampedArray(data.length);
-    console.log(4444, value, fixedDiaphaneity);
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
         const startIndex = (y * width + x) * 4;
@@ -652,4 +626,103 @@ export const changeDiaphaneity = (
     return newImageData;
   }
   return null;
+};
+
+// 卷积算法
+const convolutionMatrix = (imageData: ImageData, kernel: number[]) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        for (let i = 0; i < 3; i++) {
+          const index = startIndex + i;
+          if (x === 0 || x === width - 1 || y === 0 || y === height - 1) {
+            newImgData[index] = data[index];
+          } else {
+            newImgData[index] =
+              kernel[0] * data[index - width * 4 - 4] +
+              kernel[1] * data[index - width * 4] +
+              kernel[2] * data[index - width * 4 + 4] +
+              kernel[3] * data[index - 4] +
+              kernel[4] * data[index] +
+              kernel[5] * data[index + 4] +
+              kernel[6] * data[index + width * 4 - 4] +
+              kernel[7] * data[index + width * 4] +
+              kernel[8] * data[index + width * 4 + 4];
+          }
+        }
+        newImgData[startIndex + 3] = data[startIndex + 3];
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
+    return newImageData;
+  }
+  return null;
+};
+
+// 颜色叠加算法
+const colorStacks = (
+  aboveColor: [number, number, number, number],
+  belowColor: [number, number, number, number]
+) => {
+  if (
+    aboveColor &&
+    aboveColor.length === 4 &&
+    belowColor &&
+    belowColor.length === 4
+  ) {
+    const aboveA = aboveColor[3];
+    const belowA = belowColor[3];
+    if (aboveA === 255 || belowA === 0) {
+      return aboveColor;
+    } else if (aboveA === 0) {
+      return belowColor;
+    } else {
+      const aboveDiaphaneity = aboveA / 255;
+      const belowDiaphaneity = belowA / 255;
+      const newColorR = Math.max(
+        Math.min(
+          Math.floor(
+            aboveColor[0] * aboveDiaphaneity +
+              belowColor[0] * belowDiaphaneity * (1 - aboveDiaphaneity)
+          ),
+          255
+        ),
+        0
+      );
+      const newColorG = Math.max(
+        Math.min(
+          Math.floor(
+            aboveColor[1] * aboveDiaphaneity +
+              belowColor[1] * belowDiaphaneity * (1 - aboveDiaphaneity)
+          ),
+          255
+        ),
+        0
+      );
+      const newColorB = Math.max(
+        Math.min(
+          Math.floor(
+            aboveColor[2] * aboveDiaphaneity +
+              belowColor[2] * belowDiaphaneity * (1 - aboveDiaphaneity)
+          ),
+          255
+        ),
+        0
+      );
+      const newColorA = Math.max(
+        Math.min(
+          Math.floor(
+            (aboveDiaphaneity + belowDiaphaneity * (1 - aboveDiaphaneity)) * 255
+          ),
+          255
+        ),
+        0
+      );
+      return [newColorR, newColorG, newColorB, newColorA];
+    }
+  }
+  return [255, 255, 255, 255];
 };

@@ -63,7 +63,6 @@ const ChangeDiaphaneity = (props: ChangeDiaphaneityProps) => {
       diaphaneity,
       fixedDiaphaneity
     );
-    console.log(33333, newImageData);
     if (newImageData) {
       exportImage(newImageData);
     } else {
