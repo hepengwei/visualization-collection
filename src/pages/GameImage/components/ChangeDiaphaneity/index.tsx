@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Row, Col, Slider, InputNumber, Button, message } from "antd";
-import { sizeTostr, changeBrightness } from "utils/imageUtil";
+import { Row, Col, Slider, InputNumber, Button, Checkbox, message } from "antd";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
+import { sizeTostr, changeDiaphaneity } from "utils/imageUtil";
 import { ImgInfo } from "../../index";
 import styles from "../../index.module.scss";
 
@@ -28,18 +29,21 @@ const ChangeDiaphaneity = (props: ChangeDiaphaneityProps) => {
     onClear,
   } = props;
   const [imgTypeQualified, setImgTypeQualified] = useState<boolean>(false);
+  const [fixedDiaphaneity, setFixedDiaphaneity] = useState<boolean>(false);
   const [diaphaneity, setDiaphaneity] = useState<number | null>(0);
-  const [fixedDiaphaneity, setFixedDiaphaneity] = useState<number | null>(1);
   const doing = useRef<boolean>(false);
+
+  // 是否固定透明度改变
+  const onFixedDiaphaneityChange = (e: CheckboxChangeEvent) => {
+    setFixedDiaphaneity(e.target.checked);
+    if (e.target.checked) {
+      setDiaphaneity(1);
+    }
+  };
 
   // 修改透明度值
   const onChange = (value: number | null) => {
     setDiaphaneity(value);
-  };
-
-  // 固定透明度值
-  const onFixed = (value: number | null) => {
-    setFixedDiaphaneity(value);
   };
 
   // 点击确定
@@ -48,18 +52,23 @@ const ChangeDiaphaneity = (props: ChangeDiaphaneityProps) => {
       message.warning("正在努力工作,请稍后");
       return;
     }
-    const { imageData } = imgInfo;
-    if (!diaphaneity) {
-      message.warning("请输入要修改的透明值");
+    if (typeof diaphaneity !== "number") {
+      message.warning("请输入要修改的透明度值");
       return;
     }
     doing.current = true;
-    // const newImageData = changeBrightness(imageData, diaphaneity);
-    // if (newImageData) {
-    //   exportImage(newImageData);
-    // } else {
-    //   message.error("修改失败");
-    // }
+    const { imageData } = imgInfo;
+    const newImageData = changeDiaphaneity(
+      imageData,
+      diaphaneity,
+      fixedDiaphaneity
+    );
+    console.log(33333, newImageData);
+    if (newImageData) {
+      exportImage(newImageData);
+    } else {
+      message.error("修改失败");
+    }
     doing.current = false;
   };
 
@@ -71,7 +80,7 @@ const ChangeDiaphaneity = (props: ChangeDiaphaneityProps) => {
       setImgTypeQualified(true);
     }
     setDiaphaneity(0);
-    setFixedDiaphaneity(1);
+    setFixedDiaphaneity(false);
   }, [imgInfo]);
 
   return (
@@ -103,23 +112,37 @@ const ChangeDiaphaneity = (props: ChangeDiaphaneityProps) => {
       {imgTypeQualified && (
         <div className={styles.operationBtns}>
           <div className={styles.left}>
+            <Checkbox
+              className={styles.operationBtn}
+              checked={fixedDiaphaneity}
+              onChange={onFixedDiaphaneityChange}
+            >
+              是否统一为固定值
+            </Checkbox>
+            {!fixedDiaphaneity && (
+              <div className={styles.operationBtn}>
+                <span style={{ color: "#444", marginRight: "6px" }}>
+                  变透明
+                </span>
+                <Slider
+                  min={-1}
+                  max={1}
+                  step={0.1}
+                  marks={{
+                    0: "0",
+                  }}
+                  value={typeof diaphaneity === "number" ? diaphaneity : 0}
+                  onChange={onChange}
+                />
+                <span style={{ color: "#444", marginLeft: "6px" }}>变不透</span>
+              </div>
+            )}
             <div className={styles.operationBtn}>
-              <span style={{ color: "#444", marginRight: "6px" }}>变透明</span>
-              <Slider
-                min={-1}
-                max={1}
-                marks={{
-                  0: "0",
-                }}
-                value={typeof diaphaneity === "number" ? diaphaneity : 0}
-                onChange={onChange}
-              />
-              <span style={{ color: "#444", marginLeft: "6px" }}>变不透</span>
               <InputNumber
-                style={{ margin: "0 16px" }}
-                min={-1}
+                min={fixedDiaphaneity ? 0 : -1}
                 max={1}
-                precision={0}
+                step={0.1}
+                precision={1}
                 value={diaphaneity}
                 onChange={onChange}
               />
