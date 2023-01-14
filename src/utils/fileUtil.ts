@@ -61,3 +61,23 @@ export const blobToImage = (
     }
   });
 };
+
+// 获取图片二进制数据
+export const getCanvasImgData = (
+  imgUrl: string,
+  width: number = 0,
+  height: number = 0
+) => {
+  if (imgUrl && width && height) {
+    const img = new Image();
+    img.src = imgUrl;
+    const canvas = document.createElement("canvas") as HTMLCanvasElement;
+    const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+    canvas.width = width;
+    canvas.height = height;
+    ctx.drawImage(img, 0, 0, width, height);
+    const imageData = ctx.getImageData(0, 0, width, height) as ImageData;
+    return imageData;
+  }
+  return null;
+};

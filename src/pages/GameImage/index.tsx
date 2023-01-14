@@ -5,12 +5,13 @@ import React, { useState } from "react";
 import { Button, message } from "antd";
 import { FolderAddOutlined } from "@ant-design/icons";
 import Tabs from "./components/Tabs";
-import { fileOrBlobToDataURL, getImageType } from "utils/fileUtil";
+import { fileOrBlobToDataURL, getImageType, getCanvasImgData } from "utils/fileUtil";
 import BasicOperation from "./components/BasicOperation";
 import Clip from "./components/Clip";
 import ChangeSize from "./components/ChangeSize";
 import ChangeBrightness from "./components/ChangeBrightness";
 import ChangeDiaphaneity from "./components/ChangeDiaphaneity";
+import AddWatermark from "./components/AddWatermark";
 import styles from "./index.module.scss";
 
 export interface ImgInfo {
@@ -41,7 +42,7 @@ const tabsList = [
   { id: TabId.basicOperation, label: "基础操作" },
   { id: TabId.clip, label: "裁剪" },
   { id: TabId.changeSize, label: "修改尺寸" },
-  { id: TabId.changeBrightness, label: "改变亮度" },
+  { id: TabId.changeBrightness, label: "修改亮度" },
   { id: TabId.changeDiaphaneity, label: "修改透明度" },
   { id: TabId.addWatermark, label: "添加水印" },
   { id: TabId.coverWithMosaics, label: "打马赛克" },
@@ -52,26 +53,6 @@ const GameImage = () => {
   const [selectedTabId, setSelectedTabId] = useState<TabId>(tabsList[0].id);
   const [imgDragOver, setImgDragOver] = useState<boolean>(false);
   const [imgInfo, setImgInfo] = useState<ImgInfo | null>(null);
-
-  // 获取图片二进制数据
-  const getCanvasImgData = (
-    imgUrl: string,
-    width: number = 0,
-    height: number = 0
-  ) => {
-    if (imgUrl && width && height) {
-      const img = new Image();
-      img.src = imgUrl;
-      const canvas = document.createElement("canvas") as HTMLCanvasElement;
-      const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-      canvas.width = width;
-      canvas.height = height;
-      ctx.drawImage(img, 0, 0, width, height);
-      const imageData = ctx.getImageData(0, 0, width, height) as ImageData;
-      return imageData;
-    }
-    return null;
-  };
 
   // 导出图片
   const exportImage = (imageData: ImageData, exportImageType?: string) => {
@@ -295,6 +276,17 @@ const GameImage = () => {
         )}
         {imgInfo && selectedTabId === TabId.changeDiaphaneity && (
           <ChangeDiaphaneity
+            imgInfo={imgInfo}
+            exportImage={exportImage}
+            imgDragOver={imgDragOver}
+            onDragOver={onDragOver}
+            onDragLeave={onDragLeave}
+            onDrop={onDrop}
+            onClear={onClear}
+          />
+        )}
+        {imgInfo && selectedTabId === TabId.addWatermark && (
+          <AddWatermark
             imgInfo={imgInfo}
             exportImage={exportImage}
             imgDragOver={imgDragOver}

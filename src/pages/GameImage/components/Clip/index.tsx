@@ -292,11 +292,14 @@ const Clip = (props: ClipProps) => {
 
   useEffect(() => {
     const { width, height } = imgInfo;
-    if (width <= 20 || height <= 20) {
+    if (
+      width < clipBoxMinWidthHeight * 2 ||
+      height < clipBoxMinWidthHeight * 2
+    ) {
       message.error("请选20x20以上尺寸的图片");
       setImgSizeQualified(false);
       return;
-    } else if (width >= 1350 || height >= 1350) {
+    } else if (width > 1350 || height > 1350) {
       message.error("请选择1350x1350以下尺寸的图片");
       setImgSizeQualified(false);
       return;

@@ -1,3 +1,5 @@
+import { es } from "date-fns/locale";
+
 // 将文件字节大小转成带单位的文件大小
 export const sizeTostr = (size: number, decimals = 2) => {
   if (size === 0) return "0 Bytes";
@@ -436,7 +438,7 @@ export const pngToJpg = (imageData: ImageData) => {
 };
 
 /**
- * 裁剪矩形图
+ * 矩形裁剪
  * @param imageData ImageData源数据
  * @param newWidth 新图的宽度（retainOriginalSize为true时，宽度为imageData.width）
  * @param newHeight 新图的高度（retainOriginalSize为true时，高度为imageData.height）
@@ -620,6 +622,78 @@ export const changeDiaphaneity = (
           a = Math.max(Math.min(Math.floor(a + 255 * value), 255), 0);
         }
         newImgData[startIndex + 3] = a;
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
+    return newImageData;
+  }
+  return null;
+};
+
+// 添加水印
+export const addWatermark = (
+  imageData: ImageData,
+  watermarkImageData: ImageData,
+  top: number,
+  left: number
+) => {
+  if (imageData && watermarkImageData) {
+    const { data, width, height } = imageData;
+    const {
+      data: watermarkData,
+      width: watermarkWidth,
+      height: watermarkHeight,
+    } = watermarkImageData;
+    let finalTop = top;
+    let finalLeft = left;
+    if (top + watermarkHeight > height) {
+      finalTop = height - watermarkHeight;
+    }
+    if (left + watermarkWidth > width) {
+      finalLeft = width - watermarkWidth;
+    }
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        if (
+          x < finalLeft ||
+          x > finalLeft + watermarkWidth ||
+          y <= finalTop ||
+          y >= finalTop + watermarkHeight
+        ) {
+          newImgData[startIndex] = data[startIndex];
+          newImgData[startIndex + 1] = data[startIndex + 1];
+          newImgData[startIndex + 2] = data[startIndex + 2];
+          newImgData[startIndex + 3] = data[startIndex + 3];
+        } else {
+          const watermarkStartIndex =
+            (y * width +
+              x -
+              ((finalTop + 1) * width +
+                (y - (finalTop + 1)) * (width - watermarkWidth)) +
+              watermarkWidth -
+              finalLeft -
+              1) *
+            4;
+          const aboveColor: [number, number, number, number] = [
+            watermarkData[watermarkStartIndex],
+            watermarkData[watermarkStartIndex + 1],
+            watermarkData[watermarkStartIndex + 2],
+            watermarkData[watermarkStartIndex + 3],
+          ];
+          const belowColor: [number, number, number, number] = [
+            data[startIndex],
+            data[startIndex + 1],
+            data[startIndex + 2],
+            data[startIndex + 3],
+          ];
+          const finalColor = colorStacks(aboveColor, belowColor);
+          newImgData[startIndex] = finalColor[0];
+          newImgData[startIndex + 1] = finalColor[1];
+          newImgData[startIndex + 2] = finalColor[2];
+          newImgData[startIndex + 3] = finalColor[3];
+        }
       }
     }
     const newImageData = new ImageData(newImgData, width, height);
