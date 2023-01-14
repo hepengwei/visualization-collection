@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Row, Col, Slider, InputNumber, Button, message } from "antd";
+import { Slider, InputNumber, Button, message } from "antd";
 import { sizeTostr, changeBrightness } from "utils/imageUtil";
 import { ImgInfo } from "../../index";
 import styles from "../../index.module.scss";

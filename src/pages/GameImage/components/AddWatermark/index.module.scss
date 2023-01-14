@@ -1,0 +1,150 @@
+.container {
+  min-width: 1000px;
+  max-width: 1350px;
+  display: flex;
+  flex-direction: column;
+
+  $primaryColor: #0e5e6f;
+  $primaryShallowColor: #3a8891;
+  $dotWidth: 6px;
+
+  .imgBox {
+    width: 100%;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 2px dashed;
+    border-radius: 4px;
+
+    .content {
+      display: flex;
+
+      .leftBox {
+        width: 100%;
+        height: 100%;
+        border: 1px solid #111;
+        -webkit-user-drag: none;
+        user-select: none;
+        position: relative;
+
+        .img1 {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          -webkit-user-drag: none !important;
+          user-select: none;
+          pointer-events: none;
+        }
+
+        .clipBox {
+          border: 1px solid #ff8e9e;
+          -webkit-user-drag: auto !important;
+          user-select: none !important;
+          cursor: all-scroll;
+          z-index: 3;
+          img {
+            -webkit-user-drag: auto !important;
+            user-select: none !important;
+            pointer-events: none;
+          }
+        }
+      }
+    }
+  }
+
+  .operationBtns {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    .left {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      width: 936px;
+      .box {
+        display: flex;
+        flex-direction: column;
+        .top {
+          display: flex;
+          align-items: center;
+          color: #333;
+          .uploadBtn {
+            width: 140px;
+            height: 44px !important;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid $primaryShallowColor;
+            color: $primaryShallowColor;
+            background: none !important;
+            font-size: 14px;
+            font-family: SourceHanSansCN-Medium !important;
+            margin-right: 10px;
+            cursor: pointer;
+            position: relative;
+
+            :global {
+              svg {
+                width: 16px;
+                height: 16px;
+              }
+              input {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                cursor: pointer;
+                opacity: 0;
+              }
+            }
+          }
+        }
+        .bottom {
+          display: flex;
+          align-items: center;
+          margin-top: 10px;
+        }
+      }
+      .operationBtn {
+        margin-right: 12px;
+        font-family: SourceHanSansCN-Medium !important;
+        font-weight: 500;
+        border-radius: 4px;
+        margin-top: 10px;
+      }
+      :global {
+        .ant-btn {
+          background-color: $primaryShallowColor !important;
+        }
+        .ant-input-number-wrapper {
+          height: 34px !important;
+          .ant-input-number {
+            margin-top: 0 !important;
+            height: 100% !important;
+            .ant-input-number-input-wrap {
+              height: 100% !important;
+              input {
+                height: 100% !important;
+              }
+            }
+          }
+        }
+      }
+    }
+    .right {
+      width: 64px;
+      margin-top: 10px;
+      border: 1px solid $primaryShallowColor !important;
+      span {
+        color: $primaryShallowColor !important;
+      }
+    }
+  }
+}

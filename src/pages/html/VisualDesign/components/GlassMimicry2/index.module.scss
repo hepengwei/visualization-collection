@@ -44,11 +44,11 @@
       border-radius: 20px;
       background-image: linear-gradient(
         to top left,
-        rgba(90, 149, 207, 0.5),
-        rgba(58, 76, 99, 0.8)
+        rgba(90, 149, 207, 0.7),
+        rgba(58, 76, 99, 0.9)
       );
       z-index: -1;
-      filter: blur(6px);
+      filter: blur(10px);
       margin: -20px;
     }
 
