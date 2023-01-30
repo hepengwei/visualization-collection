@@ -2,6 +2,7 @@
   height: 100%;
   box-sizing: border-box;
   background-image: linear-gradient(to bottom, #001529ee, #001529);
+  position: relative;
   overflow-x: hidden;
   overflow-y: auto;
 
@@ -41,5 +42,20 @@
     width: 8px;
     border-radius: 4px;
     background-color: #999999;
+  }
+
+  .bottom {
+    position: absolute;
+    bottom: 20px;
+    left: 10px;
+    margin: 0 auto;
+    color: #bbb;
+    font-size: 13px;
+    font-weight: 400;
+    display: flex;
+    flex-direction: column;
+    span{
+      margin: 2px 0;
+    }
   }
 }

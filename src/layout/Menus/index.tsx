@@ -159,6 +159,10 @@ const Menus: React.FC = () => {
         items={items}
         onClick={onMenu}
       />
+      <div className={styles.bottom}>
+        <span>Tel: 15071206497</span>
+        <span>Email: 1007941801@qq.com</span>
+      </div>
     </div>
   );
 };

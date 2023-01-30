@@ -5,9 +5,14 @@ import React, { useState } from "react";
 import { Button, message } from "antd";
 import { FolderAddOutlined } from "@ant-design/icons";
 import Tabs from "./components/Tabs";
-import { fileOrBlobToDataURL, getImageType, getCanvasImgData } from "utils/fileUtil";
+import {
+  fileOrBlobToDataURL,
+  getImageType,
+  getCanvasImgData,
+} from "utils/fileUtil";
 import BasicOperation from "./components/BasicOperation";
-import Clip from "./components/Clip";
+import RectClip from "./components/RectClip";
+import RadiusClip from "./components/RadiusClip";
 import ChangeSize from "./components/ChangeSize";
 import ChangeBrightness from "./components/ChangeBrightness";
 import ChangeDiaphaneity from "./components/ChangeDiaphaneity";
@@ -26,7 +31,8 @@ export interface ImgInfo {
 
 enum TabId {
   "basicOperation",
-  "clip",
+  "rectClip",
+  "radiusClip",
   "changeSize",
   "changeBrightness",
   "changeDiaphaneity",
@@ -40,7 +46,8 @@ const primaryShallowColor = "#3A8891";
 
 const tabsList = [
   { id: TabId.basicOperation, label: "基础操作" },
-  { id: TabId.clip, label: "裁剪" },
+  { id: TabId.rectClip, label: "矩形裁剪" },
+  { id: TabId.radiusClip, label: "圆角裁剪" },
   { id: TabId.changeSize, label: "修改尺寸" },
   { id: TabId.changeBrightness, label: "修改亮度" },
   { id: TabId.changeDiaphaneity, label: "修改透明度" },
@@ -241,8 +248,19 @@ const GameImage = () => {
             onClear={onClear}
           />
         )}
-        {imgInfo && selectedTabId === TabId.clip && (
-          <Clip
+        {imgInfo && selectedTabId === TabId.rectClip && (
+          <RectClip
+            imgInfo={imgInfo}
+            exportImage={exportImage}
+            imgDragOver={imgDragOver}
+            onDragOver={onDragOver}
+            onDragLeave={onDragLeave}
+            onDrop={onDrop}
+            onClear={onClear}
+          />
+        )}
+        {imgInfo && selectedTabId === TabId.radiusClip && (
+          <RadiusClip
             imgInfo={imgInfo}
             exportImage={exportImage}
             imgDragOver={imgDragOver}
