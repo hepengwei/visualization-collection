@@ -140,29 +140,34 @@ const Menus: React.FC = () => {
 
   return (
     <div className={styles.container} ref={containerRef}>
-      <div className={styles.top}>
-        <Button
-          type="primary"
-          onClick={toggleCollapsed}
-          style={{ marginBottom: 16 }}
-        >
-          {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-        </Button>
+      <div className={styles.topBox}>
+        <div className={styles.top}>
+          <Button
+            type="primary"
+            onClick={toggleCollapsed}
+            style={{ marginBottom: 16 }}
+          >
+            {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+          </Button>
+        </div>
+
+        <Menu
+          defaultOpenKeys={["html"]}
+          selectedKeys={selectedKeys}
+          mode="inline"
+          theme="dark"
+          inlineCollapsed={collapsed}
+          items={items}
+          onClick={onMenu}
+        />
       </div>
 
-      <Menu
-        defaultOpenKeys={["html"]}
-        selectedKeys={selectedKeys}
-        mode="inline"
-        theme="dark"
-        inlineCollapsed={collapsed}
-        items={items}
-        onClick={onMenu}
-      />
-      <div className={styles.bottom}>
-        <span>Tel: 15071206497</span>
-        <span>Email: 1007941801@qq.com</span>
-      </div>
+      {!collapsed && (
+        <div className={styles.bottom}>
+          <span>Tel: 15071206497</span>
+          <span>Email: 1007941801@qq.com</span>
+        </div>
+      )}
     </div>
   );
 };

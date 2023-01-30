@@ -1,33 +1,39 @@
 .container {
-  height: 100%;
+  min-height: 100%;
   box-sizing: border-box;
   background-image: linear-gradient(to bottom, #001529ee, #001529);
-  position: relative;
   overflow-x: hidden;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-  .top {
+  .topBox {
     display: flex;
-    padding: 0 16px;
-    align-items: center;
-    height: 60px;
-    button {
-      margin-bottom: 0 !important;
-    }
-  }
-
-  .menuLabel {
-    width: 140px;
-    margin-bottom: 0;
-  }
-
-  :global {
-    .ant-menu {
-      .ant-menu-submenu-title {
-        border-radius: 0 !important;
+    flex-direction: column;
+    .top {
+      display: flex;
+      padding: 0 16px;
+      align-items: center;
+      height: 60px;
+      button {
+        margin-bottom: 0 !important;
       }
-      .ant-menu-item {
-        border-radius: 0 !important;
+    }
+
+    .menuLabel {
+      width: 140px;
+      margin-bottom: 0;
+    }
+
+    :global {
+      .ant-menu {
+        .ant-menu-submenu-title {
+          border-radius: 0 !important;
+        }
+        .ant-menu-item {
+          border-radius: 0 !important;
+        }
       }
     }
   }
@@ -45,16 +51,13 @@
   }
 
   .bottom {
-    position: absolute;
-    bottom: 20px;
-    left: 10px;
-    margin: 0 auto;
+    margin: 50px auto 20px auto;
     color: #bbb;
     font-size: 13px;
     font-weight: 400;
     display: flex;
     flex-direction: column;
-    span{
+    span {
       margin: 2px 0;
     }
   }
