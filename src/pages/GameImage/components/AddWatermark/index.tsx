@@ -9,7 +9,7 @@ import styles from "./index.module.scss";
 
 interface ClipProps {
   imgInfo: ImgInfo;
-  exportImage: (imageData: ImageData) => void;
+  exportImage: (imageData: ImageData, exportImageType?: string) => void;
   imgDragOver: boolean;
   onDragOver: (e: React.DragEvent) => void;
   onDragLeave: (e: React.DragEvent) => void;

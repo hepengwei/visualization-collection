@@ -2,13 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import { Button, Checkbox, InputNumber, message } from "antd";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
-import { clipRect } from "utils/imageUtil";
+import { rectClip } from "utils/imageUtil";
 import { ImgInfo } from "../../index";
 import styles from "./index.module.scss";
 
-interface ClipProps {
+interface RectClipProps {
   imgInfo: ImgInfo;
-  exportImage: (imageData: ImageData) => void;
+  exportImage: (imageData: ImageData, exportImageType?: string) => void;
   imgDragOver: boolean;
   onDragOver: (e: React.DragEvent) => void;
   onDragLeave: (e: React.DragEvent) => void;
@@ -31,7 +31,7 @@ const primaryColor = "#0E5E6F";
 const primaryShallowColor = "#3A8891";
 const clipBoxMinWidthHeight = 10; // 裁剪框的最小宽高
 
-const Clip = (props: ClipProps) => {
+const RectClip = (props: RectClipProps) => {
   const {
     imgInfo,
     exportImage,
@@ -350,7 +350,7 @@ const Clip = (props: ClipProps) => {
       return;
     }
     doing.current = true;
-    const newImageData = clipRect(
+    const newImageData = rectClip(
       imgInfo.imageData as ImageData,
       clipBoxWidth,
       clipBoxHeight,
@@ -551,4 +551,4 @@ const Clip = (props: ClipProps) => {
   );
 };
 
-export default Clip;
+export default RectClip;

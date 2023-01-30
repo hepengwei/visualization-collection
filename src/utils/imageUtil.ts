@@ -448,7 +448,7 @@ export const pngToJpg = (imageData: ImageData) => {
  * @param imageType 图片类型 (retainOriginalSize为true时必须传该值)
  * @returns ImageData | null
  */
-export const clipRect = (
+export const rectClip = (
   imageData: ImageData,
   newWidth: number,
   newHeight: number,
@@ -533,6 +533,85 @@ export const clipRect = (
       const newImageData = new ImageData(newImgData, finalWidth, finalHeight);
       return newImageData;
     }
+  }
+  return null;
+};
+
+/**
+ * 圆角裁剪
+ * @param imageData ImageData源数据
+ * @param borderRadius 圆角半径
+ * @param imageType 图片类型
+ * @param jpgToPNG 是否为JPG转成PNG
+ * @returns ImageData | null
+ */
+export const radiusClip = (
+  imageData: ImageData,
+  borderRadius: number,
+  imageType: string,
+  jpgToPNG?: boolean
+) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    let finalRadius = borderRadius;
+    if (finalRadius > Math.floor(width / 2)) {
+      finalRadius = Math.floor(width / 2);
+    }
+    if (finalRadius > Math.floor(height / 2)) {
+      finalRadius = Math.floor(height / 2);
+    }
+    if (finalRadius < 0) {
+      finalRadius = 0;
+    }
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        let l = -1;
+        if (x < borderRadius) {
+          if (y < borderRadius) {
+            l = Math.sqrt(
+              Math.pow(borderRadius - x - 1, 2) +
+                Math.pow(borderRadius - y - 1, 2)
+            );
+          } else if (y > height - borderRadius - 1) {
+            l = Math.sqrt(
+              Math.pow(borderRadius - x - 1, 2) +
+                Math.pow(y - (height - borderRadius), 2)
+            );
+          }
+        } else if (x > width - borderRadius - 1) {
+          if (y < borderRadius) {
+            l = Math.sqrt(
+              Math.pow(x - (width - borderRadius), 2) +
+                Math.pow(borderRadius - y - 1, 2)
+            );
+          } else if (y > height - borderRadius - 1) {
+            l = Math.sqrt(
+              Math.pow(x - (width - borderRadius), 2) +
+                Math.pow(y - (height - borderRadius), 2)
+            );
+          }
+        }
+        if (Math.round(l) > borderRadius) {
+          newImgData[startIndex] = 255;
+          newImgData[startIndex + 1] = 255;
+          newImgData[startIndex + 2] = 255;
+          newImgData[startIndex + 3] =
+            jpgToPNG || imageType.toUpperCase() === "PNG" ? 0 : 255;
+        } else {
+          newImgData[startIndex] = data[startIndex];
+          newImgData[startIndex + 1] = data[startIndex + 1];
+          newImgData[startIndex + 2] = data[startIndex + 2];
+          newImgData[startIndex + 3] =
+            jpgToPNG || imageType.toUpperCase() === "PNG"
+              ? data[startIndex + 3]
+              : 255;
+        }
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
+    return newImageData;
   }
   return null;
 };
