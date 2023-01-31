@@ -1,3 +1,6 @@
+/**
+ * 图片处理工具-圆角裁剪Tab页
+ */
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Checkbox, InputNumber, message } from "antd";
 import { radiusClip } from "utils/imageUtil";

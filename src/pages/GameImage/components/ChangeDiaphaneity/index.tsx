@@ -1,3 +1,6 @@
+/**
+ * 图片处理工具-修改透明度Tab页
+ */
 import React, { useRef, useEffect, useState } from "react";
 import { Row, Col, Slider, InputNumber, Button, Checkbox, message } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";

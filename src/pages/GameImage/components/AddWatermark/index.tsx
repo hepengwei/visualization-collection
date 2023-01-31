@@ -1,3 +1,6 @@
+/**
+ * 图片处理工具-添加水印Tab页
+ */
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import { Button, InputNumber, message } from "antd";

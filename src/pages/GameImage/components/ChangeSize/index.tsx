@@ -1,3 +1,6 @@
+/**
+ * 图片处理工具-修改尺寸Tab页
+ */
 import React, { useRef, useEffect, useState } from "react";
 import { Checkbox, InputNumber, Button, message } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
