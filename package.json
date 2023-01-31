@@ -72,6 +72,7 @@
     "date-fns": "^2.29.3",
     "echarts": "^5.4.0",
     "lodash-es": "^4.17.21",
+    "pako": "^2.1.0",
     "particles.js": "^2.0.0",
     "rambda": "^7.3.0",
     "react": "^18.2.0",
@@ -80,6 +81,7 @@
     "react-tilt": "^0.1.4",
     "sphere-collision": "^1.1.4",
     "swiper": "^8.4.4",
-    "typed.js": "^2.0.12"
+    "typed.js": "^2.0.12",
+    "uzip": "^0.20201231.0"
   }
 }

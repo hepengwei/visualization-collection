@@ -1,5 +1,4 @@
-import { ESLint } from "eslint";
-import { reduceRight } from "lodash-es";
+import UPNG from "./UPNG";
 
 // 将文件字节大小转成带单位的文件大小
 export const sizeTostr = (size: number, decimals = 2) => {
@@ -878,8 +877,8 @@ export const mosaic = (
 };
 
 // 图片压缩
-export const compression = (
-  imageUrl: string,
+export const compression = async (
+  imageUrl: string | ImageData,
   width: number,
   height: number,
   imageType: string,
@@ -887,11 +886,10 @@ export const compression = (
   cb: (blob: Blob | null) => void
 ) => {
   if (imageUrl && imageType) {
-    if (imageType === "PNG") {
-      cb && cb(null);
-    } else {
+    const degree = compressionDegree / 100;
+    if (["JPG", "JPEG"].includes(imageType.toUpperCase())) {
       const img = new Image();
-      img.src = imageUrl;
+      img.src = imageUrl as string;
       const canvas = document.createElement("canvas") as HTMLCanvasElement;
       const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
       canvas.width = width;
@@ -902,8 +900,18 @@ export const compression = (
           cb && cb(blob);
         },
         `image/${imageType.toLowerCase()}`,
-        compressionDegree / 100
+        degree
       );
+    } else {
+      const bit = Math.floor(degree * 256);
+      const png = UPNG.encode(
+        [(imageUrl as ImageData).data.buffer],
+        width,
+        height,
+        bit
+      );
+      const blob = new Blob([png]);
+      cb && cb(blob);
     }
   } else {
     cb && cb(null);
