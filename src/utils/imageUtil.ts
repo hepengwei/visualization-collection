@@ -1,3 +1,6 @@
+import { ESLint } from "eslint";
+import { reduceRight } from "lodash-es";
+
 // 将文件字节大小转成带单位的文件大小
 export const sizeTostr = (size: number, decimals = 2) => {
   if (size === 0) return "0 Bytes";
@@ -872,6 +875,39 @@ export const mosaic = (
     return newImageData;
   }
   return null;
+};
+
+// 图片压缩
+export const compression = (
+  imageUrl: string,
+  width: number,
+  height: number,
+  imageType: string,
+  compressionDegree: number,
+  cb: (blob: Blob | null) => void
+) => {
+  if (imageUrl && imageType) {
+    if (imageType === "PNG") {
+      cb && cb(null);
+    } else {
+      const img = new Image();
+      img.src = imageUrl;
+      const canvas = document.createElement("canvas") as HTMLCanvasElement;
+      const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, 0, 0, width, height);
+      canvas.toBlob(
+        (blob: Blob | null) => {
+          cb && cb(blob);
+        },
+        `image/${imageType.toLowerCase()}`,
+        compressionDegree / 100
+      );
+    }
+  } else {
+    cb && cb(null);
+  }
 };
 
 // 卷积算法
