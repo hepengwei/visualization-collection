@@ -1,5 +1,3 @@
-import { es } from "date-fns/locale";
-
 // 将文件字节大小转成带单位的文件大小
 export const sizeTostr = (size: number, decimals = 2) => {
   if (size === 0) return "0 Bytes";
@@ -496,10 +494,10 @@ export const rectClip = (
         for (let x = 0; x < width; x++) {
           const startIndex = (y * width + x) * 4;
           if (
-            x >= left &&
-            x <= left + newWidth &&
-            y >= top &&
-            y <= top + newHeight
+            x >= finalLeft &&
+            x <= finalLeft + finalWidth &&
+            y >= finalTop &&
+            y <= finalTop + finalHeight
           ) {
             newImgData[startIndex] = data[startIndex];
             newImgData[startIndex + 1] = data[startIndex + 1];
@@ -520,9 +518,9 @@ export const rectClip = (
       return newImageData;
     } else {
       const newImgData = new Uint8ClampedArray(finalWidth * finalHeight * 4);
-      for (let y = top; y <= top + finalHeight; y++) {
-        for (let x = left; x <= left + finalWidth; x++) {
-          const startIndex = ((y - top) * finalWidth + x - left) * 4;
+      for (let y = finalTop; y <= finalTop + finalHeight; y++) {
+        for (let x = finalLeft; x <= finalLeft + finalWidth; x++) {
+          const startIndex = ((y - finalTop) * finalWidth + x - finalLeft) * 4;
           const startIndex2 = (y * width + x) * 4;
           newImgData[startIndex] = data[startIndex2];
           newImgData[startIndex + 1] = data[startIndex2 + 1];
@@ -568,32 +566,32 @@ export const radiusClip = (
       for (let x = 0; x < width; x++) {
         const startIndex = (y * width + x) * 4;
         let l = -1;
-        if (x < borderRadius) {
-          if (y < borderRadius) {
+        if (x < finalRadius) {
+          if (y < finalRadius) {
             l = Math.sqrt(
-              Math.pow(borderRadius - x - 1, 2) +
-                Math.pow(borderRadius - y - 1, 2)
+              Math.pow(finalRadius - x - 1, 2) +
+                Math.pow(finalRadius - y - 1, 2)
             );
-          } else if (y > height - borderRadius - 1) {
+          } else if (y > height - finalRadius - 1) {
             l = Math.sqrt(
-              Math.pow(borderRadius - x - 1, 2) +
-                Math.pow(y - (height - borderRadius), 2)
+              Math.pow(finalRadius - x - 1, 2) +
+                Math.pow(y - (height - finalRadius), 2)
             );
           }
-        } else if (x > width - borderRadius - 1) {
-          if (y < borderRadius) {
+        } else if (x > width - finalRadius - 1) {
+          if (y < finalRadius) {
             l = Math.sqrt(
-              Math.pow(x - (width - borderRadius), 2) +
-                Math.pow(borderRadius - y - 1, 2)
+              Math.pow(x - (width - finalRadius), 2) +
+                Math.pow(finalRadius - y - 1, 2)
             );
-          } else if (y > height - borderRadius - 1) {
+          } else if (y > height - finalRadius - 1) {
             l = Math.sqrt(
-              Math.pow(x - (width - borderRadius), 2) +
-                Math.pow(y - (height - borderRadius), 2)
+              Math.pow(x - (width - finalRadius), 2) +
+                Math.pow(y - (height - finalRadius), 2)
             );
           }
         }
-        if (Math.round(l) > borderRadius) {
+        if (Math.round(l) > finalRadius) {
           newImgData[startIndex] = 255;
           newImgData[startIndex + 1] = 255;
           newImgData[startIndex + 2] = 255;
@@ -772,6 +770,101 @@ export const addWatermark = (
           newImgData[startIndex + 1] = finalColor[1];
           newImgData[startIndex + 2] = finalColor[2];
           newImgData[startIndex + 3] = finalColor[3];
+        }
+      }
+    }
+    const newImageData = new ImageData(newImgData, width, height);
+    return newImageData;
+  }
+  return null;
+};
+
+/**
+ * 打马赛克
+ * @param imageData ImageData源数据
+ * @param width 马赛克区域的宽度
+ * @param height 马赛克区域的高度
+ * @param top 马赛克相对于顶部的起始位置
+ * @param left 马塞克相对于左侧的起始位置
+ * @param mosaicSize 马塞克颗粒的大小
+ * @returns ImageData | null
+ */
+export const mosaic = (
+  imageData: ImageData,
+  mosaicWidth: number,
+  mosaicHeight: number,
+  top: number,
+  left: number,
+  mosaicSize = 10
+) => {
+  if (imageData) {
+    const { data, width, height } = imageData;
+    let finalLeft = left;
+    let finalTop = top;
+    let finalWidth = mosaicWidth;
+    let finalHeight = mosaicHeight;
+    if (finalLeft < 0) {
+      finalLeft = 0;
+    } else if (finalLeft > width) {
+      finalLeft = width;
+    }
+    if (finalTop < 0) {
+      finalTop = 0;
+    } else if (finalTop > height) {
+      finalTop = height;
+    }
+    if (finalWidth < 1) {
+      finalWidth = 1;
+    } else if (finalWidth > width) {
+      finalWidth = width;
+    }
+    if (finalHeight < 1) {
+      finalHeight = 1;
+    } else if (finalHeight > height) {
+      finalHeight = height;
+    }
+    if (finalLeft + finalWidth > width) {
+      finalWidth = width - finalLeft;
+    }
+    if (finalTop + finalHeight > height) {
+      finalHeight = height - finalTop;
+    }
+
+    const newImgData = new Uint8ClampedArray(data.length);
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const startIndex = (y * width + x) * 4;
+        if (
+          x >= finalLeft &&
+          x <= finalLeft + finalWidth &&
+          y >= finalTop &&
+          y <= finalTop + finalHeight
+        ) {
+          const boxXIndex = Math.floor((x - finalLeft) / mosaicSize);
+          const boxYIndex = Math.floor((y - finalTop) / mosaicSize);
+          let mosaicBoxColorX = Math.floor(
+            mosaicSize * (boxXIndex + 1) - mosaicSize / 2 + finalLeft
+          );
+          let mosaicBoxColorY = Math.floor(
+            mosaicSize * (boxYIndex + 1) - mosaicSize / 2 + finalTop
+          );
+          if (mosaicBoxColorX > width - 1) {
+            mosaicBoxColorX = width - 1;
+          }
+          if (mosaicBoxColorY > height - 1) {
+            mosaicBoxColorY = height - 1;
+          }
+          const mosaicBoxColorIndex =
+            (mosaicBoxColorY * width + mosaicBoxColorX) * 4;
+          newImgData[startIndex] = data[mosaicBoxColorIndex];
+          newImgData[startIndex + 1] = data[mosaicBoxColorIndex + 1];
+          newImgData[startIndex + 2] = data[mosaicBoxColorIndex + 2];
+          newImgData[startIndex + 3] = data[mosaicBoxColorIndex + 3];
+        } else {
+          newImgData[startIndex] = data[startIndex];
+          newImgData[startIndex + 1] = data[startIndex + 1];
+          newImgData[startIndex + 2] = data[startIndex + 2];
+          newImgData[startIndex + 3] = data[startIndex + 3];
         }
       }
     }

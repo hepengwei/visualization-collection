@@ -1,11 +1,11 @@
 /**
- * 图片处理工具-矩形裁剪Tab页
+ * 图片处理工具-打马赛克Tab页
  */
 import React from "react";
 import RectSelect from "../RectSelect";
 import { ImgInfo } from "../../index";
 
-interface RectClipProps {
+interface CoverWithMosaicProps {
   imgInfo: ImgInfo;
   exportImage: (imageData: ImageData, exportImageType?: string) => void;
   imgDragOver: boolean;
@@ -15,8 +15,8 @@ interface RectClipProps {
   onClear: () => void;
 }
 
-const RectClip = (props: RectClipProps) => {
-  return <RectSelect {...props} type="clip" />;
+const CoverWithMosaic = (props: CoverWithMosaicProps) => {
+  return <RectSelect {...props} type="mosaic" />;
 };
 
-export default RectClip;
+export default CoverWithMosaic;

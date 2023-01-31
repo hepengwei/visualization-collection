@@ -17,6 +17,7 @@ import ChangeSize from "./components/ChangeSize";
 import ChangeBrightness from "./components/ChangeBrightness";
 import ChangeDiaphaneity from "./components/ChangeDiaphaneity";
 import AddWatermark from "./components/AddWatermark";
+import CoverWithMosaic from "./components/CoverWithMosaic";
 import styles from "./index.module.scss";
 
 export interface ImgInfo {
@@ -37,27 +38,14 @@ enum TabId {
   "changeBrightness",
   "changeDiaphaneity",
   "addWatermark",
-  "coverWithMosaics",
+  "coverWithMosaic",
   "photoCompression",
 }
 
 const primaryColor = "#0E5E6F";
 const primaryShallowColor = "#3A8891";
 
-const tabsList = [
-  { id: TabId.basicOperation, label: "基础操作" },
-  { id: TabId.rectClip, label: "矩形裁剪" },
-  { id: TabId.radiusClip, label: "圆角裁剪" },
-  { id: TabId.changeSize, label: "修改尺寸" },
-  { id: TabId.changeBrightness, label: "修改亮度" },
-  { id: TabId.changeDiaphaneity, label: "修改透明度" },
-  { id: TabId.addWatermark, label: "添加水印" },
-  { id: TabId.coverWithMosaics, label: "打马赛克" },
-  { id: TabId.photoCompression, label: "图片压缩" },
-];
-
 const GameImage = () => {
-  const [selectedTabId, setSelectedTabId] = useState<TabId>(tabsList[0].id);
   const [imgDragOver, setImgDragOver] = useState<boolean>(false);
   const [imgInfo, setImgInfo] = useState<ImgInfo | null>(null);
 
@@ -203,6 +191,131 @@ const GameImage = () => {
     setImgInfo(null);
   };
 
+  const tabsList = [
+    {
+      id: TabId.basicOperation,
+      label: "基础操作",
+      element: (
+        <BasicOperation
+          imgInfo={imgInfo as ImgInfo}
+          exportImage={exportImage}
+          imgDragOver={imgDragOver}
+          onDragOver={onDragOver}
+          onDragLeave={onDragLeave}
+          onDrop={onDrop}
+          onClear={onClear}
+        />
+      ),
+    },
+    {
+      id: TabId.rectClip,
+      label: "矩形裁剪",
+      element: (
+        <RectClip
+          imgInfo={imgInfo as ImgInfo}
+          exportImage={exportImage}
+          imgDragOver={imgDragOver}
+          onDragOver={onDragOver}
+          onDragLeave={onDragLeave}
+          onDrop={onDrop}
+          onClear={onClear}
+        />
+      ),
+    },
+    {
+      id: TabId.radiusClip,
+      label: "圆角裁剪",
+      element: (
+        <RadiusClip
+          imgInfo={imgInfo as ImgInfo}
+          exportImage={exportImage}
+          imgDragOver={imgDragOver}
+          onDragOver={onDragOver}
+          onDragLeave={onDragLeave}
+          onDrop={onDrop}
+          onClear={onClear}
+        />
+      ),
+    },
+    {
+      id: TabId.changeSize,
+      label: "修改尺寸",
+      element: (
+        <ChangeSize
+          imgInfo={imgInfo as ImgInfo}
+          exportImage={exportImage}
+          imgDragOver={imgDragOver}
+          onDragOver={onDragOver}
+          onDragLeave={onDragLeave}
+          onDrop={onDrop}
+          onClear={onClear}
+        />
+      ),
+    },
+    {
+      id: TabId.changeBrightness,
+      label: "修改亮度",
+      element: (
+        <ChangeBrightness
+          imgInfo={imgInfo as ImgInfo}
+          exportImage={exportImage}
+          imgDragOver={imgDragOver}
+          onDragOver={onDragOver}
+          onDragLeave={onDragLeave}
+          onDrop={onDrop}
+          onClear={onClear}
+        />
+      ),
+    },
+    {
+      id: TabId.changeDiaphaneity,
+      label: "修改透明度",
+      element: (
+        <ChangeDiaphaneity
+          imgInfo={imgInfo as ImgInfo}
+          exportImage={exportImage}
+          imgDragOver={imgDragOver}
+          onDragOver={onDragOver}
+          onDragLeave={onDragLeave}
+          onDrop={onDrop}
+          onClear={onClear}
+        />
+      ),
+    },
+    {
+      id: TabId.addWatermark,
+      label: "添加水印",
+      element: (
+        <AddWatermark
+          imgInfo={imgInfo as ImgInfo}
+          exportImage={exportImage}
+          imgDragOver={imgDragOver}
+          onDragOver={onDragOver}
+          onDragLeave={onDragLeave}
+          onDrop={onDrop}
+          onClear={onClear}
+        />
+      ),
+    },
+    {
+      id: TabId.coverWithMosaic,
+      label: "打马赛克",
+      element: (
+        <CoverWithMosaic
+          imgInfo={imgInfo as ImgInfo}
+          exportImage={exportImage}
+          imgDragOver={imgDragOver}
+          onDragOver={onDragOver}
+          onDragLeave={onDragLeave}
+          onDrop={onDrop}
+          onClear={onClear}
+        />
+      ),
+    },
+    { id: TabId.photoCompression, label: "图片压缩", element: null },
+  ];
+  const [selectedTabId, setSelectedTabId] = useState<TabId>(tabsList[0].id);
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -237,83 +350,8 @@ const GameImage = () => {
             </div>
           </div>
         )}
-        {imgInfo && selectedTabId === TabId.basicOperation && (
-          <BasicOperation
-            imgInfo={imgInfo}
-            exportImage={exportImage}
-            imgDragOver={imgDragOver}
-            onDragOver={onDragOver}
-            onDragLeave={onDragLeave}
-            onDrop={onDrop}
-            onClear={onClear}
-          />
-        )}
-        {imgInfo && selectedTabId === TabId.rectClip && (
-          <RectClip
-            imgInfo={imgInfo}
-            exportImage={exportImage}
-            imgDragOver={imgDragOver}
-            onDragOver={onDragOver}
-            onDragLeave={onDragLeave}
-            onDrop={onDrop}
-            onClear={onClear}
-          />
-        )}
-        {imgInfo && selectedTabId === TabId.radiusClip && (
-          <RadiusClip
-            imgInfo={imgInfo}
-            exportImage={exportImage}
-            imgDragOver={imgDragOver}
-            onDragOver={onDragOver}
-            onDragLeave={onDragLeave}
-            onDrop={onDrop}
-            onClear={onClear}
-          />
-        )}
-        {imgInfo && selectedTabId === TabId.changeSize && (
-          <ChangeSize
-            imgInfo={imgInfo}
-            exportImage={exportImage}
-            imgDragOver={imgDragOver}
-            onDragOver={onDragOver}
-            onDragLeave={onDragLeave}
-            onDrop={onDrop}
-            onClear={onClear}
-          />
-        )}
-        {imgInfo && selectedTabId === TabId.changeBrightness && (
-          <ChangeBrightness
-            imgInfo={imgInfo}
-            exportImage={exportImage}
-            imgDragOver={imgDragOver}
-            onDragOver={onDragOver}
-            onDragLeave={onDragLeave}
-            onDrop={onDrop}
-            onClear={onClear}
-          />
-        )}
-        {imgInfo && selectedTabId === TabId.changeDiaphaneity && (
-          <ChangeDiaphaneity
-            imgInfo={imgInfo}
-            exportImage={exportImage}
-            imgDragOver={imgDragOver}
-            onDragOver={onDragOver}
-            onDragLeave={onDragLeave}
-            onDrop={onDrop}
-            onClear={onClear}
-          />
-        )}
-        {imgInfo && selectedTabId === TabId.addWatermark && (
-          <AddWatermark
-            imgInfo={imgInfo}
-            exportImage={exportImage}
-            imgDragOver={imgDragOver}
-            onDragOver={onDragOver}
-            onDragLeave={onDragLeave}
-            onDrop={onDrop}
-            onClear={onClear}
-          />
-        )}
+        {imgInfo &&
+          tabsList.filter((item) => item.id === selectedTabId)[0].element}
       </div>
     </div>
   );

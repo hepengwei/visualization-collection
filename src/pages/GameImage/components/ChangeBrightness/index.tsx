@@ -1,3 +1,6 @@
+/**
+ * 图片处理工具-修改亮度Tab页
+ */
 import React, { useRef, useEffect, useState } from "react";
 import { Slider, InputNumber, Button, message } from "antd";
 import { sizeTostr, changeBrightness } from "utils/imageUtil";
