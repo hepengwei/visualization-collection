@@ -81,3 +81,15 @@ export const getCanvasImgData = (
   }
   return null;
 };
+
+// 导出图片
+export const exportToImage = (blob: Blob, imgName: string) => {
+  if (!blob) return;
+  var a = document.createElement("a");
+  a.style.visibility = "hidden";
+  document.body.appendChild(a);
+  a.download = imgName;
+  a.href = window.URL.createObjectURL(blob);
+  a.click();
+  document.body.removeChild(a);
+};

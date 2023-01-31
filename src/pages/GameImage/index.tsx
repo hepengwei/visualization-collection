@@ -9,6 +9,7 @@ import {
   fileOrBlobToDataURL,
   getImageType,
   getCanvasImgData,
+  exportToImage,
 } from "utils/fileUtil";
 import BasicOperation from "./components/BasicOperation";
 import RectClip from "./components/RectClip";
@@ -18,6 +19,7 @@ import ChangeBrightness from "./components/ChangeBrightness";
 import ChangeDiaphaneity from "./components/ChangeDiaphaneity";
 import AddWatermark from "./components/AddWatermark";
 import CoverWithMosaic from "./components/CoverWithMosaic";
+import Compression from "./components/Compression";
 import styles from "./index.module.scss";
 
 export interface ImgInfo {
@@ -61,9 +63,6 @@ const GameImage = () => {
     canvas.toBlob(
       (blob: Blob | null) => {
         if (blob) {
-          var a = document.createElement("a");
-          a.style.visibility = "hidden";
-          document.body.appendChild(a);
           let imgName = "image";
           if (imgInfo && imgInfo.name) {
             const arr = imgInfo.name.split(".");
@@ -85,10 +84,7 @@ const GameImage = () => {
               imgName = arr.join(".");
             }
           }
-          a.download = imgName;
-          a.href = window.URL.createObjectURL(blob);
-          a.click();
-          document.body.removeChild(a);
+          exportToImage(blob, imgName);
         }
       },
       `image/${
@@ -312,7 +308,20 @@ const GameImage = () => {
         />
       ),
     },
-    { id: TabId.photoCompression, label: "图片压缩", element: null },
+    {
+      id: TabId.photoCompression,
+      label: "图片压缩",
+      element: (
+        <Compression
+          imgInfo={imgInfo as ImgInfo}
+          imgDragOver={imgDragOver}
+          onDragOver={onDragOver}
+          onDragLeave={onDragLeave}
+          onDrop={onDrop}
+          onClear={onClear}
+        />
+      ),
+    },
   ];
   const [selectedTabId, setSelectedTabId] = useState<TabId>(tabsList[0].id);
 
