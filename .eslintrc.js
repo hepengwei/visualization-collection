@@ -20,5 +20,12 @@ module.exports = {
     "space-before-function-paren": 0,
     camelcase: 0,
     eqeqeq: 1,
+    "no-var": 0,
+    "one-var": 1,
+    curly: 0,
+    "no-redeclare": 1,
+    "dot-notation": 1,
+    "no-throw-literal": 1,
+    "no-unused-vars": 1,
   },
 };

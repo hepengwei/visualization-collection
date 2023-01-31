@@ -52,23 +52,41 @@ const Compression = (props: CompressionProps) => {
       message.warning("正在努力工作,请稍后");
       return;
     }
-    const { imgUrl, width, height, fileType } = imgInfo;
+    const { imageData, imgUrl, width, height, fileType } = imgInfo;
     doing.current = true;
-    compression(
-      imgUrl,
-      width,
-      height,
-      fileType,
-      compressionDegree,
-      (blob: Blob | null) => {
-        if (blob) {
-          exportImage(blob);
-        } else {
-          message.error("压缩失败");
+    if (["JPG", "JPEG"].includes(fileType)) {
+      compression(
+        imgUrl,
+        width,
+        height,
+        fileType,
+        compressionDegree,
+        (blob: Blob | null) => {
+          if (blob) {
+            exportImage(blob);
+          } else {
+            message.error("压缩失败");
+          }
+          doing.current = false;
         }
-        doing.current = false;
-      }
-    );
+      );
+    } else {
+      compression(
+        imageData,
+        width,
+        height,
+        fileType,
+        compressionDegree,
+        (blob: Blob | null) => {
+          if (blob) {
+            exportImage(blob);
+          } else {
+            message.error("压缩失败");
+          }
+          doing.current = false;
+        }
+      );
+    }
   };
 
   useEffect(() => {
