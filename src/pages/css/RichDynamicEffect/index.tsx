@@ -11,6 +11,7 @@ import BoxReflect from "./components/BoxReflect";
 import TextAnimation from "./components/TextAnimation";
 import DisplayTextInSmoke from "./components/DisplayTextInSmoke";
 import PlayVideoInText from "./components/PlayVideoInText";
+import WaveFont from "./components/WaveFont";
 import styles from "./index.module.scss";
 
 const RichDynamicEffect = () => {
@@ -49,6 +50,9 @@ const RichDynamicEffect = () => {
       </div>
       <div className={styles.box}>
         <PlayVideoInText />
+      </div>
+      <div className={styles.box}>
+        <WaveFont />
       </div>
     </div>
   );
