@@ -6,17 +6,17 @@ var UPNG = {};
 UPNG.toRGBA8 = function (out) {
   var w = out.width,
     h = out.height;
-  if (out.tabs.acTL == null)
+  if (out.tabs.acTL === null)
     return [UPNG.toRGBA8.decodeImage(out.data, w, h, out).buffer];
 
   var frms = [];
-  if (out.frames[0].data == null) out.frames[0].data = out.data;
+  if (out.frames[0].data === null) out.frames[0].data = out.data;
 
   var len = w * h * 4,
     img = new Uint8Array(len),
     empty = new Uint8Array(len),
     prev = new Uint8Array(len);
-  for (var i = 0; i < out.frames.length; i++) {
+  for (let i = 0; i < out.frames.length; i++) {
     var frm = out.frames[i];
     var fx = frm.rect.x,
       fy = frm.rect.y,
@@ -24,16 +24,16 @@ UPNG.toRGBA8 = function (out) {
       fh = frm.rect.height;
     var fdata = UPNG.toRGBA8.decodeImage(frm.data, fw, fh, out);
 
-    if (i != 0) for (var j = 0; j < len; j++) prev[j] = img[j];
+    if (i !== 0) for (let j = 0; j < len; j++) prev[j] = img[j];
 
-    if (frm.blend == 0) UPNG._copyTile(fdata, fw, fh, img, w, h, fx, fy, 0);
-    else if (frm.blend == 1)
+    if (frm.blend === 0) UPNG._copyTile(fdata, fw, fh, img, w, h, fx, fy, 0);
+    else if (frm.blend === 1)
       UPNG._copyTile(fdata, fw, fh, img, w, h, fx, fy, 1);
 
     frms.push(img.buffer.slice(0));
 
-    if (frm.dispose == 1) UPNG._copyTile(empty, fw, fh, img, w, h, fx, fy, 0);
-    else if (frm.dispose == 2) for (var j = 0; j < len; j++) img[j] = prev[j];
+    if (frm.dispose === 1) UPNG._copyTile(empty, fw, fh, img, w, h, fx, fy, 0);
+    else if (frm.dispose === 2) for (let j = 0; j < len; j++) img[j] = prev[j];
   }
   return frms;
 };
@@ -48,32 +48,32 @@ UPNG.toRGBA8.decodeImage = function (data, w, h, out) {
     depth = out.depth;
   var rs = UPNG._bin.readUshort;
 
-  if (ctype == 6) {
+  if (ctype === 6) {
     // RGB + alpha
     var qarea = area << 2;
-    if (depth == 8)
-      for (var i = 0; i < qarea; i += 4) {
+    if (depth === 8)
+      for (let i = 0; i < qarea; i += 4) {
         bf[i] = data[i];
         bf[i + 1] = data[i + 1];
         bf[i + 2] = data[i + 2];
         bf[i + 3] = data[i + 3];
       }
-    if (depth == 16)
-      for (var i = 0; i < qarea; i++) {
+    if (depth === 16)
+      for (let i = 0; i < qarea; i++) {
         bf[i] = data[i << 1];
       }
-  } else if (ctype == 2) {
+  } else if (ctype === 2) {
     // RGB
     var ts = out.tabs["tRNS"];
-    if (ts == null) {
-      if (depth == 8)
-        for (var i = 0; i < area; i++) {
+    if (ts === null) {
+      if (depth === 8)
+        for (let i = 0; i < area; i++) {
           var ti = i * 3;
           bf32[i] =
             (255 << 24) | (data[ti + 2] << 16) | (data[ti + 1] << 8) | data[ti];
         }
-      if (depth == 16)
-        for (var i = 0; i < area; i++) {
+      if (depth === 16)
+        for (let i = 0; i < area; i++) {
           var ti = i * 6;
           bf32[i] =
             (255 << 24) | (data[ti + 4] << 16) | (data[ti + 2] << 8) | data[ti];
@@ -82,39 +82,39 @@ UPNG.toRGBA8.decodeImage = function (data, w, h, out) {
       var tr = ts[0],
         tg = ts[1],
         tb = ts[2];
-      if (depth == 8)
+      if (depth === 8)
         for (var i = 0; i < area; i++) {
-          var qi = i << 2,
-            ti = i * 3;
+          const qi = i << 2;
+          const ti = i * 3;
           bf32[i] =
             (255 << 24) | (data[ti + 2] << 16) | (data[ti + 1] << 8) | data[ti];
-          if (data[ti] == tr && data[ti + 1] == tg && data[ti + 2] == tb)
+          if (data[ti] === tr && data[ti + 1] === tg && data[ti + 2] === tb)
             bf[qi + 3] = 0;
         }
-      if (depth == 16)
+      if (depth === 16)
         for (var i = 0; i < area; i++) {
-          var qi = i << 2,
-            ti = i * 6;
+          const qi = i << 2;
+          const ti = i * 6;
           bf32[i] =
             (255 << 24) | (data[ti + 4] << 16) | (data[ti + 2] << 8) | data[ti];
           if (
-            rs(data, ti) == tr &&
-            rs(data, ti + 2) == tg &&
-            rs(data, ti + 4) == tb
+            rs(data, ti) === tr &&
+            rs(data, ti + 2) === tg &&
+            rs(data, ti + 4) === tb
           )
             bf[qi + 3] = 0;
         }
     }
-  } else if (ctype == 3) {
+  } else if (ctype === 3) {
     // palette
     var p = out.tabs["PLTE"],
       ap = out.tabs["tRNS"],
       tl = ap ? ap.length : 0;
-    if (depth == 1)
-      for (var y = 0; y < h; y++) {
-        var s0 = y * bpl,
-          t0 = y * w;
-        for (var i = 0; i < w; i++) {
+    if (depth === 1)
+      for (let y = 0; y < h; y++) {
+        const s0 = y * bpl;
+        const t0 = y * w;
+        for (let i = 0; i < w; i++) {
           var qi = (t0 + i) << 2,
             j = (data[s0 + (i >> 3)] >> (7 - ((i & 7) << 0))) & 1,
             cj = 3 * j;
@@ -124,11 +124,11 @@ UPNG.toRGBA8.decodeImage = function (data, w, h, out) {
           bf[qi + 3] = j < tl ? ap[j] : 255;
         }
       }
-    if (depth == 2)
-      for (var y = 0; y < h; y++) {
-        var s0 = y * bpl,
-          t0 = y * w;
-        for (var i = 0; i < w; i++) {
+    if (depth === 2)
+      for (let y = 0; y < h; y++) {
+        const s0 = y * bpl;
+        const t0 = y * w;
+        for (let i = 0; i < w; i++) {
           var qi = (t0 + i) << 2,
             j = (data[s0 + (i >> 2)] >> (6 - ((i & 3) << 1))) & 3,
             cj = 3 * j;
@@ -138,11 +138,11 @@ UPNG.toRGBA8.decodeImage = function (data, w, h, out) {
           bf[qi + 3] = j < tl ? ap[j] : 255;
         }
       }
-    if (depth == 4)
-      for (var y = 0; y < h; y++) {
-        var s0 = y * bpl,
-          t0 = y * w;
-        for (var i = 0; i < w; i++) {
+    if (depth === 4)
+      for (let y = 0; y < h; y++) {
+        const s0 = y * bpl;
+        const t0 = y * w;
+        for (let i = 0; i < w; i++) {
           var qi = (t0 + i) << 2,
             j = (data[s0 + (i >> 1)] >> (4 - ((i & 1) << 2))) & 15,
             cj = 3 * j;
@@ -152,8 +152,8 @@ UPNG.toRGBA8.decodeImage = function (data, w, h, out) {
           bf[qi + 3] = j < tl ? ap[j] : 255;
         }
       }
-    if (depth == 8)
-      for (var i = 0; i < area; i++) {
+    if (depth === 8)
+      for (let i = 0; i < area; i++) {
         var qi = i << 2,
           j = data[i],
           cj = 3 * j;
@@ -162,10 +162,10 @@ UPNG.toRGBA8.decodeImage = function (data, w, h, out) {
         bf[qi + 2] = p[cj + 2];
         bf[qi + 3] = j < tl ? ap[j] : 255;
       }
-  } else if (ctype == 4) {
+  } else if (ctype === 4) {
     // gray + alpha
-    if (depth == 8)
-      for (var i = 0; i < area; i++) {
+    if (depth === 8)
+      for (let i = 0; i < area; i++) {
         var qi = i << 2,
           di = i << 1,
           gr = data[di];
@@ -174,8 +174,8 @@ UPNG.toRGBA8.decodeImage = function (data, w, h, out) {
         bf[qi + 2] = gr;
         bf[qi + 3] = data[di + 1];
       }
-    if (depth == 16)
-      for (var i = 0; i < area; i++) {
+    if (depth === 16)
+      for (let i = 0; i < area; i++) {
         var qi = i << 2,
           di = i << 2,
           gr = data[di];
@@ -184,40 +184,40 @@ UPNG.toRGBA8.decodeImage = function (data, w, h, out) {
         bf[qi + 2] = gr;
         bf[qi + 3] = data[di + 2];
       }
-  } else if (ctype == 0) {
+  } else if (ctype === 0) {
     // gray
     var tr = out.tabs["tRNS"] ? out.tabs["tRNS"] : -1;
     for (var y = 0; y < h; y++) {
       var off = y * bpl,
         to = y * w;
-      if (depth == 1)
-        for (var x = 0; x < w; x++) {
+      if (depth === 1)
+        for (let x = 0; x < w; x++) {
           var gr = 255 * ((data[off + (x >>> 3)] >>> (7 - (x & 7))) & 1),
-            al = gr == tr * 255 ? 0 : 255;
+            al = gr === tr * 255 ? 0 : 255;
           bf32[to + x] = (al << 24) | (gr << 16) | (gr << 8) | gr;
         }
-      else if (depth == 2)
-        for (var x = 0; x < w; x++) {
+      else if (depth === 2)
+        for (let x = 0; x < w; x++) {
           var gr = 85 * ((data[off + (x >>> 2)] >>> (6 - ((x & 3) << 1))) & 3),
-            al = gr == tr * 85 ? 0 : 255;
+            al = gr === tr * 85 ? 0 : 255;
           bf32[to + x] = (al << 24) | (gr << 16) | (gr << 8) | gr;
         }
-      else if (depth == 4)
-        for (var x = 0; x < w; x++) {
+      else if (depth === 4)
+        for (let x = 0; x < w; x++) {
           var gr = 17 * ((data[off + (x >>> 1)] >>> (4 - ((x & 1) << 2))) & 15),
-            al = gr == tr * 17 ? 0 : 255;
+            al = gr === tr * 17 ? 0 : 255;
           bf32[to + x] = (al << 24) | (gr << 16) | (gr << 8) | gr;
         }
-      else if (depth == 8)
-        for (var x = 0; x < w; x++) {
+      else if (depth === 8)
+        for (let x = 0; x < w; x++) {
           var gr = data[off + x],
-            al = gr == tr ? 0 : 255;
+            al = gr === tr ? 0 : 255;
           bf32[to + x] = (al << 24) | (gr << 16) | (gr << 8) | gr;
         }
-      else if (depth == 16)
-        for (var x = 0; x < w; x++) {
+      else if (depth === 16)
+        for (let x = 0; x < w; x++) {
           var gr = data[off + (x << 1)],
-            al = rs(data, off + (x << i)) == tr ? 0 : 255;
+            al = rs(data, off + (x << i)) === tr ? 0 : 255;
           bf32[to + x] = (al << 24) | (gr << 16) | (gr << 8) | gr;
         }
     }
@@ -239,7 +239,7 @@ UPNG.decode = function (buff) {
 
   var mgck = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
   for (var i = 0; i < 8; i++)
-    if (data[i] != mgck[i]) throw "The input is not a PNG file!";
+    if (data[i] !== mgck[i]) throw "The input is not a PNG file!";
 
   while (offset < data.length) {
     var len = bin.readUint(data, offset);
@@ -247,21 +247,21 @@ UPNG.decode = function (buff) {
     var type = bin.readASCII(data, offset, 4);
     offset += 4;
 
-    if (type == "IHDR") {
+    if (type === "IHDR") {
       UPNG.decode._IHDR(data, offset, out);
-    } else if (type == "CgBI") {
+    } else if (type === "CgBI") {
       out.tabs[type] = data.slice(offset, offset + 4);
-    } else if (type == "IDAT") {
-      for (var i = 0; i < len; i++) dd[doff + i] = data[offset + i];
+    } else if (type === "IDAT") {
+      for (let i = 0; i < len; i++) dd[doff + i] = data[offset + i];
       doff += len;
-    } else if (type == "acTL") {
+    } else if (type === "acTL") {
       out.tabs[type] = {
         num_frames: rUi(data, offset),
         num_plays: rUi(data, offset + 4),
       };
       fd = new Uint8Array(data.length);
-    } else if (type == "fcTL") {
-      if (foff != 0) {
+    } else if (type === "fcTL") {
+      if (foff !== 0) {
         var fr = out.frames[out.frames.length - 1];
         fr.data = UPNG.decode._decompress(
           out,
@@ -278,7 +278,7 @@ UPNG.decode = function (buff) {
         height: rUi(data, offset + 8),
       };
       var del = rUs(data, offset + 22);
-      del = rUs(data, offset + 20) / (del == 0 ? 100 : del);
+      del = rUs(data, offset + 20) / (del === 0 ? 100 : del);
       var frm = {
         rect: rct,
         delay: Math.round(del * 1000),
@@ -286,32 +286,32 @@ UPNG.decode = function (buff) {
         blend: data[offset + 25],
       };
       out.frames.push(frm);
-    } else if (type == "fdAT") {
-      for (var i = 0; i < len - 4; i++) fd[foff + i] = data[offset + i + 4];
+    } else if (type === "fdAT") {
+      for (let i = 0; i < len - 4; i++) fd[foff + i] = data[offset + i + 4];
       foff += len - 4;
-    } else if (type == "pHYs") {
+    } else if (type === "pHYs") {
       out.tabs[type] = [
         bin.readUint(data, offset),
         bin.readUint(data, offset + 4),
         data[offset + 8],
       ];
-    } else if (type == "cHRM") {
+    } else if (type === "cHRM") {
       out.tabs[type] = [];
-      for (var i = 0; i < 8; i++)
+      for (let i = 0; i < 8; i++)
         out.tabs[type].push(bin.readUint(data, offset + i * 4));
-    } else if (type == "tEXt" || type == "zTXt") {
-      if (out.tabs[type] == null) out.tabs[type] = {};
+    } else if (type === "tEXt" || type === "zTXt") {
+      if (out.tabs[type] === null) out.tabs[type] = {};
       var nz = bin.nextZero(data, offset);
       var keyw = bin.readASCII(data, offset, nz - offset);
       var text,
         tl = offset + len - nz - 1;
-      if (type == "tEXt") text = bin.readASCII(data, nz + 1, tl);
+      if (type === "tEXt") text = bin.readASCII(data, nz + 1, tl);
       else {
         var bfr = UPNG.decode._inflate(data.slice(nz + 2, nz + 2 + tl));
         text = bin.readUTF8(bfr, 0, bfr.length);
       }
       out.tabs[type][keyw] = text;
-    } else if (type == "iTXt") {
+    } else if (type === "iTXt") {
       if (out.tabs[type] == null) out.tabs[type] = {};
       var nz = 0,
         off = offset;
@@ -329,49 +329,49 @@ UPNG.decode = function (buff) {
       off = nz + 1;
       var text,
         tl = len - (off - offset);
-      if (cflag == 0) text = bin.readUTF8(data, off, tl);
+      if (cflag === 0) text = bin.readUTF8(data, off, tl);
       else {
         var bfr = UPNG.decode._inflate(data.slice(off, off + tl));
         text = bin.readUTF8(bfr, 0, bfr.length);
       }
       out.tabs[type][keyw] = text;
-    } else if (type == "PLTE") {
+    } else if (type === "PLTE") {
       out.tabs[type] = bin.readBytes(data, offset, len);
-    } else if (type == "hIST") {
+    } else if (type === "hIST") {
       var pl = out.tabs["PLTE"].length / 3;
       out.tabs[type] = [];
       for (var i = 0; i < pl; i++)
         out.tabs[type].push(rUs(data, offset + i * 2));
-    } else if (type == "tRNS") {
-      if (out.ctype == 3) out.tabs[type] = bin.readBytes(data, offset, len);
-      else if (out.ctype == 0) out.tabs[type] = rUs(data, offset);
-      else if (out.ctype == 2)
+    } else if (type === "tRNS") {
+      if (out.ctype === 3) out.tabs[type] = bin.readBytes(data, offset, len);
+      else if (out.ctype === 0) out.tabs[type] = rUs(data, offset);
+      else if (out.ctype === 2)
         out.tabs[type] = [
           rUs(data, offset),
           rUs(data, offset + 2),
           rUs(data, offset + 4),
         ];
-    } else if (type == "gAMA")
+    } else if (type === "gAMA")
       out.tabs[type] = bin.readUint(data, offset) / 100000;
-    else if (type == "sRGB") out.tabs[type] = data[offset];
-    else if (type == "bKGD") {
-      if (out.ctype == 0 || out.ctype == 4)
+    else if (type === "sRGB") out.tabs[type] = data[offset];
+    else if (type === "bKGD") {
+      if (out.ctype === 0 || out.ctype === 4)
         out.tabs[type] = [rUs(data, offset)];
-      else if (out.ctype == 2 || out.ctype == 6)
+      else if (out.ctype === 2 || out.ctype === 6)
         out.tabs[type] = [
           rUs(data, offset),
           rUs(data, offset + 2),
           rUs(data, offset + 4),
         ];
-      else if (out.ctype == 3) out.tabs[type] = data[offset];
-    } else if (type == "IEND") {
+      else if (out.ctype === 3) out.tabs[type] = data[offset];
+    } else if (type === "IEND") {
       break;
     }
     offset += len;
     var crc = bin.readUint(data, offset);
     offset += 4;
   }
-  if (foff != 0) {
+  if (foff !== 0) {
     var fr = out.frames[out.frames.length - 1];
     fr.data = UPNG.decode._decompress(
       out,
@@ -396,8 +396,8 @@ UPNG.decode._decompress = function (out, dd, w, h) {
   if (out.tabs["CgBI"]) dd = UPNG.inflateRaw(dd, buff);
   else dd = UPNG.decode._inflate(dd, buff);
 
-  if (out.interlace == 0) dd = UPNG.decode._filterZero(dd, out, 0, w, h);
-  else if (out.interlace == 1) dd = UPNG.decode._readInterlace(dd, out);
+  if (out.interlace === 0) dd = UPNG.decode._filterZero(dd, out, 0, w, h);
+  else if (out.interlace === 1) dd = UPNG.decode._readInterlace(dd, out);
   return dd;
 };
 
@@ -424,7 +424,7 @@ UPNG.inflateRaw = (function () {
       d = 0,
       v,
       C;
-    if (N[0] == 3 && N[1] == 0) {
+    if (N[0] === 3 && N[1] === 0) {
       return W || new R(0);
     }
     var V = H.H,
@@ -437,12 +437,12 @@ UPNG.inflateRaw = (function () {
       b = V.m,
       Z = W == null;
     if (Z) W = new R((N.length >>> 2) << 3);
-    while (i == 0) {
+    while (i === 0) {
       i = n(N, d, 1);
       m = n(N, d + 1, 2);
       d += 3;
-      if (m == 0) {
-        if ((d & 7) != 0) d += 8 - (d & 7);
+      if (m === 0) {
+        if ((d & 7) !== 0) d += 8 - (d & 7);
         var D = (d >>> 3) + 4,
           q = N[D - 4] | (N[D - 3] << 8);
         if (Z) W = H.H.W(W, w + q);
@@ -452,24 +452,24 @@ UPNG.inflateRaw = (function () {
         continue;
       }
       if (Z) W = H.H.W(W, w + (1 << 17));
-      if (m == 1) {
+      if (m === 1) {
         v = b.J;
         C = b.h;
         X = (1 << 9) - 1;
         u = (1 << 5) - 1;
       }
-      if (m == 2) {
+      if (m === 2) {
         J = A(N, d, 5) + 257;
         h = A(N, d + 5, 5) + 1;
         Q = A(N, d + 10, 4) + 4;
         d += 14;
         var E = d,
           j = 1;
-        for (var c = 0; c < 38; c += 2) {
+        for (let c = 0; c < 38; c += 2) {
           b.Q[c] = 0;
           b.Q[c + 1] = 0;
         }
-        for (var c = 0; c < Q; c++) {
+        for (let c = 0; c < Q; c++) {
           var K = A(N, d + c * 3, 3);
           b.Q[(b.X[c] << 1) + 1] = K;
           if (K > j) j = K;
@@ -493,9 +493,9 @@ UPNG.inflateRaw = (function () {
         var T = v[e(N, d) & X];
         d += T & 15;
         var p = T >>> 4;
-        if (p >>> 8 == 0) {
+        if (p >>> 8 === 0) {
           W[w++] = p;
-        } else if (p == 256) {
+        } else if (p === 256) {
           break;
         } else {
           var z = w + p - 254;
@@ -520,7 +520,7 @@ UPNG.inflateRaw = (function () {
         }
       }
     }
-    return W.length == w ? W : W.slice(0, w);
+    return W.length === w ? W : W.slice(0, w);
   };
   H.H.W = function (N, W) {
     var R = N.length;
@@ -543,14 +543,14 @@ UPNG.inflateRaw = (function () {
       } else {
         var Z = 0,
           m = 0;
-        if (b == 16) {
+        if (b === 16) {
           m = 3 + l(V, n, 2);
           n += 2;
           Z = A[I - 1];
-        } else if (b == 17) {
+        } else if (b === 17) {
           m = 3 + l(V, n, 3);
           n += 3;
-        } else if (b == 18) {
+        } else if (b === 18) {
           m = 11 + l(V, n, 7);
           n += 7;
         }
@@ -590,7 +590,7 @@ UPNG.inflateRaw = (function () {
       M,
       I,
       e = R.j;
-    for (var M = 0; M <= W; M++) e[M] = 0;
+    for (let M = 0; M <= W; M++) e[M] = 0;
     for (M = 1; M < V; M += 2) e[N[M]]++;
     var b = R.K;
     n = 0;
@@ -601,7 +601,7 @@ UPNG.inflateRaw = (function () {
     }
     for (l = 0; l < V; l += 2) {
       I = N[l + 1];
-      if (I != 0) {
+      if (I !== 0) {
         N[l] = b[I];
         b[I]++;
       }
@@ -611,15 +611,15 @@ UPNG.inflateRaw = (function () {
     var V = N.length,
       n = H.H.m,
       A = n.r;
-    for (var l = 0; l < V; l += 2)
-      if (N[l + 1] != 0) {
+    for (let l = 0; l < V; l += 2)
+      if (N[l + 1] !== 0) {
         var M = l >> 1,
           I = N[l + 1],
           e = (M << 4) | I,
           b = W - I,
           Z = N[l] << b,
           m = Z + (1 << b);
-        while (Z != m) {
+        while (Z !== m) {
           var J = A[Z] >>> (15 - W);
           R[J] = e;
           Z++;
@@ -629,7 +629,7 @@ UPNG.inflateRaw = (function () {
   H.H.l = function (N, W) {
     var R = H.H.m.r,
       V = 15 - W;
-    for (var n = 0; n < N.length; n += 2) {
+    for (let n = 0; n < N.length; n += 2) {
       var A = N[n] << (W - N[n + 1]);
       N[n] = R[A] >>> V;
     }
@@ -732,7 +732,7 @@ UPNG.inflateRaw = (function () {
       N.r[R] = ((V >>> 16) | (V << 16)) >>> 17;
     }
     function n(A, l, M) {
-      while (l-- != 0) A.push(0, M);
+      while (l-- !== 0) A.push(0, M);
     }
     for (var R = 0; R < 32; R++) {
       N.q[R] = (N.S[R] << 3) | N.T[R];
@@ -797,17 +797,17 @@ UPNG.decode._readInterlace = function (data, out) {
       var cdi = (di + y * bpll) << 3;
 
       while (col < w) {
-        if (bpp == 1) {
+        if (bpp === 1) {
           var val = data[cdi >> 3];
           val = (val >> (7 - (cdi & 7))) & 1;
           img[row * bpl + (col >> 3)] |= val << (7 - ((col & 7) << 0));
         }
-        if (bpp == 2) {
+        if (bpp === 2) {
           var val = data[cdi >> 3];
           val = (val >> (6 - (cdi & 7))) & 3;
           img[row * bpl + (col >> 2)] |= val << (6 - ((col & 3) << 1));
         }
-        if (bpp == 4) {
+        if (bpp === 4) {
           var val = data[cdi >> 3];
           val = (val >> (4 - (cdi & 7))) & 15;
           img[row * bpl + (col >> 1)] |= val << (4 - ((col & 1) << 2));
@@ -822,7 +822,7 @@ UPNG.decode._readInterlace = function (data, out) {
       y++;
       row += ri;
     }
-    if (sw * sh != 0) di += sh * (1 + bpll);
+    if (sw * sh !== 0) di += sh * (1 + bpll);
     pass = pass + 1;
   }
   return img;
@@ -845,23 +845,23 @@ UPNG.decode._filterZero = function (data, out, off, w, h) {
     x = 0;
 
   if (type > 1) data[off] = [0, 0, 1][type - 2];
-  if (type == 3)
+  if (type === 3)
     for (x = bpp; x < bpl; x++)
       data[x + 1] = (data[x + 1] + (data[x + 1 - bpp] >>> 1)) & 255;
 
-  for (var y = 0; y < h; y++) {
+  for (let y = 0; y < h; y++) {
     i = off + y * bpl;
     di = i + y + 1;
     type = data[di - 1];
     x = 0;
 
-    if (type == 0) for (; x < bpl; x++) data[i + x] = data[di + x];
-    else if (type == 1) {
+    if (type === 0) for (; x < bpl; x++) data[i + x] = data[di + x];
+    else if (type === 1) {
       for (; x < bpp; x++) data[i + x] = data[di + x];
       for (; x < bpl; x++) data[i + x] = data[di + x] + data[i + x - bpp];
-    } else if (type == 2) {
+    } else if (type === 2) {
       for (; x < bpl; x++) data[i + x] = data[di + x] + data[i + x - bpl];
-    } else if (type == 3) {
+    } else if (type === 3) {
       for (; x < bpp; x++)
         data[i + x] = data[di + x] + (data[i + x - bpl] >>> 1);
       for (; x < bpl; x++)
@@ -975,12 +975,12 @@ UPNG._copyTile = function (sb, sw, sh, tb, tw, th, xoff, yoff, mode) {
         ti = (y * tw + x) << 2;
       }
 
-      if (mode == 0) {
+      if (mode === 0) {
         tb[ti] = sb[si];
         tb[ti + 1] = sb[si + 1];
         tb[ti + 2] = sb[si + 2];
         tb[ti + 3] = sb[si + 3];
-      } else if (mode == 1) {
+      } else if (mode === 1) {
         var fa = sb[si + 3] * (1 / 255),
           fr = sb[si] * fa,
           fg = sb[si + 1] * fa,
@@ -992,12 +992,12 @@ UPNG._copyTile = function (sb, sw, sh, tb, tw, th, xoff, yoff, mode) {
 
         var ifa = 1 - fa,
           oa = fa + ba * ifa,
-          ioa = oa == 0 ? 0 : 1 / oa;
+          ioa = oa === 0 ? 0 : 1 / oa;
         tb[ti + 3] = 255 * oa;
         tb[ti + 0] = (fr + br * ifa) * ioa;
         tb[ti + 1] = (fg + bg * ifa) * ioa;
         tb[ti + 2] = (fb + bb * ifa) * ioa;
-      } else if (mode == 2) {
+      } else if (mode === 2) {
         // copy only differences, otherwise zero
         var fa = sb[si + 3],
           fr = sb[si],
@@ -1007,7 +1007,7 @@ UPNG._copyTile = function (sb, sw, sh, tb, tw, th, xoff, yoff, mode) {
           br = tb[ti],
           bg = tb[ti + 1],
           bb = tb[ti + 2];
-        if (fa == ba && fr == br && fg == bg && fb == bb) {
+        if (fa === ba && fr === br && fg === bg && fb === bb) {
           tb[ti] = 0;
           tb[ti + 1] = 0;
           tb[ti + 2] = 0;
@@ -1018,7 +1018,7 @@ UPNG._copyTile = function (sb, sw, sh, tb, tw, th, xoff, yoff, mode) {
           tb[ti + 2] = fb;
           tb[ti + 3] = fa;
         }
-      } else if (mode == 3) {
+      } else if (mode === 3) {
         // check if can be blended
         var fa = sb[si + 3],
           fr = sb[si],
@@ -1028,7 +1028,7 @@ UPNG._copyTile = function (sb, sw, sh, tb, tw, th, xoff, yoff, mode) {
           br = tb[ti],
           bg = tb[ti + 1],
           bb = tb[ti + 2];
-        if (fa == ba && fr == br && fg == bg && fb == bb) continue;
+        if (fa === ba && fr === br && fg === bg && fb === bb) continue;
         if (fa < 220 && ba > 20) return false;
       }
     }
@@ -1036,8 +1036,8 @@ UPNG._copyTile = function (sb, sw, sh, tb, tw, th, xoff, yoff, mode) {
 };
 
 UPNG.encode = function (bufs, w, h, ps, dels, tabs, forbidPlte) {
-  if (ps == null) ps = 0;
-  if (forbidPlte == null) forbidPlte = false;
+  if (ps === null) ps = 0;
+  if (forbidPlte === null) forbidPlte = false;
 
   var nimg = UPNG.encode.compress(bufs, w, h, ps, [
     false,
@@ -1053,7 +1053,7 @@ UPNG.encode = function (bufs, w, h, ps, dels, tabs, forbidPlte) {
 
 UPNG.encodeLL = function (bufs, w, h, cc, ac, depth, dels, tabs) {
   var nimg = {
-    ctype: 0 + (cc == 1 ? 0 : 2) + (ac == 0 ? 0 : 4),
+    ctype: 0 + (cc === 1 ? 0 : 2) + (ac === 0 ? 0 : 4),
     depth: depth,
     frames: [],
   };
@@ -1061,7 +1061,7 @@ UPNG.encodeLL = function (bufs, w, h, cc, ac, depth, dels, tabs) {
   var time = Date.now();
   var bipp = (cc + ac) * depth,
     bipl = bipp * w;
-  for (var i = 0; i < bufs.length; i++)
+  for (let i = 0; i < bufs.length; i++)
     nimg.frames.push({
       rect: { x: 0, y: 0, width: w, height: h },
       img: new Uint8Array(bufs[i]),
@@ -1078,7 +1078,7 @@ UPNG.encodeLL = function (bufs, w, h, cc, ac, depth, dels, tabs) {
 };
 
 UPNG.encode._main = function (nimg, w, h, dels, tabs) {
-  if (tabs == null) tabs = {};
+  if (!tabs) tabs = {};
   var crc = UPNG.crc.crc,
     wUi = UPNG._bin.writeUint,
     wUs = UPNG._bin.writeUshort,
@@ -1088,19 +1088,19 @@ UPNG.encode._main = function (nimg, w, h, dels, tabs) {
     pltAlpha = false;
 
   var leng = 8 + (16 + 5 + 4) + (anim ? 20 : 0);
-  if (tabs["sRGB"] != null) leng += 8 + 1 + 4;
-  if (tabs["pHYs"] != null) leng += 8 + 9 + 4;
-  if (nimg.ctype == 3) {
+  if (tabs["sRGB"] !== null && tabs["sRGB"] !== undefined) leng += 8 + 1 + 4;
+  if (tabs["pHYs"] !== null && tabs["pHYs"] !== undefined) leng += 8 + 9 + 4;
+  if (nimg.ctype === 3) {
     var dl = nimg.plte.length;
-    for (var i = 0; i < dl; i++)
+    for (let i = 0; i < dl; i++)
       if (nimg.plte[i] >>> 24 != 255) pltAlpha = true;
     leng += 8 + dl * 3 + 4 + (pltAlpha ? 8 + dl * 1 + 4 : 0);
   }
-  for (var j = 0; j < nimg.frames.length; j++) {
+  for (let j = 0; j < nimg.frames.length; j++) {
     var fr = nimg.frames[j];
     if (anim) leng += 38;
     leng += fr.cimg.length + 12;
-    if (j != 0) leng += 4;
+    if (j !== 0) leng += 4;
   }
   leng += 12;
 
@@ -1130,7 +1130,7 @@ UPNG.encode._main = function (nimg, w, h, dels, tabs) {
   offset += 4; // crc
 
   // 13 bytes to say, that it is sRGB
-  if (tabs["sRGB"] != null) {
+  if (tabs["sRGB"] !== null && tabs["sRGB"] !== undefined) {
     wUi(data, offset, 1);
     offset += 4;
     wAs(data, offset, "sRGB");
@@ -1140,7 +1140,7 @@ UPNG.encode._main = function (nimg, w, h, dels, tabs) {
     wUi(data, offset, crc(data, offset - 5, 5));
     offset += 4; // crc
   }
-  if (tabs["pHYs"] != null) {
+  if (tabs["pHYs"] !== null && tabs["pHYs"] !== undefined) {
     wUi(data, offset, 9);
     offset += 4;
     wAs(data, offset, "pHYs");
@@ -1168,7 +1168,7 @@ UPNG.encode._main = function (nimg, w, h, dels, tabs) {
     offset += 4; // crc
   }
 
-  if (nimg.ctype == 3) {
+  if (nimg.ctype === 3) {
     var dl = nimg.plte.length;
     wUi(data, offset, dl * 3);
     offset += 4;
@@ -1202,7 +1202,7 @@ UPNG.encode._main = function (nimg, w, h, dels, tabs) {
   }
 
   var fi = 0;
-  for (var j = 0; j < nimg.frames.length; j++) {
+  for (let j = 0; j < nimg.frames.length; j++) {
     var fr = nimg.frames[j];
     if (anim) {
       wUi(data, offset, 26);
@@ -1233,12 +1233,12 @@ UPNG.encode._main = function (nimg, w, h, dels, tabs) {
 
     var imgd = fr.cimg,
       dl = imgd.length;
-    wUi(data, offset, dl + (j == 0 ? 0 : 4));
+    wUi(data, offset, dl + (j === 0 ? 0 : 4));
     offset += 4;
     var ioff = offset;
-    wAs(data, offset, j == 0 ? "IDAT" : "fdAT");
+    wAs(data, offset, j === 0 ? "IDAT" : "fdAT");
     offset += 4;
-    if (j != 0) {
+    if (j !== 0) {
       wUi(data, offset, fi++);
       offset += 4;
     }
@@ -1259,7 +1259,7 @@ UPNG.encode._main = function (nimg, w, h, dels, tabs) {
 };
 
 UPNG.encode.compressPNG = function (out, filter, levelZero) {
-  for (var i = 0; i < out.frames.length; i++) {
+  for (let i = 0; i < out.frames.length; i++) {
     var frm = out.frames[i],
       nw = frm.rect.width,
       nh = frm.rect.height;
@@ -1293,13 +1293,13 @@ UPNG.encode.compress = function (
     depth = 8,
     alphaAnd = 255;
 
-  for (var j = 0; j < bufs.length; j++) {
+  for (let j = 0; j < bufs.length; j++) {
     // when not quantized, other frames can contain colors, that are not in an initial frame
     var img = new Uint8Array(bufs[j]),
       ilen = img.length;
-    for (var i = 0; i < ilen; i += 4) alphaAnd &= img[i + 3];
+    for (let i = 0; i < ilen; i += 4) alphaAnd &= img[i + 3];
   }
-  var gotAlpha = alphaAnd != 255;
+  var gotAlpha = alphaAnd !== 255;
 
   // brute : frames can only be copied, not "blended"
   var frms = UPNG.encode.framize(bufs, w, h, onlyBlend, evenCrd, forbidPrev);
@@ -1308,19 +1308,19 @@ UPNG.encode.compress = function (
     plte = [],
     inds = [];
 
-  if (ps != 0) {
+  if (ps !== 0) {
     var nbufs = [];
-    for (var i = 0; i < frms.length; i++) nbufs.push(frms[i].img.buffer);
+    for (let i = 0; i < frms.length; i++) nbufs.push(frms[i].img.buffer);
 
     var abuf = UPNG.encode.concatRGBA(nbufs),
       qres = UPNG.quantize(abuf, ps);
     var cof = 0,
       bb = new Uint8Array(qres.abuf);
-    for (var i = 0; i < frms.length; i++) {
+    for (let i = 0; i < frms.length; i++) {
       var ti = frms[i].img,
         bln = ti.length;
       inds.push(new Uint8Array(qres.inds.buffer, cof >> 2, bln >> 2));
-      for (var j = 0; j < bln; j += 4) {
+      for (let j = 0; j < bln; j += 4) {
         ti[j] = bb[cof + j];
         ti[j + 1] = bb[cof + j + 1];
         ti[j + 2] = bb[cof + j + 2];
@@ -1329,10 +1329,10 @@ UPNG.encode.compress = function (
       cof += bln;
     }
 
-    for (var i = 0; i < qres.plte.length; i++) plte.push(qres.plte[i].est.rgba);
+    for (let i = 0; i < qres.plte.length; i++) plte.push(qres.plte[i].est.rgba);
   } else {
     // what if ps==0, but there are <=256 colors?  we still need to detect, if the palette could be used
-    for (var j = 0; j < frms.length; j++) {
+    for (let j = 0; j < frms.length; j++) {
       // when not quantized, other frames can contain colors, that are not in an initial frame
       var frm = frms[j],
         img32 = new Uint32Array(frm.img.buffer),
@@ -1340,13 +1340,13 @@ UPNG.encode.compress = function (
         ilen = img32.length;
       var ind = new Uint8Array(ilen);
       inds.push(ind);
-      for (var i = 0; i < ilen; i++) {
+      for (let i = 0; i < ilen; i++) {
         var c = img32[i];
-        if (i != 0 && c == img32[i - 1]) ind[i] = ind[i - 1];
-        else if (i > nw && c == img32[i - nw]) ind[i] = ind[i - nw];
+        if (i !== 0 && c === img32[i - 1]) ind[i] = ind[i - 1];
+        else if (i > nw && c === img32[i - nw]) ind[i] = ind[i - nw];
         else {
           var cmc = cmap[c];
-          if (cmc == null) {
+          if (cmc === null) {
             cmap[c] = cmc = plte.length;
             plte.push(c);
             if (plte.length >= 300) break;
@@ -1358,7 +1358,7 @@ UPNG.encode.compress = function (
   }
 
   var cc = plte.length;
-  if (cc <= 256 && forbidPlte == false) {
+  if (cc <= 256 && forbidPlte === false) {
     if (cc <= 2) depth = 1;
     else if (cc <= 4) depth = 2;
     else if (cc <= 16) depth = 4;
@@ -1376,32 +1376,32 @@ UPNG.encode.compress = function (
       cimg32 = new Uint32Array(cimg.buffer);
     var bpl = 4 * nw,
       bpp = 4;
-    if (cc <= 256 && forbidPlte == false) {
+    if (cc <= 256 && forbidPlte === false) {
       bpl = Math.ceil((depth * nw) / 8);
       var nimg = new Uint8Array(bpl * nh);
       var inj = inds[j];
       for (var y = 0; y < nh; y++) {
         var i = y * bpl,
           ii = y * nw;
-        if (depth == 8) for (var x = 0; x < nw; x++) nimg[i + x] = inj[ii + x];
-        else if (depth == 4)
+        if (depth === 8) for (let x = 0; x < nw; x++) nimg[i + x] = inj[ii + x];
+        else if (depth === 4)
           for (var x = 0; x < nw; x++)
             nimg[i + (x >> 1)] |= inj[ii + x] << (4 - (x & 1) * 4);
-        else if (depth == 2)
+        else if (depth === 2)
           for (var x = 0; x < nw; x++)
             nimg[i + (x >> 2)] |= inj[ii + x] << (6 - (x & 3) * 2);
-        else if (depth == 1)
+        else if (depth === 1)
           for (var x = 0; x < nw; x++)
             nimg[i + (x >> 3)] |= inj[ii + x] << (7 - (x & 7) * 1);
       }
       cimg = nimg;
       ctype = 3;
       bpp = 1;
-    } else if (gotAlpha == false && frms.length == 1) {
+    } else if (gotAlpha === false && frms.length === 1) {
       // some next "reduced" frames may contain alpha for blending
       var nimg = new Uint8Array(nw * nh * 3),
         area = nw * nh;
-      for (var i = 0; i < area; i++) {
+      for (let i = 0; i < area; i++) {
         var ti = i * 3,
           qi = i * 4;
         nimg[ti] = cimg[qi];
@@ -1441,34 +1441,34 @@ UPNG.encode.framize = function (bufs, w, h, alwaysBlend, evenCrd, forbidPrev) {
       nw = w,
       nh = h,
       blend = alwaysBlend ? 1 : 0;
-    if (j != 0) {
+    if (j !== 0) {
       var tlim =
-          forbidPrev || alwaysBlend || j == 1 || frms[j - 2].dispose != 0
+          forbidPrev || alwaysBlend || j === 1 || frms[j - 2].dispose !== 0
             ? 1
             : 2,
         tstp = 0,
         tarea = 1e9;
-      for (var it = 0; it < tlim; it++) {
+      for (let it = 0; it < tlim; it++) {
         var pimg = new Uint8Array(bufs[j - 1 - it]),
           p32 = new Uint32Array(bufs[j - 1 - it]);
         var mix = w,
           miy = h,
           max = -1,
           may = -1;
-        for (var y = 0; y < h; y++)
-          for (var x = 0; x < w; x++) {
+        for (let y = 0; y < h; y++)
+          for (let x = 0; x < w; x++) {
             var i = y * w + x;
-            if (cimg32[i] != p32[i]) {
+            if (cimg32[i] !== p32[i]) {
               if (x < mix) mix = x;
               if (x > max) max = x;
               if (y < miy) miy = y;
               if (y > may) may = y;
             }
           }
-        if (max == -1) mix = miy = max = may = 0;
+        if (max === -1) mix = miy = max = may = 0;
         if (evenCrd) {
-          if ((mix & 1) == 1) mix--;
-          if ((miy & 1) == 1) miy--;
+          if ((mix & 1) === 1) mix--;
+          if ((miy & 1) === 1) miy--;
         }
         var sarea = (max - mix + 1) * (may - miy + 1);
         if (sarea < tarea) {
@@ -1483,13 +1483,13 @@ UPNG.encode.framize = function (bufs, w, h, alwaysBlend, evenCrd, forbidPrev) {
 
       // alwaysBlend: pokud zjistím, že blendit nelze, nastavím předchozímu snímku dispose=1. Zajistím, aby obsahoval můj obdélník.
       var pimg = new Uint8Array(bufs[j - 1 - tstp]);
-      if (tstp == 1) frms[j - 1].dispose = 2;
+      if (tstp === 1) frms[j - 1].dispose = 2;
 
       nimg = new Uint8Array(nw * nh * 4);
       UPNG._copyTile(pimg, w, h, nimg, nw, nh, -nx, -ny, 0);
 
       blend = UPNG._copyTile(cimg, w, h, nimg, nw, nh, -nx, -ny, 3) ? 1 : 0;
-      if (blend == 1)
+      if (blend === 1)
         UPNG.encode._prepareDiff(cimg, w, h, nimg, {
           x: nx,
           y: ny,
@@ -1508,9 +1508,9 @@ UPNG.encode.framize = function (bufs, w, h, alwaysBlend, evenCrd, forbidPrev) {
   }
 
   if (alwaysBlend)
-    for (var j = 0; j < frms.length; j++) {
+    for (let j = 0; j < frms.length; j++) {
       var frm = frms[j];
-      if (frm.blend == 1) continue;
+      if (frm.blend === 1) continue;
       var r0 = frm.rect,
         r1 = frms[j - 1].rect;
       var miX = Math.min(r0.x, r1.x),
@@ -1520,13 +1520,13 @@ UPNG.encode.framize = function (bufs, w, h, alwaysBlend, evenCrd, forbidPrev) {
       var r = { x: miX, y: miY, width: maX - miX, height: maY - miY };
 
       frms[j - 1].dispose = 1;
-      if (j - 1 != 0)
+      if (j - 1 !== 0)
         UPNG.encode._updateFrame(bufs, w, h, frms, j - 1, r, evenCrd);
       UPNG.encode._updateFrame(bufs, w, h, frms, j, r, evenCrd);
     }
   var area = 0;
-  if (bufs.length != 1)
-    for (var i = 0; i < frms.length; i++) {
+  if (bufs.length !== 1)
+    for (let i = 0; i < frms.length; i++) {
       var frm = frms[i];
       area += frm.rect.width * frm.rect.height;
     }
@@ -1546,8 +1546,8 @@ UPNG.encode._updateFrame = function (bufs, w, h, frms, i, r, evenCrd) {
     miy = h,
     max = -1,
     may = -1;
-  for (var y = 0; y < r.height; y++)
-    for (var x = 0; x < r.width; x++) {
+  for (let y = 0; y < r.height; y++)
+    for (let x = 0; x < r.width; x++) {
       var cx = r.x + x,
         cy = r.y + y;
       var j = cy * w + cx,
@@ -1555,10 +1555,10 @@ UPNG.encode._updateFrame = function (bufs, w, h, frms, i, r, evenCrd) {
       // no need to draw transparency, or to dispose it. Or, if writing the same color and the next one does not need transparency.
       if (
         !(
-          cc == 0 ||
-          (frms[i - 1].dispose == 0 &&
-            pimg32[j] == cc &&
-            (nimg == null || nimg[j * 4 + 3] != 0))
+          cc === 0 ||
+          (frms[i - 1].dispose === 0 &&
+            pimg32[j] === cc &&
+            (nimg === null || nimg[j * 4 + 3] !== 0))
         )
       ) {
         if (cx < mix) mix = cx;
@@ -1567,10 +1567,10 @@ UPNG.encode._updateFrame = function (bufs, w, h, frms, i, r, evenCrd) {
         if (cy > may) may = cy;
       }
     }
-  if (max == -1) mix = miy = max = may = 0;
+  if (max === -1) mix = miy = max = may = 0;
   if (evenCrd) {
-    if ((mix & 1) == 1) mix--;
-    if ((miy & 1) == 1) miy--;
+    if ((mix & 1) === 1) mix--;
+    if ((miy & 1) === 1) miy--;
   }
   r = { x: mix, y: miy, width: max - mix + 1, height: may - miy + 1 };
 
@@ -1578,7 +1578,7 @@ UPNG.encode._updateFrame = function (bufs, w, h, frms, i, r, evenCrd) {
   fr.rect = r;
   fr.blend = 1;
   fr.img = new Uint8Array(r.width * r.height * 4);
-  if (frms[i - 1].dispose == 0) {
+  if (frms[i - 1].dispose === 0) {
     UPNG._copyTile(pimg, w, h, fr.img, r.width, r.height, -r.x, -r.y, 0);
     UPNG.encode._prepareDiff(cimg, w, h, fr.img, r);
   } else UPNG._copyTile(cimg, w, h, fr.img, r.width, r.height, -r.x, -r.y, 0);
@@ -1590,23 +1590,22 @@ UPNG.encode._prepareDiff = function (cimg, w, h, nimg, rec) {
 UPNG.encode._filterZero = function (img, h, bpp, bpl, data, filter, levelZero) {
   var fls = [],
     ftry = [0, 1, 2, 3, 4];
-  if (filter != -1) ftry = [filter];
-  else if (h * bpl > 500000 || bpp == 1) ftry = [0];
+  if (filter !== -1) ftry = [filter];
+  else if (h * bpl > 500000 || bpp === 1) ftry = [0];
   var opts;
   if (levelZero) opts = { level: 0 };
 
   var CMPR = data.length > 10e6 && UZIP != null ? UZIP : pako;
 
-  var time = Date.now();
-  for (var i = 0; i < ftry.length; i++) {
-    for (var y = 0; y < h; y++)
+  for (let i = 0; i < ftry.length; i++) {
+    for (let y = 0; y < h; y++)
       UPNG.encode._filterLine(data, img, y, bpl, bpp, ftry[i]);
     fls.push(CMPR["deflate"](data, opts));
   }
 
-  var ti,
-    tsize = 1e9;
-  for (var i = 0; i < fls.length; i++)
+  let ti;
+  let tsize = 1e9;
+  for (let i = 0; i < fls.length; i++)
     if (fls[i].length < tsize) {
       ti = i;
       tsize = fls[i].length;
@@ -1620,40 +1619,40 @@ UPNG.encode._filterLine = function (data, img, y, bpl, bpp, type) {
   data[di] = type;
   di++;
 
-  if (type == 0) {
-    if (bpl < 500) for (var x = 0; x < bpl; x++) data[di + x] = img[i + x];
+  if (type === 0) {
+    if (bpl < 500) for (let x = 0; x < bpl; x++) data[di + x] = img[i + x];
     else data.set(new Uint8Array(img.buffer, i, bpl), di);
-  } else if (type == 1) {
-    for (var x = 0; x < bpp; x++) data[di + x] = img[i + x];
-    for (var x = bpp; x < bpl; x++)
+  } else if (type === 1) {
+    for (let x = 0; x < bpp; x++) data[di + x] = img[i + x];
+    for (let x = bpp; x < bpl; x++)
       data[di + x] = (img[i + x] - img[i + x - bpp] + 256) & 255;
-  } else if (y == 0) {
-    for (var x = 0; x < bpp; x++) data[di + x] = img[i + x];
+  } else if (y === 0) {
+    for (let x = 0; x < bpp; x++) data[di + x] = img[i + x];
 
-    if (type == 2) for (var x = bpp; x < bpl; x++) data[di + x] = img[i + x];
-    if (type == 3)
-      for (var x = bpp; x < bpl; x++)
+    if (type === 2) for (let x = bpp; x < bpl; x++) data[di + x] = img[i + x];
+    if (type === 3)
+      for (let x = bpp; x < bpl; x++)
         data[di + x] = (img[i + x] - (img[i + x - bpp] >> 1) + 256) & 255;
-    if (type == 4)
-      for (var x = bpp; x < bpl; x++)
+    if (type === 4)
+      for (let x = bpp; x < bpl; x++)
         data[di + x] = (img[i + x] - paeth(img[i + x - bpp], 0, 0) + 256) & 255;
   } else {
-    if (type == 2) {
-      for (var x = 0; x < bpl; x++)
+    if (type === 2) {
+      for (let x = 0; x < bpl; x++)
         data[di + x] = (img[i + x] + 256 - img[i + x - bpl]) & 255;
     }
-    if (type == 3) {
-      for (var x = 0; x < bpp; x++)
+    if (type === 3) {
+      for (let x = 0; x < bpp; x++)
         data[di + x] = (img[i + x] + 256 - (img[i + x - bpl] >> 1)) & 255;
-      for (var x = bpp; x < bpl; x++)
+      for (let x = bpp; x < bpl; x++)
         data[di + x] =
           (img[i + x] + 256 - ((img[i + x - bpl] + img[i + x - bpp]) >> 1)) &
           255;
     }
-    if (type == 4) {
-      for (var x = 0; x < bpp; x++)
+    if (type === 4) {
+      for (let x = 0; x < bpp; x++)
         data[di + x] = (img[i + x] + 256 - paeth(0, img[i + x - bpl], 0)) & 255;
-      for (var x = bpp; x < bpl; x++)
+      for (let x = bpp; x < bpl; x++)
         data[di + x] =
           (img[i + x] +
             256 -
@@ -1666,9 +1665,9 @@ UPNG.encode._filterLine = function (data, img, y, bpl, bpp, type) {
 UPNG.crc = {
   table: (function () {
     var tab = new Uint32Array(256);
-    for (var n = 0; n < 256; n++) {
+    for (let n = 0; n < 256; n++) {
       var c = n;
-      for (var k = 0; k < 8; k++) {
+      for (let k = 0; k < 8; k++) {
         if (c & 1) c = 0xedb88320 ^ (c >>> 1);
         else c = c >>> 1;
       }
@@ -1677,7 +1676,7 @@ UPNG.crc = {
     return tab;
   })(),
   update: function (c, buf, off, len) {
-    for (var i = 0; i < len; i++)
+    for (let i = 0; i < len; i++)
       c = UPNG.crc.table[(c ^ buf[off + i]) & 0xff] ^ (c >>> 8);
     return c;
   },
@@ -1704,7 +1703,7 @@ UPNG.quantize = function (abuf, ps) {
     nd;
   if (oimg.length < 20e6)
     // precise, but slow :(
-    for (var i = 0; i < len; i += 4) {
+    for (let i = 0; i < len; i += 4) {
       var r = sb[i] * (1 / 255),
         g = sb[i + 1] * (1 / 255),
         b = sb[i + 2] * (1 / 255),
@@ -1715,7 +1714,7 @@ UPNG.quantize = function (abuf, ps) {
       tb[i >> 2] = nd.est.rgba;
     }
   else
-    for (var i = 0; i < len; i += 4) {
+    for (let i = 0; i < len; i += 4) {
       var r = sb[i] * (1 / 255),
         g = sb[i + 1] * (1 / 255),
         b = sb[i + 2] * (1 / 255),
@@ -1731,7 +1730,7 @@ UPNG.quantize = function (abuf, ps) {
 };
 
 UPNG.quantize.getKDtree = function (nimg, ps, err) {
-  if (err == null) err = 0.0001;
+  if (err === null) err = 0.0001;
   var nimg32 = new Uint32Array(nimg.buffer);
 
   var root = {
@@ -1750,7 +1749,7 @@ UPNG.quantize.getKDtree = function (nimg, ps, err) {
   while (leafs.length < ps) {
     var maxL = 0,
       mi = 0;
-    for (var i = 0; i < leafs.length; i++)
+    for (let i = 0; i < leafs.length; i++)
       if (leafs[i].est.L > maxL) {
         maxL = leafs[i].est.L;
         mi = i;
@@ -1871,7 +1870,7 @@ UPNG.quantize.stats = function (nimg, i0, i1) {
   var R = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   var m = [0, 0, 0, 0];
   var N = (i1 - i0) >> 2;
-  for (var i = i0; i < i1; i += 4) {
+  for (let i = i0; i < i1; i += 4) {
     var r = nimg[i] * (1 / 255),
       g = nimg[i + 1] * (1 / 255),
       b = nimg[i + 2] * (1 / 255),
@@ -1911,7 +1910,7 @@ UPNG.quantize.estats = function (stats) {
     m1 = m[1],
     m2 = m[2],
     m3 = m[3],
-    iN = N == 0 ? 0 : 1 / N;
+    iN = N === 0 ? 0 : 1 / N;
   var Rj = [
     R[0] - m0 * m0 * iN,
     R[1] - m0 * m1 * iN,
@@ -1937,12 +1936,12 @@ UPNG.quantize.estats = function (stats) {
     mi = 0,
     tmi = 0;
 
-  if (N != 0)
-    for (var i = 0; i < 16; i++) {
+  if (N !== 0)
+    for (let i = 0; i < 16; i++) {
       b = M.multVec(A, b);
       tmi = Math.sqrt(M.dot(b, b));
       b = M.sml(1 / tmi, b);
-      if (i != 0 && Math.abs(tmi - mi) < 1e-9) break;
+      if (i !== 0 && Math.abs(tmi - mi) < 1e-9) break;
       mi = tmi;
     }
   var q = [m0 * iN, m1 * iN, m2 * iN, m3 * iN];
@@ -1982,18 +1981,18 @@ UPNG.M4 = {
 
 UPNG.encode.concatRGBA = function (bufs) {
   var tlen = 0;
-  for (var i = 0; i < bufs.length; i++) tlen += bufs[i].byteLength;
+  for (let i = 0; i < bufs.length; i++) tlen += bufs[i].byteLength;
   var nimg = new Uint8Array(tlen),
     noff = 0;
-  for (var i = 0; i < bufs.length; i++) {
+  for (let i = 0; i < bufs.length; i++) {
     var img = new Uint8Array(bufs[i]),
       il = img.length;
-    for (var j = 0; j < il; j += 4) {
-      var r = img[j],
+    for (let j = 0; j < il; j += 4) {
+      let r = img[j],
         g = img[j + 1],
-        b = img[j + 2],
-        a = img[j + 3];
-      if (a == 0) r = g = b = 0;
+        b = img[j + 2];
+      const a = img[j + 3];
+      if (a === 0) r = g = b = 0;
       nimg[noff + j] = r;
       nimg[noff + j + 1] = g;
       nimg[noff + j + 2] = b;
