@@ -22,6 +22,7 @@ import PizzaPie from "./components/PizzaPie";
 import AnnulusProgressBar from "./components/AnnulusProgressBar";
 import AudioLoading from "./components/AudioLoading";
 import SudokuImageAnimation from "./components/SudokuImageAnimation";
+import TextWrap from "./components/TextWrap";
 import styles from "./index.module.scss";
 
 const { GridBox } = GridContent;
@@ -33,7 +34,7 @@ const gridboxList = [
   { element: <Typed1 /> },
   { element: <Typed2 /> },
   { element: <AutoEllipsisText /> },
-  { element: <FilterCSS /> },
+  { element: <TextWrap /> },
   { element: <BgFusion /> },
   { element: <MyLogo /> },
   { element: <ShearAngle /> },
@@ -43,6 +44,7 @@ const gridboxList = [
   // { element: <ImageFadeOut /> },
   { element: <AnnulusProgressBar /> },
   { element: <AudioLoading /> },
+  { element: <FilterCSS /> },
   { element: <SudokuImageAnimation /> },
 ];
 
