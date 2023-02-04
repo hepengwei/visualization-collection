@@ -12,6 +12,7 @@ import TextAnimation from "./components/TextAnimation";
 import DisplayTextInSmoke from "./components/DisplayTextInSmoke";
 import PlayVideoInText from "./components/PlayVideoInText";
 import WaveFont from "./components/WaveFont";
+import TextOutlineAnimation1 from "./components/TextOutlineAnimation1";
 import styles from "./index.module.scss";
 
 const RichDynamicEffect = () => {
@@ -53,6 +54,11 @@ const RichDynamicEffect = () => {
       </div>
       <div className={styles.box}>
         <WaveFont />
+      </div>
+      <div className={styles.multipleColumnsBox}>
+        <div className={styles.box}>
+          <TextOutlineAnimation1 />
+        </div>
       </div>
     </div>
   );

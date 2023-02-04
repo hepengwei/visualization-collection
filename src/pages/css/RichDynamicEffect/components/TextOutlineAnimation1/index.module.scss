@@ -1,0 +1,109 @@
+.container {
+  width: 100%;
+  height: 360px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  $pathLength1: 676;
+  $pathLength2: 640;
+  $pathLength3: 387;
+  $animationTime: 6s;
+
+  .content {
+    svg {
+      width: 400px;
+      height: 260px;
+      animation: fill-anm $animationTime ease forwards infinite;
+      path:nth-child(1) {
+        stroke-dasharray: $pathLength1 !important;
+        stroke-dashoffset: $pathLength1;
+        animation: line-anm1 $animationTime ease-in-out infinite;
+      }
+      path:nth-child(2) {
+        stroke-dasharray: $pathLength2 !important;
+        stroke-dashoffset: $pathLength2;
+        transform: translateX(60px);
+        animation: line-anm2 $animationTime ease-in-out infinite 100ms;
+      }
+      path:nth-child(3) {
+        stroke-dasharray: $pathLength3 !important;
+        stroke-dashoffset: $pathLength3;
+        transform: translateX(126px);
+        animation: line-anm3 $animationTime ease-in-out infinite 200ms;
+      }
+    }
+  }
+
+  @keyframes line-anm1 {
+    0% {
+      stroke-dashoffset: $pathLength1;
+    }
+    35% {
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dashoffset: 0;
+    }
+    60% {
+      stroke-dashoffset: 0;
+    }
+    100% {
+      stroke-dashoffset: $pathLength1;
+    }
+  }
+
+  @keyframes line-anm2 {
+    0% {
+      stroke-dashoffset: $pathLength2;
+    }
+    35% {
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dashoffset: 0;
+    }
+    65% {
+      stroke-dashoffset: 0;
+    }
+    100% {
+      stroke-dashoffset: $pathLength2;
+    }
+  }
+
+  @keyframes line-anm3 {
+    0% {
+      stroke-dashoffset: $pathLength3;
+    }
+    35% {
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dashoffset: 0;
+    }
+    65% {
+      stroke-dashoffset: 0;
+    }
+    100% {
+      stroke-dashoffset: $pathLength3;
+    }
+  }
+
+  @keyframes fill-anm {
+    0% {
+      fill: transparent;
+    }
+    35% {
+      fill: transparent;
+    }
+    50% {
+      fill: #fff;
+    }
+    65% {
+      fill: transparent;
+    }
+    100% {
+      fill: transparent;
+    }
+  }
+}
