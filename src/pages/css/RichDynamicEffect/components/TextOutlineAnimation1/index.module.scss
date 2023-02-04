@@ -36,7 +36,8 @@
   }
 
   @keyframes line-anm1 {
-    0% {
+    0%,
+    5% {
       stroke-dashoffset: $pathLength1;
     }
     35% {
@@ -48,13 +49,15 @@
     60% {
       stroke-dashoffset: 0;
     }
+    95%,
     100% {
       stroke-dashoffset: $pathLength1;
     }
   }
 
   @keyframes line-anm2 {
-    0% {
+    0%,
+    5% {
       stroke-dashoffset: $pathLength2;
     }
     35% {
@@ -66,13 +69,15 @@
     65% {
       stroke-dashoffset: 0;
     }
+    95%,
     100% {
       stroke-dashoffset: $pathLength2;
     }
   }
 
   @keyframes line-anm3 {
-    0% {
+    0%,
+    5% {
       stroke-dashoffset: $pathLength3;
     }
     35% {
@@ -84,6 +89,7 @@
     65% {
       stroke-dashoffset: 0;
     }
+    95%,
     100% {
       stroke-dashoffset: $pathLength3;
     }
