@@ -24,6 +24,7 @@ import AudioLoading from "./components/AudioLoading";
 import SudokuImageAnimation from "./components/SudokuImageAnimation";
 import TextWrap from "./components/TextWrap";
 import WaterDropLogin from "./components/WaterDropLogin";
+import HouseRaceLamp from "./components/HorseRacelamp";
 import styles from "./index.module.scss";
 
 const { GridBox } = GridContent;
@@ -48,6 +49,7 @@ const gridboxList = [
   { element: <FilterCSS /> },
   { element: <SudokuImageAnimation /> },
   { element: <WaterDropLogin /> },
+  { element: <HouseRaceLamp /> },
 ];
 
 const VisualDesign = () => {
