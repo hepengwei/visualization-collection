@@ -23,6 +23,7 @@ import AnnulusProgressBar from "./components/AnnulusProgressBar";
 import AudioLoading from "./components/AudioLoading";
 import SudokuImageAnimation from "./components/SudokuImageAnimation";
 import TextWrap from "./components/TextWrap";
+import WaterDropLogin from "./components/WaterDropLogin";
 import styles from "./index.module.scss";
 
 const { GridBox } = GridContent;
@@ -46,6 +47,7 @@ const gridboxList = [
   { element: <AudioLoading /> },
   { element: <FilterCSS /> },
   { element: <SudokuImageAnimation /> },
+  { element: <WaterDropLogin /> },
 ];
 
 const VisualDesign = () => {
