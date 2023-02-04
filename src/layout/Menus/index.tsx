@@ -45,7 +45,7 @@ const items: MenuItem[] = [
   getItem("Html视觉", "html", <BuildOutlined />, [
     getItem("视觉设计", "visualDesign"),
     getItem("交互设计", "interactiveDesign"),
-    getItem("背景效果", "backgroundEffect"),
+    getItem("背景图案", "backgroundEffect"),
     getItem("复杂布局", "complexLayout"),
     getItem("应用页面框架", "appPageFrame"),
   ]),
