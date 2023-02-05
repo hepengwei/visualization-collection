@@ -1,0 +1,97 @@
+.container {
+  width: 100%;
+  height: 500px;
+
+  $spanNum: 3;
+
+  .content {
+    position: relative;
+    top: 35%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: skewY(-20deg);
+    .cube {
+      position: relative;
+      z-index: 2;
+      animation: changeColor 8s linear infinite;
+
+      @for $i from 0 to $spanNum {
+        .column#{$i} {
+          position: absolute;
+          top: 0;
+          left: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 30px;
+          translate: calc(70px * ($i - 1)) 0;
+          z-index: $spanNum - $i;
+          @for $j from 0 to $spanNum {
+            .span#{$j} {
+              position: relative;
+              display: inline-block;
+              width: 50px;
+              height: 50px;
+              background-color: #dcdcdc;
+              z-index: $j;
+              transition: 1.5s;
+              z-index: $spanNum - $j;
+              &::before {
+                content: "";
+                position: absolute;
+                left: -40px;
+                width: 40px;
+                height: 100%;
+                background-color: #fff;
+                transform-origin: right;
+                transform: skewY(45deg);
+                transition: 1.5s;
+              }
+              &::after {
+                content: "";
+                position: absolute;
+                top: -40px;
+                width: 100%;
+                height: 40px;
+                background-color: #f2f2f2;
+                transform-origin: bottom;
+                transform: skewX(45deg);
+                transition: 1.5s;
+              }
+              &:hover {
+                transition: 0s;
+                background-color: #ef4149;
+                filter: drop-shadow(0 0 30px #ef4149);
+                &::before {
+                  transition: 0s;
+                  background-color: #f75d64;
+                }
+                &::after {
+                  transition: 0s;
+                  background-color: #f14e55;
+                }
+              }
+            }
+          }
+        }
+      }
+      &:nth-child(2) {
+        z-index: 1;
+        translate: -60px -60px;
+      }
+      &:nth-child(3) {
+        z-index: 3;
+        translate: 60px 60px;
+      }
+    }
+  }
+
+  @keyframes changeColor {
+    0% {
+      filter: hue-rotate(0deg);
+    }
+    100% {
+      filter: hue-rotate(360deg);
+    }
+  }
+}

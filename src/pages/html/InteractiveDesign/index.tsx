@@ -12,9 +12,10 @@ import FlipBook from "./components/FlipBook";
 import Switchs from "./components/Switchs";
 import PeopleAnimation from "./components/PeopleAnimation";
 // import TranslateZScroll from "./components/TranslateZScroll";
+import TweakCube from "./components/TweakCube";
 import styles from "./index.module.scss";
 
-const boxList = [ 
+const boxList = [
   { element: <MagnifyingGlass /> },
   { element: <CropImage /> },
   { element: <DragShopping /> },
@@ -24,6 +25,7 @@ const boxList = [
   { element: <Switchs /> },
   { element: <PeopleAnimation /> },
   // { element: <TranslateZScroll /> },
+  { element: <TweakCube /> },
 ];
 
 const InteractiveDesign = () => {
