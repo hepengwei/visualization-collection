@@ -1,0 +1,90 @@
+.container {
+  width: 100%;
+  height: 360px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  $circleWidth: 154px;
+  $dotWidth: 16px;
+
+  .content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    animation: changeColor 8s linear infinite;
+    .circle {
+      width: $circleWidth;
+      height: $circleWidth;
+      margin: 0 calc($dotWidth / -2);
+      background-color: transparent;
+      position: relative;
+
+      @mixin span($i) {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transform: rotate(calc((360deg / $spanNum) * $i));
+
+        &::after {
+          content: "";
+          width: $dotWidth;
+          height: $dotWidth;
+          position: absolute;
+          right: 0;
+          top: calc(50% - ($dotWidth / 2));
+          background-color: #00ff0a;
+          border-radius: 50%;
+          box-shadow: 0 0 10px #00ff0a, 0 0 20px #00ff0a, 0 0 40px #00ff0a,
+            0 0 60px #00ff0a, 0 0 80px #00ff0a, 0 0 100px #00ff0a;
+          transform: scale(0.1);
+          animation: animate 4s linear infinite;
+          animation-delay: calc(0.1s * $i);
+        }
+      }
+
+      $spanNum: 20;
+      &:nth-child(1) {
+        @for $i from 0 to $spanNum {
+          .span#{$i} {
+            @include span($i);
+          }
+        }
+      }
+
+      &:nth-child(2) {
+        transform: rotate(calc(180deg + 360deg / $spanNum));
+        @for $i from 0 to $spanNum {
+          .span#{$i} {
+            @include span($i);
+            &::after {
+              animation-delay: calc(-0.1s * $i);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @keyframes animate {
+    0% {
+      transform: scale(1);
+    }
+    50%,
+    100% {
+      transform: scale(0.1);
+    }
+  }
+
+  @keyframes changeColor {
+    0% {
+      filter: hue-rotate(0deg);
+    }
+    100% {
+      filter: hue-rotate(360deg);
+    }
+  }
+}
