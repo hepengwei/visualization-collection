@@ -15,6 +15,7 @@ import PlayVideoInText from "./components/PlayVideoInText";
 import WaveFont from "./components/WaveFont";
 import TextOutlineAnimation1 from "./components/TextOutlineAnimation1";
 import TextOutlineAnimation2 from "./components/TextOutlineAnimation2";
+import MobiusBand1 from "./components/MobiusBand1";
 import styles from "./index.module.scss";
 
 const RichDynamicEffect = () => {
@@ -66,6 +67,11 @@ const RichDynamicEffect = () => {
         </div>
         <div className={styles.box}>
           <TextOutlineAnimation2 />
+        </div>
+      </div>
+      <div className={styles.multipleColumnsBox}>
+        <div className={styles.box}>
+          <MobiusBand1 />
         </div>
       </div>
     </div>
