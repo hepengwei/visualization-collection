@@ -89,7 +89,9 @@ export const exportToImage = (blob: Blob, imgName: string) => {
   a.style.visibility = "hidden";
   document.body.appendChild(a);
   a.download = imgName;
-  a.href = window.URL.createObjectURL(blob);
+  const objUrl = window.URL.createObjectURL(blob);
+  a.href = objUrl;
   a.click();
   document.body.removeChild(a);
+  window.URL.revokeObjectURL(objUrl);
 };
