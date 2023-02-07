@@ -117,6 +117,13 @@ const Menus: React.FC = () => {
     const { pathname } = location;
     const result = [];
     if (pathname) {
+      // @ts-ignore
+      if (window.gtag) {
+        // @ts-ignore
+        window.gtag("set", "page", pathname);
+        // @ts-ignore
+        window.gtag("send", "pageview");
+      }
       const arr = pathname.split("/");
       const key = arr[arr.length - 1];
       if (key) {
