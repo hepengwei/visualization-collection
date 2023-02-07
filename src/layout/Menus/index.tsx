@@ -120,9 +120,12 @@ const Menus: React.FC = () => {
       // @ts-ignore
       if (window.gtag) {
         // @ts-ignore
-        window.gtag("set", "page", pathname);
-        // @ts-ignore
-        window.gtag("send", "pageview");
+        window.gtag("event", "page_view", {
+          page_title: pathname,
+          page_location: window.location.href,
+          page_path: window.location.pathname,
+          send_to: "G-N0W492NWD6",
+        });
       }
       const arr = pathname.split("/");
       const key = arr[arr.length - 1];
