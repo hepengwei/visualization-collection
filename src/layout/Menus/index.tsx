@@ -20,6 +20,7 @@ import {
 import { useDebounceFn } from "ahooks";
 import { Button, Menu } from "antd";
 import type { MenuProps } from "antd";
+import { useIntl } from "react-intl";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import styles from "./index.module.scss";
 
@@ -41,49 +42,168 @@ function getItem(
   } as MenuItem;
 }
 
-const items: MenuItem[] = [
-  getItem("Html视觉", "html", <BuildOutlined />, [
-    getItem("视觉设计", "visualDesign"),
-    getItem("交互设计", "interactiveDesign"),
-    getItem("背景图案", "backgroundEffect"),
-    getItem("复杂布局", "complexLayout"),
-    getItem("应用页面框架", "appPageFrame"),
-  ]),
-  getItem("CSS动效", "css", <FormatPainterOutlined />, [
-    getItem("动效按钮", "dynamicButtons"),
-    getItem("丰富动效", "richDynamicEffect"),
-    getItem("音乐可视化", "musicVisualization"),
-  ]),
-  getItem("Canvas动效", "canvas", <PlayCircleOutlined />, [
-    getItem("动态时钟", "dynamicClock"),
-    getItem("探照灯效果", "searchlight"),
-    getItem("球体碰撞交互效果", "globuleInteraction"),
-    getItem("消灭行星小游戏", "killPlanetGame"),
-    getItem("球体自由落体交互效果", "freeFallingBody"),
-    getItem("炫酷倒计时动画", "countDown"),
-    getItem("动态粒子背景", "particlesBg"),
-    getItem("水波荡漾效果", "rippleFloatOnTheWater"),
-    getItem("花卉绽放动画", "flowerBloom"),
-    getItem("代码背景墙", "codeBgWall"),
-    getItem("文字跳舞", "wordDance"),
-  ]),
-  getItem("Echarts交互", "echarts", <LineChartOutlined />, [
-    getItem("柱状图", "bar"),
-    getItem("饼图", "pie"),
-    getItem("敬请期待", "echartsComingSoon"),
-  ]),
-  getItem("Three.js3D", "threejs", <RocketOutlined />, [
-    getItem("敬请期待", "threejsComingSoon"),
-  ]),
-  getItem("图片处理工具", "gameImage", <FileImageOutlined />),
-];
-
 const Menus: React.FC = () => {
+  const intl = useIntl();
   const navigate = useNavigate();
   const location = useLocation();
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const { setMenuWidth } = useGlobalContext();
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const items: MenuItem[] = [
+    getItem(
+      intl.formatMessage({ id: "menu.htmlVision" }),
+      "html",
+      <BuildOutlined />,
+      [
+        getItem(
+          intl.formatMessage({ id: "menu.htmlVision.visualDesign" }),
+          "visualDesign"
+        ),
+        getItem(
+          intl.formatMessage({ id: "menu.htmlVision.interactiveDesign" }),
+          "interactiveDesign"
+        ),
+        getItem(
+          intl.formatMessage({ id: "menu.htmlVision.backgroundPattern" }),
+          "backgroundEffect"
+        ),
+        getItem(
+          intl.formatMessage({ id: "menu.htmlVision.complexLayout" }),
+          "complexLayout"
+        ),
+        getItem(
+          intl.formatMessage({ id: "menu.htmlVision.applicationPageFrame" }),
+          "appPageFrame"
+        ),
+      ]
+    ),
+    getItem(
+      intl.formatMessage({ id: "menu.cssDynamicEffect" }),
+      "css",
+      <FormatPainterOutlined />,
+      [
+        getItem(
+          intl.formatMessage({
+            id: "menu.cssDynamicEffect.dynamicEffectButton",
+          }),
+          "dynamicButtons"
+        ),
+        getItem(
+          intl.formatMessage({ id: "menu.cssDynamicEffect.richDynamicEffect" }),
+          "richDynamicEffect"
+        ),
+        getItem(
+          intl.formatMessage({
+            id: "menu.cssDynamicEffect.musicVisualization",
+          }),
+          "musicVisualization"
+        ),
+      ]
+    ),
+    getItem(
+      intl.formatMessage({ id: "menu.canvasDynamicEffect" }),
+      "canvas",
+      <PlayCircleOutlined />,
+      [
+        getItem(
+          intl.formatMessage({ id: "menu.canvasDynamicEffect.dynamicClock" }),
+          "dynamicClock"
+        ),
+        getItem(
+          intl.formatMessage({
+            id: "menu.canvasDynamicEffect.searchlightEffect",
+          }),
+          "searchlight"
+        ),
+        getItem(
+          intl.formatMessage({
+            id: "menu.canvasDynamicEffect.sphereCollisionInteraction",
+          }),
+          "globuleInteraction"
+        ),
+        getItem(
+          intl.formatMessage({
+            id: "menu.canvasDynamicEffect.destroyThePlanetGame",
+          }),
+          "killPlanetGame"
+        ),
+        getItem(
+          intl.formatMessage({
+            id: "menu.canvasDynamicEffect.sphereFreeFallInteraction",
+          }),
+          "freeFallingBody"
+        ),
+        getItem(
+          intl.formatMessage({
+            id: "menu.canvasDynamicEffect.coolCountdownAnimation",
+          }),
+          "countDown"
+        ),
+        getItem(
+          intl.formatMessage({
+            id: "menu.canvasDynamicEffect.dynamicParticleBackground",
+          }),
+          "particlesBg"
+        ),
+        getItem(
+          intl.formatMessage({ id: "menu.canvasDynamicEffect.rippleEffect" }),
+          "rippleFloatOnTheWater"
+        ),
+        getItem(
+          intl.formatMessage({
+            id: "menu.canvasDynamicEffect.flowerBloomingAnimation",
+          }),
+          "flowerBloom"
+        ),
+        getItem(
+          intl.formatMessage({
+            id: "menu.canvasDynamicEffect.codeBackgroundWall",
+          }),
+          "codeBgWall"
+        ),
+        getItem(
+          intl.formatMessage({ id: "menu.canvasDynamicEffect.wordDance" }),
+          "wordDance"
+        ),
+      ]
+    ),
+    getItem(
+      intl.formatMessage({ id: "menu.echartsInteraction" }),
+      "echarts",
+      <LineChartOutlined />,
+      [
+        getItem(
+          intl.formatMessage({ id: "menu.echartsInteraction.barCharts" }),
+          "bar"
+        ),
+        getItem(
+          intl.formatMessage({ id: "menu.echartsInteraction.pieCharts" }),
+          "pie"
+        ),
+        getItem(
+          intl.formatMessage({ id: "common.comingSoon" }),
+          "echartsComingSoon"
+        ),
+      ]
+    ),
+    getItem(
+      intl.formatMessage({ id: "menu.threeJs3D" }),
+      "threejs",
+      <RocketOutlined />,
+      [
+        getItem(
+          intl.formatMessage({ id: "common.comingSoon" }),
+          "threejsComingSoon"
+        ),
+      ]
+    ),
+    getItem(
+      intl.formatMessage({ id: "menu.imageProcessingTool" }),
+      "gameImage",
+      <FileImageOutlined />
+    ),
+  ];
 
   const updateMenuWidth = useCallback(
     useDebounceFn(

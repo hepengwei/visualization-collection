@@ -7,6 +7,8 @@ import React, {
 } from "react";
 
 export interface GlobalContextProps {
+  locale: string;
+  setLocale: (locale: string) => void;
   headHeight: number;
   setHeadHeight: (headHeight: number) => void;
   menuWidth: number;
@@ -18,6 +20,8 @@ export interface GlobalContextProps {
 }
 
 const GlobalContext = React.createContext<GlobalContextProps>({
+  locale: "en-us",
+  setLocale: () => {},
   headHeight: 0,
   setHeadHeight: () => {},
   menuWidth: 0,
@@ -31,9 +35,19 @@ const GlobalContext = React.createContext<GlobalContextProps>({
 let scrollContentRef = React.createRef<HTMLDivElement | null>();
 
 export const GlobalProvider = (props: PropsWithChildren<{}>) => {
+  const defaultLocale = localStorage.getItem("language") || "en-us";
+  const [locale, setLocaleValue] = useState<string>(defaultLocale);
   const [headHeight, setHeadHeight] = useState<number>(0);
   const [menuWidth, setMenuWidth] = useState<number>(0);
   const [scrollTop, setSTop] = useState<number>(0);
+
+  const setLocale = (locale: string) => {
+    const _locale = /^zh\b/.test(locale.toLocaleLowerCase())
+      ? "zh-cn"
+      : "en-us";
+    setLocaleValue(_locale);
+    localStorage.setItem("language", _locale);
+  };
 
   const setScrollTop = useCallback((y: number = 0) => {
     setSTop(y);
@@ -53,9 +67,11 @@ export const GlobalProvider = (props: PropsWithChildren<{}>) => {
   return (
     <GlobalContext.Provider
       value={{
+        locale,
         headHeight,
         menuWidth,
         scrollTop,
+        setLocale,
         setHeadHeight,
         setMenuWidth,
         setScrollTop,

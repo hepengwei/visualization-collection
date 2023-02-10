@@ -4,6 +4,7 @@
 import React, { useState } from "react";
 import { Button, message } from "antd";
 import { FolderAddOutlined } from "@ant-design/icons";
+import { useIntl } from "react-intl";
 import Tabs from "./components/Tabs";
 import {
   fileOrBlobToDataURL,
@@ -48,6 +49,7 @@ const primaryColor = "#0E5E6F";
 const primaryShallowColor = "#3A8891";
 
 const GameImage = () => {
+  const intl = useIntl();
   const [imgDragOver, setImgDragOver] = useState<boolean>(false);
   const [imgInfo, setImgInfo] = useState<ImgInfo | null>(null);
 
@@ -190,7 +192,9 @@ const GameImage = () => {
   const tabsList = [
     {
       id: TabId.basicOperation,
-      label: "基础操作",
+      label: intl.formatMessage({
+        id: "menu.imageProcessingTool.basicOperation",
+      }),
       element: (
         <BasicOperation
           imgInfo={imgInfo as ImgInfo}
@@ -205,7 +209,9 @@ const GameImage = () => {
     },
     {
       id: TabId.rectClip,
-      label: "矩形裁剪",
+      label: intl.formatMessage({
+        id: "menu.imageProcessingTool.rectangularClipping",
+      }),
       element: (
         <RectClip
           imgInfo={imgInfo as ImgInfo}
@@ -220,7 +226,9 @@ const GameImage = () => {
     },
     {
       id: TabId.radiusClip,
-      label: "圆角裁剪",
+      label: intl.formatMessage({
+        id: "menu.imageProcessingTool.roundedCornerClipping",
+      }),
       element: (
         <RadiusClip
           imgInfo={imgInfo as ImgInfo}
@@ -235,7 +243,9 @@ const GameImage = () => {
     },
     {
       id: TabId.changeSize,
-      label: "修改尺寸",
+      label: intl.formatMessage({
+        id: "menu.imageProcessingTool.modifyTheSize",
+      }),
       element: (
         <ChangeSize
           imgInfo={imgInfo as ImgInfo}
@@ -250,7 +260,9 @@ const GameImage = () => {
     },
     {
       id: TabId.changeBrightness,
-      label: "修改亮度",
+      label: intl.formatMessage({
+        id: "menu.imageProcessingTool.modifyBrightness",
+      }),
       element: (
         <ChangeBrightness
           imgInfo={imgInfo as ImgInfo}
@@ -265,7 +277,9 @@ const GameImage = () => {
     },
     {
       id: TabId.changeDiaphaneity,
-      label: "修改透明度",
+      label: intl.formatMessage({
+        id: "menu.imageProcessingTool.modifyTransparency",
+      }),
       element: (
         <ChangeDiaphaneity
           imgInfo={imgInfo as ImgInfo}
@@ -280,7 +294,9 @@ const GameImage = () => {
     },
     {
       id: TabId.addWatermark,
-      label: "添加水印",
+      label: intl.formatMessage({
+        id: "menu.imageProcessingTool.addWatermark",
+      }),
       element: (
         <AddWatermark
           imgInfo={imgInfo as ImgInfo}
@@ -295,7 +311,9 @@ const GameImage = () => {
     },
     {
       id: TabId.coverWithMosaic,
-      label: "打马赛克",
+      label: intl.formatMessage({
+        id: "menu.imageProcessingTool.coverWithMosaics",
+      }),
       element: (
         <CoverWithMosaic
           imgInfo={imgInfo as ImgInfo}
@@ -310,7 +328,9 @@ const GameImage = () => {
     },
     {
       id: TabId.photoCompression,
-      label: "图片压缩",
+      label: intl.formatMessage({
+        id: "menu.imageProcessingTool.imageCompression",
+      }),
       element: (
         <Compression
           imgInfo={imgInfo as ImgInfo}
@@ -347,15 +367,25 @@ const GameImage = () => {
             <div className={styles.emptyBox}>
               <Button type="primary" className={styles.uploadBtn}>
                 <FolderAddOutlined />
-                上传文件
+                {intl.formatMessage({
+                  id: "menu.imageProcessingTool.uploadFile",
+                })}
                 <input
                   type="file"
                   accept="image/jpg, image/jpeg, image/png"
                   onChange={onUploadChange}
                 />
               </Button>
-              <p className={styles.text}>或将文件拖到此处</p>
-              <p className={styles.tips}>支持jpg、jpeg、png格式</p>
+              <p className={styles.text}>
+                {intl.formatMessage({
+                  id: "menu.imageProcessingTool.dragTheFileHere",
+                })}
+              </p>
+              <p className={styles.tips}>
+                {intl.formatMessage({
+                  id: "menu.imageProcessingTool.supportedImageType",
+                })}
+              </p>
             </div>
           </div>
         )}
