@@ -3,6 +3,7 @@
   background-color: #001529;
   color: #ffffff;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
   border-bottom: 1px solid #222222;
@@ -16,5 +17,42 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+  }
+
+  .right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 16px;
+    .btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 4px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: 20px;
+      cursor: pointer;
+      :global {
+        svg {
+          width: 22px;
+          height: 22px;
+          path {
+            stroke: #fff;
+          }
+        }
+      }
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.6);
+        :global {
+          svg {
+            path {
+              stroke: $primaryColor;
+            }
+          }
+        }
+      }
+    }
   }
 }

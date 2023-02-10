@@ -1,6 +1,9 @@
 import React from "react";
+import { useIntl } from "react-intl";
 
 const ComingSoon = () => {
+  const intl = useIntl();
+
   return (
     <div
       style={{
@@ -17,7 +20,7 @@ const ComingSoon = () => {
         backgroundImage: "linear-gradient(135deg, #224141, #162a2a)",
       }}
     >
-      该项目持续更新，敬请期待！！！
+      {intl.formatMessage({ id: "common.comingSoon.text" })}
     </div>
   );
 };
