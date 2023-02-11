@@ -76,6 +76,10 @@ const Menus: React.FC = () => {
           intl.formatMessage({ id: "menu.htmlVision.applicationPageFrame" }),
           "appPageFrame"
         ),
+        getItem(
+          intl.formatMessage({ id: "menu.htmlVision.utilitarianFunction" }),
+          "utilitarianFunction"
+        ),
       ]
     ),
     getItem(

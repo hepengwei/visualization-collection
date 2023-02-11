@@ -1,0 +1,26 @@
+.container {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100%;
+  background-image: linear-gradient(135deg, #224141, #162a2a);
+  padding: 4px 2px;
+  overflow-y: auto;
+
+  .box {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    border: 3px solid #35a2fd44;
+    border-radius: 10px;
+    background-image: linear-gradient(to right, #04182c, #000c17, #04182c);
+    color: #ffffff;
+    position: relative;
+    margin: 2px;
+    overflow: hidden;
+  }
+
+  .multipleColumnsBox {
+    display: flex;
+  }
+}
