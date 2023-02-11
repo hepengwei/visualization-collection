@@ -1,3 +1,72 @@
+export interface ImgInfo {
+  name: string;
+  fileType: string;
+  size: number;
+  imgUrl: string;
+  width: number;
+  height: number;
+  imageData: ImageData;
+  blob: Blob;
+}
+
+// 获取解析图片数据
+export const getImgInfo = (
+  files: FileList,
+  callback: (imgInfo: ImgInfo | null) => void
+) => {
+  if (!files) {
+    callback(null);
+  }
+  for (let i = 0, l = files.length; i < l; i++) {
+    const file = files[i];
+    const { type } = file;
+    const typeArr = type.split("/");
+    if (typeArr[0] !== "image") return;
+    let fileType = typeArr[1].toUpperCase();
+    var reader = new FileReader();
+    reader.onload = function (e: any) {
+      const buffer = e.target.result;
+      const imageType = getImageType(buffer);
+      if (imageType) {
+        fileType = imageType;
+      }
+      const blob = new Blob([buffer]);
+      fileOrBlobToDataURL(blob, function (dataUrl: string | null) {
+        if (dataUrl) {
+          const image = new Image();
+          image.onload = function () {
+            const width = image.width;
+            const height = image.height;
+            const imageData = getCanvasImgData(dataUrl, width, height);
+            if (imageData) {
+              const imgInfo: ImgInfo = {
+                name: file.name,
+                fileType,
+                size: file.size,
+                width,
+                height,
+                imgUrl: dataUrl,
+                imageData,
+                blob,
+              };
+              callback(imgInfo);
+            } else {
+              callback(null);
+            }
+          };
+          image.onerror = function () {
+            callback(null);
+          };
+          image.src = dataUrl;
+        } else {
+          callback(null);
+        }
+      });
+    };
+    reader.readAsArrayBuffer(file);
+  }
+};
+
 // 根据buffer中的文件头信息判断图片类型
 export const getImageType = (buffer: Buffer) => {
   let fileType = "";
@@ -60,6 +129,34 @@ export const blobToImage = (
       cb(null);
     }
   });
+};
+
+// ImageData对象转Blob
+export const imageDataToBlob = (
+  imageData: ImageData,
+  exportImageType = "PNG",
+  callback: (blob: Blob | null) => void
+) => {
+  if (!imageData) {
+    callback(null);
+    return;
+  }
+  const { width, height } = imageData;
+  const canvas = document.createElement("canvas") as HTMLCanvasElement;
+  const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+  canvas.width = width;
+  canvas.height = height;
+  ctx.putImageData(imageData, 0, 0, 0, 0, width, height);
+  const toImageType = `image/${
+    exportImageType ? exportImageType.toLowerCase() : "png"
+  }`;
+  canvas.toBlob(
+    (blob: Blob | null) => {
+      callback(blob);
+    },
+    toImageType,
+    1
+  );
 };
 
 // 获取图片二进制数据

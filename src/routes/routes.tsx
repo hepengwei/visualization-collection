@@ -8,6 +8,7 @@ import InteractiveDesign from "pages/html/InteractiveDesign";
 import BackgroundEffect from "pages/html/BackgroundEffect";
 import ComplexLayout from "pages/html/ComplexLayout";
 import AppPageFrame from "pages/html/AppPageFrame";
+import UtilitarianFunction from "pages/html/UtilitarianFunction";
 import DynamicButtons from "pages/css/DynamicButtons";
 import RichDynamicEffect from "pages/css/RichDynamicEffect";
 import MusicVisualization from "pages/css/MusicVisualization";
@@ -49,6 +50,10 @@ export const contentRoutes: RouteObject[] = [
       {
         path: "/html/appPageFrame",
         element: <AppPageFrame />,
+      },
+      {
+        path: "/html/utilitarianFunction",
+        element: <UtilitarianFunction />,
       },
     ],
   },

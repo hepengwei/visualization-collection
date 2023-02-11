@@ -10,6 +10,7 @@ import {
   fileOrBlobToDataURL,
   getImageType,
   getCanvasImgData,
+  imageDataToBlob,
   exportToImage,
 } from "utils/fileUtil";
 import BasicOperation from "./components/BasicOperation";
@@ -55,14 +56,10 @@ const GameImage = () => {
 
   // 导出图片
   const exportImage = (imageData: ImageData, exportImageType?: string) => {
-    if (!imageData) return;
-    const { width, height } = imageData;
-    const canvas = document.createElement("canvas") as HTMLCanvasElement;
-    const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-    canvas.width = width;
-    canvas.height = height;
-    ctx.putImageData(imageData, 0, 0, 0, 0, width, height);
-    canvas.toBlob(
+    if (!imageData || !imgInfo) return;
+    imageDataToBlob(
+      imageData,
+      exportImageType || imgInfo.fileType,
       (blob: Blob | null) => {
         if (blob) {
           let imgName = "image";
@@ -88,15 +85,7 @@ const GameImage = () => {
           }
           exportToImage(blob, imgName);
         }
-      },
-      `image/${
-        exportImageType
-          ? exportImageType.toLowerCase()
-          : imgInfo
-          ? imgInfo?.fileType.toLowerCase()
-          : "png"
-      }`,
-      1
+      }
     );
   };
 
