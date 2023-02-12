@@ -11,7 +11,7 @@ enum VideoStatus {
 const videoWidth = Math.floor(window.screen.width * 0.36);
 const videoHeight = Math.floor(window.screen.height * 0.36);
 
-const RecordedVideo = () => {
+const RecordedScreen = () => {
   const recordVideoRef = useRef<HTMLVideoElement>(null);
   const playVideoRef = useRef<HTMLVideoElement>(null);
   const mediaRecorder = useRef<MediaRecorder | null>(null);
@@ -22,51 +22,40 @@ const RecordedVideo = () => {
   const [videoStatus, setVideoStatus] = useState<VideoStatus>(
     VideoStatus.ready
   );
+  const videoStatusRef = useRef<VideoStatus>(VideoStatus.ready);
 
   const onStartOrEnd = () => {
     if (mediaRecorder.current) {
       if (videoStatus === VideoStatus.inRecording) {
         mediaRecorder.current.stop();
+        videoStatusRef.current = VideoStatus.ready;
         setVideoStatus(VideoStatus.ready);
       } else {
         if (videoUrl) {
           window.URL.revokeObjectURL(videoUrl);
           setFileName("");
           setVideoUrl("");
-          if (recordVideoRef.current && streamRef.current) {
-            recordVideoRef.current.srcObject = streamRef.current;
-          }
+          mediaRecorder.current = null;
+          videoStatusRef.current = VideoStatus.ready;
           setVideoStatus(VideoStatus.ready);
-        } else {
-          if (recordVideoRef.current && streamRef.current) {
-            recordVideoRef.current.srcObject = streamRef.current;
-          }
-          mediaRecorder.current.start();
-          setVideoStatus(VideoStatus.inRecording);
         }
       }
     } else if (recordVideoRef.current) {
-      const constraints = {
-        audio: true,
-        video: {
-          width: videoWidth,
-          height: videoHeight,
-          facingMode: "user", // 强制使用前置摄像头
-          frameRate: 60, // 每秒60帧
-        },
-      };
-      if (navigator.mediaDevices.getUserMedia) {
+      if (navigator.mediaDevices.getDisplayMedia) {
         navigator.mediaDevices
-          .getUserMedia(constraints)
+          .getDisplayMedia({
+            audio: true,
+            video: true,
+          })
           .then((stream: MediaStream) => {
             if (recordVideoRef.current && stream) {
               streamRef.current = stream;
             }
-            const isSafari = !!(
-              /Safari/.test(navigator.userAgent) &&
-              !/Chrome/.test(navigator.userAgent)
-            );
-            const mimeType = isSafari ? "video/mp4" : "video/webm";
+            const mimeType = MediaRecorder.isTypeSupported(
+              "video/webm; codecs=vp9"
+            )
+              ? "video/webm; codecs=vp9"
+              : "video/webm";
             try {
               const options = {
                 audioBitsPerSecond: 128000,
@@ -79,11 +68,15 @@ const RecordedVideo = () => {
                   chunks.current.push(e.data);
                 }
               };
-              recorder.onstop = (e) => {
+              recorder.onstop = () => {
+                if (videoStatusRef.current === VideoStatus.inRecording) {
+                  videoStatusRef.current = VideoStatus.ready;
+                  setVideoStatus(VideoStatus.ready);
+                }
                 const blob = new Blob(chunks.current, {
-                  type: "video/mp4",
+                  type: "video/webm",
                 });
-                setFileName(`${new Date().getTime()}.mp4`);
+                setFileName(`${new Date().getTime()}.webm`);
                 const newAudioUrl = window.URL.createObjectURL(blob);
                 setVideoUrl(newAudioUrl);
                 chunks.current = [];
@@ -93,6 +86,7 @@ const RecordedVideo = () => {
                 recordVideoRef.current.srcObject = streamRef.current;
               }
               mediaRecorder.current.start();
+              videoStatusRef.current = VideoStatus.inRecording;
               setVideoStatus(VideoStatus.inRecording);
             } catch (e) {
               message.error(`MediaRecorder创建失败:${e}. mimeType:${mimeType}`);
@@ -104,7 +98,7 @@ const RecordedVideo = () => {
             );
           });
       } else {
-        message.error("浏览器不支持getUserMedia");
+        message.error("浏览器不支持getDisplayMedia");
       }
     }
   };
@@ -119,7 +113,7 @@ const RecordedVideo = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>录制视频</div>
+      <div className={styles.title}>录制屏幕</div>
       <div className={styles.content}>
         <div
           className={styles.videoBox}
@@ -171,6 +165,7 @@ const RecordedVideo = () => {
                   if (recordVideoRef.current) {
                     recordVideoRef.current.srcObject = null;
                   }
+                  videoStatusRef.current = VideoStatus.playing;
                   setVideoStatus(VideoStatus.playing);
                 }
               }}
@@ -189,4 +184,4 @@ const RecordedVideo = () => {
   );
 };
 
-export default RecordedVideo;
+export default RecordedScreen;
