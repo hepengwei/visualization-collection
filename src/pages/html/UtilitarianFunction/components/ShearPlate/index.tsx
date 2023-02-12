@@ -126,7 +126,7 @@ const ShearPlate = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>剪切板操作</div>
+      <div className={styles.title}>操作剪切板</div>
       <div className={styles.content}>
         <div className={styles.box}>
           <div className={styles.inputBox}>

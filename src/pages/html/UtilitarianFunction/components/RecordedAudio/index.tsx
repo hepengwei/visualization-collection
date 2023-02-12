@@ -8,7 +8,6 @@ enum AudioStatus {
 }
 
 const RecordedAudio = () => {
-  const audioRef = useRef<HTMLAudioElement>(null);
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const chunks = useRef<any[]>([]);
   const [audioUrl, setAudioUrl] = useState<string>("");
@@ -36,7 +35,7 @@ const RecordedAudio = () => {
       if (navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices
           .getUserMedia(constraints)
-          .then((stream) => {
+          .then((stream: MediaStream) => {
             const recorder = new MediaRecorder(stream);
             recorder.ondataavailable = (e) => {
               chunks.current.push(e.data);
@@ -75,8 +74,9 @@ const RecordedAudio = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.title}>录制音频</div>
       <div className={styles.content}>
-        <audio controls src={audioUrl} ref={audioRef}></audio>
+        <audio controls src={audioUrl}></audio>
         <Button type="primary" onClick={onStartOrEnd}>
           {audioStatus === AudioStatus.inRecording
             ? "录音中,点击结束"
