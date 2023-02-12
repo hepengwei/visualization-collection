@@ -16,11 +16,14 @@
     background-image: linear-gradient(to right, #04182C, #000c17, #04182C);
     color: #ffffff;
     position: relative;
-    margin: 2px;
+    margin: 8px 2px;
     overflow: hidden;
   }
 
   .multipleColumnsBox{
     display: flex;
+    .box{
+      margin: 4px 2px !important;
+    }
   }
 }
