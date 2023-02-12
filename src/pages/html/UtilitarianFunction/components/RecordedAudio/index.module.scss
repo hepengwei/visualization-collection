@@ -1,0 +1,19 @@
+.container {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .content {
+    display: flex;
+    align-items: center;
+    width: 500px;
+    .audio {
+      width: 340px;
+      height: 50px;
+    }
+    button {
+      margin: 0 10px;
+    }
+  }
+}
