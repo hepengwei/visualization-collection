@@ -5,6 +5,7 @@ import React, { useEffect } from "react";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import ShearPlate from "./components/ShearPlate";
 import RecordedAudio from "./components/RecordedAudio";
+import RecordedVideo from "./components/RecordedVideo";
 import styles from "./index.module.scss";
 
 const UtilitarianFunction = () => {
@@ -21,6 +22,9 @@ const UtilitarianFunction = () => {
       </div>
       <div className={styles.box}>
         <RecordedAudio />
+      </div>
+      <div className={styles.box}>
+        <RecordedVideo />
       </div>
     </div>
   );
