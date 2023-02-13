@@ -67,6 +67,8 @@ const zh_CN = {
   "page.imageProcessingTool.size": "大小",
   "page.imageProcessingTool.flipSideToSide": "左右翻转",
   "page.imageProcessingTool.flipTopToBottom": "上下翻转",
+  "page.imageProcessingTool.rotateLeft": "左旋转",
+  "page.imageProcessingTool.rotateRight": "右旋转",
   "page.imageProcessingTool.graying": "灰化",
   "page.imageProcessingTool.vampix": "黑白化",
   "page.imageProcessingTool.shmpch": "锐化",
