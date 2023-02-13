@@ -4,6 +4,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Checkbox, InputNumber, Button, message } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
+import { useIntl } from "react-intl";
 import { sizeTostr, changeSize } from "utils/imageUtil";
 import { ImgInfo } from "../../index";
 import styles from "../../index.module.scss";
@@ -32,6 +33,7 @@ const ChangeSize = (props: ChangeSizeProps) => {
     onDrop,
     onClear,
   } = props;
+  const intl = useIntl();
   const [keepOriginalProportion, setKeepOriginalProportion] =
     useState<boolean>(false);
   const [toWidth, setToWidth] = useState<number | null>(imgInfo.width);
@@ -82,12 +84,16 @@ const ChangeSize = (props: ChangeSizeProps) => {
   // 点击确定
   const onOk = () => {
     if (doing.current) {
-      message.warning("正在努力工作,请稍后");
+      message.warning(intl.formatMessage({ id: "common.workHard" }));
       return;
     }
     const { imgUrl, width, height } = imgInfo;
     if (!toWidth || !toHeight) {
-      message.warning("请输入宽度或高度");
+      message.warning(
+        intl.formatMessage({
+          id: "page.imageProcessingTool.pleaseEnterWidthOrHeight",
+        })
+      );
       return;
     }
     doing.current = true;
@@ -102,7 +108,7 @@ const ChangeSize = (props: ChangeSizeProps) => {
     if (newImageData) {
       exportImage(newImageData);
     } else {
-      message.error("修改失败");
+      message.error(intl.formatMessage({ id: "common.operationFailure" }));
     }
     doing.current = false;
   };
@@ -126,15 +132,25 @@ const ChangeSize = (props: ChangeSizeProps) => {
         <div className={styles.fileBox}>
           <img src={imgInfo.imgUrl} alt="" />
           <div className={styles.fileInfo}>
-            <div className={styles.item}>文件名：{imgInfo.name}</div>
-            <div className={styles.item}>格式：{imgInfo.fileType}</div>
             <div className={styles.item}>
-              尺寸：
+              {intl.formatMessage({ id: "page.imageProcessingTool.filename" })}
+              ：{imgInfo.name}
+            </div>
+            <div className={styles.item}>
+              {intl.formatMessage({ id: "page.imageProcessingTool.format" })}：
+              {imgInfo.fileType}
+            </div>
+            <div className={styles.item}>
+              {intl.formatMessage({ id: "page.imageProcessingTool.dimension" })}
+              ：
               {imgInfo.width && imgInfo.height
                 ? `${imgInfo.width}x${imgInfo.height}`
-                : "未知"}
+                : intl.formatMessage({ id: "common.unknown" })}
             </div>
-            <div className={styles.item}>大小：{sizeTostr(imgInfo.size)}</div>
+            <div className={styles.item}>
+              {intl.formatMessage({ id: "page.imageProcessingTool.size" })}：
+              {sizeTostr(imgInfo.size)}
+            </div>
           </div>
         </div>
       </div>
@@ -145,7 +161,9 @@ const ChangeSize = (props: ChangeSizeProps) => {
             checked={keepOriginalProportion}
             onChange={onKeepProportionChange}
           >
-            是否保持原比例
+            {intl.formatMessage({
+              id: "page.imageProcessingTool.whetherMaintainOriginalProportion",
+            })}
           </Checkbox>
           <InputNumber
             className={styles.operationBtn}
@@ -154,7 +172,9 @@ const ChangeSize = (props: ChangeSizeProps) => {
             max={maxWidthHeight}
             precision={0}
             value={toWidth}
-            addonBefore="宽度"
+            addonBefore={intl.formatMessage({
+              id: "page.imageProcessingTool.width",
+            })}
             onChange={onWidthChange}
           />
           <InputNumber
@@ -164,15 +184,21 @@ const ChangeSize = (props: ChangeSizeProps) => {
             max={maxWidthHeight}
             precision={0}
             value={toHeight}
-            addonBefore="高度"
+            addonBefore={intl.formatMessage({
+              id: "page.imageProcessingTool.height",
+            })}
             onChange={onHeightChange}
           />
           <Button type="primary" className={styles.operationBtn} onClick={onOk}>
-            确定
+            {intl.formatMessage({
+              id: "common.confirm",
+            })}
           </Button>
         </div>
         <Button className={styles.right} ghost type="primary" onClick={onClear}>
-          清空
+          {intl.formatMessage({
+            id: "common.clear",
+          })}
         </Button>
       </div>
     </div>

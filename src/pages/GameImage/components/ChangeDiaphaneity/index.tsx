@@ -4,6 +4,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Row, Col, Slider, InputNumber, Button, Checkbox, message } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
+import { useIntl } from "react-intl";
 import { sizeTostr, changeDiaphaneity } from "utils/imageUtil";
 import { ImgInfo } from "../../index";
 import styles from "../../index.module.scss";
@@ -31,6 +32,7 @@ const ChangeDiaphaneity = (props: ChangeDiaphaneityProps) => {
     onDrop,
     onClear,
   } = props;
+  const intl = useIntl();
   const [imgTypeQualified, setImgTypeQualified] = useState<boolean>(false);
   const [fixedDiaphaneity, setFixedDiaphaneity] = useState<boolean>(false);
   const [diaphaneity, setDiaphaneity] = useState<number | null>(0);
@@ -52,11 +54,15 @@ const ChangeDiaphaneity = (props: ChangeDiaphaneityProps) => {
   // 点击确定
   const onOk = () => {
     if (doing.current) {
-      message.warning("正在努力工作,请稍后");
+      message.warning(intl.formatMessage({ id: "common.workHard" }));
       return;
     }
     if (typeof diaphaneity !== "number") {
-      message.warning("请输入要修改的透明度值");
+      message.warning(
+        intl.formatMessage({
+          id: "page.imageProcessingTool.pleaseEnterDiaphaneity",
+        })
+      );
       return;
     }
     doing.current = true;
@@ -69,14 +75,16 @@ const ChangeDiaphaneity = (props: ChangeDiaphaneityProps) => {
     if (newImageData) {
       exportImage(newImageData);
     } else {
-      message.error("修改失败");
+      message.error(intl.formatMessage({ id: "common.operationFailure" }));
     }
     doing.current = false;
   };
 
   useEffect(() => {
     if (imgInfo.fileType !== "PNG") {
-      message.warning("请上传PNG格式的图片");
+      message.warning(
+        intl.formatMessage({ id: "page.imageProcessingTool.pleaseUploadPng" })
+      );
       setImgTypeQualified(false);
     } else {
       setImgTypeQualified(true);
@@ -99,15 +107,25 @@ const ChangeDiaphaneity = (props: ChangeDiaphaneityProps) => {
         <div className={styles.fileBox}>
           <img src={imgInfo.imgUrl} alt="" />
           <div className={styles.fileInfo}>
-            <div className={styles.item}>文件名：{imgInfo.name}</div>
-            <div className={styles.item}>格式：{imgInfo.fileType}</div>
             <div className={styles.item}>
-              尺寸：
+              {intl.formatMessage({ id: "page.imageProcessingTool.filename" })}
+              ：{imgInfo.name}
+            </div>
+            <div className={styles.item}>
+              {intl.formatMessage({ id: "page.imageProcessingTool.format" })}：
+              {imgInfo.fileType}
+            </div>
+            <div className={styles.item}>
+              {intl.formatMessage({ id: "page.imageProcessingTool.dimension" })}
+              ：
               {imgInfo.width && imgInfo.height
                 ? `${imgInfo.width}x${imgInfo.height}`
-                : "未知"}
+                : intl.formatMessage({ id: "common.unknown" })}
             </div>
-            <div className={styles.item}>大小：{sizeTostr(imgInfo.size)}</div>
+            <div className={styles.item}>
+              {intl.formatMessage({ id: "page.imageProcessingTool.size" })}：
+              {sizeTostr(imgInfo.size)}
+            </div>
           </div>
         </div>
       </div>
@@ -119,12 +137,16 @@ const ChangeDiaphaneity = (props: ChangeDiaphaneityProps) => {
               checked={fixedDiaphaneity}
               onChange={onFixedDiaphaneityChange}
             >
-              是否统一为固定值
+              {intl.formatMessage({
+                id: "page.imageProcessingTool.whetherValueFixed",
+              })}
             </Checkbox>
             {!fixedDiaphaneity && (
               <div className={styles.operationBtn}>
                 <span style={{ color: "#444", marginRight: "6px" }}>
-                  变透明
+                  {intl.formatMessage({
+                    id: "page.imageProcessingTool.becomeTransparent",
+                  })}
                 </span>
                 <Slider
                   min={-1}
@@ -136,7 +158,11 @@ const ChangeDiaphaneity = (props: ChangeDiaphaneityProps) => {
                   value={typeof diaphaneity === "number" ? diaphaneity : 0}
                   onChange={onChange}
                 />
-                <span style={{ color: "#444", marginLeft: "6px" }}>变不透</span>
+                <span style={{ color: "#444", marginLeft: "6px" }}>
+                  {intl.formatMessage({
+                    id: "page.imageProcessingTool.becomeOpaque",
+                  })}
+                </span>
               </div>
             )}
             <div className={styles.operationBtn}>
@@ -154,7 +180,9 @@ const ChangeDiaphaneity = (props: ChangeDiaphaneityProps) => {
               className={styles.operationBtn}
               onClick={onOk}
             >
-              确定
+              {intl.formatMessage({
+                id: "common.confirm",
+              })}
             </Button>
           </div>
           <Button
@@ -163,7 +191,9 @@ const ChangeDiaphaneity = (props: ChangeDiaphaneityProps) => {
             type="primary"
             onClick={onClear}
           >
-            清空
+            {intl.formatMessage({
+              id: "common.clear",
+            })}
           </Button>
         </div>
       )}

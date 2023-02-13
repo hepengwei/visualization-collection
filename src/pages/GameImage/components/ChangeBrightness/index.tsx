@@ -3,6 +3,7 @@
  */
 import React, { useRef, useEffect, useState } from "react";
 import { Slider, InputNumber, Button, message } from "antd";
+import { useIntl } from "react-intl";
 import { sizeTostr, changeBrightness } from "utils/imageUtil";
 import { ImgInfo } from "../../index";
 import styles from "../../index.module.scss";
@@ -30,6 +31,7 @@ const ChangeBrightness = (props: ChangeBrightnessProps) => {
     onDrop,
     onClear,
   } = props;
+  const intl = useIntl();
   const [brightness, setBrightness] = useState<number | null>(0);
   const doing = useRef<boolean>(false);
 
@@ -41,12 +43,16 @@ const ChangeBrightness = (props: ChangeBrightnessProps) => {
   // 点击确定
   const onOk = () => {
     if (doing.current) {
-      message.warning("正在努力工作,请稍后");
+      message.warning(intl.formatMessage({ id: "common.workHard" }));
       return;
     }
     const { imageData } = imgInfo;
     if (!brightness) {
-      message.warning("请输入要修改的亮度值");
+      message.warning(
+        intl.formatMessage({
+          id: "page.imageProcessingTool.pleaseEnterBrightness",
+        })
+      );
       return;
     }
     doing.current = true;
@@ -54,7 +60,7 @@ const ChangeBrightness = (props: ChangeBrightnessProps) => {
     if (newImageData) {
       exportImage(newImageData);
     } else {
-      message.error("修改失败");
+      message.error(intl.formatMessage({ id: "common.operationFailure" }));
     }
     doing.current = false;
   };
@@ -77,22 +83,34 @@ const ChangeBrightness = (props: ChangeBrightnessProps) => {
         <div className={styles.fileBox}>
           <img src={imgInfo.imgUrl} alt="" />
           <div className={styles.fileInfo}>
-            <div className={styles.item}>文件名：{imgInfo.name}</div>
-            <div className={styles.item}>格式：{imgInfo.fileType}</div>
             <div className={styles.item}>
-              尺寸：
+              {intl.formatMessage({ id: "page.imageProcessingTool.filename" })}
+              ：{imgInfo.name}
+            </div>
+            <div className={styles.item}>
+              {intl.formatMessage({ id: "page.imageProcessingTool.format" })}：
+              {imgInfo.fileType}
+            </div>
+            <div className={styles.item}>
+              {intl.formatMessage({ id: "page.imageProcessingTool.dimension" })}
+              ：
               {imgInfo.width && imgInfo.height
                 ? `${imgInfo.width}x${imgInfo.height}`
-                : "未知"}
+                : intl.formatMessage({ id: "common.unknown" })}
             </div>
-            <div className={styles.item}>大小：{sizeTostr(imgInfo.size)}</div>
+            <div className={styles.item}>
+              {intl.formatMessage({ id: "page.imageProcessingTool.size" })}：
+              {sizeTostr(imgInfo.size)}
+            </div>
           </div>
         </div>
       </div>
       <div className={styles.operationBtns}>
         <div className={styles.left}>
           <div className={styles.operationBtn}>
-            <span style={{ color: "#444", marginRight: "6px" }}>变暗</span>
+            <span style={{ color: "#444", marginRight: "6px" }}>
+              {intl.formatMessage({ id: "page.imageProcessingTool.darken" })}
+            </span>
             <Slider
               min={-255}
               max={255}
@@ -102,7 +120,9 @@ const ChangeBrightness = (props: ChangeBrightnessProps) => {
               value={typeof brightness === "number" ? brightness : 0}
               onChange={onChange}
             />
-            <span style={{ color: "#444", marginLeft: "6px" }}>变亮</span>
+            <span style={{ color: "#444", marginLeft: "6px" }}>
+              {intl.formatMessage({ id: "page.imageProcessingTool.lighten" })}
+            </span>
             <InputNumber
               style={{ margin: "0 16px" }}
               min={-255}
@@ -113,11 +133,15 @@ const ChangeBrightness = (props: ChangeBrightnessProps) => {
             />
           </div>
           <Button type="primary" className={styles.operationBtn} onClick={onOk}>
-            确定
+            {intl.formatMessage({
+              id: "common.confirm",
+            })}
           </Button>
         </div>
         <Button className={styles.right} ghost type="primary" onClick={onClear}>
-          清空
+          {intl.formatMessage({
+            id: "common.clear",
+          })}
         </Button>
       </div>
     </div>

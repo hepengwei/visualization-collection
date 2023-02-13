@@ -4,6 +4,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import { Button, InputNumber, message } from "antd";
+import { useIntl } from "react-intl";
 import { FolderAddOutlined } from "@ant-design/icons";
 import { fileOrBlobToDataURL, getCanvasImgData } from "utils/fileUtil";
 import { addWatermark } from "utils/imageUtil";
@@ -42,6 +43,7 @@ const AddWatermark = (props: ClipProps) => {
     onDrop,
     onClear,
   } = props;
+  const intl = useIntl();
   const [imgSizeQualified, setImgSizeQualified] = useState<boolean>(false);
   const [watermarkInfo, setWatermarkInfo] = useState<WatermarkInfo | null>(
     null
@@ -108,12 +110,20 @@ const AddWatermark = (props: ClipProps) => {
               if (width <= 20 || height <= 20) {
                 setWatermarkInfo(null);
                 init();
-                message.error("请选20x20以上尺寸的水印图片");
+                message.error(
+                  intl.formatMessage({
+                    id: "page.imageProcessingTool.watermarkSizeLimit",
+                  })
+                );
                 return;
               } else if (width > imgInfo.width || height > imgInfo.height) {
                 setWatermarkInfo(null);
                 init();
-                message.error("请选择小于目标图片尺寸的水印图片");
+                message.error(
+                  intl.formatMessage({
+                    id: "page.imageProcessingTool.watermarkSizeTooLarge",
+                  })
+                );
                 return;
               }
               const imageData = getCanvasImgData(dataUrl, width, height);
@@ -133,19 +143,31 @@ const AddWatermark = (props: ClipProps) => {
               } else {
                 setWatermarkInfo(null);
                 init();
-                message.error("解析数据失败,请更换其他图片");
+                message.error(
+                  intl.formatMessage({
+                    id: "page.imageProcessingTool.parsingDataFailure",
+                  })
+                );
               }
             };
             image.onerror = function () {
               setWatermarkInfo(null);
               init();
-              message.error("解析数据失败,请更换其他图片");
+              message.error(
+                intl.formatMessage({
+                  id: "page.imageProcessingTool.parsingDataFailure",
+                })
+              );
             };
             image.src = dataUrl;
           } else {
             setWatermarkInfo(null);
             init();
-            message.error("解析数据失败,请更换其他图片");
+            message.error(
+              intl.formatMessage({
+                id: "page.imageProcessingTool.parsingDataFailure",
+              })
+            );
           }
         });
       };
@@ -204,11 +226,15 @@ const AddWatermark = (props: ClipProps) => {
   useEffect(() => {
     const { width, height } = imgInfo;
     if (width < watermarkMinWidthHeight || height < watermarkMinWidthHeight) {
-      message.error("请选20x20以上尺寸的图片");
+      message.error(
+        intl.formatMessage({ id: "page.imageProcessingTool.imageTooSmall" })
+      );
       setImgSizeQualified(false);
       return;
     } else if (width >= 1350 || height >= 1350) {
-      message.error("请选择1350x1350以下尺寸的图片");
+      message.error(
+        intl.formatMessage({ id: "page.imageProcessingTool.imageTooLarge" })
+      );
       setImgSizeQualified(false);
       return;
     }
@@ -230,7 +256,7 @@ const AddWatermark = (props: ClipProps) => {
   // 点击确定
   const onOk = () => {
     if (doing.current) {
-      message.warning("正在努力工作,请稍后");
+      message.warning(intl.formatMessage({ id: "common.workHard" }));
       return;
     }
     if (watermarkInfo) {
@@ -244,7 +270,7 @@ const AddWatermark = (props: ClipProps) => {
       if (newImageData) {
         exportImage(newImageData);
       } else {
-        message.error("添加水印失败");
+        message.error(intl.formatMessage({ id: "common.operationFailure" }));
       }
     }
     doing.current = false;
@@ -323,14 +349,18 @@ const AddWatermark = (props: ClipProps) => {
               <div className={styles.top}>
                 <Button type="primary" className={styles.uploadBtn}>
                   <FolderAddOutlined />
-                  上传水印
+                  {intl.formatMessage({
+                    id: "page.imageProcessingTool.uploadWatermark",
+                  })}
                   <input
                     type="file"
                     accept="image/jpg, image/jpeg, image/png"
                     onChange={onUploadWatermarkChange}
                   />
                 </Button>
-                {watermarkInfo ? watermarkInfo.name : "暂无水印"}
+                {watermarkInfo
+                  ? watermarkInfo.name
+                  : intl.formatMessage({ id: "common.noData" })}
               </div>
               {watermarkInfo && (
                 <div className={styles.bottom}>
@@ -341,7 +371,9 @@ const AddWatermark = (props: ClipProps) => {
                     max={imgInfo.width - watermarkMinWidthHeight}
                     precision={0}
                     value={clipBoxLeft}
-                    addonBefore="距离左侧"
+                    addonBefore={intl.formatMessage({
+                      id: "page.imageProcessingTool.distanceLeft",
+                    })}
                     onChange={(value: number | null) => {
                       setClipBoxLeft(value || 0);
                       const { width } = imgInfo;
@@ -357,7 +389,9 @@ const AddWatermark = (props: ClipProps) => {
                     max={imgInfo.height - watermarkMinWidthHeight}
                     precision={0}
                     value={clipBoxTop}
-                    addonBefore="距离顶部"
+                    addonBefore={intl.formatMessage({
+                      id: "page.imageProcessingTool.distanceTop",
+                    })}
                     onChange={(value: number | null) => {
                       setClipBoxTop(value || 0);
                       const { height } = imgInfo;
@@ -372,7 +406,7 @@ const AddWatermark = (props: ClipProps) => {
                     onClick={onOk}
                     disabled={!imgSizeQualified}
                   >
-                    确定
+                    {intl.formatMessage({ id: "common.confirm" })}
                   </Button>
                 </div>
               )}
@@ -384,7 +418,7 @@ const AddWatermark = (props: ClipProps) => {
             type="primary"
             onClick={onClear}
           >
-            清空
+            {intl.formatMessage({ id: "common.clear" })}
           </Button>
         </div>
       )}

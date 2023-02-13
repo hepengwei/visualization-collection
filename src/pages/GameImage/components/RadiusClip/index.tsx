@@ -3,6 +3,7 @@
  */
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Checkbox, InputNumber, message } from "antd";
+import { useIntl } from "react-intl";
 import { radiusClip } from "utils/imageUtil";
 import { ImgInfo } from "../../index";
 import styles from "./index.module.scss";
@@ -31,6 +32,7 @@ const RadiusClip = (props: RadiusClipProps) => {
     onDrop,
     onClear,
   } = props;
+  const intl = useIntl();
   const [imgSizeQualified, setImgSizeQualified] = useState<boolean>(false);
   const doing = useRef<boolean>(false);
   const [jpgToPNG, setJpgToPNG] = useState<boolean>(false);
@@ -41,11 +43,15 @@ const RadiusClip = (props: RadiusClipProps) => {
   useEffect(() => {
     const { width, height } = imgInfo;
     if (width < 20 || height < 20) {
-      message.error("请选20x20以上尺寸的图片");
+      message.error(
+        intl.formatMessage({ id: "page.imageProcessingTool.imageTooSmall" })
+      );
       setImgSizeQualified(false);
       return;
     } else if (width > 1350 || height > 1350) {
-      message.error("请选择1350x1350以下尺寸的图片");
+      message.error(
+        intl.formatMessage({ id: "page.imageProcessingTool.imageTooLarge" })
+      );
       setImgSizeQualified(false);
       return;
     }
@@ -57,11 +63,15 @@ const RadiusClip = (props: RadiusClipProps) => {
   // 点击确定
   const onOk = () => {
     if (doing.current) {
-      message.warning("正在努力工作,请稍后");
+      message.warning(intl.formatMessage({ id: "common.workHard" }));
       return;
     }
     if (!borderRadius) {
-      message.warning("请输入要裁剪的圆角半径");
+      message.warning(
+        intl.formatMessage({
+          id: "page.imageProcessingTool.pleaseEnterFilletRadius",
+        })
+      );
       return;
     }
     doing.current = true;
@@ -74,7 +84,7 @@ const RadiusClip = (props: RadiusClipProps) => {
     if (newImageData) {
       exportImage(newImageData, jpgToPNG ? "PNG" : imgInfo.fileType);
     } else {
-      message.error("裁剪失败");
+      message.error(intl.formatMessage({ id: "common.operationFailure" }));
     }
     doing.current = false;
   };
@@ -114,7 +124,9 @@ const RadiusClip = (props: RadiusClipProps) => {
                   setJpgToPNG(e.target.checked);
                 }}
               >
-                裁剪后转成PNG格式
+                {intl.formatMessage({
+                  id: "page.imageProcessingTool.clippedAndConvertedToPng",
+                })}
               </Checkbox>
             )}
             <InputNumber
@@ -127,7 +139,9 @@ const RadiusClip = (props: RadiusClipProps) => {
               )}
               precision={0}
               value={borderRadius}
-              addonBefore="圆角半径"
+              addonBefore={intl.formatMessage({
+                id: "page.imageProcessingTool.filletRadius",
+              })}
               onChange={(value: number | null) => {
                 setBorderRadius(value);
               }}
@@ -138,7 +152,9 @@ const RadiusClip = (props: RadiusClipProps) => {
               onClick={onOk}
               disabled={!imgSizeQualified}
             >
-              确定
+              {intl.formatMessage({
+                id: "common.confirm",
+              })}
             </Button>
           </div>
           <Button
@@ -147,7 +163,9 @@ const RadiusClip = (props: RadiusClipProps) => {
             type="primary"
             onClick={onClear}
           >
-            清空
+            {intl.formatMessage({
+              id: "common.clear",
+            })}
           </Button>
         </div>
       )}

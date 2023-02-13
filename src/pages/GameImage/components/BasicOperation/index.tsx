@@ -4,6 +4,7 @@
 import React, { useRef, useEffect } from "react";
 import { Button, message } from "antd";
 import { cloneDeep } from "lodash-es";
+import { useIntl } from "react-intl";
 import {
   sizeTostr,
   flipSideToSide,
@@ -104,6 +105,7 @@ const BasicOperation = (props: BasicOperationProps) => {
     onDrop,
     onClear,
   } = props;
+  const intl = useIntl();
   const imgStatusInfo = useRef<ImgStatusInfo>(cloneDeep(defaultImgStatus));
 
   const doTask = (
@@ -114,7 +116,7 @@ const BasicOperation = (props: BasicOperationProps) => {
     if (status && status.imageData) {
       exportImage(status.imageData);
     } else if (status.doing) {
-      message.warning("正在努力工作,请稍后");
+      message.warning(intl.formatMessage({ id: "common.workHard" }));
       return;
     } else if (imgInfo?.imageData) {
       status.doing = true;
@@ -123,7 +125,7 @@ const BasicOperation = (props: BasicOperationProps) => {
         status.imageData = newImageData;
         exportImage(newImageData, exportImageType);
       } else {
-        message.error("转换失败");
+        message.error(intl.formatMessage({ id: "common.operationFailure" }));
       }
       status.doing = false;
     }
@@ -147,15 +149,25 @@ const BasicOperation = (props: BasicOperationProps) => {
         <div className={styles.fileBox}>
           <img src={imgInfo.imgUrl} alt="" />
           <div className={styles.fileInfo}>
-            <div className={styles.item}>文件名：{imgInfo.name}</div>
-            <div className={styles.item}>格式：{imgInfo.fileType}</div>
             <div className={styles.item}>
-              尺寸：
+              {intl.formatMessage({ id: "page.imageProcessingTool.filename" })}
+              ：{imgInfo.name}
+            </div>
+            <div className={styles.item}>
+              {intl.formatMessage({ id: "page.imageProcessingTool.format" })}：
+              {imgInfo.fileType}
+            </div>
+            <div className={styles.item}>
+              {intl.formatMessage({ id: "page.imageProcessingTool.dimension" })}
+              ：
               {imgInfo.width && imgInfo.height
                 ? `${imgInfo.width}x${imgInfo.height}`
-                : "未知"}
+                : intl.formatMessage({ id: "common.unknown" })}
             </div>
-            <div className={styles.item}>大小：{sizeTostr(imgInfo.size)}</div>
+            <div className={styles.item}>
+              {intl.formatMessage({ id: "page.imageProcessingTool.size" })}：
+              {sizeTostr(imgInfo.size)}
+            </div>
           </div>
         </div>
       </div>
@@ -168,7 +180,9 @@ const BasicOperation = (props: BasicOperationProps) => {
               doTask(imgStatusInfo.current.flipSideToSideStatus, flipSideToSide)
             }
           >
-            左右翻转
+            {intl.formatMessage({
+              id: "page.imageProcessingTool.flipSideToSide",
+            })}
           </Button>
           <Button
             type="primary"
@@ -177,7 +191,9 @@ const BasicOperation = (props: BasicOperationProps) => {
               doTask(imgStatusInfo.current.flipUpsideDownStatus, flipUpsideDown)
             }
           >
-            上下翻转
+            {intl.formatMessage({
+              id: "page.imageProcessingTool.flipTopToBottom",
+            })}
           </Button>
           <Button
             type="primary"
@@ -186,7 +202,7 @@ const BasicOperation = (props: BasicOperationProps) => {
               doTask(imgStatusInfo.current.leftRotateStatus, leftRotate)
             }
           >
-            左旋转
+            {intl.formatMessage({ id: "page.imageProcessingTool.rotateLeft" })}
           </Button>
           <Button
             type="primary"
@@ -195,14 +211,14 @@ const BasicOperation = (props: BasicOperationProps) => {
               doTask(imgStatusInfo.current.rightRotateStatus, rightRotate)
             }
           >
-            右旋转
+            {intl.formatMessage({ id: "page.imageProcessingTool.rotateRight" })}
           </Button>
           <Button
             type="primary"
             className={styles.operationBtn}
             onClick={() => doTask(imgStatusInfo.current.toGreyStatus, toGrey)}
           >
-            灰化
+            {intl.formatMessage({ id: "page.imageProcessingTool.graying" })}
           </Button>
           <Button
             type="primary"
@@ -214,14 +230,14 @@ const BasicOperation = (props: BasicOperationProps) => {
               )
             }
           >
-            黑白化
+            {intl.formatMessage({ id: "page.imageProcessingTool.vampix" })}
           </Button>
           <Button
             type="primary"
             className={styles.operationBtn}
             onClick={() => doTask(imgStatusInfo.current.sharpenStatus, sharpen)}
           >
-            锐化
+            {intl.formatMessage({ id: "page.imageProcessingTool.shmpch" })}
           </Button>
           <Button
             type="primary"
@@ -230,7 +246,9 @@ const BasicOperation = (props: BasicOperationProps) => {
               doTask(imgStatusInfo.current.marginSharpenStatus, marginSharpen)
             }
           >
-            边缘锐化
+            {intl.formatMessage({
+              id: "page.imageProcessingTool.edgeSharpening",
+            })}
           </Button>
           <Button
             type="primary"
@@ -239,28 +257,30 @@ const BasicOperation = (props: BasicOperationProps) => {
               doTask(imgStatusInfo.current.toOppositeStatus, toOpposite)
             }
           >
-            反色滤镜
+            {intl.formatMessage({
+              id: "page.imageProcessingTool.filterContrast",
+            })}
           </Button>
           <Button
             type="primary"
             className={styles.operationBtn}
             onClick={() => doTask(imgStatusInfo.current.toRedStatus, toRed)}
           >
-            红色滤镜
+            {intl.formatMessage({ id: "page.imageProcessingTool.redFilter" })}
           </Button>
           <Button
             type="primary"
             className={styles.operationBtn}
             onClick={() => doTask(imgStatusInfo.current.toGreenStatus, toGreen)}
           >
-            绿色滤镜
+            {intl.formatMessage({ id: "page.imageProcessingTool.greenFilter" })}
           </Button>
           <Button
             type="primary"
             className={styles.operationBtn}
             onClick={() => doTask(imgStatusInfo.current.toBlueStatus, toBlue)}
           >
-            蓝色滤镜
+            {intl.formatMessage({ id: "page.imageProcessingTool.blueFilter" })}
           </Button>
           <Button
             type="primary"
@@ -269,7 +289,9 @@ const BasicOperation = (props: BasicOperationProps) => {
               doTask(imgStatusInfo.current.toRedAndGreenStatus, toRedAndGreen)
             }
           >
-            红绿色滤镜
+            {intl.formatMessage({
+              id: "page.imageProcessingTool.redGreenFilter",
+            })}
           </Button>
           <Button
             type="primary"
@@ -278,7 +300,9 @@ const BasicOperation = (props: BasicOperationProps) => {
               doTask(imgStatusInfo.current.toRedAndBlueStatus, toRedAndBlue)
             }
           >
-            红蓝色滤镜
+            {intl.formatMessage({
+              id: "page.imageProcessingTool.redBlueFilter",
+            })}
           </Button>
           <Button
             type="primary"
@@ -287,7 +311,9 @@ const BasicOperation = (props: BasicOperationProps) => {
               doTask(imgStatusInfo.current.toBlueAndGreenStatus, toBlueAndGreen)
             }
           >
-            蓝绿色滤镜
+            {intl.formatMessage({
+              id: "page.imageProcessingTool.blueGreenFilter",
+            })}
           </Button>
           <Button
             type="primary"
@@ -296,7 +322,9 @@ const BasicOperation = (props: BasicOperationProps) => {
               doTask(imgStatusInfo.current.toRedAndGreyStatus, toRedAndGrey)
             }
           >
-            红灰色滤镜
+            {intl.formatMessage({
+              id: "page.imageProcessingTool.redGreyFilter",
+            })}
           </Button>
           <Button
             type="primary"
@@ -305,7 +333,9 @@ const BasicOperation = (props: BasicOperationProps) => {
               doTask(imgStatusInfo.current.toGreenAndGreyStatus, toGreenAndGrey)
             }
           >
-            绿灰色滤镜
+            {intl.formatMessage({
+              id: "page.imageProcessingTool.greenGreyFilter",
+            })}
           </Button>
           <Button
             type="primary"
@@ -314,7 +344,9 @@ const BasicOperation = (props: BasicOperationProps) => {
               doTask(imgStatusInfo.current.toBlueAndGreyStatus, toBlueAndGrey)
             }
           >
-            蓝灰色滤镜
+            {intl.formatMessage({
+              id: "page.imageProcessingTool.blueGreyFilter",
+            })}
           </Button>
           {["JPG", "JPEG"].includes(imgInfo.fileType) && (
             <Button
@@ -324,7 +356,9 @@ const BasicOperation = (props: BasicOperationProps) => {
                 doTask(imgStatusInfo.current.jpgToPngStatus, jpgToPng, "PNG")
               }
             >
-              JPG转PNG
+              {intl.formatMessage({
+                id: "page.imageProcessingTool.jpgToPng",
+              })}
             </Button>
           )}
           {imgInfo.fileType === "PNG" && (
@@ -335,12 +369,16 @@ const BasicOperation = (props: BasicOperationProps) => {
                 doTask(imgStatusInfo.current.pngToJpgStatus, pngToJpg, "JPEG")
               }
             >
-              PNG转JPG
+              {intl.formatMessage({
+                id: "page.imageProcessingTool.pngToJpg",
+              })}
             </Button>
           )}
         </div>
         <Button className={styles.right} ghost type="primary" onClick={onClear}>
-          清空
+          {intl.formatMessage({
+            id: "common.clear",
+          })}
         </Button>
       </div>
     </div>

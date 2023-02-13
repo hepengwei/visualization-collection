@@ -129,17 +129,29 @@ const GameImage = () => {
                 setImgInfo(imgInfo);
               } else {
                 setImgInfo(null);
-                message.error("解析数据失败,请更换其他图片");
+                message.error(
+                  intl.formatMessage({
+                    id: "page.imageProcessingTool.parsingDataFailure",
+                  })
+                );
               }
             };
             image.onerror = function () {
               setImgInfo(null);
-              message.error("解析数据失败,请更换其他图片");
+              message.error(
+                intl.formatMessage({
+                  id: "page.imageProcessingTool.parsingDataFailure",
+                })
+              );
             };
             image.src = dataUrl;
           } else {
             setImgInfo(null);
-            message.error("解析数据失败,请更换其他图片");
+            message.error(
+              intl.formatMessage({
+                id: "page.imageProcessingTool.parsingDataFailure",
+              })
+            );
           }
         });
       };

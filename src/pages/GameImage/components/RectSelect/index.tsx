@@ -4,6 +4,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import { Button, Checkbox, InputNumber, message } from "antd";
+import { useIntl } from "react-intl";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import { rectClip, mosaic } from "utils/imageUtil";
 import { ImgInfo } from "../../index";
@@ -47,7 +48,8 @@ const RectClip = (props: RectSelectProps) => {
     onClear,
     type,
   } = props;
-  const { scrollTop } = useGlobalContext();
+  const intl = useIntl();
+  const { scrollTop, locale } = useGlobalContext();
   const [imgSizeQualified, setImgSizeQualified] = useState<boolean>(false);
   const [retainOriginalSize, setRetainOriginalSize] = useState<boolean>(false);
   const [mosaicSize, setMosaicSize] = useState<number>(defaultMosaicSize);
@@ -303,11 +305,15 @@ const RectClip = (props: RectSelectProps) => {
       width < clipBoxMinWidthHeight * 2 ||
       height < clipBoxMinWidthHeight * 2
     ) {
-      message.error("请选20x20以上尺寸的图片");
+      message.error(
+        intl.formatMessage({ id: "page.imageProcessingTool.imageTooSmall" })
+      );
       setImgSizeQualified(false);
       return;
     } else if (width > 1350 || height > 1350) {
-      message.error("请选择1350x1350以下尺寸的图片");
+      message.error(
+        intl.formatMessage({ id: "page.imageProcessingTool.imageTooLarge" })
+      );
       setImgSizeQualified(false);
       return;
     }
@@ -355,7 +361,7 @@ const RectClip = (props: RectSelectProps) => {
   // 点击确定
   const onOk = () => {
     if (doing.current) {
-      message.warning("正在努力工作,请稍后");
+      message.warning(intl.formatMessage({ id: "common.workHard" }));
       return;
     }
     doing.current = true;
@@ -383,7 +389,7 @@ const RectClip = (props: RectSelectProps) => {
     if (newImageData) {
       exportImage(newImageData);
     } else {
-      message.error("操作失败");
+      message.error(intl.formatMessage({ id: "common.operationFailure" }));
     }
     doing.current = false;
   };
@@ -484,17 +490,21 @@ const RectClip = (props: RectSelectProps) => {
                   setRetainOriginalSize(e.target.checked);
                 }}
               >
-                是否保留原尺寸
+                {intl.formatMessage({
+                  id: "page.imageProcessingTool.WhetherRetainOriginalDimension",
+                })}
               </Checkbox>
             )}
             <InputNumber
               className={styles.operationBtn}
-              style={{ width: "160px" }}
+              style={{ width: locale === "zh-cn" ? "160px" : "200px" }}
               min={clipBoxMinWidthHeight}
               max={imgInfo.width}
               precision={0}
               value={clipBoxWidth}
-              addonBefore="裁剪宽度"
+              addonBefore={intl.formatMessage({
+                id: "page.imageProcessingTool.clippingWidth",
+              })}
               onChange={(value: number | null) => {
                 const { width } = imgInfo;
                 if (value && value + clipBoxLeft > width) {
@@ -505,12 +515,14 @@ const RectClip = (props: RectSelectProps) => {
             />
             <InputNumber
               className={styles.operationBtn}
-              style={{ width: "160px" }}
+              style={{ width: locale === "zh-cn" ? "160px" : "200px" }}
               min={clipBoxMinWidthHeight}
               max={imgInfo.height}
               precision={0}
               value={clipBoxHeight}
-              addonBefore="裁剪高度"
+              addonBefore={intl.formatMessage({
+                id: "page.imageProcessingTool.clippingHeight",
+              })}
               onChange={(value: number | null) => {
                 const { height } = imgInfo;
                 if (value && value + clipBoxTop > height) {
@@ -521,12 +533,14 @@ const RectClip = (props: RectSelectProps) => {
             />
             <InputNumber
               className={styles.operationBtn}
-              style={{ width: "160px" }}
+              style={{ width: locale === "zh-cn" ? "160px" : "190px" }}
               min={0}
               max={imgInfo.width - clipBoxMinWidthHeight}
               precision={0}
               value={clipBoxLeft}
-              addonBefore="距离左侧"
+              addonBefore={intl.formatMessage({
+                id: "page.imageProcessingTool.distanceLeft",
+              })}
               onChange={(value: number | null) => {
                 setClipBoxLeft(value || 0);
                 const { width } = imgInfo;
@@ -537,12 +551,14 @@ const RectClip = (props: RectSelectProps) => {
             />
             <InputNumber
               className={styles.operationBtn}
-              style={{ width: "160px" }}
+              style={{ width: locale === "zh-cn" ? "160px" : "190px" }}
               min={0}
               max={imgInfo.height - clipBoxMinWidthHeight}
               precision={0}
               value={clipBoxTop}
-              addonBefore="距离顶部"
+              addonBefore={intl.formatMessage({
+                id: "page.imageProcessingTool.distanceTop",
+              })}
               onChange={(value: number | null) => {
                 setClipBoxTop(value || 0);
                 const { height } = imgInfo;
@@ -554,12 +570,14 @@ const RectClip = (props: RectSelectProps) => {
             {type === "mosaic" && (
               <InputNumber
                 className={styles.operationBtn}
-                style={{ width: "200px" }}
+                style={{ width: locale === "zh-cn" ? "200px" : "220px" }}
                 min={2}
                 max={40}
                 precision={0}
                 value={mosaicSize}
-                addonBefore="马赛克颗粒大小"
+                addonBefore={intl.formatMessage({
+                  id: "page.imageProcessingTool.mosaicGrainSize",
+                })}
                 onChange={(value: number | null) => {
                   setMosaicSize(value || 0);
                 }}
@@ -571,7 +589,7 @@ const RectClip = (props: RectSelectProps) => {
               onClick={onOk}
               disabled={!imgSizeQualified}
             >
-              确定
+              {intl.formatMessage({ id: "common.confirm" })}
             </Button>
           </div>
           <Button
@@ -580,7 +598,7 @@ const RectClip = (props: RectSelectProps) => {
             type="primary"
             onClick={onClear}
           >
-            清空
+            {intl.formatMessage({ id: "common.clear" })}
           </Button>
         </div>
       )}
