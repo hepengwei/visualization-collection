@@ -3,8 +3,10 @@
  */
 import React, { useRef, useEffect, useState } from "react";
 import { InputNumber, Button, message } from "antd";
+import { useIntl } from "react-intl";
 import { exportToImage } from "utils/fileUtil";
 import { sizeTostr, compression } from "utils/imageUtil";
+import { useGlobalContext } from "@/hooks/useGlobalContext";
 import { ImgInfo } from "../../index";
 import styles from "../../index.module.scss";
 
@@ -24,6 +26,8 @@ const defaultCompressionDegree = 70;
 const Compression = (props: CompressionProps) => {
   const { imgInfo, imgDragOver, onDragOver, onDragLeave, onDrop, onClear } =
     props;
+  const intl = useIntl();
+  const { locale } = useGlobalContext();
   const [compressionDegree, setCompressionDegree] = useState<number>(
     defaultCompressionDegree
   );
@@ -49,7 +53,7 @@ const Compression = (props: CompressionProps) => {
   // 点击确定
   const onOk = () => {
     if (doing.current) {
-      message.warning("正在努力工作,请稍后");
+      message.warning(intl.formatMessage({ id: "common.workHard" }));
       return;
     }
     const { imageData, imgUrl, width, height, fileType } = imgInfo;
@@ -65,7 +69,9 @@ const Compression = (props: CompressionProps) => {
           if (blob) {
             exportImage(blob);
           } else {
-            message.error("压缩失败");
+            message.error(
+              intl.formatMessage({ id: "common.operationFailure" })
+            );
           }
           doing.current = false;
         }
@@ -81,7 +87,9 @@ const Compression = (props: CompressionProps) => {
           if (blob) {
             exportImage(blob);
           } else {
-            message.error("压缩失败");
+            message.error(
+              intl.formatMessage({ id: "common.operationFailure" })
+            );
           }
           doing.current = false;
         }
@@ -107,15 +115,25 @@ const Compression = (props: CompressionProps) => {
         <div className={styles.fileBox}>
           <img src={imgInfo.imgUrl} alt="" />
           <div className={styles.fileInfo}>
-            <div className={styles.item}>文件名：{imgInfo.name}</div>
-            <div className={styles.item}>格式：{imgInfo.fileType}</div>
             <div className={styles.item}>
-              尺寸：
+              {intl.formatMessage({ id: "page.imageProcessingTool.filename" })}
+              ：{imgInfo.name}
+            </div>
+            <div className={styles.item}>
+              {intl.formatMessage({ id: "page.imageProcessingTool.format" })}：
+              {imgInfo.fileType}
+            </div>
+            <div className={styles.item}>
+              {intl.formatMessage({ id: "page.imageProcessingTool.dimension" })}
+              ：
               {imgInfo.width && imgInfo.height
                 ? `${imgInfo.width}x${imgInfo.height}`
-                : "未知"}
+                : intl.formatMessage({ id: "common.unknown" })}
             </div>
-            <div className={styles.item}>大小：{sizeTostr(imgInfo.size)}</div>
+            <div className={styles.item}>
+              {intl.formatMessage({ id: "page.imageProcessingTool.size" })}：
+              {sizeTostr(imgInfo.size)}
+            </div>
           </div>
         </div>
       </div>
@@ -123,23 +141,29 @@ const Compression = (props: CompressionProps) => {
         <div className={styles.left}>
           <InputNumber
             className={styles.operationBtn}
-            style={{ width: "200px" }}
+            style={{ width: locale === "zh-cn" ? "200px" : "240px" }}
             min={10}
             max={90}
             precision={0}
             value={compressionDegree}
-            addonBefore="压缩率"
+            addonBefore={intl.formatMessage({
+              id: "page.imageProcessingTool.compressibility",
+            })}
             addonAfter="%"
             onChange={(value: number | null) => {
               setCompressionDegree(value || 10);
             }}
           />
           <Button type="primary" className={styles.operationBtn} onClick={onOk}>
-            确定
+            {intl.formatMessage({
+              id: "common.confirm",
+            })}
           </Button>
         </div>
         <Button className={styles.right} ghost type="primary" onClick={onClear}>
-          清空
+          {intl.formatMessage({
+            id: "common.clear",
+          })}
         </Button>
       </div>
     </div>
