@@ -39,12 +39,12 @@ const RecordedScreen = () => {
           videoStatusRef.current = VideoStatus.ready;
           setVideoStatus(VideoStatus.ready);
         }
+
       }
     } else if (recordVideoRef.current) {
       if (navigator.mediaDevices.getDisplayMedia) {
         navigator.mediaDevices
           .getDisplayMedia({
-            audio: true,
             video: true,
           })
           .then((stream: MediaStream) => {
@@ -59,7 +59,7 @@ const RecordedScreen = () => {
             try {
               const options = {
                 audioBitsPerSecond: 128000,
-                videoBitsPerSecond: 2500000,
+                videoBitsPerSecond: 5000000,
                 mimeType,
               };
               const recorder = new MediaRecorder(stream, options);
@@ -94,7 +94,7 @@ const RecordedScreen = () => {
           })
           .catch((e) => {
             message.error(
-              "录制视频授权失败,请点击设置->隐私设置和安全->网站设置->摄像头，打开允许使用"
+              "授权失败,请点击设置->隐私设置和安全->网站设置->摄像头，打开允许使用"
             );
           });
       } else {
@@ -122,7 +122,7 @@ const RecordedScreen = () => {
           <video
             className={styles.recordVideo}
             style={{ width: `${videoWidth}px`, height: `${videoHeight}px` }}
-            muted={false}
+            muted
             autoPlay
             x5-video-player-fullscreen="true"
             x5-playsinline="true"
@@ -135,7 +135,7 @@ const RecordedScreen = () => {
             <video
               className={styles.playVideo}
               style={{ width: `${videoWidth}px`, height: `${videoHeight}px` }}
-              muted={false}
+              muted
               autoPlay
               x5-video-player-fullscreen="true"
               x5-playsinline="true"

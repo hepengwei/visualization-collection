@@ -70,7 +70,7 @@ const RecordedVideo = () => {
             try {
               const options = {
                 audioBitsPerSecond: 128000,
-                videoBitsPerSecond: 2500000,
+                videoBitsPerSecond: 5000000,
                 mimeType,
               };
               const recorder = new MediaRecorder(stream, options);
@@ -100,7 +100,7 @@ const RecordedVideo = () => {
           })
           .catch((e) => {
             message.error(
-              "录制视频授权失败,请点击设置->隐私设置和安全->网站设置->摄像头，打开允许使用"
+              "授权失败,请点击设置->隐私设置和安全->网站设置->摄像头，打开允许使用"
             );
           });
       } else {
