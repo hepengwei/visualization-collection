@@ -7,6 +7,7 @@ import ShearPlate from "./components/ShearPlate";
 import RecordedAudio from "./components/RecordedAudio";
 import RecordedVideo from "./components/RecordedVideo";
 import RecordedScreen from "./components/RecordedScreen";
+import TakeIDPhotos from "./components/TakeIDPhotos";
 import styles from "./index.module.scss";
 
 const UtilitarianFunction = () => {
@@ -29,6 +30,9 @@ const UtilitarianFunction = () => {
       </div>
       <div className={styles.box}>
         <RecordedScreen />
+      </div>
+      <div className={styles.box}>
+        <TakeIDPhotos />
       </div>
     </div>
   );
