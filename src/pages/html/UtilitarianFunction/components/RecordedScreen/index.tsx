@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Button, message } from "antd";
+import { useIntl } from "react-intl";
 import styles from "./index.module.scss";
 
 enum VideoStatus {
@@ -12,6 +13,7 @@ const videoWidth = Math.floor(window.screen.width * 0.36);
 const videoHeight = Math.floor(window.screen.height * 0.36);
 
 const RecordedScreen = () => {
+  const intl = useIntl();
   const recordVideoRef = useRef<HTMLVideoElement>(null);
   const playVideoRef = useRef<HTMLVideoElement>(null);
   const mediaRecorder = useRef<MediaRecorder | null>(null);
@@ -39,7 +41,6 @@ const RecordedScreen = () => {
           videoStatusRef.current = VideoStatus.ready;
           setVideoStatus(VideoStatus.ready);
         }
-
       }
     } else if (recordVideoRef.current) {
       if (navigator.mediaDevices.getDisplayMedia) {
@@ -89,16 +90,20 @@ const RecordedScreen = () => {
               videoStatusRef.current = VideoStatus.inRecording;
               setVideoStatus(VideoStatus.inRecording);
             } catch (e) {
-              message.error(`MediaRecorder创建失败:${e}. mimeType:${mimeType}`);
+              message.error(
+                `MediaRecorder creation failed: ${e}. mimeType:${mimeType}`
+              );
             }
           })
           .catch((e) => {
             message.error(
-              "授权失败,请点击设置->隐私设置和安全->网站设置->摄像头，打开允许使用"
+              intl.formatMessage({ id: "common.impowerOpenCamera" })
             );
           });
       } else {
-        message.error("浏览器不支持getDisplayMedia");
+        message.error(
+          intl.formatMessage({ id: "common.notSupportGetDisplayMedia" })
+        );
       }
     }
   };
@@ -113,7 +118,11 @@ const RecordedScreen = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>录制屏幕</div>
+      <div className={styles.title}>
+        {intl.formatMessage({
+          id: "page.htmlVision.utilitarianFunction.recordScreen",
+        })}
+      </div>
       <div className={styles.content}>
         <div
           className={styles.videoBox}
@@ -150,10 +159,16 @@ const RecordedScreen = () => {
         <div className={styles.btns}>
           <Button type="primary" onClick={onStartOrEnd}>
             {videoStatus === VideoStatus.inRecording
-              ? "录制中,点击结束"
+              ? intl.formatMessage({
+                  id: "page.htmlVision.utilitarianFunction.whileRecording",
+                })
               : videoUrl
-              ? "重新录制"
-              : "开始录制"}
+              ? intl.formatMessage({
+                  id: "page.htmlVision.utilitarianFunction.rerecord",
+                })
+              : intl.formatMessage({
+                  id: "page.htmlVision.utilitarianFunction.startRecording",
+                })}
           </Button>
           {videoUrl && (
             <Button
@@ -170,12 +185,12 @@ const RecordedScreen = () => {
                 }
               }}
             >
-              播放
+              {intl.formatMessage({ id: "common.play" })}
             </Button>
           )}
           {videoUrl && (
             <a download={fileName} href={videoUrl}>
-              下载
+              {intl.formatMessage({ id: "common.download" })}
             </a>
           )}
         </div>

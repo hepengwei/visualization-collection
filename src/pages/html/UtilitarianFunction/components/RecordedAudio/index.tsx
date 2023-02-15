@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Button, message } from "antd";
+import { useIntl } from "react-intl";
 import styles from "./index.module.scss";
 
 enum AudioStatus {
@@ -8,6 +9,7 @@ enum AudioStatus {
 }
 
 const RecordedAudio = () => {
+  const intl = useIntl();
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const chunks = useRef<any[]>([]);
   const [audioUrl, setAudioUrl] = useState<string>("");
@@ -54,12 +56,20 @@ const RecordedAudio = () => {
             setAudioStatus(AudioStatus.inRecording);
           })
           .catch((e) => {
-            message.error(
-              "授权失败,请点击设置->隐私设置和安全->网站设置->麦克风，打开允许使用"
-            );
+            if (e.message && e.message.includes("not found")) {
+              message.error(
+                intl.formatMessage({ id: "common.deviceNotFound" })
+              );
+            } else {
+              message.error(
+                intl.formatMessage({ id: "common.impowerOpenMicrophone" })
+              );
+            }
           });
       } else {
-        message.error("浏览器不支持getUserMedia");
+        message.error(
+          intl.formatMessage({ id: "common.notSupportGetUserMedia" })
+        );
       }
     }
   };
@@ -74,17 +84,25 @@ const RecordedAudio = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>录制音频</div>
+      <div className={styles.title}>
+        {intl.formatMessage({
+          id: "page.htmlVision.utilitarianFunction.recordAudio",
+        })}
+      </div>
       <div className={styles.content}>
         <audio controls src={audioUrl}></audio>
         <Button type="primary" onClick={onStartOrEnd}>
           {audioStatus === AudioStatus.inRecording
-            ? "录音中,点击结束"
-            : "开始录音"}
+            ? intl.formatMessage({
+                id: "page.htmlVision.utilitarianFunction.whileRecording",
+              })
+            : intl.formatMessage({
+                id: "page.htmlVision.utilitarianFunction.startRecording",
+              })}
         </Button>
         {audioUrl && (
           <a download={fileName} href={audioUrl}>
-            下载
+            {intl.formatMessage({ id: "common.download" })}
           </a>
         )}
       </div>

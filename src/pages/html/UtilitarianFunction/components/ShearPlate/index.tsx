@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Input, Button, message } from "antd";
 import { FolderAddOutlined } from "@ant-design/icons";
+import { useIntl } from "react-intl";
 import { getImgInfo, fileOrBlobToDataURL } from "utils/fileUtil";
 import type { ImgInfo } from "utils/fileUtil";
 import styles from "./index.module.scss";
@@ -8,6 +9,7 @@ import styles from "./index.module.scss";
 const { TextArea } = Input;
 
 const ShearPlate = () => {
+  const intl = useIntl();
   const [inputText, setInputText] = useState<string>("");
   const [clipText, setClipText] = useState<string>("");
   const [imgDragOver, setImgDragOver] = useState<boolean>(false);
@@ -17,7 +19,11 @@ const ShearPlate = () => {
 
   const onSaveTextToClip = () => {
     if (!inputText) {
-      message.warning("请先输入文本");
+      message.warning(
+        intl.formatMessage({
+          id: "page.htmlVision.utilitarianFunction.pleaseEnterText",
+        })
+      );
       return;
     }
     if (navigator.clipboard) {
@@ -30,7 +36,7 @@ const ShearPlate = () => {
       document.execCommand("copy");
       document.body.removeChild(input);
     }
-    message.success("保存成功");
+    message.success(intl.formatMessage({ id: "common.saveSuccessfully" }));
   };
 
   const onGetTextFromClip = () => {
@@ -39,14 +45,14 @@ const ShearPlate = () => {
         setClipText(clipText);
       });
     } else {
-      message.error("获取失败，浏览器不支持");
+      message.error(intl.formatMessage({ id: "common.failedToObtain2" }));
     }
   };
 
   const getImageInfo = (files: FileList) => {
     getImgInfo(files, (imgInfo) => {
       if (!imgInfo) {
-        message.error("解析数据失败,请更换其他图片");
+        message.error(intl.formatMessage({ id: "common.parsingDataFailure" }));
       }
       setImgInfo(imgInfo);
     });
@@ -81,7 +87,7 @@ const ShearPlate = () => {
 
   const onSaveImageToClip = async () => {
     if (!imgInfo) {
-      message.warning("请先上传图片");
+      message.warning(intl.formatMessage({ id: "common.pleaseUploadPicture" }));
       return;
     }
     if (navigator.clipboard) {
@@ -92,9 +98,9 @@ const ShearPlate = () => {
           [`image/png`]: newBlob,
         }),
       ]);
-      message.success("保存成功");
+      message.success(intl.formatMessage({ id: "common.saveSuccessfully" }));
     } else {
-      console.error("保存失败，浏览器不支持");
+      console.error(intl.formatMessage({ id: "common.saveFailed" }));
     }
   };
 
@@ -116,24 +122,32 @@ const ShearPlate = () => {
           setClipImgUrl(imgUrl);
         } else {
           setClipImgUrl("");
-          message.error("获取失败");
+          message.error(intl.formatMessage({ id: "common.failedToObtain" }));
         }
       });
     } else {
-      message.error("获取失败");
+      message.error(intl.formatMessage({ id: "common.failedToObtain" }));
     }
   };
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>操作剪切板</div>
+      <div className={styles.title}>
+        {intl.formatMessage({
+          id: "page.htmlVision.utilitarianFunction.operatingShears",
+        })}
+      </div>
       <div className={styles.content}>
         <div className={styles.box}>
           <div className={styles.inputBox}>
-            <div className={styles.text}>保存文本到剪切板</div>
+            <div className={styles.text}>
+              {intl.formatMessage({
+                id: "page.htmlVision.utilitarianFunction.saveTextToClipboard",
+              })}
+            </div>
             <TextArea
               rows={8}
-              placeholder="请输入文本"
+              placeholder={intl.formatMessage({ id: "common.pleaseEnterText" })}
               maxLength={300}
               value={inputText}
               onChange={(e) => {
@@ -146,7 +160,7 @@ const ShearPlate = () => {
                 onClick={onSaveTextToClip}
                 style={{ marginTop: 10 }}
               >
-                保存
+                {intl.formatMessage({ id: "common.save" })}
               </Button>
               <Button
                 ghost
@@ -156,15 +170,19 @@ const ShearPlate = () => {
                 }}
                 style={{ marginTop: 10 }}
               >
-                清空
+                {intl.formatMessage({ id: "common.clear" })}
               </Button>
             </div>
           </div>
           <div className={styles.inputBox}>
-            <div className={styles.text}>从剪切板获取文本</div>
+            <div className={styles.text}>
+              {intl.formatMessage({
+                id: "page.htmlVision.utilitarianFunction.getsTextFromClipboard",
+              })}
+            </div>
             <TextArea
               rows={8}
-              placeholder="获取文本"
+              placeholder={intl.formatMessage({ id: "common.getText" })}
               maxLength={300}
               disabled
               value={clipText}
@@ -175,14 +193,18 @@ const ShearPlate = () => {
                 onClick={onGetTextFromClip}
                 style={{ marginTop: 10 }}
               >
-                获取
+                {intl.formatMessage({ id: "common.get" })}
               </Button>
             </div>
           </div>
         </div>
         <div className={styles.box}>
           <div className={styles.inputBox}>
-            <div className={styles.text}>保存图片到剪切板</div>
+            <div className={styles.text}>
+              {intl.formatMessage({
+                id: "page.htmlVision.utilitarianFunction.saveImageToClipboard",
+              })}
+            </div>
             <div
               className={styles.imageBox}
               style={{
@@ -200,15 +222,23 @@ const ShearPlate = () => {
                 <div className={styles.emptyBox}>
                   <Button type="primary" className={styles.uploadBtn}>
                     <FolderAddOutlined />
-                    上传文件
+                    {intl.formatMessage({ id: "common.uploadFile" })}
                     <input
                       type="file"
                       accept="image/jpg, image/jpeg, image/png"
                       onChange={onUploadChange}
                     />
                   </Button>
-                  <p className={styles.text}>或将文件拖到此处</p>
-                  <p className={styles.tips}>支持jpg、jpeg、png格式</p>
+                  <p className={styles.text}>
+                    {intl.formatMessage({
+                      id: "common.dragTheFileHere",
+                    })}
+                  </p>
+                  <p className={styles.tips}>
+                    {intl.formatMessage({
+                      id: "common.supportedImageType",
+                    })}
+                  </p>
                 </div>
               )}
             </div>
@@ -218,7 +248,9 @@ const ShearPlate = () => {
                 onClick={onSaveImageToClip}
                 style={{ marginTop: 10 }}
               >
-                保存
+                {intl.formatMessage({
+                  id: "common.save",
+                })}
               </Button>
               <Button
                 ghost
@@ -228,16 +260,24 @@ const ShearPlate = () => {
                 }}
                 style={{ marginTop: 10 }}
               >
-                清空
+                {intl.formatMessage({
+                  id: "common.clear",
+                })}
               </Button>
             </div>
           </div>
           <div className={styles.inputBox}>
-            <div className={styles.text}>从剪切板获取图片</div>
+            <div className={styles.text}>
+              {intl.formatMessage({
+                id: "page.htmlVision.utilitarianFunction.getImageFromClipboard",
+              })}
+            </div>
             <div className={styles.imageBox}>
               <TextArea
                 className={styles.textArea}
-                placeholder="Ctrl+V粘贴图片"
+                placeholder={intl.formatMessage({
+                  id: "page.htmlVision.utilitarianFunction.pasteTheImage",
+                })}
                 rows={8}
                 maxLength={300}
                 readOnly

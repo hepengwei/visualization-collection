@@ -1,4 +1,5 @@
 const zh_CN = {
+  // 公共
   "common.logoName": "视觉效果集合",
   "common.LanguageSwitch": "中英文切换",
   "common.comingSoon": "敬请期待",
@@ -9,7 +10,30 @@ const zh_CN = {
   "common.unknown": "未知",
   "common.confirm": "确定",
   "common.clear": "清空",
+  "common.play": "播放",
+  "common.download": "下载",
+  "common.get": "获取",
+  "common.failedToObtain": "获取失败",
+  "common.failedToObtain2": "获取失败，浏览器不支持",
+  "common.pleaseEnterText": "请输入文本",
+  "common.getText": "获取文本",
+  "common.save": "保存",
+  "common.saveSuccessfully": "保存成功",
+  "common.saveFailed": "保存失败，浏览器不支持",
+  "common.parsingDataFailure": "解析数据失败，请更换其他图片",
+  "common.uploadFile": "上传文件",
+  "common.dragTheFileHere": "或将文件拖到此处",
+  "common.supportedImageType": "支持jpg、jpeg、png格式",
+  "common.pleaseUploadPicture": "请先上传图片",
+  "common.deviceNotFound": "请求的设备未找到",
+  "common.impowerOpenMicrophone":
+    "授权失败，请点击设置->隐私设置和安全->网站设置->麦克风，打开允许使用",
+  "common.impowerOpenCamera":
+    "授权失败，请点击设置->隐私设置和安全->网站设置->摄像头，打开允许使用",
+  "common.notSupportGetUserMedia": "浏览器不支持getUserMedia",
+  "common.notSupportGetDisplayMedia": "浏览器不支持getDisplayMedia",
 
+  // 菜单
   "menu.htmlVision": "Html视觉",
   "menu.htmlVision.visualDesign": "视觉设计",
   "menu.htmlVision.interactiveDesign": "交互设计",
@@ -47,17 +71,38 @@ const zh_CN = {
   "menu.imageProcessingTool.addWatermark": "添加水印",
   "menu.imageProcessingTool.coverWithMosaics": "打马赛克",
   "menu.imageProcessingTool.imageCompression": "图片压缩",
-  "menu.imageProcessingTool.uploadFile": "上传文件",
-  "menu.imageProcessingTool.dragTheFileHere": "或将文件拖到此处",
-  "menu.imageProcessingTool.supportedImageType": "支持jpg、jpeg、png格式",
 
+  // Html视觉-实用功能页
+  "page.htmlVision.utilitarianFunction.operatingShears": "操作剪切板",
+  "page.htmlVision.utilitarianFunction.saveTextToClipboard": "保存文本到剪切板",
+  "page.htmlVision.utilitarianFunction.pleaseEnterText": "请先输入文本",
+  "page.htmlVision.utilitarianFunction.getsTextFromClipboard":
+    "从剪切板获取文本",
+  "page.htmlVision.utilitarianFunction.saveImageToClipboard":
+    "保存图片到剪切板",
+  "page.htmlVision.utilitarianFunction.getImageFromClipboard":
+    "从剪切板获取图片",
+  "page.htmlVision.utilitarianFunction.pasteTheImage": "Ctrl+V粘贴图片",
+  "page.htmlVision.utilitarianFunction.recordAudio": "录制音频",
+  "page.htmlVision.utilitarianFunction.startRecording": "开始录制",
+  "page.htmlVision.utilitarianFunction.whileRecording": "录制中，点击结束",
+  "page.htmlVision.utilitarianFunction.rerecord": "重新录制",
+  "page.htmlVision.utilitarianFunction.recordScreen": "录制屏幕",
+  "page.htmlVision.utilitarianFunction.recordVideo": "录制视频",
+  "page.htmlVision.utilitarianFunction.takeIDPhotos": "拍照",
+  "page.htmlVision.utilitarianFunction.clickToTakeAPhoto": "点击拍照",
+  "page.htmlVision.utilitarianFunction.readyToTakeAPhoto": "准备拍照",
+  "page.htmlVision.utilitarianFunction.backPhoto": "重新拍照",
+  "page.htmlVision.utilitarianFunction.oneInch": "1寸",
+  "page.htmlVision.utilitarianFunction.twoInch": "2寸",
+
+  // 图片处理工具页
   "page.imageProcessingTool.imageTooSmall": "请选择20x20以上尺寸的图片",
   "page.imageProcessingTool.imageTooLarge": "请选择1350x1350以下尺寸的图片",
   "page.imageProcessingTool.watermarkSizeLimit":
     "请选择20x20以上尺寸的水印图片",
   "page.imageProcessingTool.watermarkSizeTooLarge":
     "请选择小于目标图片尺寸的水印图片",
-  "page.imageProcessingTool.parsingDataFailure": "解析数据失败,请更换其他图片",
   "page.imageProcessingTool.uploadWatermark": "上传水印",
   "page.imageProcessingTool.distanceLeft": "距离左侧",
   "page.imageProcessingTool.distanceTop": "距离顶部",

@@ -369,7 +369,7 @@ const GameImage = () => {
               <Button type="primary" className={styles.uploadBtn}>
                 <FolderAddOutlined />
                 {intl.formatMessage({
-                  id: "menu.imageProcessingTool.uploadFile",
+                  id: "common.uploadFile",
                 })}
                 <input
                   type="file"
@@ -379,12 +379,12 @@ const GameImage = () => {
               </Button>
               <p className={styles.text}>
                 {intl.formatMessage({
-                  id: "menu.imageProcessingTool.dragTheFileHere",
+                  id: "common.dragTheFileHere",
                 })}
               </p>
               <p className={styles.tips}>
                 {intl.formatMessage({
-                  id: "menu.imageProcessingTool.supportedImageType",
+                  id: "common.supportedImageType",
                 })}
               </p>
             </div>
