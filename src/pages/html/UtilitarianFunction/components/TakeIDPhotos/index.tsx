@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Button, Select, message } from "antd";
+import { useIntl } from "react-intl";
 import styles from "./index.module.scss";
 
 enum VideoStatus {
@@ -14,6 +15,7 @@ const photoSizeInfo = {
 };
 
 const TakeIDPhotos = () => {
+  const intl = useIntl();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [photoSize, setPhotoSize] = useState<"1" | "2">("1");
   const mediaRecorder = useRef<MediaRecorder | null>(null);
@@ -91,16 +93,26 @@ const TakeIDPhotos = () => {
               mediaRecorder.current.start();
               setVideoStatus(VideoStatus.inRecording);
             } catch (e) {
-              message.error(`MediaRecorder创建失败:${e}. mimeType:${mimeType}`);
+              message.error(
+                `MediaRecorder creation failed: ${e}. mimeType:${mimeType}`
+              );
             }
           })
           .catch((e) => {
-            message.error(
-              "授权失败,请点击设置->隐私设置和安全->网站设置->摄像头，打开允许使用"
-            );
+            if (e.message && e.message.includes("not found")) {
+              message.error(
+                intl.formatMessage({ id: "common.deviceNotFound" })
+              );
+            } else {
+              message.error(
+                intl.formatMessage({ id: "common.impowerOpenCamera" })
+              );
+            }
           });
       } else {
-        message.error("浏览器不支持getUserMedia");
+        message.error(
+          intl.formatMessage({ id: "common.notSupportGetUserMedia" })
+        );
       }
     }
   };
@@ -115,7 +127,11 @@ const TakeIDPhotos = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>拍照</div>
+      <div className={styles.title}>
+        {intl.formatMessage({
+          id: "page.htmlVision.utilitarianFunction.takeIDPhotos",
+        })}
+      </div>
       <div className={styles.content}>
         <div
           className={styles.videoBox}
@@ -149,20 +165,36 @@ const TakeIDPhotos = () => {
               setPhotoSize(value);
             }}
             options={[
-              { value: "1", label: "1寸" },
-              { value: "2", label: "2寸" },
+              {
+                value: "1",
+                label: intl.formatMessage({
+                  id: "page.htmlVision.utilitarianFunction.oneInch",
+                }),
+              },
+              {
+                value: "2",
+                label: intl.formatMessage({
+                  id: "page.htmlVision.utilitarianFunction.twoInch",
+                }),
+              },
             ]}
           />
           <Button type="primary" onClick={onStartOrEnd}>
             {videoStatus === VideoStatus.inRecording
-              ? "点击拍照"
+              ? intl.formatMessage({
+                  id: "page.htmlVision.utilitarianFunction.clickToTakeAPhoto",
+                })
               : imageUrl
-              ? "重新拍照"
-              : "准备拍照"}
+              ? intl.formatMessage({
+                  id: "page.htmlVision.utilitarianFunction.backPhoto",
+                })
+              : intl.formatMessage({
+                  id: "page.htmlVision.utilitarianFunction.readyToTakeAPhoto",
+                })}
           </Button>
           {imageUrl && (
             <a download={fileName} href={imageUrl}>
-              下载
+              {intl.formatMessage({ id: "common.download" })}
             </a>
           )}
         </div>

@@ -1,4 +1,5 @@
 const en_US = {
+  // 公共
   "common.logoName": "Visualization Collection",
   "common.LanguageSwitch": "Chinese-English Switch",
   "common.comingSoon": "Coming soon",
@@ -10,7 +11,31 @@ const en_US = {
   "common.unknown": "Unknown",
   "common.confirm": "Confirm",
   "common.clear": "Clear",
+  "common.play": "Play",
+  "common.download": "Download",
+  "common.get": "Get",
+  "common.failedToObtain": "Failed to obtain",
+  "common.failedToObtain2": "Failed to obtain, the browser does not support",
+  "common.pleaseEnterText": "Please enter text",
+  "common.getText": "Get text",
+  "common.save": "Save",
+  "common.saveSuccessfully": "Save successfully",
+  "common.saveFailed": "Failed to save, the browser does not support",
+  "common.parsingDataFailure":
+    "Data parsing failed. Please replace it with another picture",
+  "common.uploadFile": "Upload File",
+  "common.dragTheFileHere": "Or drag the file here",
+  "common.supportedImageType": "Jpg, jpeg, and png are supported",
+  "common.pleaseUploadPicture": "Please upload the picture first",
+  "common.deviceNotFound": "Requested device not found",
+  "common.impowerOpenMicrophone":
+    "Authorization failed, please click Settings -> Privacy Settings and Security -> Website Settings -> Microphone to open Allow use",
+  "common.impowerOpenCamera":
+    "Authorization failed, please click Settings -> Privacy Settings and Security -> Website Settings -> Camera to open Allow use",
+  "common.notSupportGetUserMedia": "Browsers do not support getUserMedia",
+  "common.notSupportGetDisplayMedia": "Browsers do not support getDisplayMedia",
 
+  // 菜单
   "menu.htmlVision": "Html vision",
   "menu.htmlVision.visualDesign": "Visual design",
   "menu.htmlVision.interactiveDesign": "Interactive design",
@@ -52,11 +77,37 @@ const en_US = {
   "menu.imageProcessingTool.addWatermark": "Add watermark",
   "menu.imageProcessingTool.coverWithMosaics": "Cover with mosaics",
   "menu.imageProcessingTool.imageCompression": "Image compression",
-  "menu.imageProcessingTool.uploadFile": "Upload file",
-  "menu.imageProcessingTool.dragTheFileHere": "Or drag the file here",
-  "menu.imageProcessingTool.supportedImageType":
-    "Jpg, jpeg, and png are supported",
 
+  // Html视觉-实用功能页
+  "page.htmlVision.utilitarianFunction.operatingShears": "Operating Shears",
+  "page.htmlVision.utilitarianFunction.saveTextToClipboard":
+    "Save the text to the clipboard",
+  "page.htmlVision.utilitarianFunction.pleaseEnterText":
+    "Please enter text first",
+  "page.htmlVision.utilitarianFunction.getsTextFromClipboard":
+    "Gets text from the clipboard",
+  "page.htmlVision.utilitarianFunction.saveImageToClipboard":
+    "Save the image to the clipboard",
+  "page.htmlVision.utilitarianFunction.getImageFromClipboard":
+    "Get the image from the clipboard",
+  "page.htmlVision.utilitarianFunction.pasteTheImage": "Ctrl+V Paste the image",
+  "page.htmlVision.utilitarianFunction.recordAudio": "Record Audio",
+  "page.htmlVision.utilitarianFunction.startRecording": "Start Recording",
+  "page.htmlVision.utilitarianFunction.whileRecording":
+    "While recording, click End",
+  "page.htmlVision.utilitarianFunction.rerecord": "Rerecord",
+  "page.htmlVision.utilitarianFunction.recordScreen": "Record Screen",
+  "page.htmlVision.utilitarianFunction.recordVideo": "Record Video",
+  "page.htmlVision.utilitarianFunction.takeIDPhotos": "Take a Photo",
+  "page.htmlVision.utilitarianFunction.clickToTakeAPhoto":
+    "Click To Take a Photo",
+  "page.htmlVision.utilitarianFunction.readyToTakeAPhoto":
+    "Ready To take a Photo",
+  "page.htmlVision.utilitarianFunction.backPhoto": "Back Photo",
+  "page.htmlVision.utilitarianFunction.oneInch": "1 inch",
+  "page.htmlVision.utilitarianFunction.twoInch": "2 inch",
+
+  // 图片处理工具页
   "page.imageProcessingTool.imageTooSmall":
     "Please select the size above 20x20",
   "page.imageProcessingTool.imageTooLarge":
@@ -65,8 +116,6 @@ const en_US = {
     "Please select watermark images of 20x20 and above",
   "page.imageProcessingTool.watermarkSizeTooLarge":
     "Please select a watermark image that is smaller than the size of the target image",
-  "page.imageProcessingTool.parsingDataFailure":
-    "Data parsing failed. Please replace it with another picture",
   "page.imageProcessingTool.uploadWatermark": "Upload watermark",
   "page.imageProcessingTool.distanceLeft": "Distance left",
   "page.imageProcessingTool.distanceTop": "Distance Top",
