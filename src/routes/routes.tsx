@@ -23,6 +23,7 @@ import RippleFloatOnTheWater from "pages/canvas/RippleFloatOnTheWater";
 import FlowerBloom from "pages/canvas/FlowerBloom";
 import CodeBgWall from "pages/canvas/CodeBgWall";
 import WordDance from "pages/canvas/WordDance";
+import HumanPostureDetection from "pages/AIApplication/HumanPostureDetection";
 import GameImage from "pages/GameImage";
 import Bar from "pages/echarts/Bar";
 import Pie from "pages/echarts/Pie";
@@ -124,10 +125,6 @@ export const contentRoutes: RouteObject[] = [
     ],
   },
   {
-    path: "/gameImage",
-    element: <GameImage />,
-  },
-  {
     path: "/echarts",
     children: [
       {
@@ -152,6 +149,19 @@ export const contentRoutes: RouteObject[] = [
         element: <ThreejsComingSoon />,
       },
     ],
+  },
+  {
+    path: "/AIApplication",
+    children: [
+      {
+        path: "/AIApplication/humanPostureDetection",
+        element: <HumanPostureDetection />,
+      },
+    ],
+  },
+  {
+    path: "/gameImage",
+    element: <GameImage />,
   },
 ];
 

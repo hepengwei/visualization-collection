@@ -5,6 +5,8 @@ const zh_CN = {
   "common.comingSoon": "敬请期待",
   "common.comingSoon.text": "该项目持续更新，敬请期待！！！",
   "common.workHard": "正在努力工作,请稍后",
+  "common.start": "开始",
+  "common.end": "结束",
   "common.operationFailure": "操作失败",
   "common.noData": "暂无",
   "common.unknown": "未知",
@@ -32,6 +34,7 @@ const zh_CN = {
     "授权失败，请点击设置->隐私设置和安全->网站设置->摄像头，打开允许使用",
   "common.notSupportGetUserMedia": "浏览器不支持getUserMedia",
   "common.notSupportGetDisplayMedia": "浏览器不支持getDisplayMedia",
+  "common.browserTooLow": "您的浏览器版本过低，请更新浏览器",
 
   // 菜单
   "menu.htmlVision": "Html视觉",
@@ -61,6 +64,8 @@ const zh_CN = {
   "menu.echartsInteraction.barCharts": "柱状图",
   "menu.echartsInteraction.pieCharts": "饼图",
   "menu.threeJs3D": "Three.js3D",
+  "menu.AIApplication": "人工智能应用",
+  "menu.AIApplication.humanPostureDetection": "人体姿态检测",
   "menu.imageProcessingTool": "图片处理工具",
   "menu.imageProcessingTool.basicOperation": "基础操作",
   "menu.imageProcessingTool.rectangularClipping": "矩形裁剪",
