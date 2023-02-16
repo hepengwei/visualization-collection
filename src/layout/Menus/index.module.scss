@@ -22,7 +22,7 @@
     }
 
     .menuLabel {
-      width: 160px;
+      width: 170px;
       margin-bottom: 0;
     }
 
@@ -30,9 +30,17 @@
       .ant-menu {
         .ant-menu-submenu-title {
           border-radius: 0 !important;
+          padding-left: 12px !important;
         }
         .ant-menu-item {
           border-radius: 0 !important;
+          padding-left: 12px !important;
+        }
+        .ant-menu-sub {
+          .ant-menu-item {
+            border-radius: 0 !important;
+            padding-left: 32px !important;
+          }
         }
       }
     }

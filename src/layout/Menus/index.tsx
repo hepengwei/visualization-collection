@@ -13,9 +13,10 @@ import {
   BuildOutlined,
   FormatPainterOutlined,
   PlayCircleOutlined,
-  FileImageOutlined,
   LineChartOutlined,
   RocketOutlined,
+  FireOutlined,
+  FileImageOutlined,
 } from "@ant-design/icons";
 import { useDebounceFn } from "ahooks";
 import { Button, Menu } from "antd";
@@ -199,6 +200,19 @@ const Menus: React.FC = () => {
         getItem(
           intl.formatMessage({ id: "common.comingSoon" }),
           "threejsComingSoon"
+        ),
+      ]
+    ),
+    getItem(
+      intl.formatMessage({ id: "menu.AIApplication" }),
+      "AIApplication",
+      <FireOutlined />,
+      [
+        getItem(
+          intl.formatMessage({
+            id: "menu.AIApplication.humanPostureDetection",
+          }),
+          "humanPostureDetection"
         ),
       ]
     ),

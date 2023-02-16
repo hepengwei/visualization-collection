@@ -66,6 +66,11 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
+    "@mediapipe/pose": "^0.5.1675469404",
+    "@tensorflow-models/pose-detection": "^2.0.0",
+    "@tensorflow/tfjs-backend-webgl": "^4.2.0",
+    "@tensorflow/tfjs-converter": "^4.2.0",
+    "@tensorflow/tfjs-core": "^4.2.0",
     "ahooks": "^3.7.2",
     "antd": "^5.0.5",
     "bignumber.js": "^9.1.0",
