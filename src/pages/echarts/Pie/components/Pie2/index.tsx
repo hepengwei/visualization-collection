@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Pie from "components/Echarts/Pie";
+import Pie2 from "components/Echarts/Pie2";
 import styles from "../../index.module.scss";
+import { random } from "lodash-es";
 
 const Pie1 = () => {
   const [echartData, setEchartData] = useState<(string | number)[][]>([]);
@@ -9,7 +10,8 @@ const Pie1 = () => {
     const data = [];
     const num = 10;
     for (let i = 0; i < num; i++) {
-      const name = `name${i + 1}`;
+      const repeatNum = Math.ceil(random() * 4 + 1);
+      const name = `${"name".repeat(repeatNum)}${i + 1}`;
       const value = Math.random() * 8000;
       data.push([name, value]);
     }
@@ -22,7 +24,7 @@ const Pie1 = () => {
 
   return (
     <div className={styles.echart}>
-      <Pie data={{ dataSource: echartData }} />
+      <Pie2 data={{ dataSource: echartData }} />
     </div>
   );
 };

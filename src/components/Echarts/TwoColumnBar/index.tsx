@@ -1,5 +1,5 @@
-import React, { useRef, useMemo } from "react";
-import echarts, { getGraphic } from "@/utils/echarts.config";
+import React, { useMemo } from "react";
+import { getGraphic } from "@/utils/echarts.config";
 import type { ChartOptions } from "@/utils/echarts.config";
 import { ECHART_COMMON_COLOR } from "constants/common";
 import numberFormat from "utils/numberFormat";
@@ -143,8 +143,6 @@ const TwoColumnBar = ({
   onHoverChange, // 鼠标hover事件
   onClickChange, // 点击事件
 }: TwoColumnBarProps) => {
-  const chartInstance = useRef<echarts.EChartsType | null>(null);
-
   // 图表最终的配置数据
   const chartOptions = useMemo(() => {
     const options = getBaseOptions();
@@ -160,7 +158,6 @@ const TwoColumnBar = ({
       style={style}
       onClickChange={onClickChange}
       onHoverChange={onHoverChange}
-      ref={chartInstance}
     />
   );
 };

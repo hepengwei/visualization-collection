@@ -1,5 +1,5 @@
-import React, { useRef, useMemo } from "react";
-import echarts, { getGraphic } from "@/utils/echarts.config";
+import React, { useMemo } from "react";
+import { getGraphic } from "@/utils/echarts.config";
 import type { ChartOptions } from "@/utils/echarts.config";
 import numberFormat from "utils/numberFormat";
 import BasicEchart from "../BasicEchart";
@@ -101,8 +101,6 @@ const ColumnLineBar = ({
   onHoverChange, // 鼠标hover事件
   onClickChange, // 点击事件
 }: ColumnLineBarProps) => {
-  const chartInstance = useRef<echarts.EChartsType | null>(null);
-
   // 图表最终的配置数据
   const chartOptions = useMemo(() => {
     const options = getBaseOptions();
@@ -118,7 +116,6 @@ const ColumnLineBar = ({
       style={style}
       onClickChange={onClickChange}
       onHoverChange={onHoverChange}
-      ref={chartInstance}
     />
   );
 };

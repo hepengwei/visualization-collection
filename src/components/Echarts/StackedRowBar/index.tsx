@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useMemo, memo } from "react";
+import React, { useCallback, useRef, useMemo, RefObject } from "react";
 import echarts, { getGraphic } from "@/utils/echarts.config";
 import type { ChartOptions } from "@/utils/echarts.config";
 import {
@@ -116,7 +116,7 @@ const StackedRowBar = ({
   onHoverChange, // 鼠标hover事件
   onClickChange, // 点击事件
 }: StackedRowBarProps) => {
-  const chartInstance = useRef<echarts.ECharts | null>(null); // 用于保存上一次chartRef被赋值的实例对象
+  const chartInstance = useRef<RefObject<echarts.ECharts | null>>(null); // 用于保存上一次chartRef被赋值的实例对象
 
   // 图表最终的配置数据
   const chartOptions = useMemo(() => {
@@ -226,7 +226,7 @@ const StackedRowBar = ({
   // 鼠标离开整个图表的事件
   const globaloutCallback = useCallback(() => {
     const chartInstanceCurrent = chartInstance.current;
-    if (chartInstanceCurrent) {
+    if (chartInstanceCurrent?.current) {
       const seriesIndex = [];
       const { length } = chartOptions.series as BarSeriesOption[];
       if (length) {
@@ -235,7 +235,7 @@ const StackedRowBar = ({
         }
       }
       // 鼠标离开整个图表后取消所有选中的图形元素
-      chartInstanceCurrent.dispatchAction({
+      chartInstanceCurrent.current.dispatchAction({
         type: "unselect",
         dataIndex: seriesIndex,
       });

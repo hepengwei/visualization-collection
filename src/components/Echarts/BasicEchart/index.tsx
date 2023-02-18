@@ -29,7 +29,7 @@ const BasicEchart = (
     legendSelectChanged, //legend点击事件
     onGlobalout, // 鼠标离开图表事件
   }: BasicEchartProps,
-  ref: RefObject<echarts.ECharts | null>
+  ref: RefObject<RefObject<echarts.ECharts | null> | null>
 ) => {
   const chartRef = useRef<HTMLDivElement>(null); //当前div实例
   const chartInstance = useRef<echarts.ECharts | null>(null); // 用于保存上一次chartRef被赋值的实例对象
@@ -37,7 +37,7 @@ const BasicEchart = (
   useImperativeHandle(
     ref,
     () => {
-      return chartInstance.current;
+      return chartInstance;
     },
     []
   );
