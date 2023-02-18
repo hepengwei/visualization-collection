@@ -7,7 +7,7 @@ import BasicEchart from "../BasicEchart";
 
 interface PieProps {
   data: {
-    dataSource: Record<string, any>[];
+    dataSource: (string | number)[][];
   };
   style?: Record<string, any>;
   onHoverChange?: (params: any) => void;
@@ -52,7 +52,7 @@ const getBaseOptions = () => {
       {
         name: "Price",
         type: "pie",
-        radius: ["50%", "70%"],
+        radius: ["55%", "72%"],
         avoidLabelOverlap: false,
         label: {
           show: false,
@@ -108,8 +108,6 @@ const Pie = ({
     const options = getBaseOptions();
     const { dataSource } = data;
     if (!dataSource) return options;
-    // 添加水印
-    // options.graphic = getGraphic();
     options.dataset = { source: dataSource };
     return options;
   }, [data]);

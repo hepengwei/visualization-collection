@@ -1,0 +1,51 @@
+.container {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  .chartBox {
+    display: flex;
+    flex: 1;
+    width: 480px;
+    height: 480px;
+  }
+  .rightBox {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 16px;
+    .item {
+      display: flex;
+      align-items: center;
+      margin: 4px 0;
+      font-size: 12px;
+      cursor: pointer;
+
+      .rect {
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+      }
+      .name {
+        width: 120px;
+        height: 20px;
+        padding: 0 8px;
+        text-align: center;
+        background-color: var(--dprism-background-e4e4e4-2e2f37);
+        border-radius: 2px;
+        font-size: 16px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .value {
+        width: 110px;
+        margin-left: 30px;
+        font-size: 16px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}

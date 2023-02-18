@@ -5,10 +5,11 @@ import React, { useEffect } from "react";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import GridContent from "components/GridContent";
 import Pie1 from "./components/Pie1";
+import Pie2 from "./components/Pie2";
 import styles from "./index.module.scss";
 
 const { GridBox } = GridContent;
-const gridboxList = [{ element: <Pie1 /> }];
+const gridboxList = [{ element: <Pie1 /> }, { element: <Pie2 /> }];
 
 const Pie = () => {
   const { setScrollTop } = useGlobalContext();

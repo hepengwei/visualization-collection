@@ -6,7 +6,7 @@
   flex: 1;
   justify-content: space-between;
   flex-wrap: wrap;
-  background-image: linear-gradient(135deg, #224141, #162a2a);
+  background-image: $globalBackgroundImage;
   padding: 0 2px 4px;
 
   .box {
