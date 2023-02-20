@@ -918,6 +918,58 @@ export const compression = async (
   }
 };
 
+// 根据AI识别的人像数据算出界面中需要显示的最终数据
+export const getImageDataByAIData = (
+  originalImageData: ImageData,
+  AIImageData: ImageData,
+  options: {
+    backgroundColor: { r: number; g: number; b: number; a: number };
+    changeIntoColor: { r: number; g: number; b: number; a: number };
+  } = {
+    backgroundColor: { r: 0, g: 0, b: 0, a: 255 },
+    changeIntoColor: { r: 0, g: 0, b: 0, a: 0 },
+  }
+) => {
+  if (originalImageData) {
+    if (AIImageData && options) {
+      const { data, width, height } = originalImageData;
+      const { data: AIData } = AIImageData;
+      const newImgData = new Uint8ClampedArray(data.length);
+      const { backgroundColor, changeIntoColor } = options;
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          const startIndex = (y * width + x) * 4;
+          const r = AIData[startIndex];
+          const g = AIData[startIndex + 1];
+          const b = AIData[startIndex + 2];
+          const a = AIData[startIndex + 3];
+          if (
+            r === backgroundColor.r &&
+            g === backgroundColor.g &&
+            b === backgroundColor.b &&
+            a === backgroundColor.a &&
+            changeIntoColor.a !== 0
+          ) {
+            newImgData[startIndex] = changeIntoColor.r;
+            newImgData[startIndex + 1] = changeIntoColor.g;
+            newImgData[startIndex + 2] = changeIntoColor.b;
+            newImgData[startIndex + 3] = changeIntoColor.a;
+          } else {
+            newImgData[startIndex] = data[startIndex];
+            newImgData[startIndex + 1] = data[startIndex + 1];
+            newImgData[startIndex + 2] = data[startIndex + 2];
+            newImgData[startIndex + 3] = data[startIndex + 3];
+          }
+        }
+      }
+      const newImageData = new ImageData(newImgData, width, height);
+      return newImageData;
+    }
+    return originalImageData;
+  }
+  return null;
+};
+
 // 卷积算法
 const convolutionMatrix = (imageData: ImageData, kernel: number[]) => {
   if (imageData) {

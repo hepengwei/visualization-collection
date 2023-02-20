@@ -21,17 +21,21 @@
         position: absolute;
         top: 0;
         left: 0;
+        visibility: hidden;
         z-index: 1;
       }
-      img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+      canvas {
         z-index: 2;
       }
+      // img {
+      //   position: absolute;
+      //   top: 0;
+      //   left: 0;
+      //   width: 100%;
+      //   height: 100%;
+      //   object-fit: cover;
+      //   z-index: 2;
+      // }
     }
     .btns {
       display: flex;
@@ -42,6 +46,9 @@
           background-color: transparent !important;
           color: #fff;
         }
+      }
+      .label {
+        margin-left: 16px;
       }
       button {
         margin: 0 20px;
