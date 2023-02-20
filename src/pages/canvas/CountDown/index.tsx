@@ -2,6 +2,7 @@
  * 炫酷倒计时动画
  */
 import React, { useEffect, useRef } from "react";
+import { useIntl } from "react-intl";
 import SphereCollision from "sphere-collision";
 import type {
   SphereCollisionC,
@@ -37,6 +38,7 @@ const colors = [
 ];
 
 const CountDown = () => {
+  const intl = useIntl();
   const boxRef = useRef<HTMLDivElement>(null);
   const sphereCollisionRef = useRef<SphereCollisionC | null>(null);
   const end = new Date();
@@ -349,7 +351,9 @@ const CountDown = () => {
       }}
       ref={boxRef}
     >
-      <canvas id="myCanvas">您的浏览器版本过低，请更新浏览器</canvas>
+      <canvas id="myCanvas">
+        {intl.formatMessage({ id: "common.browserTooLow" })}
+      </canvas>
     </div>
   );
 };

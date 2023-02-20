@@ -2,12 +2,14 @@
  * 文字跳舞
  */
 import React, { useEffect, useRef } from "react";
+import { useIntl } from "react-intl";
 import styles from "./index.module.scss";
 
 const canvasWidth = 324;
 const canvasHeight = 570;
 
 const CodeBgWall = () => {
+  const intl = useIntl();
   const videoRef = useRef<HTMLVideoElement>(null);
   const boxRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -86,8 +88,14 @@ const CodeBgWall = () => {
       >
         <source src="public/dance.mp4"></source>
       </video>
-      <canvas ref={canvasRef}>您的浏览器版本过低，请更新浏览器</canvas>
-      <div className={styles.tip}>视频加载比较慢，请耐心等待</div>
+      <canvas ref={canvasRef}>
+        {intl.formatMessage({ id: "common.browserTooLow" })}
+      </canvas>
+      <div className={styles.tip}>
+        {intl.formatMessage({
+          id: "page.canvasDynamicEffect.videoIsSlowToLoad",
+        })}
+      </div>
     </div>
   );
 };

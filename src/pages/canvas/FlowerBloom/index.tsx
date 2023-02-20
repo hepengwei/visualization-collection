@@ -2,6 +2,7 @@
  * 花卉绽放动画
  */
 import React, { useCallback, useEffect, useRef } from "react";
+import { useIntl } from "react-intl";
 
 let canvasWidth = 600;
 let canvasHeight = 600;
@@ -13,6 +14,7 @@ const defaultPointer = {
 };
 
 const FlowerBloom = () => {
+  const intl = useIntl();
   const boxRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -119,7 +121,9 @@ const FlowerBloom = () => {
       }}
       ref={boxRef}
     >
-      <canvas ref={canvasRef}>您的浏览器版本过低，请更新浏览器</canvas>
+      <canvas ref={canvasRef}>
+        {intl.formatMessage({ id: "common.browserTooLow" })}
+      </canvas>
     </div>
   );
 };

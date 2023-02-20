@@ -12,8 +12,9 @@
   .startBtn,
   .continueBtn,
   .restartBtn {
-    width: 200px;
+    min-width: 200px;
     height: 60px;
+    padding: 0 10px;
     background-color: black;
     position: absolute;
     left: 50%;
@@ -50,6 +51,9 @@
     background-color: white;
     text-align: center;
     border-radius: 20px;
+    h1 {
+      color: black;
+    }
   }
 
   .scoreBox {

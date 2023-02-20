@@ -2,6 +2,7 @@
  * 球体自由落体交互效果
  */
 import React, { useEffect, useRef } from "react";
+import { useIntl } from "react-intl";
 import SphereCollision from "sphere-collision";
 import type { SphereCollisionC, GlobuleOptions } from "sphere-collision/types";
 import basketball from "images/canvas/basketball.png";
@@ -60,6 +61,7 @@ const globuleOptionList: GlobuleOptions[] = [
 ];
 
 const FreeFallingBody = () => {
+  const intl = useIntl();
   const boxRef = useRef<HTMLDivElement>(null);
   const sphereCollisionRef = useRef<SphereCollisionC | null>(null);
 
@@ -135,7 +137,9 @@ const FreeFallingBody = () => {
       }}
       ref={boxRef}
     >
-      <canvas id="myCanvas">您的浏览器版本过低，请更新浏览器</canvas>
+      <canvas id="myCanvas">
+        {intl.formatMessage({ id: "common.browserTooLow" })}
+      </canvas>
     </div>
   );
 };

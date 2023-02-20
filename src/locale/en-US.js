@@ -113,6 +113,15 @@ const en_US = {
   "page.htmlVision.utilitarianFunction.oneInch": "1 inch",
   "page.htmlVision.utilitarianFunction.twoInch": "2 inch",
 
+  // Canvas动效
+  "page.canvasDynamicEffect.startGame": "Start Game",
+  "page.canvasDynamicEffect.continueTheGame": "Continue The Game",
+  "page.canvasDynamicEffect.restart": "Restart",
+  "page.canvasDynamicEffect.pause": "Pause",
+  "page.canvasDynamicEffect.gameHasPaused": "The game has been paused",
+  "page.canvasDynamicEffect.score": "Score",
+  "page.canvasDynamicEffect.videoIsSlowToLoad": "The video is slow to load, please wait patiently",
+
   // 图片处理工具页
   "page.imageProcessingTool.imageTooSmall":
     "Please select the size above 20x20",
