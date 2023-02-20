@@ -179,6 +179,43 @@ export const getCanvasImgData = (
   return null;
 };
 
+// 根据video元素获取图片二进制数据
+export const getCanvasImgDataByVideo = (
+  video: HTMLVideoElement,
+  width: number = 0,
+  height: number = 0
+) => {
+  if (video && width && height) {
+    const canvas = document.createElement("canvas") as HTMLCanvasElement;
+    const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+    canvas.width = width;
+    canvas.height = height;
+    ctx.drawImage(video, 0, 0, width, height);
+    const imageData = ctx.getImageData(0, 0, width, height) as ImageData;
+    return imageData;
+  }
+  return null;
+};
+
+// 根据ImageBitmap获取图片二进制数据
+export const getCanvasImgDataByBitmap = (
+  imageBitmap: ImageBitmap,
+  width: number = 0,
+  height: number = 0
+) => {
+  console.log(333, imageBitmap);
+  if (imageBitmap && width && height) {
+    const canvas = document.createElement("canvas") as HTMLCanvasElement;
+    const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+    canvas.width = width;
+    canvas.height = height;
+    ctx.drawImage(imageBitmap, 0, 0, width, height);
+    const imageData = ctx.getImageData(0, 0, width, height) as ImageData;
+    return imageData;
+  }
+  return null;
+};
+
 // 导出图片
 export const exportToImage = (blob: Blob, imgName: string) => {
   if (!blob) return;

@@ -6,6 +6,7 @@ const en_US = {
   "common.comingSoon.text":
     "The project is continuously updated, coming soon！！！",
   "common.workHard": "Hard at work, please hold on",
+  "common.tryingToLoad": "Trying to load, please hold on",
   "common.start": "Start",
   "common.end": "End",
   "common.operationFailure": "Operation failure",
@@ -38,6 +39,13 @@ const en_US = {
   "common.notSupportGetDisplayMedia": "Browsers do not support getDisplayMedia",
   "common.browserTooLow":
     "Your browser version is too low, please update your browser",
+  "common.backgroundColor": "Background Color",
+  "common.dimension": "Dimension",
+  "common.size": "Size",
+  "common.transparency": "Transparency",
+  "common.red": "Red",
+  "common.blue": "Blue",
+  "common.white": "White",
 
   // 菜单
   "menu.htmlVision": "Html Vision",
@@ -104,7 +112,7 @@ const en_US = {
   "page.htmlVision.utilitarianFunction.rerecord": "Rerecord",
   "page.htmlVision.utilitarianFunction.recordScreen": "Record Screen",
   "page.htmlVision.utilitarianFunction.recordVideo": "Record Video",
-  "page.htmlVision.utilitarianFunction.takeIDPhotos": "Take a Photo",
+  "page.htmlVision.utilitarianFunction.takeIDPhotos": "Take ID Photos",
   "page.htmlVision.utilitarianFunction.clickToTakeAPhoto":
     "Click To Take a Photo",
   "page.htmlVision.utilitarianFunction.readyToTakeAPhoto":
@@ -136,8 +144,6 @@ const en_US = {
   "page.imageProcessingTool.distanceTop": "Distance Top",
   "page.imageProcessingTool.filename": "Filename",
   "page.imageProcessingTool.format": "Format",
-  "page.imageProcessingTool.dimension": "Dimension",
-  "page.imageProcessingTool.size": "Size",
   "page.imageProcessingTool.flipSideToSide": "Flip Side To Side",
   "page.imageProcessingTool.flipTopToBottom": "Flip Top To Bottom",
   "page.imageProcessingTool.rotateLeft": "Rotate Left",

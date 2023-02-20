@@ -92,14 +92,13 @@ const ChangeBrightness = (props: ChangeBrightnessProps) => {
               {imgInfo.fileType}
             </div>
             <div className={styles.item}>
-              {intl.formatMessage({ id: "page.imageProcessingTool.dimension" })}
-              ：
+              {intl.formatMessage({ id: "common.dimension" })}：
               {imgInfo.width && imgInfo.height
                 ? `${imgInfo.width}x${imgInfo.height}`
                 : intl.formatMessage({ id: "common.unknown" })}
             </div>
             <div className={styles.item}>
-              {intl.formatMessage({ id: "page.imageProcessingTool.size" })}：
+              {intl.formatMessage({ id: "common.size" })}：
               {sizeTostr(imgInfo.size)}
             </div>
           </div>
