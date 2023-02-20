@@ -2,6 +2,7 @@
  * 球体碰撞交互效果
  */
 import React, { useEffect, useRef } from "react";
+import { useIntl } from "react-intl";
 import SphereCollision from "sphere-collision";
 import type {
   SphereCollisionC,
@@ -29,6 +30,7 @@ const gDirection = "toInit"; // 引力方向。目前只有“toInit”，朝向
 const gCoefficient = 0.002; // 引力系数
 
 const GlobuleInteraction = () => {
+  const intl = useIntl();
   const boxRef = useRef<HTMLDivElement>(null);
   const sphereCollisionRef = useRef<SphereCollisionC | null>(null);
 
@@ -141,14 +143,14 @@ const GlobuleInteraction = () => {
   return (
     <div
       style={{
-        boxSizing: 'border-box',
+        boxSizing: "border-box",
         width: "100%",
         height: "100%",
       }}
       ref={boxRef}
     >
       <canvas id="globuleInteractionCanvas">
-        您的浏览器版本过低，请更新浏览器
+        {intl.formatMessage({ id: "common.browserTooLow" })}
       </canvas>
     </div>
   );

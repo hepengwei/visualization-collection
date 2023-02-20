@@ -2,6 +2,7 @@
  * 探照灯效果
  */
 import React, { useEffect, useRef } from "react";
+import { useIntl } from "react-intl";
 import SphereCollision from "sphere-collision";
 import type { SphereCollisionC, GlobuleC } from "sphere-collision/types";
 
@@ -11,6 +12,7 @@ const canvasBgColor = "black"; // 画布背景颜色
 const globuleRadius = 90; // 球半径
 
 const Searchlight = () => {
+  const intl = useIntl();
   const sphereCollisionRef = useRef<SphereCollisionC | null>(null);
   const sphereCollisionRef2 = useRef<SphereCollisionC | null>(null);
 
@@ -131,9 +133,11 @@ const Searchlight = () => {
         backgroundImage: "linear-gradient(135deg, #224141, #162a2a)",
       }}
     >
-      <canvas id="searchlightCanvas">您的浏览器版本过低，请更新浏览器</canvas>
+      <canvas id="searchlightCanvas">
+        {intl.formatMessage({ id: "common.browserTooLow" })}
+      </canvas>
       <canvas id="searchlightCanvas2" style={{ marginLeft: "50px" }}>
-        您的浏览器版本过低，请更新浏览器
+        {intl.formatMessage({ id: "common.browserTooLow" })}
       </canvas>
     </div>
   );

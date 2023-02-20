@@ -101,6 +101,15 @@ const zh_CN = {
   "page.htmlVision.utilitarianFunction.oneInch": "1寸",
   "page.htmlVision.utilitarianFunction.twoInch": "2寸",
 
+  // Canvas动效
+  "page.canvasDynamicEffect.startGame": "开 始 游 戏",
+  "page.canvasDynamicEffect.continueTheGame": "继 续 游 戏",
+  "page.canvasDynamicEffect.restart": "重 新 开 始",
+  "page.canvasDynamicEffect.pause": "暂停",
+  "page.canvasDynamicEffect.gameHasPaused": "游戏已暂停",
+  "page.canvasDynamicEffect.score": "分数",
+  "page.canvasDynamicEffect.videoIsSlowToLoad": "视频加载比较慢，请耐心等待",
+
   // 图片处理工具页
   "page.imageProcessingTool.imageTooSmall": "请选择20x20以上尺寸的图片",
   "page.imageProcessingTool.imageTooLarge": "请选择1350x1350以下尺寸的图片",

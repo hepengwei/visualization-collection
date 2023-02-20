@@ -2,6 +2,7 @@
  * 消灭行星小游戏
  */
 import React, { useRef, useEffect, useState } from "react";
+import { useIntl } from "react-intl";
 import SphereCollision from "sphere-collision";
 import type { SphereCollisionC, GlobuleC } from "sphere-collision/types";
 import styles from "./index.module.scss";
@@ -31,6 +32,7 @@ enum Role {
 }
 
 const KillPlanetGame = () => {
+  const intl = useIntl();
   const boxRef = useRef<HTMLDivElement>(null);
   const sphereCollisionRef = useRef<SphereCollisionC | null>(null);
   const timerRef = useRef<number | null>(null);
@@ -358,38 +360,53 @@ const KillPlanetGame = () => {
           : "transparent",
       }}
     >
-      <canvas id="myCanvas2">您的浏览器版本过低，请更新浏览器</canvas>
+      <canvas id="myCanvas2">
+        {intl.formatMessage({ id: "common.browserTooLow" })}
+      </canvas>
       {gameStatus === GameStaus.toPlay && (
         <button className={styles.startBtn} onClick={startGame}>
-          开 始 游 戏
+          {intl.formatMessage({ id: "page.canvasDynamicEffect.startGame" })}
         </button>
       )}
       {gameStatus !== GameStaus.toPlay && (
         <div className={styles.scoreBox}>
-          <span>分数：</span>
+          <span>
+            {intl.formatMessage({ id: "page.canvasDynamicEffect.score" })}：
+          </span>
           <span className={styles.score}>{score}</span>
         </div>
       )}
       {[GameStaus.playing, GameStaus.pause].includes(gameStatus) && (
         <div className={styles.pauseBtn} onClick={pauseGame}>
-          暂停
+          {intl.formatMessage({ id: "page.canvasDynamicEffect.pause" })}
         </div>
       )}
       {gameStatus === GameStaus.pause && (
         <div className={styles.gamepause}>
-          <h1>游戏已暂停</h1>
+          <h1>
+            {intl.formatMessage({
+              id: "page.canvasDynamicEffect.gameHasPaused",
+            })}
+          </h1>
           <button className={styles.continueBtn} onClick={continueGame}>
-            继 续 游 戏
+            {intl.formatMessage({
+              id: "page.canvasDynamicEffect.continueTheGame",
+            })}
           </button>
         </div>
       )}
       {gameStatus === GameStaus.gameover && (
         <div className={styles.gameover}>
           <h1>
-            分数：<span className={styles.finallyScore}>{score}</span>
+            {intl.formatMessage({
+              id: "page.canvasDynamicEffect.score",
+            })}
+            ：<span className={styles.finallyScore}>{score}</span>
           </h1>
           <button className={styles.restartBtn} onClick={restartGame}>
-            重 新 开 始
+            {intl.formatMessage({
+              id: "page.canvasDynamicEffect.restart",
+            })}
           </button>
         </div>
       )}

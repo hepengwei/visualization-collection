@@ -101,8 +101,6 @@ const Pie = ({
   onHoverChange, // 鼠标hover事件
   onClickChange, // 点击事件
 }: PieProps) => {
-  const chartInstance = useRef<echarts.EChartsType | null>(null);
-
   // 图表最终的配置数据
   const chartOptions = useMemo(() => {
     const options = getBaseOptions();
@@ -118,7 +116,6 @@ const Pie = ({
       style={style}
       onClickChange={onClickChange}
       onHoverChange={onHoverChange}
-      ref={chartInstance}
     />
   );
 };

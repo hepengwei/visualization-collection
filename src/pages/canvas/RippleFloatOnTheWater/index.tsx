@@ -2,6 +2,7 @@
  * 水波荡漾效果
  */
 import React, { useEffect, useRef } from "react";
+import { useIntl } from "react-intl";
 import WaterRipple from "./waterRipple";
 import waterBg from "images/canvas/water.png";
 
@@ -9,6 +10,7 @@ let canvasWidth = 600;
 let canvasHeight = 600;
 
 const RippleFloatOnTheWater = () => {
+  const intl = useIntl();
   const boxRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const waterRippleRef = useRef<WaterRipple | null>(null);
@@ -58,7 +60,9 @@ const RippleFloatOnTheWater = () => {
       }}
       ref={boxRef}
     >
-      <canvas ref={canvasRef}>您的浏览器版本过低，请更新浏览器</canvas>
+      <canvas ref={canvasRef}>
+        {intl.formatMessage({ id: "common.browserTooLow" })}
+      </canvas>
     </div>
   );
 };

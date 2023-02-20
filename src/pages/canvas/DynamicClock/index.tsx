@@ -2,6 +2,7 @@
  * 动态时钟
  */
 import React, { useEffect, useRef } from "react";
+import { useIntl } from "react-intl";
 
 const canvasWidth = 400;
 const canvasHeight = 400;
@@ -9,6 +10,7 @@ const r = canvasWidth / 2;
 const rem = canvasWidth / 200;
 
 const DynamicClock = () => {
+  const intl = useIntl();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // 绘制时钟的盘面、圆点和数字
@@ -152,7 +154,9 @@ const DynamicClock = () => {
         backgroundImage: "linear-gradient(135deg, #224141, #162a2a)",
       }}
     >
-      <canvas ref={canvasRef}>您的浏览器版本过低，请更新浏览器</canvas>
+      <canvas ref={canvasRef}>
+        {intl.formatMessage({ id: "common.browserTooLow" })}
+      </canvas>
     </div>
   );
 };
