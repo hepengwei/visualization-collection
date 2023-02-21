@@ -24,6 +24,7 @@ import FlowerBloom from "pages/canvas/FlowerBloom";
 import CodeBgWall from "pages/canvas/CodeBgWall";
 import WordDance from "pages/canvas/WordDance";
 import HumanPostureDetection from "pages/AIApplication/HumanPostureDetection";
+import NotBlockPeopleBarrage from "pages/AIApplication/NotBlockPeopleBarrage";
 import GameImage from "pages/GameImage";
 import Bar from "pages/echarts/Bar";
 import Pie from "pages/echarts/Pie";
@@ -156,6 +157,10 @@ export const contentRoutes: RouteObject[] = [
       {
         path: "/AIApplication/humanPostureDetection",
         element: <HumanPostureDetection />,
+      },
+      {
+        path: "/AIApplication/notBlockPeopleBarrage",
+        element: <NotBlockPeopleBarrage />,
       },
     ],
   },
