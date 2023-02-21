@@ -1,4 +1,5 @@
 import React, { useLayoutEffect, useRef } from "react";
+import { useIntl } from "react-intl";
 import { Button } from "antd";
 import paper1 from "images/html/paper1.png";
 import paper2 from "images/html/paper2.png";
@@ -29,6 +30,7 @@ const classNameArr = [
 ];
 
 const FlipBook = () => {
+  const intl = useIntl();
   const pagesRef = useRef<HTMLDivElement>(null);
   const leftPageIndex = useRef<number>(0);
   const isFlipping = useRef<boolean>(false);
@@ -175,10 +177,14 @@ const FlipBook = () => {
       </div>
       <div className={styles.btns}>
         <Button type="primary" className={styles.btn} onClick={goPreviousPage}>
-          前一页
+          {intl.formatMessage({
+            id: "page.htmlVision.interactiveDesign.previousPage",
+          })}
         </Button>
         <Button type="primary" className={styles.btn} onClick={goNextPage}>
-          后一页
+          {intl.formatMessage({
+            id: "page.htmlVision.interactiveDesign.nextPage",
+          })}
         </Button>
       </div>
     </div>

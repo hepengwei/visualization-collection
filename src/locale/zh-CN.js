@@ -85,6 +85,25 @@ const zh_CN = {
   "menu.imageProcessingTool.coverWithMosaics": "打马赛克",
   "menu.imageProcessingTool.imageCompression": "图片压缩",
 
+  // Html视觉-视觉设计页
+  "page.htmlVision.visualDesign.displaysCustomRows":
+    "该组件为可显示自定义行数，超出时显示省略号的文本组件，还支持在最后面出现省略号时显示自定义的文字按钮。",
+  "page.htmlVision.visualDesign.thisIsText": "这是文字。",
+  "page.htmlVision.visualDesign.brighten": "变亮",
+  "page.htmlVision.visualDesign.grayed": "变灰",
+  "page.htmlVision.visualDesign.textShadow": "文字阴影",
+
+  // Html视觉-交互设计页
+  "page.htmlVision.interactiveDesign.title": "书名",
+  "page.htmlVision.interactiveDesign.price": "价格",
+  "page.htmlVision.interactiveDesign.count": "数量",
+  "page.htmlVision.interactiveDesign.total": "总计",
+  "page.htmlVision.interactiveDesign.addingToCart": "放开添加到购物车",
+  "page.htmlVision.interactiveDesign.dragToThisToBuy": "拖拽到此区域进行购买",
+  "page.htmlVision.interactiveDesign.previousPage": "前一页",
+  "page.htmlVision.interactiveDesign.nextPage": "后一页",
+  "page.htmlVision.interactiveDesign.personalArticle": "个人文章",
+
   // Html视觉-实用功能页
   "page.htmlVision.utilitarianFunction.operatingShears": "操作剪切板",
   "page.htmlVision.utilitarianFunction.saveTextToClipboard": "保存文本到剪切板",

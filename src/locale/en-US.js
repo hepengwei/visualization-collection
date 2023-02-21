@@ -92,6 +92,26 @@ const en_US = {
   "menu.imageProcessingTool.coverWithMosaics": "Cover With Mosaics",
   "menu.imageProcessingTool.imageCompression": "Image Compression",
 
+  // Html视觉-视觉设计页
+  "page.htmlVision.visualDesign.displaysCustomRows":
+    "This component is a text component that displays the number of user-defined lines, and displays ellipses when the number exceeds. It also supports the display of user-defined text buttons when ellipses appear at the end.",
+  "page.htmlVision.visualDesign.thisIsText": "This is the text.",
+  "page.htmlVision.visualDesign.brighten": "Brighten",
+  "page.htmlVision.visualDesign.grayed": "Grayed",
+  "page.htmlVision.visualDesign.textShadow": "Text Shadow",
+
+  // Html视觉-交互设计页
+  "page.htmlVision.interactiveDesign.title": "Title",
+  "page.htmlVision.interactiveDesign.price": "Price",
+  "page.htmlVision.interactiveDesign.count": "Count",
+  "page.htmlVision.interactiveDesign.total": "Total",
+  "page.htmlVision.interactiveDesign.addingToCart": "Let go of adding to cart",
+  "page.htmlVision.interactiveDesign.dragToThisToBuy":
+    "Drag to this area to buy",
+  "page.htmlVision.interactiveDesign.previousPage": "Previous Page",
+  "page.htmlVision.interactiveDesign.nextPage": "Next Page",
+  "page.htmlVision.interactiveDesign.personalArticle": "Personal Article",
+
   // Html视觉-实用功能页
   "page.htmlVision.utilitarianFunction.operatingShears": "Operating Shears",
   "page.htmlVision.utilitarianFunction.saveTextToClipboard":
@@ -128,7 +148,8 @@ const en_US = {
   "page.canvasDynamicEffect.pause": "Pause",
   "page.canvasDynamicEffect.gameHasPaused": "The game has been paused",
   "page.canvasDynamicEffect.score": "Score",
-  "page.canvasDynamicEffect.videoIsSlowToLoad": "The video is slow to load, please wait patiently",
+  "page.canvasDynamicEffect.videoIsSlowToLoad":
+    "The video is slow to load, please wait patiently",
 
   // 图片处理工具页
   "page.imageProcessingTool.imageTooSmall":

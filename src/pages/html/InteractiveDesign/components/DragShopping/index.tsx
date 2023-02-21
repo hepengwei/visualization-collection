@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
+import { useIntl } from "react-intl";
 import GridContent from "components/GridContent";
 import book1 from "images/html/book1.jpg";
 import book2 from "images/html/book2.jpg";
@@ -31,6 +32,7 @@ const bookList: Book[] = [
 ];
 
 const DragShopping = () => {
+  const intl = useIntl();
   const [shoppingList, setShoppingList] = useState<Shopping[]>([]);
   const [dragOver, setDragOver] = useState<boolean>(false);
   const [totalMoney, setTotalMoney] = useState<number>(0);
@@ -124,9 +126,21 @@ const DragShopping = () => {
           onDrop={onDrop}
         >
           <div className={styles.tableHead}>
-            <div className={styles.tableCell}>书名</div>
-            <div className={styles.tableCell}>价格</div>
-            <div className={styles.tableCell}>数量</div>
+            <div className={styles.tableCell}>
+              {intl.formatMessage({
+                id: "page.htmlVision.interactiveDesign.title",
+              })}
+            </div>
+            <div className={styles.tableCell}>
+              {intl.formatMessage({
+                id: "page.htmlVision.interactiveDesign.price",
+              })}
+            </div>
+            <div className={styles.tableCell}>
+              {intl.formatMessage({
+                id: "page.htmlVision.interactiveDesign.count",
+              })}
+            </div>
           </div>
           {shoppingList.map((shopping: Shopping) => {
             const { id, num, name, price } = shopping;
@@ -141,12 +155,21 @@ const DragShopping = () => {
           {shoppingList.length > 0 && (
             <div className={styles.total}>
               <span className={styles.totalMoney}>
-                总计：￥<span>{totalMoney}</span>
+                {intl.formatMessage({
+                  id: "page.htmlVision.interactiveDesign.total",
+                })}
+                ：￥<span>{totalMoney}</span>
               </span>
             </div>
           )}
           <div className={styles.tip}>
-            {dragOver ? "可放开添加到购物车" : "拖拽到此区域进行购买"}
+            {dragOver
+              ? intl.formatMessage({
+                  id: "page.htmlVision.interactiveDesign.addingToCart",
+                })
+              : intl.formatMessage({
+                  id: "page.htmlVision.interactiveDesign.dragToThisToBuy",
+                })}
           </div>
         </div>
       </div>
