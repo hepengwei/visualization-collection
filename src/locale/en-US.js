@@ -15,6 +15,7 @@ const en_US = {
   "common.confirm": "Confirm",
   "common.clear": "Clear",
   "common.play": "Play",
+  "common.pause": "Pause",
   "common.download": "Download",
   "common.get": "Get",
   "common.failedToObtain": "Failed to obtain",
@@ -81,6 +82,8 @@ const en_US = {
   "menu.threeJs3D": "Three.js3D",
   "menu.AIApplication": "AI Application",
   "menu.AIApplication.humanPostureDetection": "Human Posture Detection",
+  "menu.AIApplication.notBlockPeopleBarrage":
+    "Not Block The People Of The Barrage",
   "menu.imageProcessingTool": "Image Processing Tool",
   "menu.imageProcessingTool.basicOperation": "Basic Operation",
   "menu.imageProcessingTool.rectangularClipping": "Rectangular Clipping",
@@ -150,6 +153,10 @@ const en_US = {
   "page.canvasDynamicEffect.score": "Score",
   "page.canvasDynamicEffect.videoIsSlowToLoad":
     "The video is slow to load, please wait patiently",
+
+  // 人工智能应用
+  "page.AIApplication.send": "Send",
+  "page.AIApplication.sendBarrage": "Send barrage",
 
   // 图片处理工具页
   "page.imageProcessingTool.imageTooSmall":

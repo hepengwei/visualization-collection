@@ -14,6 +14,7 @@ const zh_CN = {
   "common.confirm": "确定",
   "common.clear": "清空",
   "common.play": "播放",
+  "common.pause": "暂停",
   "common.download": "下载",
   "common.get": "获取",
   "common.failedToObtain": "获取失败",
@@ -74,6 +75,7 @@ const zh_CN = {
   "menu.threeJs3D": "Three.js3D",
   "menu.AIApplication": "人工智能应用",
   "menu.AIApplication.humanPostureDetection": "人体姿态检测",
+  "menu.AIApplication.notBlockPeopleBarrage": "不挡人像的弹幕",
   "menu.imageProcessingTool": "图片处理工具",
   "menu.imageProcessingTool.basicOperation": "基础操作",
   "menu.imageProcessingTool.rectangularClipping": "矩形裁剪",
@@ -136,6 +138,10 @@ const zh_CN = {
   "page.canvasDynamicEffect.gameHasPaused": "游戏已暂停",
   "page.canvasDynamicEffect.score": "分数",
   "page.canvasDynamicEffect.videoIsSlowToLoad": "视频加载比较慢，请耐心等待",
+
+  // 人工智能应用
+  "page.AIApplication.send": "发送",
+  "page.AIApplication.sendBarrage": "发送弹幕",
 
   // 图片处理工具页
   "page.imageProcessingTool.imageTooSmall": "请选择20x20以上尺寸的图片",

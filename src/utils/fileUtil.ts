@@ -105,6 +105,10 @@ export const fileOrBlobToDataURL = (
   obj: File | Blob,
   cb: (result: string | null) => void
 ) => {
+  if (!obj) {
+    cb(null);
+    return;
+  }
   const reader = new FileReader();
   reader.readAsDataURL(obj);
   reader.onload = function (e) {
@@ -131,14 +135,29 @@ export const blobToImage = (
   });
 };
 
+// ImageData对象转DataURL
+export const imageDataToDataURL = (imageData: ImageData) => {
+  if (!imageData) {
+    return null;
+  }
+  const { width, height } = imageData;
+  const canvas = document.createElement("canvas") as HTMLCanvasElement;
+  const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+  canvas.width = width;
+  canvas.height = height;
+  ctx.putImageData(imageData, 0, 0, 0, 0, width, height);
+  const dataUrl = canvas.toDataURL("image/png");
+  return dataUrl;
+};
+
 // ImageData对象转Blob
 export const imageDataToBlob = (
   imageData: ImageData,
   exportImageType = "PNG",
-  callback: (blob: Blob | null) => void
+  cb: (blob: Blob | null) => void
 ) => {
   if (!imageData) {
-    callback(null);
+    cb(null);
     return;
   }
   const { width, height } = imageData;
@@ -152,7 +171,7 @@ export const imageDataToBlob = (
   }`;
   canvas.toBlob(
     (blob: Blob | null) => {
-      callback(blob);
+      cb(blob);
     },
     toImageType,
     1
@@ -203,7 +222,6 @@ export const getCanvasImgDataByBitmap = (
   width: number = 0,
   height: number = 0
 ) => {
-  console.log(333, imageBitmap);
   if (imageBitmap && width && height) {
     const canvas = document.createElement("canvas") as HTMLCanvasElement;
     const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;

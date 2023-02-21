@@ -214,6 +214,12 @@ const Menus: React.FC = () => {
           }),
           "humanPostureDetection"
         ),
+        getItem(
+          intl.formatMessage({
+            id: "menu.AIApplication.notBlockPeopleBarrage",
+          }),
+          "notBlockPeopleBarrage"
+        ),
       ]
     ),
     getItem(
