@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import ReactDOM from "react-dom";
+import { useIntl } from "react-intl";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import discuss from "images/html/discuss.jpg";
 import styles from "./index.module.scss";
@@ -37,6 +38,7 @@ const cursorBigRadius = 40;
 const cursorMoveVCoefficient = 0.12;
 
 const MouseHover = () => {
+  const intl = useIntl();
   const { scrollTop } = useGlobalContext();
   const containerRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
@@ -165,7 +167,9 @@ const MouseHover = () => {
           onMouseEnter={onMouseEnterItem}
           onMouseLeave={onMouseLeaveItem}
         >
-          个人文章
+          {intl.formatMessage({
+            id: "page.htmlVision.interactiveDesign.personalArticle",
+          })}
         </p>
         <div className={styles.bottom}>
           <img

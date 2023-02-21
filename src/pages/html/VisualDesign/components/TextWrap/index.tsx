@@ -1,9 +1,12 @@
 import React from "react";
+import { useIntl } from "react-intl";
 import styles from "./index.module.scss";
 
-const text = "这是文字";
-
 const TextWrap = () => {
+  const intl = useIntl();
+  const text = intl.formatMessage({
+    id: "page.htmlVision.visualDesign.thisIsText",
+  });
   return (
     <div className={styles.container}>
       <div className={styles.topText}>{text.repeat(40)}</div>

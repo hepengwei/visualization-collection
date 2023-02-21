@@ -1,15 +1,19 @@
 import React from "react";
+import { useIntl } from "react-intl";
 import EllipsisText from "components/EllipsisText";
 import styles from "./index.module.scss";
 
 const EllipsisText1 = () => {
-  const text =
-    "该组件为可显示自定义行数，超出时显示省略号的文本组件，还支持在最后面出现省略号时显示自定义的文字按钮。该组件为可显示自定义行数，超出时显示省略号的文本组件，还支持在最后面出现省略号时显示自定义的文字按钮。该组件为可显示自定义行数，超出时显示省略号的文本组件，还支持在最后面出现省略号时显示自定义的文字按钮。该组件为可显示自定义行数，超出时显示省略号的文本组件，还支持在最后面出现省略号时显示自定义的文字按钮。该组件为可显示自定义行数，超出时显示省略号的文本组件，还支持在最后面出现省略号时显示自定义的文字按钮。该组件为可显示自定义行数，超出时显示省略号的文本组件，还支持在最后面出现省略号时显示自定义的文字按钮。该组件为可显示自定义行数，超出时显示省略号的文本组件，还支持在最后面出现省略号时显示自定义的文字按钮。该组件为可显示自定义行数，超出时显示省略号的文本组件，还支持在最后面出现省略号时显示自定义的文字按钮。";
+  const intl = useIntl();
+  const text = intl.formatMessage({
+    id: "page.htmlVision.visualDesign.displaysCustomRows",
+  });
+
   return (
     <div className={styles.container}>
-      <EllipsisText text={text} style={{ fontSize: "24px" }} />
+      <EllipsisText text={text.repeat(4)} style={{ fontSize: "24px" }} />
       <EllipsisText
-        text={text}
+        text={text.repeat(8)}
         lineNum={2}
         style={{ fontSize: "16px", marginTop: "40px" }}
         buttonText="More"
