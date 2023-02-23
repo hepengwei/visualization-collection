@@ -1,7 +1,7 @@
 import UZIP from "uzip";
 import pako from "pako";
 
-var UPNG = {};
+const UPNG = {};
 
 UPNG.toRGBA8 = function (out) {
   const w = out.width;
@@ -9,7 +9,7 @@ UPNG.toRGBA8 = function (out) {
   if (out.tabs.acTL === null)
     return [UPNG.toRGBA8.decodeImage(out.data, w, h, out).buffer];
 
-  var frms = [];
+  const frms = [];
   if (out.frames[0].data === null) out.frames[0].data = out.data;
   const len = w * h * 4;
   const img = new Uint8Array(len);
@@ -63,7 +63,7 @@ UPNG.toRGBA8.decodeImage = function (data, w, h, out) {
       }
   } else if (ctype === 2) {
     // RGB
-    const ts = out.tabs["tRNS"];
+    const ts = out.tabs.tRNS;
     if (ts === null) {
       if (depth === 8)
         for (let i = 0; i < area; i++) {
@@ -106,8 +106,8 @@ UPNG.toRGBA8.decodeImage = function (data, w, h, out) {
     }
   } else if (ctype === 3) {
     // palette
-    const p = out.tabs["PLTE"];
-    const ap = out.tabs["tRNS"];
+    const p = out.tabs.PLTE;
+    const ap = out.tabs.tRNS;
     const tl = ap ? ap.length : 0;
     if (depth === 1)
       for (let y = 0; y < h; y++) {
@@ -185,7 +185,7 @@ UPNG.toRGBA8.decodeImage = function (data, w, h, out) {
       }
   } else if (ctype === 0) {
     // gray
-    const tr = out.tabs["tRNS"] ? out.tabs["tRNS"] : -1;
+    const tr = out.tabs.tRNS ? out.tabs.tRNS : -1;
     for (let y = 0; y < h; y++) {
       const off = y * bpl;
       const to = y * w;
@@ -320,13 +320,13 @@ UPNG.decode = function (buff) {
       const keyw = bin.readASCII(data, off, nz - off);
       off = nz + 1;
       const cflag = data[off];
-      const cmeth = data[off + 1];
+      // const cmeth = data[off + 1];
       off += 2;
       nz = bin.nextZero(data, off);
-      const ltag = bin.readASCII(data, off, nz - off);
+      // const ltag = bin.readASCII(data, off, nz - off);
       off = nz + 1;
       nz = bin.nextZero(data, off);
-      const tkeyw = bin.readUTF8(data, off, nz - off);
+      // const tkeyw = bin.readUTF8(data, off, nz - off);
       off = nz + 1;
       let text;
       const tl = len - (off - offset);
@@ -339,7 +339,7 @@ UPNG.decode = function (buff) {
     } else if (type === "PLTE") {
       out.tabs[type] = bin.readBytes(data, offset, len);
     } else if (type === "hIST") {
-      const pl = out.tabs["PLTE"].length / 3;
+      const pl = out.tabs.PLTE.length / 3;
       out.tabs[type] = [];
       for (let i = 0; i < pl; i++)
         out.tabs[type].push(rUs(data, offset + i * 2));
@@ -369,7 +369,7 @@ UPNG.decode = function (buff) {
       break;
     }
     offset += len;
-    const crc = bin.readUint(data, offset);
+    // const crc = bin.readUint(data, offset);
     offset += 4;
   }
   if (foff !== 0) {
@@ -394,7 +394,7 @@ UPNG.decode._decompress = function (out, dd, w, h) {
   const bpp = UPNG.decode._getBPP(out);
   const bpl = Math.ceil((w * bpp) / 8);
   const buff = new Uint8Array((bpl + 1 + out.interlace) * h);
-  if (out.tabs["CgBI"]) dd = UPNG.inflateRaw(dd, buff);
+  if (out.tabs.CgBI) dd = UPNG.inflateRaw(dd, buff);
   else dd = UPNG.decode._inflate(dd, buff);
 
   if (out.interlace === 0) dd = UPNG.decode._filterZero(dd, out, 0, w, h);
@@ -403,7 +403,7 @@ UPNG.decode._decompress = function (out, dd, w, h) {
 };
 
 UPNG.decode._inflate = function (data, buff) {
-  const out = UPNG["inflateRaw"](
+  const out = UPNG.inflateRaw(
     new Uint8Array(data.buffer, 2, data.length - 6),
     buff
   );
@@ -464,14 +464,14 @@ UPNG.inflateRaw = (function () {
         h = A(N, d + 5, 5) + 1;
         Q = A(N, d + 10, 4) + 4;
         d += 14;
-        const E = d;
+        // const E = d;
         let j = 1;
         for (let c = 0; c < 38; c += 2) {
           b.Q[c] = 0;
           b.Q[c + 1] = 0;
         }
         for (let c = 0; c < Q; c++) {
-          var K = A(N, d + c * 3, 3);
+          const K = A(N, d + c * 3, 3);
           b.Q[(b.X[c] << 1) + 1] = K;
           if (K > j) j = K;
         }
@@ -724,7 +724,7 @@ UPNG.inflateRaw = (function () {
   (function () {
     const N = H.H.m;
     const W = 1 << 15;
-    for (var R = 0; R < W; R++) {
+    for (let R = 0; R < W; R++) {
       let V = R;
       V = ((V & 2863311530) >>> 1) | ((V & 1431655765) << 1);
       V = ((V & 3435973836) >>> 2) | ((V & 858993459) << 2);
@@ -910,7 +910,7 @@ UPNG.decode._IHDR = function (data, offset, out) {
 
 UPNG._bin = {
   nextZero: function (data, p) {
-    while (data[p] != 0) p++;
+    while (data[p] !== 0) p++;
     return p;
   },
   readUshort: function (buff, p) {
@@ -951,7 +951,7 @@ UPNG._bin = {
   readUTF8: function (buff, p, l) {
     let s = "";
     let ns;
-    for (var i = 0; i < l; i++)
+    for (let i = 0; i < l; i++)
       s += "%" + UPNG._bin.pad(buff[p + i].toString(16));
     try {
       ns = decodeURIComponent(s);
@@ -1040,7 +1040,7 @@ UPNG.encode = function (bufs, w, h, ps, dels, tabs, forbidPlte) {
   if (ps === null) ps = 0;
   if (forbidPlte === null) forbidPlte = false;
 
-  var nimg = UPNG.encode.compress(bufs, w, h, ps, [
+  const nimg = UPNG.encode.compress(bufs, w, h, ps, [
     false,
     false,
     false,
@@ -1055,7 +1055,7 @@ UPNG.encode = function (bufs, w, h, ps, dels, tabs, forbidPlte) {
 UPNG.encodeLL = function (bufs, w, h, cc, ac, depth, dels, tabs) {
   const nimg = {
     ctype: 0 + (cc === 1 ? 0 : 2) + (ac === 0 ? 0 : 4),
-    depth: depth,
+    depth,
     frames: [],
   };
 
@@ -1088,12 +1088,12 @@ UPNG.encode._main = function (nimg, w, h, dels, tabs) {
   let pltAlpha = false;
 
   let leng = 8 + (16 + 5 + 4) + (anim ? 20 : 0);
-  if (tabs["sRGB"] !== null && tabs["sRGB"] !== undefined) leng += 8 + 1 + 4;
-  if (tabs["pHYs"] !== null && tabs["pHYs"] !== undefined) leng += 8 + 9 + 4;
+  if (tabs.sRGB !== null && tabs.sRGB !== undefined) leng += 8 + 1 + 4;
+  if (tabs.pHYs !== null && tabs.pHYs !== undefined) leng += 8 + 9 + 4;
   if (nimg.ctype === 3) {
     const dl = nimg.plte.length;
     for (let i = 0; i < dl; i++)
-      if (nimg.plte[i] >>> 24 != 255) pltAlpha = true;
+      if (nimg.plte[i] >>> 24 !== 255) pltAlpha = true;
     leng += 8 + dl * 3 + 4 + (pltAlpha ? 8 + dl * 1 + 4 : 0);
   }
   for (let j = 0; j < nimg.frames.length; j++) {
@@ -1130,26 +1130,26 @@ UPNG.encode._main = function (nimg, w, h, dels, tabs) {
   offset += 4; // crc
 
   // 13 bytes to say, that it is sRGB
-  if (tabs["sRGB"] !== null && tabs["sRGB"] !== undefined) {
+  if (tabs.sRGB !== null && tabs.sRGB !== undefined) {
     wUi(data, offset, 1);
     offset += 4;
     wAs(data, offset, "sRGB");
     offset += 4;
-    data[offset] = tabs["sRGB"];
+    data[offset] = tabs.sRGB;
     offset++;
     wUi(data, offset, crc(data, offset - 5, 5));
     offset += 4; // crc
   }
-  if (tabs["pHYs"] !== null && tabs["pHYs"] !== undefined) {
+  if (tabs.pHYs !== null && tabs.pHYs !== undefined) {
     wUi(data, offset, 9);
     offset += 4;
     wAs(data, offset, "pHYs");
     offset += 4;
-    wUi(data, offset, tabs["pHYs"][0]);
+    wUi(data, offset, tabs.pHYs[0]);
     offset += 4;
-    wUi(data, offset, tabs["pHYs"][1]);
+    wUi(data, offset, tabs.pHYs[1]);
     offset += 4;
-    data[offset] = tabs["pHYs"][2];
+    data[offset] = tabs.pHYs[2];
     offset++;
     wUi(data, offset, crc(data, offset - 13, 13));
     offset += 4; // crc
@@ -1162,7 +1162,7 @@ UPNG.encode._main = function (nimg, w, h, dels, tabs) {
     offset += 4;
     wUi(data, offset, nimg.frames.length);
     offset += 4;
-    wUi(data, offset, tabs["loop"] != null ? tabs["loop"] : 0);
+    wUi(data, offset, tabs.loop != null ? tabs.loop : 0);
     offset += 4;
     wUi(data, offset, crc(data, offset - 12, 12));
     offset += 4; // crc
@@ -1174,7 +1174,7 @@ UPNG.encode._main = function (nimg, w, h, dels, tabs) {
     offset += 4;
     wAs(data, offset, "PLTE");
     offset += 4;
-    for (var i = 0; i < dl; i++) {
+    for (let i = 0; i < dl; i++) {
       const ti = i * 3;
       const c = nimg.plte[i];
       const r = c & 255;
@@ -1193,7 +1193,7 @@ UPNG.encode._main = function (nimg, w, h, dels, tabs) {
       offset += 4;
       wAs(data, offset, "tRNS");
       offset += 4;
-      for (var i = 0; i < dl; i++)
+      for (let i = 0; i < dl; i++)
         data[offset + i] = (nimg.plte[i] >>> 24) & 255;
       offset += dl;
       wUi(data, offset, crc(data, offset - dl - 4, dl + 4));
@@ -1366,7 +1366,7 @@ UPNG.encode.compress = function (
     depth = Math.max(depth, minBits);
   }
 
-  for (var j = 0; j < frms.length; j++) {
+  for (let j = 0; j < frms.length; j++) {
     const frm = frms[j];
     // const nx = frm.rect.x;
     // const ny = frm.rect.y;
@@ -1418,7 +1418,7 @@ UPNG.encode.compress = function (
     frm.bpp = bpp;
   }
 
-  return { ctype: ctype, depth: depth, plte: plte, frames: frms };
+  return { ctype, depth, plte, frames: frms };
 };
 UPNG.encode.framize = function (bufs, w, h, alwaysBlend, evenCrd, forbidPrev) {
   /**
@@ -1502,7 +1502,7 @@ UPNG.encode.framize = function (bufs, w, h, alwaysBlend, evenCrd, forbidPrev) {
     frms.push({
       rect: { x: nx, y: ny, width: nw, height: nh },
       img: nimg,
-      blend: blend,
+      blend,
       dispose: 0,
     });
   }
@@ -1517,19 +1517,19 @@ UPNG.encode.framize = function (bufs, w, h, alwaysBlend, evenCrd, forbidPrev) {
       const miY = Math.min(r0.y, r1.y);
       const maX = Math.max(r0.x + r0.width, r1.x + r1.width);
       const maY = Math.max(r0.y + r0.height, r1.y + r1.height);
-      var r = { x: miX, y: miY, width: maX - miX, height: maY - miY };
+      const r = { x: miX, y: miY, width: maX - miX, height: maY - miY };
 
       frms[j - 1].dispose = 1;
       if (j - 1 !== 0)
         UPNG.encode._updateFrame(bufs, w, h, frms, j - 1, r, evenCrd);
       UPNG.encode._updateFrame(bufs, w, h, frms, j, r, evenCrd);
     }
-  let area = 0;
-  if (bufs.length !== 1)
-    for (let i = 0; i < frms.length; i++) {
-      const frm = frms[i];
-      area += frm.rect.width * frm.rect.height;
-    }
+  // let area = 0;
+  // if (bufs.length !== 1)
+  //   for (let i = 0; i < frms.length; i++) {
+  //     const frm = frms[i];
+  //     area += frm.rect.width * frm.rect.height;
+  //   }
 
   return frms;
 };
@@ -1600,7 +1600,7 @@ UPNG.encode._filterZero = function (img, h, bpp, bpl, data, filter, levelZero) {
   for (let i = 0; i < ftry.length; i++) {
     for (let y = 0; y < h; y++)
       UPNG.encode._filterLine(data, img, y, bpl, bpp, ftry[i]);
-    fls.push(CMPR["deflate"](data, opts));
+    fls.push(CMPR.deflate(data, opts));
   }
 
   let ti;
@@ -1726,12 +1726,12 @@ UPNG.quantize = function (abuf, ps) {
       inds[i >> 2] = nd.ind;
       tb[i >> 2] = nd.est.rgba;
     }
-  return { abuf: nimg.buffer, inds: inds, plte: leafs };
+  return { abuf: nimg.buffer, inds, plte: leafs };
 };
 
 UPNG.quantize.getKDtree = function (nimg, ps, err) {
   if (err === null) err = 0.0001;
-  var nimg32 = new Uint32Array(nimg.buffer);
+  const nimg32 = new Uint32Array(nimg.buffer);
 
   const root = {
     i0: 0,
@@ -1898,7 +1898,7 @@ UPNG.quantize.stats = function (nimg, i0, i1) {
   R[13] = R[7];
   R[14] = R[11];
 
-  return { R: R, m: m, N: N };
+  return { R, m, N };
 };
 UPNG.quantize.estats = function (stats) {
   const R = stats.R;
@@ -1949,10 +1949,10 @@ UPNG.quantize.estats = function (stats) {
 
   return {
     Cov: Rj,
-    q: q,
+    q,
     e: b,
     L: mi,
-    eMq255: eMq255,
+    eMq255,
     eMq: M.dot(b, q),
     rgba:
       ((Math.round(255 * q[3]) << 24) |
