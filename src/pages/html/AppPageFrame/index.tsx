@@ -23,7 +23,7 @@ enum SwitchPageType {
 }
 
 const AppPageFrame = () => {
-  const { menuWidth } = useGlobalContext();
+  const { menuWidth, headHeight } = useGlobalContext();
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [containerHeight, setContainerHeight] = useState<number>(0);
@@ -38,6 +38,8 @@ const AppPageFrame = () => {
   const frameId = useRef<number>(0);
   const currentMoveDirection = useRef<string>("");
   const [showPageIndex, setShowPageIndex] = useState<number>(0);
+  const [resizeMark, setResizeMark] = useState<number>(0);
+  const resizeMarkRef = useRef<number>(0);
 
   const loop = () => {
     if (containerRef.current) {
@@ -177,14 +179,29 @@ const AppPageFrame = () => {
 
   useEffect(() => {
     if (containerRef.current) {
-      const containerNode = ReactDOM.findDOMNode(
-        containerRef.current
-      ) as HTMLDivElement;
-      setContainerHeight(containerNode.clientHeight);
-      const allPageHeightNum =
-        (containerNode.clientHeight - innerHeadHeight) * pageNum;
+      const containerHeight = document.body.clientHeight - headHeight;
+      setContainerHeight(containerHeight);
+      const allPageHeightNum = (containerHeight - innerHeadHeight) * pageNum;
       setAllPageHeight(allPageHeightNum);
     }
+  }, [resizeMark, headHeight]);
+
+  const onResize = () => {
+    if (resizeMarkRef.current >= 10000) {
+      resizeMarkRef.current = 0;
+      setResizeMark(0);
+    } else {
+      resizeMarkRef.current = resizeMarkRef.current + 1;
+      setResizeMark(resizeMarkRef.current + 1);
+    }
+  };
+
+  useEffect(() => {
+    // 监听屏幕变化事件
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+    };
   }, []);
 
   useEffect(() => {
