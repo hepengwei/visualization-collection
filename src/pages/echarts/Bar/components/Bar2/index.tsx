@@ -29,7 +29,16 @@ const Bar2 = () => {
 
   return (
     <div className={styles.echart}>
-      <TwoColumnBar data={{ dataSource: echartData }} />
+      <TwoColumnBar
+        data={{
+          dataSource: echartData,
+          legendData: [
+            { name: "increase", icon: "rect" },
+            { name: "decrease", icon: "rect" },
+            { name: "sum" },
+          ],
+        }}
+      />
     </div>
   );
 };
