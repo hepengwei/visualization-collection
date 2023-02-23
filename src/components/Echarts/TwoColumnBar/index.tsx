@@ -8,6 +8,7 @@ import BasicEchart from "../BasicEchart";
 interface TwoColumnBarProps {
   data: {
     dataSource: any[];
+    legendData?: any[];
   };
   style?: Record<string, any>;
   onHoverChange?: (params: any) => void;
@@ -15,13 +16,14 @@ interface TwoColumnBarProps {
 }
 
 // 获取整个图表的基础配置
-const getBaseOptions = () => {
+const getBaseOptions = (legendData?: any[]) => {
   const baseOptions: ChartOptions = {
     // @ts-ignore
     graphic: getGraphic(),
     color: ECHART_COMMON_COLOR,
     legend: {
       show: true,
+      data: legendData,
       textStyle: {
         overflow: "truncate",
         fontSize: 13,
@@ -145,7 +147,7 @@ const TwoColumnBar = ({
 }: TwoColumnBarProps) => {
   // 图表最终的配置数据
   const chartOptions = useMemo(() => {
-    const options = getBaseOptions();
+    const options = getBaseOptions(data?.legendData);
     const { dataSource } = data;
     if (!dataSource) return options;
     options.dataset = { source: dataSource };

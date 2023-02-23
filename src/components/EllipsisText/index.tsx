@@ -9,7 +9,7 @@ import React, {
   useMemo,
 } from "react";
 import ReactDOM from "react-dom";
-import { getFixedWidthText } from "utils/util";
+import { getTextWidth, getFixedWidthText } from "utils/util";
 
 interface EllipsisTextProps {
   text: string;
@@ -21,6 +21,8 @@ interface EllipsisTextProps {
   onClickButton?: (e: React.SyntheticEvent<any, Event>) => void;
   style?: Record<string, any>;
 }
+
+const ellipsis = "...";
 
 const EllipsisText = (props: EllipsisTextProps) => {
   const {
@@ -51,6 +53,7 @@ const EllipsisText = (props: EllipsisTextProps) => {
   const data = useMemo(() => {
     let finalText = text;
     let isOver = false;
+    const finalButtonTextSize = Math.max(buttonTextSize, 12);
     // 为了获取该组件的宽度，组件第一次render时按所有text文字显示
     if (width) {
       const sumWidth = width * lineNum;
@@ -65,30 +68,27 @@ const EllipsisText = (props: EllipsisTextProps) => {
         isOver = true;
       }
       if (isOver) {
+        const ellipticalTextWidth = getTextWidth(
+          ellipsis,
+          fontSize,
+          textWeight
+        );
+        let buttonTextWidth = 0;
         if (buttonText) {
-          const span = document.createElement("span") as HTMLSpanElement;
-          span.style.visibility = "hidden";
-          span.style.padding = "0";
-          // @ts-ignore
-          span.style["white-space"] = "nowrap";
-          // @ts-ignore
-          span.style["overflow-x"] = "auto";
-          span.style.fontSize =
-            buttonTextSize > 12 ? buttonTextSize + "px" : "12px";
-          span.style.fontWeight = buttonTextWeight.toString();
-          document.body.appendChild(span);
-          span.innerHTML = `...${buttonText}`;
-          const sumWidth = width * lineNum - span.offsetWidth;
-          document.body.removeChild(span);
-          finalText = getFixedWidthText(
-            text,
-            sumWidth - 2,
-            fontSize as number,
-            textWeight
+          buttonTextWidth = getTextWidth(
+            buttonText,
+            finalButtonTextSize,
+            buttonTextWeight
           );
-        } else {
-          finalText = str.substr(0, str.length - 4) + "...";
         }
+        const sumWidth2 =
+          width * lineNum - ellipticalTextWidth - buttonTextWidth;
+        finalText = getFixedWidthText(
+          text,
+          sumWidth2 - 2,
+          fontSize as number,
+          textWeight
+        );
       } else {
         finalText = text;
       }
@@ -105,8 +105,8 @@ const EllipsisText = (props: EllipsisTextProps) => {
       finalText,
       isOver,
       buttonStyle: {
-        fontSize: `${buttonTextSize}px`,
-        fontWeight: buttonTextWeight,
+        fontSize: `${finalButtonTextSize}px`,
+        fontWeight: buttonTextWeight.toString(),
         color: "#0076FF",
         cursor: "pointer",
         padding: 0,
