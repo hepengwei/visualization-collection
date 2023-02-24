@@ -2,10 +2,10 @@ const { merge } = require("webpack-merge");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const getBaseConfig = require("./webpack.base");
 
-const { appDirectory } =require("./utils")
+const { appDirectory } = require("./utils");
 
 const devConfig = {
-  devtool: "cheap-module-eval-source-map",
+  devtool: "eval-cheap-module-source-map",
   devServer: {
     static: {
       directory: appDirectory,
