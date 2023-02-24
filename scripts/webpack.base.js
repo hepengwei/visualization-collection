@@ -1,19 +1,17 @@
-const fs = require("fs");
-const path = require("path");
+
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const getCSSModuleLocalIdent = require("react-dev-utils/getCSSModuleLocalIdent");
 const ESLintWebpackPlugin = require("eslint-webpack-plugin");
-
-const appDirectory = fs.realpathSync(process.cwd());
-const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
+const { resolveApp } = require("./utils")
 
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
 
-module.exports = function (webpackEnv) {
+module.exports = function () {
+  const webpackEnv = process.env.NODE_ENV;
   const isEnvDevelopment = webpackEnv === "development";
   const isEnvProduction = webpackEnv === "production";
 
@@ -74,7 +72,6 @@ module.exports = function (webpackEnv) {
     }
     return loaders;
   };
-
   return {
     mode: webpackEnv,
     target: ["browserslist"],
@@ -82,6 +79,9 @@ module.exports = function (webpackEnv) {
     output: {
       filename: "[name].js",
       path: resolveApp("docs"),
+    },
+    externals: { // 使用外链引入的npm包
+        "echarts": 'echarts',
     },
     resolve: {
       modules: [resolveApp("src"), "node_modules"],
@@ -213,6 +213,8 @@ module.exports = function (webpackEnv) {
       }),
       new MiniCssExtractPlugin({
         filename: "styles/[name].css",
+        chunkFilename: 'styles/pages/[name].[contenthash:8].css',
+        ignoreOrder: true // 忽略文件的加载顺序
       }),
       new HtmlWebpackPlugin({
         filename: "index.html",
