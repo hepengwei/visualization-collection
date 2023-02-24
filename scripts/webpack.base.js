@@ -1,9 +1,8 @@
-
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const getCSSModuleLocalIdent = require("react-dev-utils/getCSSModuleLocalIdent");
 const ESLintWebpackPlugin = require("eslint-webpack-plugin");
-const { resolveApp } = require("./utils")
+const { resolveApp } = require("./utils");
 
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
@@ -80,8 +79,9 @@ module.exports = function () {
       filename: "[name].js",
       path: resolveApp("docs"),
     },
-    externals: { // 使用外链引入的npm包
-        "echarts": 'echarts',
+    externals: {
+      // 使用外链引入的npm包
+      echarts: "echarts",
     },
     resolve: {
       modules: [resolveApp("src"), "node_modules"],
@@ -213,8 +213,8 @@ module.exports = function () {
       }),
       new MiniCssExtractPlugin({
         filename: "styles/[name].css",
-        chunkFilename: 'styles/pages/[name].[contenthash:8].css',
-        ignoreOrder: true // 忽略文件的加载顺序
+        chunkFilename: "styles/pages/[name].[contenthash:8].css",
+        ignoreOrder: true, // 忽略文件的加载顺序
       }),
       new HtmlWebpackPlugin({
         filename: "index.html",

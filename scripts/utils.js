@@ -9,11 +9,11 @@ const appDirectory = fs.realpathSync(process.cwd());
 /**
  * 返回相对于当前工作目录的绝对路径
  * @param {String} relativePath  需要返回的目录
- * @returns 
+ * @returns
  */
 const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
 module.exports = {
-    appDirectory,
-    resolveApp
-}
+  appDirectory,
+  resolveApp,
+};

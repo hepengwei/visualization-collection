@@ -13,7 +13,7 @@
     flex-direction: column;
     .top {
       display: flex;
-      padding: 0 16px;
+      padding: 0 8px;
       align-items: center;
       height: 60px;
       button {
@@ -42,6 +42,12 @@
             padding-left: 32px !important;
           }
         }
+      }
+      .ant-menu-inline{
+        width: auto !important;
+      }
+      .ant-menu-inline-collapsed{
+        width: 68px !important;
       }
     }
   }
