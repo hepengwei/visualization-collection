@@ -27,6 +27,7 @@ import WaterDropLogin from "./components/WaterDropLogin";
 import TextShadow from "./components/TextShadow";
 import HouseRaceLamp from "./components/HorseRacelamp";
 import HoverEnlargement from "./components/HoverEnlargement";
+import Preserve3D from "./components/Preserve3D";
 import styles from "./index.module.scss";
 
 const { GridBox } = GridContent;
@@ -54,6 +55,7 @@ const gridboxList = [
   { element: <TextShadow /> },
   { element: <HouseRaceLamp /> },
   { element: <HoverEnlargement /> },
+  { element: <Preserve3D /> },
 ];
 
 const VisualDesign = () => {
