@@ -1,16 +1,14 @@
-const fs = require("fs");
 const { merge } = require("webpack-merge");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const getBaseConfig = require("./webpack.base");
 
-process.env.BABEL_ENV = "development";
-process.env.NODE_ENV = "development";
+const { appDirectory } =require("./utils")
 
 const devConfig = {
-  devtool: "eval-cheap-module-source-map",
+  devtool: "cheap-module-eval-source-map",
   devServer: {
     static: {
-      directory: fs.realpathSync(process.cwd()),
+      directory: appDirectory,
     },
     hot: true,
     compress: false,
@@ -24,4 +22,4 @@ const devConfig = {
   ],
 };
 
-module.exports = merge(getBaseConfig("development"), devConfig);
+module.exports = merge(getBaseConfig(), devConfig);
