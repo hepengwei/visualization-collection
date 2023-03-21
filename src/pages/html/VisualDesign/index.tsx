@@ -28,6 +28,7 @@ import TextShadow from "./components/TextShadow";
 import HouseRaceLamp from "./components/HorseRacelamp";
 import HoverEnlargement from "./components/HoverEnlargement";
 import Preserve3D from "./components/Preserve3D";
+import RotateAndBgFixed from "./components/RotateAndBgFixed";
 import styles from "./index.module.scss";
 
 const { GridBox } = GridContent;
@@ -56,6 +57,7 @@ const gridboxList = [
   { element: <HouseRaceLamp /> },
   { element: <HoverEnlargement /> },
   { element: <Preserve3D /> },
+  { element: <RotateAndBgFixed /> },
 ];
 
 const VisualDesign = () => {
