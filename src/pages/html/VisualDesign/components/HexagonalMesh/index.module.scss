@@ -1,0 +1,63 @@
+.container {
+  height: 500px;
+  margin: auto;
+  flex: 0 0 120%;
+  transform: translate(-10%, 0);
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  // font-size必须
+  font-size: 0;
+
+  $itemWidth: 50px;
+  $margin: 2px;
+  $perHeight: calc(1.732 * $itemWidth + 4 * $margin - 1px);
+
+  &::before {
+    content: "";
+    height: 100%;
+    width: 27px;
+    shape-outside: repeating-linear-gradient(
+      transparent 0,
+      transparent 80px,
+      #000 80px,
+      #000 $perHeight
+    );
+    float: left;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      45deg,
+      #f44336,
+      #ff9800,
+      #ffe607,
+      #09d7c4,
+      #1cbed3,
+      #1d8ae2,
+      #bc24d6
+    );
+    z-index: 1;
+    mix-blend-mode: darken;
+    animation: change 10s infinite linear;
+  }
+
+  .item {
+    width: $itemWidth;
+    height: calc($itemWidth * 1.1547);
+    background: #000;
+    clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+    margin: $margin;
+    margin-bottom: calc($margin - $itemWidth * 0.2885);
+    display: inline-block;
+  }
+
+  @keyframes change {
+    100% {
+      filter: hue-rotate(360deg);
+    }
+  }
+}
