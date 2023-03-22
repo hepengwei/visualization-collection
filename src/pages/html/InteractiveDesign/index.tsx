@@ -15,6 +15,7 @@ import PeopleAnimation from "./components/PeopleAnimation";
 import TweakCube from "./components/TweakCube";
 import OrientationSenseCard from "./components/OrientationSenseCard";
 import HexagonalMesh1 from "./components/HexagonalMesh1";
+import HexagonalMesh2 from "./components/HexagonalMesh2";
 import styles from "./index.module.scss";
 
 const boxList = [
@@ -30,6 +31,7 @@ const boxList = [
   { element: <TweakCube /> },
   { element: <OrientationSenseCard /> },
   { element: <HexagonalMesh1 /> },
+  { element: <HexagonalMesh2 /> },
 ];
 
 const InteractiveDesign = () => {
