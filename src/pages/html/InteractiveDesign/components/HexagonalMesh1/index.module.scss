@@ -1,17 +1,17 @@
 .container {
   $itemWidth: 50px;
-  $margin: 4px;
+  $margin: 1px;
   $perHeight: calc(1.732 * $itemWidth + 4 * $margin - 1px);
 
-  height: 500px;
+  height: 580px;
   margin-bottom: calc($itemWidth / -2);
-  flex: 1 0 120%;
+  flex: 0 0 120%;
   transform: translate(-10%, calc($itemWidth / -2));
   position: relative;
   overflow: hidden;
-  background: #000;
   // font-size必须
   font-size: 0;
+  cursor: pointer;
 
   &::before {
     content: "";
@@ -42,17 +42,26 @@
     );
     z-index: 1;
     mix-blend-mode: darken;
-    animation: change 10s infinite linear;
+    animation: change 8s infinite linear;
+    mask: radial-gradient(
+      circle at var(--xPos) var(--yPos),
+      #000 0,
+      #000 50px,
+      transparent 150px,
+      transparent 150px
+    );
   }
 
   .item {
     width: $itemWidth;
     height: calc($itemWidth * 1.1547);
-    background: #fff;
+    background: #000;
+    flex: 0 0 auto;
     clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
     margin: $margin;
     margin-bottom: calc($margin - $itemWidth * 0.2885);
     display: inline-block;
+    z-index: 2;
   }
 
   @keyframes change {
