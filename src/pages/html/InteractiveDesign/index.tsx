@@ -13,6 +13,7 @@ import Switchs from "./components/Switchs";
 import PeopleAnimation from "./components/PeopleAnimation";
 // import TranslateZScroll from "./components/TranslateZScroll";
 import TweakCube from "./components/TweakCube";
+import Preserve3dBox from "./components/Preserve3dBox";
 import OrientationSenseCard from "./components/OrientationSenseCard";
 import HexagonalMesh1 from "./components/HexagonalMesh1";
 import HexagonalMesh2 from "./components/HexagonalMesh2";
@@ -30,6 +31,7 @@ const boxList = [
   { element: <PeopleAnimation /> },
   // { element: <TranslateZScroll /> },
   { element: <TweakCube /> },
+  { element: <Preserve3dBox /> },
   { element: <OrientationSenseCard /> },
   { element: <HexagonalMesh1 /> },
   { element: <HexagonalMesh2 /> },

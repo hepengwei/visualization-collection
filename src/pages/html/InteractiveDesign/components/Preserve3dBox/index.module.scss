@@ -1,0 +1,87 @@
+.container {
+  width: 100%;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  $boxWidth: 260px;
+  .box {
+    width: $boxWidth;
+    height: $boxWidth;
+    transform-style: preserve-3d;
+    transform-origin: center center;
+    position: relative;
+    transform: rotate3d(1, 1, 1, 0deg);
+    animation: preserve3dRotate 10s linear infinite;
+
+    @mixin side {
+      position: absolute;
+      width: $boxWidth;
+      height: $boxWidth;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      box-sizing: border-box;
+      border-left: 10px solid #ddd;
+      border-right: 10px solid #ddd;
+      border-top: 10px solid #eee;
+      border-bottom: 10px solid #eee;
+    }
+
+    .side1 {
+      @include side;
+      transform: translate3d(0, 0, calc($boxWidth / 2));
+      background-image: url("../../../../../images/html/scenery1.jpg");
+    }
+    .side2 {
+      @include side;
+      transform: translate3d(0, 0, calc($boxWidth / -2)) rotateY(180deg);
+      background-image: url("../../../../../images/html/scenery2.jpg");
+    }
+    .side3 {
+      @include side;
+      transform: translate3d(0, calc($boxWidth / -2), 0) rotateX(90deg);
+      background-image: url("../../../../../images/html/scenery3.jpg");
+    }
+    .side4 {
+      @include side;
+      transform: translate3d(0, calc($boxWidth / 2), 0) rotateX(90deg)
+        rotateY(180deg);
+      background-image: url("../../../../../images/html/scenery4.jpg");
+    }
+    .side5 {
+      @include side;
+      transform: translate3d(calc($boxWidth / -2), 0, 0) rotateY(90deg);
+      background-image: url("../../../../../images/html/scenery5.jpg");
+    }
+    .side6 {
+      @include side;
+      transform: translate3d(calc($boxWidth / 2), 0, 0) rotateY(90deg)
+        rotateY(180deg);
+      background-image: url("../../../../../images/html/scenery6.jpg");
+    }
+
+    .light {
+      animation: light 1s infinite;
+    }
+
+    @keyframes preserve3dRotate {
+      100% {
+        transform: rotate3d(1, 1, 1, 360deg);
+      }
+    }
+
+    @keyframes light {
+      0% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+      }
+      70% {
+        box-shadow: 0 0 0 16px rgba(255, 255, 255, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+      }
+    }
+  }
+}
