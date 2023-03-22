@@ -7,6 +7,13 @@
   margin-bottom: calc($itemWidth / -2);
   flex: 0 0 120%;
   transform: translate(-10%, calc($itemWidth / -2));
+  background: radial-gradient(
+    circle at var(--xPos) var(--yPos),
+    transparent 0,
+    transparent 50px,
+    #000 150px,
+    #000 1000px
+  );
   position: relative;
   overflow: hidden;
   // font-size必须
