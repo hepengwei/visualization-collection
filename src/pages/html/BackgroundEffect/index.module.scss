@@ -184,4 +184,54 @@
     background: repeating-conic-gradient(#bf4d28 0 0.00005%, #e1f5c4 0 0.00017%)
       0 0/5000px 4000px;
   }
+
+  .bg13 {
+    @include bg;
+    $itemWidth: 60px;
+    $signWidth: 5px;
+    background: linear-gradient(
+        90deg,
+        transparent $itemWidth - 1px,
+        #aec8ee 1px
+      ),
+      linear-gradient(180deg, transparent $itemWidth - 1px, #aec8ee 1px),
+      conic-gradient(
+        from 270deg at $signWidth $signWidth * 4,
+        #31c2ec 90deg,
+        transparent 0deg
+      ),
+      conic-gradient(
+        from 270deg at $signWidth * 4 $signWidth,
+        #31c2ec 90deg,
+        transparent 0deg
+      ),
+      #0e284d;
+    background-size: $itemWidth 100%, 100% $itemWidth, $itemWidth $itemWidth,
+      $itemWidth $itemWidth;
+    background-position: 0 0, 0 0, calc($signWidth / -2) calc($signWidth * -2),
+      calc($signWidth * -2) calc($signWidth / -2);
+  }
+
+  .bg14 {
+    @include bg;
+    $itemWidth: 60px;
+    $signWidth: 7px;
+    background: linear-gradient(
+        90deg,
+        transparent $itemWidth - 1px,
+        #aec8ee 1px
+      ),
+      linear-gradient(180deg, transparent $itemWidth - 1px, #aec8ee 1px),
+      radial-gradient(
+        closest-side at $signWidth $signWidth,
+        #31c2ec 0,
+        #31c2ec $signWidth,
+        transparent $signWidth,
+        transparent 100%
+      ),
+      #0e284d;
+    background-size: $itemWidth 100%, 100% $itemWidth, $itemWidth $itemWidth;
+    background-position: 0 0, 0 0,
+      calc($signWidth * -1 - 1px) calc($signWidth * -1 - 1px);
+  }
 }
