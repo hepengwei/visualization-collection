@@ -22,7 +22,7 @@ const prodConfig = {
             ignore: ["**/*.html"],
           },
         },
-        // resolveApp("CNAME"),
+        resolveApp("CNAME"),
       ],
     }),
   ],
