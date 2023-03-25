@@ -50,13 +50,19 @@
   .item {
     width: $itemWidth;
     height: calc($itemWidth * 1.1547);
-    background: #000;
+    background: rgba(0, 0, 0, 255);
+    transition: 0.6s;
     flex: 0 0 auto;
     clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
     margin: $margin;
     margin-bottom: calc($margin - $itemWidth * 0.2885);
     display: inline-block;
     z-index: 2;
+
+    &:hover {
+      transition: 0s;
+      background: rgba(255, 255, 255, 255);
+    }
   }
 
   @keyframes change {
