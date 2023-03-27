@@ -9,9 +9,9 @@
     display: flex;
     white-space: nowrap;
     font-size: 42px;
-    transform: rotate(-30deg) translate(-400px, -400px);
+    transform: rotate(-30deg) translate(-560px, -560px);
 
-    $duration: 80s;
+    $duration: 150s;
 
     div {
       animation: animate1 $duration linear infinite;
