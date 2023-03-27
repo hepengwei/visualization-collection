@@ -41,10 +41,53 @@ import {
   BehanceOutlined,
   BehanceSquareOutlined,
   DribbbleOutlined,
+  AccountBookOutlined,
+  AimOutlined,
+  AlertOutlined,
+  ApartmentOutlined,
+  ApiOutlined,
+  AppstoreAddOutlined,
+  AppstoreOutlined,
+  AudioOutlined,
+  AudioMutedOutlined,
+  AuditOutlined,
+  BankOutlined,
+  BarcodeOutlined,
+  BarsOutlined,
+  BellOutlined,
+  BlockOutlined,
+  BookOutlined,
+  BranchesOutlined,
+  BugOutlined,
+  BuildOutlined,
+  BulbOutlined,
+  CalculatorOutlined,
+  CalendarOutlined,
+  CameraOutlined,
+  CarOutlined,
+  CarryOutOutlined,
+  ClearOutlined,
+  CloudDownloadOutlined,
+  CloudSyncOutlined,
+  CoffeeOutlined,
+  CompassOutlined,
+  ConsoleSqlOutlined,
+  ContactsOutlined,
+  ContainerOutlined,
+  ControlOutlined,
+  CrownOutlined,
+  CustomerServiceOutlined,
+  DashboardOutlined,
+  DatabaseOutlined,
+  DeploymentUnitOutlined,
+  DingtalkOutlined,
+  GiftOutlined,
+  SettingOutlined,
+  TrophyOutlined,
 } from "@ant-design/icons";
 import styles from "./index.module.scss";
 
-const list = new Array(30).fill(0);
+const list = new Array(40).fill(0);
 
 const IconScroll = () => {
   const renderIconList = () => (
@@ -90,6 +133,49 @@ const IconScroll = () => {
       <BehanceOutlined />
       <BehanceSquareOutlined />
       <DribbbleOutlined />
+      <AccountBookOutlined />
+      <AimOutlined />
+      <AlertOutlined />
+      <ApartmentOutlined />
+      <ApiOutlined />
+      <AppstoreAddOutlined />
+      <AppstoreOutlined />
+      <AudioOutlined />
+      <AudioMutedOutlined />
+      <AuditOutlined />
+      <BankOutlined />
+      <BarcodeOutlined />
+      <BarsOutlined />
+      <BellOutlined />
+      <BlockOutlined />
+      <BookOutlined />
+      <BranchesOutlined />
+      <BugOutlined />
+      <BuildOutlined />
+      <BulbOutlined />
+      <CalculatorOutlined />
+      <CalendarOutlined />
+      <CameraOutlined />
+      <CarOutlined />
+      <CarryOutOutlined />
+      <ClearOutlined />
+      <CloudDownloadOutlined />
+      <CloudSyncOutlined />
+      <CoffeeOutlined />
+      <CompassOutlined />
+      <ConsoleSqlOutlined />
+      <ContactsOutlined />
+      <ContainerOutlined />
+      <ControlOutlined />
+      <CrownOutlined />
+      <CustomerServiceOutlined />
+      <DashboardOutlined />
+      <DatabaseOutlined />
+      <DeploymentUnitOutlined />
+      <DingtalkOutlined />
+      <GiftOutlined />
+      <SettingOutlined />
+      <TrophyOutlined />
     </div>
   );
 
