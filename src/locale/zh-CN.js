@@ -2,6 +2,7 @@ const zh_CN = {
   // 公共
   "common.logoName": "视觉效果集合",
   "common.LanguageSwitch": "中英文切换",
+  "common.keepUpdating": "持续更新, 敬请期待",
   "common.comingSoon": "敬请期待",
   "common.comingSoon.text": "该项目持续更新，敬请期待！！！",
   "common.workHard": "正在努力工作，请稍后",

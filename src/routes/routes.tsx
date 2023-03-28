@@ -70,10 +70,10 @@ export const contentRoutes: RouteObject[] = [
         path: "/css/richDynamicEffect",
         element: <RichDynamicEffect />,
       },
-      {
-        path: "/css/musicVisualization",
-        element: <MusicVisualization />,
-      },
+      // {
+      //   path: "/css/musicVisualization",
+      //   element: <MusicVisualization />,
+      // },
     ],
   },
   {
@@ -136,21 +136,17 @@ export const contentRoutes: RouteObject[] = [
         path: "/echarts/pie",
         element: <Pie />,
       },
-      {
-        path: "/echarts/echartsComingSoon",
-        element: <EchartsComingSoon />,
-      },
     ],
   },
-  {
-    path: "/threejs",
-    children: [
-      {
-        path: "/threejs/threejsComingSoon",
-        element: <ThreejsComingSoon />,
-      },
-    ],
-  },
+  // {
+  //   path: "/threejs",
+  //   children: [
+  //     {
+  //       path: "/threejs/threejsComingSoon",
+  //       element: <ThreejsComingSoon />,
+  //     },
+  //   ],
+  // },
   {
     path: "/AIApplication",
     children: [
