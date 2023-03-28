@@ -19,6 +19,7 @@ import HexagonalMesh1 from "./components/HexagonalMesh1";
 import HexagonalMesh2 from "./components/HexagonalMesh2";
 import HexagonalMesh3 from "./components/HexagonalMesh3";
 import IconScroll from "./components/IconScroll";
+import WipeSwitchover from "./components/WipeSwitchover";
 import styles from "./index.module.scss";
 
 const boxList = [
@@ -38,6 +39,7 @@ const boxList = [
   { element: <HexagonalMesh2 /> },
   { element: <HexagonalMesh3 /> },
   { element: <IconScroll /> },
+  { element: <WipeSwitchover /> },
 ];
 
 const InteractiveDesign = () => {

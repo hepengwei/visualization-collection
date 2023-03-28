@@ -1,3 +1,131 @@
-.container{
-    
+.container {
+  width: 100%;
+  height: 600px;
+  position: relative;
+  svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+
+    path {
+      fill: none;
+      stroke: white;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 0.5;
+      stroke-dasharray: 8 8;
+      stroke-dashoffset: 0px;
+    }
+
+    .mask1 {
+      path {
+        transform: translate(46%, 40%) scale(910);
+      } /* 0 */
+    }
+
+    .mask2 {
+      path {
+        transform: translate(10%, 10%) scale(900);
+      } /* 0.15 */
+    }
+
+    .mask3 {
+      path {
+        transform: translate(8%, 10%) scale(1150);
+      } /* 0.35 */
+    }
+
+    .mask4 {
+      path {
+        transform: translate(10%, 46%) scale(1200);
+        stroke-dasharray: 7 11;
+      } /* 0.55 */
+    }
+
+    .mask5 {
+      path {
+        transform: translate(46%, 46%) scale(420);
+        stroke-width: 1;
+        stroke-dasharray: 30 29;
+      } /* 0.79 */
+    }
+
+    @mixin page {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex: 1;
+      rect {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+      }
+      image {
+        width: 240px;
+        height: 340px;
+        object-fit: cover;
+        transform: translate(28%, 16%);
+      }
+      text {
+        transform: translate(54%, 47%);
+        font-size: 56px;
+        line-height: 1.07143;
+        font-weight: 600;
+        letter-spacing: -0.005em;
+        font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue",
+          "Helvetica", "Arial", sans-serif;
+      }
+    }
+
+    .page1 {
+      @include page;
+    }
+    .page2 {
+      @include page;
+    }
+    .page3 {
+      @include page;
+    }
+    .page4 {
+      @include page;
+    }
+
+    .page5 {
+      @include page;
+    }
+  }
+
+  .btns {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    width: 200px;
+    margin: 0 auto;
+
+    .btn {
+      &:not(:first-child) {
+        margin-left: 50px;
+      }
+    }
+  }
+
+  @keyframes wipe5 {
+    0% {
+      --scrolled: 0px;
+    }
+    50% {
+      --scrolled: 25px;
+    }
+    100% {
+      --scrolled: 50px;
+    }
+  }
 }
