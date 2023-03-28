@@ -24,6 +24,7 @@ import type { MenuProps } from "antd";
 import { useIntl } from "react-intl";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import styles from "./index.module.scss";
+import { spaceToBatchND } from "@tensorflow/tfjs-core";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -98,12 +99,12 @@ const Menus: React.FC = () => {
           intl.formatMessage({ id: "menu.cssDynamicEffect.richDynamicEffect" }),
           "richDynamicEffect"
         ),
-        getItem(
-          intl.formatMessage({
-            id: "menu.cssDynamicEffect.musicVisualization",
-          }),
-          "musicVisualization"
-        ),
+        // getItem(
+        //   intl.formatMessage({
+        //     id: "menu.cssDynamicEffect.musicVisualization",
+        //   }),
+        //   "musicVisualization"
+        // ),
       ]
     ),
     getItem(
@@ -186,23 +187,19 @@ const Menus: React.FC = () => {
           intl.formatMessage({ id: "menu.echartsInteraction.pieCharts" }),
           "pie"
         ),
-        getItem(
-          intl.formatMessage({ id: "common.comingSoon" }),
-          "echartsComingSoon"
-        ),
       ]
     ),
-    getItem(
-      intl.formatMessage({ id: "menu.threeJs3D" }),
-      "threejs",
-      <RocketOutlined />,
-      [
-        getItem(
-          intl.formatMessage({ id: "common.comingSoon" }),
-          "threejsComingSoon"
-        ),
-      ]
-    ),
+    // getItem(
+    //   intl.formatMessage({ id: "menu.threeJs3D" }),
+    //   "threejs",
+    //   <RocketOutlined />,
+    //   [
+    //     getItem(
+    //       intl.formatMessage({ id: "common.comingSoon" }),
+    //       "threejsComingSoon"
+    //     ),
+    //   ]
+    // ),
     getItem(
       intl.formatMessage({ id: "menu.AIApplication" }),
       "AIApplication",
@@ -306,7 +303,11 @@ const Menus: React.FC = () => {
         />
       </div>
 
-      <div className={styles.bottom} />
+      <div className={styles.bottom}>
+        {!collapsed && (
+          <span>{intl.formatMessage({ id: "common.keepUpdating" })}</span>
+        )}
+      </div>
     </div>
   );
 };

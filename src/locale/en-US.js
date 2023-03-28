@@ -2,6 +2,7 @@ const en_US = {
   // 公共
   "common.logoName": "Visualization Collection",
   "common.LanguageSwitch": "Chinese-English Switch",
+  "common.keepUpdating": "Keep updating, stay tuned",
   "common.comingSoon": "Coming soon",
   "common.comingSoon.text":
     "The project is continuously updated, coming soon！！！",
