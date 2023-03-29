@@ -234,4 +234,32 @@
     background-position: 0 0, 0 0,
       calc($signWidth * -1 - 1px) calc($signWidth * -1 - 1px);
   }
+
+  // .bg15 {
+  //   @include bg;
+  //   --size: 50px;
+  //   --color1: #d9ceb2;
+  //   --color2: #948c75;
+  //   --g: calc(2 * var(--size)) calc(2 * var(--size))
+  //     radial-gradient(25% 25%, var(--color1) 99%, #0000 101%);
+  //   background: 0 var(--size) / var(--g), var(--size) 0 / var(--g),
+  //     radial-gradient(50% 50%, var(--color2) 97%, #0000) calc(var(--size) / 2)
+  //       calc(var(--size) / 2) / var(--size) var(--size),
+  //     linear-gradient(90deg, var(--color1) 50%, var(--color2) 0) 0 0 /
+  //       calc(2 * var(--size));
+  // }
+
+  // .bg16 {
+  //   @include bg;
+  //   --size: 50px;
+  //   --color1: #d9ceb2;
+  //   --color2: #948c75;
+
+  //   background: radial-gradient(25% 50%, var(--color1) 98%, #0000)
+  //       var(--size) 0 / calc(2 * var(--size)) var(--size),
+  //     radial-gradient(25% 50%, var(--color2) 98%, #0000) 0 0 /
+  //       calc(2 * var(--size)) var(--size),
+  //     repeating-conic-gradient(var(--color1) 0 25%, var(--color2) 0 50%) 0 0 /
+  //       calc(2 * var(--size)) calc(2 * var(--size));
+  // }
 }

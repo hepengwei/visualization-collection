@@ -9,7 +9,7 @@ import styles from "./index.module.scss";
 
 const speed = 0.006; // 擦除速度
 const dasharrayList = [8, 8, 8, 7, 30];
-const scaleCoefficientList = [0.72, 0.7, 1, 1, 0.36];
+const scaleCoefficientList = [0.72, 0.7, 1, 1, 0.32];
 const addHeightCoefficient = 0.1;
 const imageWidth = 240;
 const imageHeight = 340;
