@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useIntl } from "react-intl";
-import { Button } from "antd";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import paper1 from "images/html/paper1.png";
 import paper2 from "images/html/paper2.png";
 import paper3 from "images/html/paper3.png";
@@ -8,12 +7,17 @@ import paper4 from "images/html/paper4.png";
 import paper5 from "images/html/paper5.png";
 import styles from "./index.module.scss";
 
-const speed = 0.005;
+const speed = 0.006; // 擦除速度
 const dasharrayList = [8, 8, 8, 7, 30];
+const scaleCoefficientList = [0.72, 0.7, 1, 1, 0.36];
+const addHeightCoefficient = 0.1;
+const imageWidth = 240;
+const imageHeight = 340;
 
 const WipeSwitchover = () => {
-  const intl = useIntl();
-  const defsRef = useRef<any>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const defsRef = useRef<SVGDefsElement>(null);
   const [pageIndex, setPageIndex] = useState<number>(dasharrayList.length - 1);
   const pageIndexRef = useRef<number>(dasharrayList.length - 1);
   const disabled = useRef<boolean>(false);
@@ -100,7 +104,8 @@ const WipeSwitchover = () => {
     if (disabled.current) return;
     if (defsRef.current) {
       const newPageIndex = pageIndex + 1;
-      const ele = defsRef.current.children[newPageIndex].children[0];
+      const ele = defsRef.current.children[newPageIndex]
+        .children[0] as SVGPathElement;
       animation(ele, newPageIndex);
     }
   };
@@ -109,20 +114,70 @@ const WipeSwitchover = () => {
     if (disabled.current) return;
     if (defsRef.current) {
       const newPageIndex = pageIndex - 1;
-      const ele = defsRef.current.children[pageIndex].children[0];
+      const ele = defsRef.current.children[pageIndex]
+        .children[0] as SVGPathElement;
       animation(ele, newPageIndex);
     }
   };
 
+  const init = () => {
+    if (containerRef.current && defsRef.current) {
+      const { clientWidth } = containerRef.current;
+      const newHeight = Math.ceil(
+        600 + (clientWidth - 1140) * addHeightCoefficient
+      );
+      Array.prototype.forEach.call(
+        defsRef.current.children,
+        (mask: SVGMaskElement, index: number) => {
+          let transform = window
+            .getComputedStyle(mask.children[0], null)
+            .getPropertyValue("transform");
+          if (transform && transform.startsWith("matrix")) {
+            const arr = transform.split(", ");
+            arr[0] = `${arr[0].substring(0, 7)}${Math.ceil(
+              scaleCoefficientList[index] * clientWidth
+            )}`;
+            transform = arr.join(", ");
+          }
+          (mask.children[0] as SVGPathElement).style.transform = transform;
+        }
+      );
+      if (svgRef.current) {
+        containerRef.current.style.height = `${newHeight}px`;
+        Array.prototype.forEach.call(svgRef.current.children, (e: any) => {
+          if (e.tagName === "g") {
+            e.style.height = `${newHeight}px`;
+            e.children[0].style.height = `${newHeight}px`;
+            e.children[0].style.transform = `${newHeight}px`;
+            const translateX = Math.floor(clientWidth / 2 - imageWidth - 40);
+            const translateY = Math.floor((newHeight - imageHeight) / 2);
+            (
+              e.children[1] as SVGImageElement
+            ).style.transform = `translate(${translateX}px, ${translateY}px)`;
+          }
+        });
+      }
+    }
+  };
+
   useEffect(() => {
+    init();
     return () => {
       frameId.current && cancelAnimationFrame(frameId.current);
     };
   }, []);
 
+  useEffect(() => {
+    // 监听屏幕变化事件
+    window.addEventListener("resize", init);
+    return () => {
+      window.removeEventListener("resize", init);
+    };
+  }, []);
+
   return (
-    <div className={styles.container}>
-      <svg>
+    <div className={styles.container} ref={containerRef}>
+      <svg ref={svgRef}>
         <defs ref={defsRef}>
           <mask id="mask1" className={styles.mask1}>
             <path
@@ -191,27 +246,25 @@ const WipeSwitchover = () => {
           <text fill="#142864">Book1</text>
         </g>
       </svg>
-      <div className={styles.btns}>
-        <Button
-          type="primary"
-          className={styles.btn}
-          disabled={pageIndex >= dasharrayList.length - 1}
-          onClick={goPreviousPage}
-        >
-          {intl.formatMessage({
-            id: "page.htmlVision.interactiveDesign.previousPage",
-          })}
-        </Button>
-        <Button
-          type="primary"
-          className={styles.btn}
-          disabled={pageIndex <= 0}
-          onClick={goNextPage}
-        >
-          {intl.formatMessage({
-            id: "page.htmlVision.interactiveDesign.nextPage",
-          })}
-        </Button>
+      <div
+        className={styles.prevBtn}
+        style={
+          pageIndex >= dasharrayList.length - 1 ? { pointerEvents: "none" } : {}
+        }
+        onClick={goPreviousPage}
+      >
+        <div className={styles.icon}>
+          <LeftOutlined />
+        </div>
+      </div>
+      <div
+        className={styles.nextBtn}
+        style={pageIndex <= 0 ? { pointerEvents: "none" } : {}}
+        onClick={goNextPage}
+      >
+        <div className={styles.icon}>
+          <RightOutlined />
+        </div>
       </div>
     </div>
   );
