@@ -22,32 +22,32 @@
 
     .mask1 {
       path {
-        transform: translate(46%, 40%) scale(910);
+        transform: translate(46%, 40%) scale(1500);
       } /* 0 */
     }
 
     .mask2 {
       path {
-        transform: translate(10%, 10%) scale(900);
+        transform: translate(10%, 0%) scale(1500);
       } /* 0.15 */
     }
 
     .mask3 {
       path {
-        transform: translate(8%, 10%) scale(1150);
+        transform: translate(8%, 10%) scale(2200);
       } /* 0.35 */
     }
 
     .mask4 {
       path {
-        transform: translate(10%, 46%) scale(1200);
+        transform: translate(10%, 46%) scale(2500);
         stroke-dasharray: 7 11;
       } /* 0.55 */
     }
 
     .mask5 {
       path {
-        transform: translate(46%, 46%) scale(420);
+        transform: translate(46%, 36%) scale(710);
         stroke-width: 1;
         stroke-dasharray: 30 29;
       } /* 0.79 */
@@ -75,13 +75,11 @@
         transform: translate(28%, 16%);
       }
       text {
-        transform: translate(54%, 47%);
+        transform: translate(54%, 50%);
         font-size: 56px;
         line-height: 1.07143;
         font-weight: 600;
         letter-spacing: -0.005em;
-        font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue",
-          "Helvetica", "Arial", sans-serif;
       }
     }
 
@@ -97,36 +95,94 @@
     .page4 {
       @include page;
     }
-
     .page5 {
       @include page;
     }
   }
 
-  .btns {
+  $btnWidth: 200px;
+  $iconWidth: 60px;
+  .prevBtn {
     position: absolute;
-    bottom: 20px;
-    left: 0;
-    right: 0;
-    width: 200px;
-    margin: 0 auto;
+    width: $btnWidth;
+    height: $btnWidth;
+    top: 0;
+    bottom: 0;
+    left: calc($btnWidth / -2);
+    margin: auto 0;
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 40px;
+    cursor: pointer;
+    transform: translateX(calc($btnWidth / -2));
+    transition: 0.6s;
 
-    .btn {
-      &:not(:first-child) {
-        margin-left: 50px;
+    .icon {
+      width: $iconWidth;
+      height: $iconWidth;
+      margin-right: calc(calc($btnWidth/2 - $iconWidth) / 2);
+      :global {
+        .anticon {
+          width: $iconWidth;
+          height: $iconWidth;
+          position: relative;
+          svg {
+            width: $iconWidth;
+            height: $iconWidth;
+            path {
+              fill: #fff;
+            }
+          }
+        }
+      }
+    }
+  }
+  .nextBtn {
+    position: absolute;
+    width: $btnWidth;
+    height: $btnWidth;
+    top: 0;
+    bottom: 0;
+    right: calc($btnWidth / -2);
+    margin: auto 0;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 40px;
+    cursor: pointer;
+    transform: translateX(calc($btnWidth / 2));
+    transition: 0.6s;
+
+    .icon {
+      width: $iconWidth;
+      height: $iconWidth;
+      margin-left: calc(calc($btnWidth/2 - $iconWidth) / 2);
+      font-size: 20px;
+      :global {
+        .anticon {
+          width: $iconWidth;
+          height: $iconWidth;
+          position: relative;
+          svg {
+            width: $iconWidth;
+            height: $iconWidth;
+            path {
+              fill: #fff;
+            }
+          }
+        }
       }
     }
   }
 
-  @keyframes wipe5 {
-    0% {
-      --scrolled: 0px;
-    }
-    50% {
-      --scrolled: 25px;
-    }
-    100% {
-      --scrolled: 50px;
+  &:hover {
+    .prevBtn,
+    .nextBtn {
+      transform: translateX(0);
     }
   }
 }
