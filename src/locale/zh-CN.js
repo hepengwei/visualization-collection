@@ -97,6 +97,18 @@ const zh_CN = {
   "page.htmlVision.visualDesign.textShadow": "文字阴影",
 
   // Html视觉-交互设计页
+  "page.htmlVision.interactiveDesign.magnifyingGlass": "放大镜交互效果",
+  "page.htmlVision.interactiveDesign.dragAndDropClipBox":
+    "可拖拽裁剪框交互效果",
+  "page.htmlVision.interactiveDesign.dragAndDropShopping": "拖拽式购物交互效果",
+  "page.htmlVision.interactiveDesign.swipeTab": "左右滑动Tab切换交互效果",
+  "page.htmlVision.interactiveDesign.flipBoook": "翻书交互效果",
+  "page.htmlVision.interactiveDesign.switchButton": "左右滑动开关按钮",
+  "page.htmlVision.interactiveDesign.pseudo3DRubikCube": "伪3D魔方交互效果",
+  "page.htmlVision.interactiveDesign.3DRubikCube": "3D魔方交互效果",
+  "page.htmlVision.interactiveDesign.automaticIdentificationOfMouseDirection":
+    "自动辨别鼠标方向交互效果",
+  "page.htmlVision.interactiveDesign.wipeTheEffect": "擦除切换页面效果",
   "page.htmlVision.interactiveDesign.title": "书名",
   "page.htmlVision.interactiveDesign.price": "价格",
   "page.htmlVision.interactiveDesign.count": "数量",

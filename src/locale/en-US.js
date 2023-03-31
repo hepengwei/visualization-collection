@@ -105,6 +105,25 @@ const en_US = {
   "page.htmlVision.visualDesign.textShadow": "Text Shadow",
 
   // Html视觉-交互设计页
+  "page.htmlVision.interactiveDesign.magnifyingGlass":
+    "Magnifying glass interaction effect",
+  "page.htmlVision.interactiveDesign.dragAndDropClipBox":
+    "Drag-and-drop clip-box interaction effect",
+  "page.htmlVision.interactiveDesign.dragAndDropShopping":
+    "Drag-and-drop shopping interaction effect",
+  "page.htmlVision.interactiveDesign.swipeTab":
+    "Swipe Tab left and right to change the interaction",
+  "page.htmlVision.interactiveDesign.flipBoook":
+    "Flip the book interactive effect",
+  "page.htmlVision.interactiveDesign.switchButton":
+    "Slide the switch button left and right",
+  "page.htmlVision.interactiveDesign.pseudo3DRubikCube":
+    "Pseudo 3D Rubik's Cube interaction effect",
+  "page.htmlVision.interactiveDesign.3DRubikCube":
+    "3D Rubik's Cube interaction effect",
+  "page.htmlVision.interactiveDesign.automaticIdentificationOfMouseDirection":
+    "Automatic identification of mouse direction interaction effect",
+  "page.htmlVision.interactiveDesign.wipeTheEffect": "Wipe the effect of switching pages",
   "page.htmlVision.interactiveDesign.title": "Title",
   "page.htmlVision.interactiveDesign.price": "Price",
   "page.htmlVision.interactiveDesign.count": "Count",

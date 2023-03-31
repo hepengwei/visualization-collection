@@ -92,6 +92,11 @@ const DragShopping = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.title}>
+        {intl.formatMessage({
+          id: "page.htmlVision.interactiveDesign.dragAndDropShopping",
+        })}
+      </div>
       <div className={styles.content}>
         <GridContent
           differentScreenCols={[6, 6, 3, 3, 3]}
