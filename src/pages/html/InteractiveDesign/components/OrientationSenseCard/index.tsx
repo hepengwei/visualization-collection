@@ -1,4 +1,5 @@
 import React from "react";
+import { useIntl } from "react-intl";
 import paper1 from "images/html/paper3.png";
 import paper2 from "images/html/paper4.png";
 import paper3 from "images/html/paper6.png";
@@ -9,8 +10,14 @@ import styles from "./index.module.scss";
 const spanList = [paper1, paper2, paper3, paper4, paper5];
 
 const OrientationSenseCard = () => {
+  const intl = useIntl();
   return (
     <div className={styles.container}>
+      <div className={styles.title}>
+        {intl.formatMessage({
+          id: "page.htmlVision.interactiveDesign.automaticIdentificationOfMouseDirection",
+        })}
+      </div>
       <div className={styles.content}>
         {spanList.map((item: string, index: number) => {
           return (

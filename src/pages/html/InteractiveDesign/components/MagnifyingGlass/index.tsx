@@ -1,10 +1,12 @@
 import React, { useRef, useState } from "react";
+import { useIntl } from "react-intl";
 import ReactDOM from "react-dom";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import watch from "images/html/watch.png";
 import styles from "./index.module.scss";
 
 const MagnifyingGlass = () => {
+  const intl = useIntl();
   const { scrollTop, headHeight } = useGlobalContext();
   const smallBoxRef = useRef<HTMLDivElement>(null);
   const floatBoxRef = useRef<HTMLDivElement>(null);
@@ -68,6 +70,11 @@ const MagnifyingGlass = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.title}>
+        {intl.formatMessage({
+          id: "page.htmlVision.interactiveDesign.magnifyingGlass",
+        })}
+      </div>
       <div className={styles.content}>
         <div className={styles.smallBox} ref={smallBoxRef}>
           <div

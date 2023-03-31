@@ -161,6 +161,11 @@ const FlipBook = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.title}>
+        {intl.formatMessage({
+          id: "page.htmlVision.interactiveDesign.flipBoook",
+        })}
+      </div>
       <div className={styles.pages} ref={pagesRef}>
         {pagesList.map((item: string[], index: number) => {
           return (

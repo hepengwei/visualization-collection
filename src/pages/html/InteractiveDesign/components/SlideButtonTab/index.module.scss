@@ -5,8 +5,19 @@
   justify-content: center;
   align-items: center;
   perspective: 500px;
+  position: relative;
 
-  $contentPaddingTop: 12px;
+  .title {
+    font-size: 30px;
+    font-family: "SourceHanSansCN-Bold" !important;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  $contentPaddingTop: 20px;
   $contentPaddingLeft: 16px;
   $btnMarginLeftRight: 8px;
 

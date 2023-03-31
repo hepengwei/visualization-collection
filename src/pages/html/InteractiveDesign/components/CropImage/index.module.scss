@@ -1,9 +1,20 @@
 .container {
   width: 100%;
-  padding: 60px 0;
+  padding: 100px 0 60px;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+
+  .title {
+    font-size: 30px;
+    font-family: "SourceHanSansCN-Bold" !important;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
 
   $boxWidth: 400px;
   $boxHeight: 400px;
