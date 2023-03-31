@@ -1,5 +1,6 @@
-import React, { useEffect, useLayoutEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { format } from "date-fns";
+import ModuleTitle from "components/ModuleTitle";
 import styles from "./index.module.scss";
 
 const FlopTime = () => {
@@ -68,6 +69,7 @@ const FlopTime = () => {
 
   return (
     <div className={styles.container}>
+      <ModuleTitle intlTitle="page.cssDynamicEffect.richDynamicEffect.upAndDownCard" />
       <div className={styles.content} ref={contentRef}>
         <div className={`${styles.flip} ${styles.down}`}>
           <div className={`${styles.digital} ${styles.front}`}></div>

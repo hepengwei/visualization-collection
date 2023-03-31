@@ -1,10 +1,10 @@
 .container {
-  height: 500px;
+  height: 600px;
   display: flex;
   flex: 1;
-  align-items: center;
   justify-content: center;
   background-color: #000;
+  position: relative;
 
   .content {
     width: 400px;
@@ -24,6 +24,7 @@
       border-radius: 10px;
       text-align: center;
       margin: auto;
+      transform: translateY(-40px);
       overflow: hidden;
       cursor: pointer;
       transition: 0.3s;

@@ -7,20 +7,9 @@
   perspective: 500px;
   position: relative;
 
-  .title {
-    font-size: 30px;
-    font-family: "SourceHanSansCN-Bold" !important;
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-  }
-
   $contentPaddingTop: 20px;
   $contentPaddingLeft: 16px;
   $btnMarginLeftRight: 8px;
-
   .content {
     @property --groove-left {
       syntax: "<length>";

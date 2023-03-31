@@ -1,0 +1,10 @@
+.container {
+  font-size: 24px;
+  font-family: "SourceHanSansCN-Bold" !important;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 11;
+}

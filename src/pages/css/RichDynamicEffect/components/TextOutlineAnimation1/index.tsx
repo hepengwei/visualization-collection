@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import ModuleTitle from "@/components/ModuleTitle";
 import Text from "images/text.svg";
 import styles from "./index.module.scss";
 
@@ -25,6 +26,7 @@ const TextOutlineAnimation1 = () => {
 
   return (
     <div className={styles.container}>
+      <ModuleTitle intlTitle="page.cssDynamicEffect.richDynamicEffect.textLineDisplay" />
       <div className={styles.content} ref={conetentRef}>
         <Text />
       </div>

@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useRef } from "react";
 import { useIntl } from "react-intl";
 import { Button } from "antd";
+import ModuleTitle from "@/components/ModuleTitle";
 import paper1 from "images/html/paper1.png";
 import paper2 from "images/html/paper2.png";
 import paper3 from "images/html/paper3.png";
@@ -161,11 +162,7 @@ const FlipBook = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>
-        {intl.formatMessage({
-          id: "page.htmlVision.interactiveDesign.flipBoook",
-        })}
-      </div>
+      <ModuleTitle intlTitle="page.htmlVision.interactiveDesign.flipBoook" />
       <div className={styles.pages} ref={pagesRef}>
         {pagesList.map((item: string[], index: number) => {
           return (

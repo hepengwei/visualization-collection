@@ -17,8 +17,9 @@ import TextOutlineAnimation1 from "./components/TextOutlineAnimation1";
 import TextOutlineAnimation2 from "./components/TextOutlineAnimation2";
 import MobiusBand1 from "./components/MobiusBand1";
 import MobiusBand2 from "./components/MobiusBand2";
-import TankSloshing from "./components/TankSloshing";
+import TankShaking from "./components/TankShaking";
 import styles from "./index.module.scss";
+
 
 const RichDynamicEffect = () => {
   const { setScrollTop } = useGlobalContext();
@@ -81,7 +82,7 @@ const RichDynamicEffect = () => {
       </div>
       <div className={styles.multipleColumnsBox}>
         <div className={styles.box}>
-          <TankSloshing />
+          <TankShaking />
         </div>
       </div>
     </div>

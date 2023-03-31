@@ -1,18 +1,13 @@
 import React from "react";
-import { useIntl } from "react-intl";
+import ModuleTitle from "@/components/ModuleTitle";
 import styles from "./index.module.scss";
 
 const spanList = new Array(3).fill(0);
 
 const TweakCube = () => {
-  const intl = useIntl();
   return (
     <div className={styles.container}>
-      <div className={styles.title}>
-        {intl.formatMessage({
-          id: "page.htmlVision.interactiveDesign.pseudo3DRubikCube",
-        })}
-      </div>
+      <ModuleTitle intlTitle="page.htmlVision.interactiveDesign.pseudo3DRubikCube" />
       <div className={styles.content}>
         {spanList.map((item: number, index: number) => {
           return (

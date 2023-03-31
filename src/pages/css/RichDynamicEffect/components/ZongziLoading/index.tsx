@@ -1,4 +1,5 @@
 import React from "react";
+import ModuleTitle from "components/ModuleTitle";
 import StickyRice from "images/css/StickyRice.svg";
 import RedDates from "images/css/RedDates.svg";
 import ReedLeaves from "images/css/ReedLeaves.svg";
@@ -8,6 +9,7 @@ import styles from "./index.module.scss";
 const ZongziLoading = () => {
   return (
     <div className={styles.container}>
+      <ModuleTitle intlTitle="page.cssDynamicEffect.richDynamicEffect.zongziLoading" />
       <div className={styles.content}>
         <div className={styles.loadingItem1}>
           <StickyRice />

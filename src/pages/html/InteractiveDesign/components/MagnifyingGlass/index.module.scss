@@ -6,16 +6,6 @@
   align-items: center;
   position: relative;
 
-  .title {
-    font-size: 34px;
-    font-family: "SourceHanSansCN-Bold" !important;
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-  }
-
   .content {
     width: 100%;
     display: flex;

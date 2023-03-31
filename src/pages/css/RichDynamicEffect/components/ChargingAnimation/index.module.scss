@@ -1,16 +1,16 @@
 .container {
-  height: 500px;
+  height: 600px;
   display: flex;
   flex: 1;
-  align-items: center;
   justify-content: center;
-  position: relative;
+  padding-top: 100px;
   background-color: #000;
+  position: relative;
 
   .number {
     position: absolute;
     width: 300px;
-    top: 20%;
+    top: 32%;
     text-align: center;
     font-size: 32px;
     z-index: 10;
