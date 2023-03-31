@@ -1,10 +1,9 @@
 import React, { useRef } from "react";
-import { useIntl } from "react-intl";
 import ReactDOM from "react-dom";
+import ModuleTitle from "@/components/ModuleTitle";
 import styles from "./index.module.scss";
 
 const Preserve3dBox = () => {
-  const intl = useIntl();
   const containerRef = useRef<HTMLDivElement>(null);
   const boxRef = useRef<HTMLDivElement>(null);
   const moueDownPos = useRef<{
@@ -138,11 +137,7 @@ const Preserve3dBox = () => {
       onMouseLeave={onMouseUp}
       ref={containerRef}
     >
-      <div className={styles.title}>
-        {intl.formatMessage({
-          id: "page.htmlVision.interactiveDesign.3DRubikCube",
-        })}
-      </div>
+      <ModuleTitle intlTitle="page.htmlVision.interactiveDesign.3DRubikCube" />
       <div className={styles.content}>
         <div className={styles.box} ref={boxRef}>
           <div className={styles.side1} onClick={onClickSide1} />

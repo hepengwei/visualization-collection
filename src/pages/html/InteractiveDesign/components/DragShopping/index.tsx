@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
+import ModuleTitle from "components/ModuleTitle";
 import GridContent from "components/GridContent";
 import book1 from "images/html/book1.jpg";
 import book2 from "images/html/book2.jpg";
@@ -92,11 +93,7 @@ const DragShopping = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>
-        {intl.formatMessage({
-          id: "page.htmlVision.interactiveDesign.dragAndDropShopping",
-        })}
-      </div>
+      <ModuleTitle intlTitle="page.htmlVision.interactiveDesign.dragAndDropShopping" />
       <div className={styles.content}>
         <GridContent
           differentScreenCols={[6, 6, 3, 3, 3]}

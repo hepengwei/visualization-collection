@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import ModuleTitle from "components/ModuleTitle";
 import styles from "./index.module.scss";
 
 const circleRadius = 75;
@@ -48,6 +49,7 @@ const DynamicTime = () => {
 
   return (
     <div className={styles.container}>
+      <ModuleTitle intlTitle="page.cssDynamicEffect.richDynamicEffect.SVGCircularClock" />
       <div className={`${styles.circle} ${styles.hour}`}>
         <svg>
           <circle

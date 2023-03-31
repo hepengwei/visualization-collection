@@ -143,6 +143,24 @@ const zh_CN = {
   "page.htmlVision.utilitarianFunction.oneInch": "1寸",
   "page.htmlVision.utilitarianFunction.twoInch": "2寸",
 
+  // Css动效-丰富动效页
+  "page.cssDynamicEffect.richDynamicEffect.SVGCircularClock": "SVG圆形时钟动效",
+  "page.cssDynamicEffect.richDynamicEffect.upAndDownCard":
+    "上下翻转卡片时钟动效",
+  "page.cssDynamicEffect.richDynamicEffect.charging": "充电动效",
+  "page.cssDynamicEffect.richDynamicEffect.zongziLoading": "粽子Loading动效",
+  "page.cssDynamicEffect.richDynamicEffect.borderRotation": "边框旋转动效",
+  "page.cssDynamicEffect.richDynamicEffect.luminousText": "发光文字动效",
+  "page.cssDynamicEffect.richDynamicEffect.searchlightText": "探照灯文字动效",
+  "page.cssDynamicEffect.richDynamicEffect.wavyText": "波浪文字动效",
+  "page.cssDynamicEffect.richDynamicEffect.textLineDisplay": "文字线条显示动效",
+  "page.cssDynamicEffect.richDynamicEffect.textLineLoop": "文字线条循环动效",
+  "page.cssDynamicEffect.richDynamicEffect.mobiusLoopBar":
+    "莫比乌斯环循环条动效",
+  "page.cssDynamicEffect.richDynamicEffect.mobiusRingsCircleDots":
+    "莫比乌斯环循环圆点动效",
+  "page.cssDynamicEffect.richDynamicEffect.tankShaking": "水罐摇晃动效",
+
   // Canvas动效
   "page.canvasDynamicEffect.startGame": "开 始 游 戏",
   "page.canvasDynamicEffect.continueTheGame": "继 续 游 戏",

@@ -1,8 +1,9 @@
 .container {
-  height: 240px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 314px;
+  padding-top: 126px;
+  position: relative;
+
   .content {
     display: flex;
     .flip {

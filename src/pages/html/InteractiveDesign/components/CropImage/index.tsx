@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
-import { useIntl } from "react-intl";
 import ReactDOM from "react-dom";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
+import ModuleTitle from "@/components/ModuleTitle";
 import flower from "images/flower.jpg";
 import styles from "./index.module.scss";
 
@@ -17,7 +17,6 @@ enum Contact {
 }
 
 const CropImage = () => {
-  const intl = useIntl();
   const { scrollTop } = useGlobalContext();
   const leftBoxWidth = useRef<number>(0);
   const leftBoxHeight = useRef<number>(0);
@@ -279,11 +278,7 @@ const CropImage = () => {
       onMouseLeave={onMouseUp}
       ref={containerRef}
     >
-      <div className={styles.title}>
-        {intl.formatMessage({
-          id: "page.htmlVision.interactiveDesign.dragAndDropClipBox",
-        })}
-      </div>
+      <ModuleTitle intlTitle="page.htmlVision.interactiveDesign.dragAndDropClipBox" />
       <div className={styles.leftBox} ref={leftBoxRef}>
         <img src={flower} className={styles.img1} />
         <img src={flower} className={styles.img2} ref={img2Ref} />

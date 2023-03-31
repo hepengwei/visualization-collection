@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useIntl } from "react-intl";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import ModuleTitle from "@/components/ModuleTitle";
 import paper1 from "images/html/paper1.png";
 import paper2 from "images/html/paper2.png";
 import paper3 from "images/html/paper3.png";
@@ -16,7 +16,6 @@ const imageWidth = 240;
 const imageHeight = 340;
 
 const WipeSwitchover = () => {
-  const intl = useIntl();
   const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const defsRef = useRef<SVGDefsElement>(null);
@@ -179,11 +178,7 @@ const WipeSwitchover = () => {
 
   return (
     <div className={styles.container} ref={containerRef}>
-      <div className={styles.title}>
-        {intl.formatMessage({
-          id: "page.htmlVision.interactiveDesign.wipeTheEffect",
-        })}
-      </div>
+      <ModuleTitle intlTitle="page.htmlVision.interactiveDesign.wipeTheEffect" />
       <svg ref={svgRef}>
         <defs ref={defsRef}>
           <mask id="mask1" className={styles.mask1}>

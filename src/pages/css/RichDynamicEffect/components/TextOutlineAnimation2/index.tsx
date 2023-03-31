@@ -1,9 +1,11 @@
 import React from "react";
+import ModuleTitle from "@/components/ModuleTitle";
 import styles from "./index.module.scss";
 
 const TextOutlineAnimation2 = () => {
   return (
     <div className={styles.container}>
+      <ModuleTitle intlTitle="page.cssDynamicEffect.richDynamicEffect.textLineLoop" />
       <div className={styles.content}>
         <svg>
           <symbol id="text">

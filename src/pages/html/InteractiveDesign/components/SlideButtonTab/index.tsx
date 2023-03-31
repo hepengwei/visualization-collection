@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useIntl } from "react-intl";
+import ModuleTitle from "@/components/ModuleTitle";
 import styles from "./index.module.scss";
 
 const btnList = new Array(4).fill(0);
@@ -7,7 +7,6 @@ const contentPaddingLeft = 16;
 const btnMarginLeftRight = 8;
 
 const SlideButtonTab = () => {
-  const intl = useIntl();
   const contentRef = useRef<HTMLDivElement>(null);
   const [activedBtnIndex, setActivedBtnIndex] = useState<number>(0);
   const btnWidthRef = useRef<number>(0);
@@ -53,11 +52,7 @@ const SlideButtonTab = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>
-        {intl.formatMessage({
-          id: "page.htmlVision.interactiveDesign.swipeTab",
-        })}
-      </div>
+      <ModuleTitle intlTitle="page.htmlVision.interactiveDesign.swipeTab" />
       <div className={styles.content} ref={contentRef}>
         {btnList.map((item: number, index: number) => {
           return (

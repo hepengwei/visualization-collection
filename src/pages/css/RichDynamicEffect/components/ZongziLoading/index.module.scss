@@ -1,16 +1,15 @@
 .container {
-  height: 500px;
+  height: 600px;
   display: flex;
   flex: 1;
-  align-items: center;
   justify-content: center;
+  padding-top: 180px;
   background-color: #000;
   position: relative;
 
   $duration: 4.2s;
   $delay: -2s;
   $filter: drop-shadow(0px 0px 8px rgba(252, 233, 124, 0.8));
-
   @mixin loadingItem {
     width: 60px;
     height: 60px;

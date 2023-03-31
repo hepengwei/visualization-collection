@@ -123,7 +123,8 @@ const en_US = {
     "3D Rubik's Cube interaction effect",
   "page.htmlVision.interactiveDesign.automaticIdentificationOfMouseDirection":
     "Automatic identification of mouse direction interaction effect",
-  "page.htmlVision.interactiveDesign.wipeTheEffect": "Wipe the effect of switching pages",
+  "page.htmlVision.interactiveDesign.wipeTheEffect":
+    "Wipe the effect of switching pages",
   "page.htmlVision.interactiveDesign.title": "Title",
   "page.htmlVision.interactiveDesign.price": "Price",
   "page.htmlVision.interactiveDesign.count": "Count",
@@ -163,6 +164,33 @@ const en_US = {
   "page.htmlVision.utilitarianFunction.backPhoto": "Back Photo",
   "page.htmlVision.utilitarianFunction.oneInch": "1 inch",
   "page.htmlVision.utilitarianFunction.twoInch": "2 inch",
+
+  // Css动效-丰富动效页
+  "page.cssDynamicEffect.richDynamicEffect.SVGCircularClock":
+    "SVG Circular clock dynamic effect",
+  "page.cssDynamicEffect.richDynamicEffect.upAndDownCard":
+    "Up-and-down card dynamic effect",
+  "page.cssDynamicEffect.richDynamicEffect.charging": "Charging dynamic effect",
+  "page.cssDynamicEffect.richDynamicEffect.zongziLoading":
+    "Zongzi loading dynamic effect",
+  "page.cssDynamicEffect.richDynamicEffect.borderRotation":
+    "Border rotation dynamic effect",
+  "page.cssDynamicEffect.richDynamicEffect.luminousText":
+    "Luminous text dynamic effect",
+  "page.cssDynamicEffect.richDynamicEffect.searchlightText":
+    "Searchlight text dynamic effect",
+  "page.cssDynamicEffect.richDynamicEffect.wavyText":
+    "Wavy text dynamic effect",
+  "page.cssDynamicEffect.richDynamicEffect.textLineDisplay":
+    "Text line display dynamic effect",
+  "page.cssDynamicEffect.richDynamicEffect.textLineLoop":
+    "Text line loop dynamic effect",
+  "page.cssDynamicEffect.richDynamicEffect.mobiusLoopBar":
+    "Mobius loop bar dynamic effect",
+  "page.cssDynamicEffect.richDynamicEffect.mobiusRingsCircleDots":
+    "Mobius loop circle dots dynamic effect",
+  "page.cssDynamicEffect.richDynamicEffect.tankShaking":
+    "Tank shaking dynamic effect",
 
   // Canvas动效
   "page.canvasDynamicEffect.startGame": "Start Game",

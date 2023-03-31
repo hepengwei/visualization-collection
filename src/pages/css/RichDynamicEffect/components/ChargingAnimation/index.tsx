@@ -1,6 +1,5 @@
-import React, {
-  useLayoutEffect,
-} from "react";
+import React, { useLayoutEffect } from "react";
+import ModuleTitle from "components/ModuleTitle";
 import styles from "./index.module.scss";
 
 const list = new Array(15).fill("1");
@@ -16,9 +15,9 @@ const DynamicTime = () => {
     }}`);
   }, []);
 
-
   return (
     <div className={styles.container}>
+      <ModuleTitle intlTitle="page.cssDynamicEffect.richDynamicEffect.charging" />
       <div className={styles.number}>30.02%</div>
       <div className={styles.contrast}>
         <div className={styles.circle}></div>

@@ -1,10 +1,10 @@
 .container {
-  height: 240px;
   display: flex;
-  align-items: center;
+  height: 314px;
+  padding-top: 100px;
+  position: relative;
 
   $borderWidth: 6px;
-
   .circle {
     box-sizing: border-box;
     width: 150px;
