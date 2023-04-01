@@ -33,8 +33,8 @@ const getBaseOptions = () => {
       {
         name: "Price",
         type: "pie",
-        radius: ["55%", "72%"],
-        left: "-10%",
+        radius: ["53%", "68%"],
+        left: "10%",
         emphasis: {
           label: {
             show: true,

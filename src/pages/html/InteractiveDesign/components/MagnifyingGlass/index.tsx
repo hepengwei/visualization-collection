@@ -5,6 +5,8 @@ import ModuleTitle from "@/components/ModuleTitle";
 import watch from "images/html/watch.png";
 import styles from "./index.module.scss";
 
+const paddingTop = 100;
+
 const MagnifyingGlass = () => {
   const { scrollTop, headHeight } = useGlobalContext();
   const smallBoxRef = useRef<HTMLDivElement>(null);
@@ -29,7 +31,7 @@ const MagnifyingGlass = () => {
       floatBoxNode;
     let left = e.clientX - smallBoxNode.offsetLeft - floatBoxWidth / 2;
     let top = 0;
-    if (scrollTop < smallBoxNode.offsetTop - headHeight) {
+    if (scrollTop < smallBoxNode.offsetTop - headHeight - paddingTop) {
       top = e.clientY - floatBoxHeight / 2 - smallBoxNode.offsetTop - scrollTop;
     } else {
       top =
@@ -69,9 +71,12 @@ const MagnifyingGlass = () => {
 
   return (
     <div className={styles.container}>
-      <ModuleTitle intlTitle="page.htmlVision.interactiveDesign.magnifyingGlass" />
       <div className={styles.content}>
         <div className={styles.smallBox} ref={smallBoxRef}>
+          <ModuleTitle
+            intlTitle="page.htmlVision.interactiveDesign.magnifyingGlass"
+            style={{ top: "-80px", left: "114%" }}
+          />
           <div
             className={styles.mask}
             onMouseOver={onOverMask}
