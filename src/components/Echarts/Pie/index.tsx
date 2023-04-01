@@ -52,7 +52,7 @@ const getBaseOptions = () => {
       {
         name: "Price",
         type: "pie",
-        radius: ["55%", "72%"],
+        radius: ["52%", "68%"],
         avoidLabelOverlap: false,
         label: {
           show: false,

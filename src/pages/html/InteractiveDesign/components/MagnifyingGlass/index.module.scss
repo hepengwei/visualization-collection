@@ -1,15 +1,16 @@
 .container {
   width: 100%;
-  padding: 100px 0 60px;
+  height: 520px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
 
   .content {
     width: 100%;
     display: flex;
+    flex: 1;
     justify-content: center;
+    padding-top: 100px;
 
     $smallBoxWidth: 400px;
     $smallBoxHeight: 280px;
