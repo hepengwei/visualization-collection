@@ -193,6 +193,8 @@ const en_US = {
     "Tank shaking dynamic effect",
 
   // Canvas动效
+  "page.canvasDynamicEffect.dynamicClock": "Dynamic clock effect",
+  "page.canvasDynamicEffect.searchlight": "Searchlight effect",
   "page.canvasDynamicEffect.startGame": "Start Game",
   "page.canvasDynamicEffect.continueTheGame": "Continue The Game",
   "page.canvasDynamicEffect.restart": "Restart",
@@ -203,6 +205,8 @@ const en_US = {
     "The video is slow to load, please wait patiently",
 
   // 人工智能应用
+  "page.AIApplication.humanPostureDetection":
+    "Real-time human posture detection (Camera required)",
   "page.AIApplication.send": "Send",
   "page.AIApplication.sendBarrage": "Send barrage",
 
@@ -268,6 +272,54 @@ const en_US = {
   "page.imageProcessingTool.clippingWidth": "Clipping width",
   "page.imageProcessingTool.clippingHeight": "Clipping height",
   "page.imageProcessingTool.mosaicGrainSize": "Mosaic grain size",
+
+  // Html视觉-应用页面框架页
+  "page.htmlVision.applicationPageFrame.secondPage": "Second Page",
+  "page.htmlVision.applicationPageFrame.thirdPage": "Third Page",
+  "page.htmlVision.applicationPageFrame.lastPage": "Last Page",
+  "page.htmlVision.applicationPageFrame.title":
+    "The ultimate solution for two cross-domain pages to jump and pass parameters",
+  "page.htmlVision.applicationPageFrame.author": "Author",
+  "page.htmlVision.applicationPageFrame.pageA": "Page A",
+  "page.htmlVision.applicationPageFrame.pageB": "Page B",
+  "page.htmlVision.applicationPageFrame.appoint": "Article convention",
+  "page.htmlVision.applicationPageFrame.appointText1":
+    "Page A: The original page before the jump. Assume that the page is a.com",
+  "page.htmlVision.applicationPageFrame.appointText2":
+    "Page B: The target page to jump to. Assume that the page is b.com",
+  "page.htmlVision.applicationPageFrame.subTitle1": "First, simple scheme",
+  "page.htmlVision.applicationPageFrame.des1":
+    "When it comes to page hopping, the first thing that comes to mind is using the a tag",
+  "page.htmlVision.applicationPageFrame.codeBox1.text":
+    "Click the link on page A and transfer the parameter data to page B",
+  "page.htmlVision.applicationPageFrame.codeBox2.text":
+    "The parameters sent from page A are received on page B",
+  "page.htmlVision.applicationPageFrame.des2":
+    "You can also use the window.open method to jump to the page",
+  "page.htmlVision.applicationPageFrame.des3":
+    "Disadvantages: Parameter passing by URL is limited by the number of characters and can only pass a small amount of data.",
+  "page.htmlVision.applicationPageFrame.subTitle2":
+    "Second, pass long data scheme",
+  "page.htmlVision.applicationPageFrame.des4":
+    "If you want to transfer a large amount of data, you can't use the method of putting data in the URL. Here I use the window.postMessage method introduced in HTML5 for data transfer.",
+  "page.htmlVision.applicationPageFrame.des5":
+    "If the iframe tag is used to embed page B in page A, the method is as follows:",
+  "page.htmlVision.applicationPageFrame.des6": "Abuse",
+  "page.htmlVision.applicationPageFrame.des7":
+    "1. When sending messages using postMessage, ensure that page B has been loaded. Since pages A and B are cross-domain, popup.onload is invalid, and only setTimeout can be used to delay sending.",
+  "page.htmlVision.applicationPageFrame.des8":
+    "2. If you use the iframe tag, you can only embed the page and not open a new window. If you use window.open, you can open a new window. However, no data is passed when the B page is first loaded. The data is sent after the window opens, so there is a delay on page B.",
+  "page.htmlVision.applicationPageFrame.subTitle3":
+    "Third, ultimate solution: iframe+postMessage+localStorage",
+  "page.htmlVision.applicationPageFrame.des9":
+    "On page A, use iframe tag to load page B and hide it. When click Jump, use postMessage to send message to page B, monitor the data sent from page A on page B, and then save it to localStorage. Then, when page A uses window.open to open page B, Page B directly goes to localStorage to get data, so that the page jump and parameter pass is completed",
+  "page.htmlVision.applicationPageFrame.codeBox3.text":
+    "When the data can be obtained, it means that it is from page A",
+  "page.htmlVision.applicationPageFrame.des10": "Summarize",
+  "page.htmlVision.applicationPageFrame.des11":
+    "1. Both iframe and postMessage can be cross-domain, while localStorage cannot share data across domains.",
+  "page.htmlVision.applicationPageFrame.des12":
+    "2. Window in window.postMessage always refers to the window object of the target page to be jumped to.",
 };
 
 export default en_US;

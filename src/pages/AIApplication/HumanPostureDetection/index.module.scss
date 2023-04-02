@@ -6,9 +6,12 @@
   align-items: center;
   justify-content: center;
   background-image: $globalBackgroundImage;
+  position: relative;
+
   .content {
     position: relative;
     border: 1px solid #aaa;
+    margin-top: 50px;
     video {
       position: absolute;
       top: 0;

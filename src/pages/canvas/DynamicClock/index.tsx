@@ -3,6 +3,7 @@
  */
 import React, { useEffect, useRef } from "react";
 import { useIntl } from "react-intl";
+import ModuleTitle from "@/components/ModuleTitle";
 
 const canvasWidth = 400;
 const canvasHeight = 400;
@@ -152,8 +153,10 @@ const DynamicClock = () => {
         justifyContent: "center",
         alignItems: "center",
         backgroundImage: "linear-gradient(135deg, #224141, #162a2a)",
+        position: "relative",
       }}
     >
+      <ModuleTitle intlTitle="page.canvasDynamicEffect.dynamicClock" />
       <canvas ref={canvasRef}>
         {intl.formatMessage({ id: "common.browserTooLow" })}
       </canvas>
