@@ -2,6 +2,7 @@
  * 应用页面框架
  */
 import React, { useState, useRef, useMemo, useEffect } from "react";
+import { useIntl } from "react-intl";
 import ReactDOM from "react-dom";
 import Swiper from "swiper";
 import { useDebounceFn } from "ahooks";
@@ -10,12 +11,13 @@ import Page1 from "./components/Page1";
 import Page2 from "./components/Page2";
 import Page3 from "./components/Page3";
 import Page4 from "./components/Page4";
+import Page5 from "./components/Page5";
 import styles from "./index.module.scss";
 
 const innerHeadHeight = 100; // 内顶部区域高度
-const bgHeight = 30; // 顶部中间文字高度
-const pageNum = 4; // 总页面
-const moveSpeed = 32; // 首页与第二页的切换速度
+// const bgHeight = 30; // 顶部中间文字高度
+const pageNum = 5; // 总页面
+const moveSpeed = 25; // 首页与第二页的切换速度
 
 enum SwitchPageType {
   "next",
@@ -23,6 +25,7 @@ enum SwitchPageType {
 }
 
 const AppPageFrame = () => {
+  const intl = useIntl();
   const { menuWidth, headHeight } = useGlobalContext();
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -30,11 +33,8 @@ const AppPageFrame = () => {
   const [allPageHeight, setAllPageHeight] = useState<number>(0);
   const swiper = useRef<Swiper | null>(null);
   const isOwnScroll = useRef<boolean>(false);
-  const page1 = useRef<HTMLDivElement>(null);
-  const page2 = useRef<HTMLDivElement>(null);
-  const page3 = useRef<HTMLDivElement>(null);
-  const page4 = useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = useState<number>(0);
+  const isScroll = useRef<boolean>(false);
   const frameId = useRef<number>(0);
   const currentMoveDirection = useRef<string>("");
   const [showPageIndex, setShowPageIndex] = useState<number>(0);
@@ -60,6 +60,7 @@ const AppPageFrame = () => {
         } else {
           currentMoveDirection.current = "";
           isOwnScroll.current = false;
+          isScroll.current = false;
         }
       } else if (currentMoveDirection.current === "toBottom") {
         if (containerNode.scrollTop > 0) {
@@ -71,6 +72,7 @@ const AppPageFrame = () => {
         } else {
           currentMoveDirection.current = "";
           isOwnScroll.current = false;
+          isScroll.current = false;
         }
       }
     }
@@ -78,6 +80,7 @@ const AppPageFrame = () => {
 
   // 首页切换到第二页
   const moveTop = () => {
+    isScroll.current = true;
     if (!currentMoveDirection.current) {
       currentMoveDirection.current = "toTop";
       setShowPageIndex(1);
@@ -87,6 +90,7 @@ const AppPageFrame = () => {
 
   // 第二页切换到首页
   const moveBottom = () => {
+    isScroll.current = true;
     if (!currentMoveDirection.current) {
       currentMoveDirection.current = "toBottom";
       setShowPageIndex(0);
@@ -134,48 +138,52 @@ const AppPageFrame = () => {
     }
   );
 
-  const onScrollCapture = (e: any) => {
-    if (isOwnScroll.current) {
-      isOwnScroll.current = false;
-      return;
-    }
-    if (e.target.className === styles.container) {
-      if (swiper.current) {
-        if (e.target.scrollTop > containerHeight - innerHeadHeight) {
-          if (e.target.scrollTop > scrollTop) {
-            switchPage.run(SwitchPageType.next);
-          } else if (e.target.scrollTop < scrollTop) {
-            switchPage.run(SwitchPageType.prev);
+  const onScrollCapture = useDebounceFn(
+    (e: any) => {
+      if (isOwnScroll.current) {
+        isOwnScroll.current = false;
+        return;
+      }
+      if (isScroll.current) return;
+      if (e.target.className === styles.container) {
+        if (swiper.current) {
+          if (e.target.scrollTop > containerHeight - innerHeadHeight) {
+            if (e.target.scrollTop > scrollTop) {
+              switchPage.run(SwitchPageType.next);
+            } else if (e.target.scrollTop < scrollTop) {
+              switchPage.run(SwitchPageType.prev);
+            }
+          } else {
+            if (
+              e.target.scrollTop > scrollTop &&
+              scrollTop < containerHeight - innerHeadHeight
+            ) {
+              moveTop();
+            } else if (e.target.scrollTop < scrollTop) {
+              moveBottom();
+            }
           }
         } else {
-          if (
-            e.target.scrollTop > scrollTop &&
-            scrollTop < containerHeight - innerHeadHeight
-          ) {
-            moveTop();
-          } else if (e.target.scrollTop < scrollTop) {
-            moveBottom();
-          }
+          setScrollTop(e.target.scrollTop);
         }
-      } else {
-        setScrollTop(e.target.scrollTop);
       }
-    }
-  };
+    },
+    { wait: 100 }
+  );
 
-  const bgBottom = useMemo(() => {
-    if (containerHeight) {
-      if (scrollTop >= containerHeight - innerHeadHeight) {
-        return 0;
-      } else if (scrollTop > containerHeight - innerHeadHeight - bgHeight) {
-        return (
-          (scrollTop - (containerHeight - innerHeadHeight - bgHeight)) / 2 -
-          bgHeight
-        );
-      }
-    }
-    return -bgHeight;
-  }, [containerHeight, scrollTop]);
+  // const bgBottom = useMemo(() => {
+  //   if (containerHeight) {
+  //     if (scrollTop >= containerHeight - innerHeadHeight) {
+  //       return 0;
+  //     } else if (scrollTop > containerHeight - innerHeadHeight - bgHeight) {
+  //       return (
+  //         (scrollTop - (containerHeight - innerHeadHeight - bgHeight)) / 2 -
+  //         bgHeight
+  //       );
+  //     }
+  //   }
+  //   return -bgHeight;
+  // }, [containerHeight, scrollTop]);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -205,7 +213,7 @@ const AppPageFrame = () => {
   }, []);
 
   useEffect(() => {
-    const mySwiper = new Swiper(`.${styles.swiper}`, {
+    const mySwiper = new Swiper(`.swiper`, {
       direction: "vertical", // 垂直切换选项
       speed: 1000,
       loop: false, // 循环模式选项
@@ -250,12 +258,12 @@ const AppPageFrame = () => {
         }
         break;
       case "LastPage":
-        const anchorPageTop3 = (containerHeight - innerHeadHeight) * 3;
-        if (scrollTop !== anchorPageTop3) {
+        const lastPageTop = (containerHeight - innerHeadHeight) * (pageNum - 1);
+        if (scrollTop !== lastPageTop) {
           isOwnScroll.current = true;
-          containerNode.scrollTop = anchorPageTop3;
-          setScrollTop(anchorPageTop3);
-          swiper.current?.slideTo(2);
+          containerNode.scrollTop = lastPageTop;
+          setScrollTop(lastPageTop);
+          swiper.current?.slideTo(pageNum - 2);
         }
         break;
       default:
@@ -266,7 +274,7 @@ const AppPageFrame = () => {
   return (
     <div
       className={styles.container}
-      onScrollCapture={onScrollCapture}
+      onScrollCapture={onScrollCapture.run}
       ref={containerRef}
     >
       <div
@@ -287,7 +295,7 @@ const AppPageFrame = () => {
           <Page1 showPageIndex={showPageIndex} />
         </div>
         <div
-          className={styles.swiper}
+          className="swiper"
           style={
             containerHeight
               ? { height: `${containerHeight - innerHeadHeight}px` }
@@ -295,14 +303,17 @@ const AppPageFrame = () => {
           }
         >
           <div className="swiper-wrapper">
-            <div className="swiper-slide" ref={page2}>
+            <div className="swiper-slide">
               <Page2 showPageIndex={showPageIndex} />
             </div>
-            <div className="swiper-slide" ref={page3}>
+            <div className="swiper-slide">
               <Page3 showPageIndex={showPageIndex} />
             </div>
-            <div className="swiper-slide" ref={page4}>
+            <div className="swiper-slide">
               <Page4 showPageIndex={showPageIndex} />
+            </div>
+            <div className="swiper-slide">
+              <Page5 showPageIndex={showPageIndex} />
             </div>
           </div>
         </div>
@@ -319,11 +330,11 @@ const AppPageFrame = () => {
             : { left: `${menuWidth}px`, width: `calc(100% - ${menuWidth}px)` }
         }
       >
-        <div className={styles.bgBox}>
+        {/* <div className={styles.bgBox}>
           <div className={styles.bg} style={{ bottom: bgBottom }}>
             <p>Hello World</p>
           </div>
-        </div>
+        </div> */}
 
         <div className={styles.left}>
           <div className={styles.logo}>L</div>
@@ -332,13 +343,19 @@ const AppPageFrame = () => {
 
         <div className={styles.right}>
           <div className={styles.btn} onClick={() => scrollTo("SecondPage")}>
-            SecondPage
+            {intl.formatMessage({
+              id: "page.htmlVision.applicationPageFrame.secondPage",
+            })}
           </div>
           <div className={styles.btn} onClick={() => scrollTo("ThirdPage")}>
-            ThirdPage
+            {intl.formatMessage({
+              id: "page.htmlVision.applicationPageFrame.thirdPage",
+            })}
           </div>
           <div className={styles.btn} onClick={() => scrollTo("LastPage")}>
-            LastPage
+            {intl.formatMessage({
+              id: "page.htmlVision.applicationPageFrame.lastPage",
+            })}
           </div>
         </div>
       </div>

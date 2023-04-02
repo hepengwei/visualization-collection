@@ -5,11 +5,13 @@ import React, { useEffect, useRef } from "react";
 import { useIntl } from "react-intl";
 import SphereCollision from "sphere-collision";
 import type { SphereCollisionC, GlobuleC } from "sphere-collision/types";
+import ModuleTitle from "@/components/ModuleTitle";
 
-const canvasWidth = 560; // 画布宽度
-const canvasHeight = 600; // 画布高度
+const canvasWidth = 504; // 画布宽度
+const canvasHeight = 540; // 画布高度
 const canvasBgColor = "black"; // 画布背景颜色
-const globuleRadius = 90; // 球半径
+const globuleRadius = 80; // 球半径
+const marginTop = 30;
 
 const Searchlight = () => {
   const intl = useIntl();
@@ -88,20 +90,20 @@ const Searchlight = () => {
         canvas2,
         [
           {
-            initX: 200,
+            initX: 180,
             initY: 450,
-            vx: -5,
-            vy: -4,
+            vx: -4,
+            vy: -2,
             radius: globuleRadius,
             // receiveOutForce: false,
             // receiveWallForce: false,
             afterDrawGlobule,
           },
           {
-            initX: 400,
+            initX: 420,
             initY: 150,
-            vx: 4,
-            vy: 6,
+            vx: 2,
+            vy: 4,
             radius: globuleRadius,
             // receiveOutForce: false,
             afterDrawGlobule,
@@ -131,12 +133,17 @@ const Searchlight = () => {
         alignItems: "center",
         minWidth: "1200px",
         backgroundImage: "linear-gradient(135deg, #224141, #162a2a)",
+        position: "relative",
       }}
     >
-      <canvas id="searchlightCanvas">
+      <ModuleTitle intlTitle="page.canvasDynamicEffect.searchlight" />
+      <canvas id="searchlightCanvas" style={{ marginTop: `${marginTop}px` }}>
         {intl.formatMessage({ id: "common.browserTooLow" })}
       </canvas>
-      <canvas id="searchlightCanvas2" style={{ marginLeft: "50px" }}>
+      <canvas
+        id="searchlightCanvas2"
+        style={{ marginLeft: "50px", marginTop: `${marginTop}px` }}
+      >
         {intl.formatMessage({ id: "common.browserTooLow" })}
       </canvas>
     </div>

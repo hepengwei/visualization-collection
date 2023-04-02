@@ -95,7 +95,7 @@
     "react-router-dom": "^6.4.2",
     "react-tilt": "^0.1.4",
     "sphere-collision": "^1.1.4",
-    "swiper": "^8.4.4",
+    "swiper": "^9.2.0",
     "typed.js": "^2.0.12",
     "uzip": "^0.20201231.0"
   }

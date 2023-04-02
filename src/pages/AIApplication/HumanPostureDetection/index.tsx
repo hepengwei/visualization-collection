@@ -7,14 +7,15 @@ import { useIntl } from "react-intl";
 import * as poseDetection from "@tensorflow-models/pose-detection";
 import "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-backend-webgl";
+import ModuleTitle from "@/components/ModuleTitle";
 import styles from "./index.module.scss";
 
 enum VideoStatus {
   "ready",
   "inRecording",
 }
-const width = Math.floor(window.screen.width * 0.6);
-const height = Math.floor(window.screen.height * 0.6);
+const width = Math.floor(window.screen.width * 0.55);
+const height = Math.floor(window.screen.height * 0.55);
 const videoWidth = width % 2 === 0 ? width : width + 1;
 const videoHeight = height % 2 === 0 ? height : height + 1;
 
@@ -223,6 +224,7 @@ const HumanPostureDetection = () => {
 
   return (
     <div className={styles.container}>
+      <ModuleTitle intlTitle="page.AIApplication.humanPostureDetection" />
       <div
         className={styles.content}
         style={{ width: `${videoWidth}px`, height: `${videoHeight}px` }}
