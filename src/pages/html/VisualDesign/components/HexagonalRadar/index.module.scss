@@ -1,0 +1,204 @@
+.container {
+  width: 100%;
+  height: 500px;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(to right, #04182c, #000c17, #04182c);
+  overflow: hidden;
+  position: relative;
+
+  $hexagonalNum: 5;
+  $itemWidth: 300px;
+  $lineWidth: 1px;
+  $lineColor: #ccc;
+  $backgroundColor: #000c17;
+
+  .content {
+    width: $itemWidth;
+    height: calc($itemWidth * 1.1547);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: linear-gradient(
+          90deg,
+          transparent,
+          transparent calc(50% - $lineWidth / 2),
+          $lineColor calc(50% - $lineWidth / 2),
+          $lineColor calc(50% + $lineWidth / 2),
+          transparent calc(50% + $lineWidth / 2),
+          transparent
+        ),
+        linear-gradient(
+          150deg,
+          transparent,
+          transparent calc(50% - $lineWidth / 2),
+          $lineColor calc(50% - $lineWidth / 2),
+          $lineColor calc(50% + $lineWidth / 2),
+          transparent calc(50% + $lineWidth / 2),
+          transparent
+        ),
+        linear-gradient(
+          210deg,
+          transparent,
+          transparent calc(50% - $lineWidth / 2),
+          $lineColor calc(50% - $lineWidth / 2),
+          $lineColor calc(50% + $lineWidth / 2),
+          transparent calc(50% + $lineWidth / 2),
+          transparent
+        );
+      z-index: $hexagonalNum + 1;
+    }
+
+    .item {
+      background: $lineColor;
+      clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      &::after {
+        content: "";
+        position: absolute;
+        width: calc(100% - $lineWidth * 2);
+        height: calc(100% - $lineWidth * 2);
+        top: $lineWidth;
+        left: $lineWidth;
+        background-color: $backgroundColor;
+        clip-path: polygon(
+          0% 25%,
+          0% 75%,
+          50% 100%,
+          100% 75%,
+          100% 25%,
+          50% 0%
+        );
+      }
+    }
+    @for $i from 1 to $hexagonalNum {
+      .item:nth-child(#{$i}) {
+        $ratio: 1 - calc($i / 5);
+        width: #{$ratio * $itemWidth};
+        height: #{$ratio * $itemWidth * 1.1547};
+        z-index: #{$i};
+      }
+    }
+  }
+  .maskBox {
+    --angle: 360deg;
+    width: $itemWidth;
+    height: calc($itemWidth * 1.1547);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: $hexagonalNum + 2;
+    cursor: pointer;
+    mask: conic-gradient(
+      #000,
+      #000 var(--angle),
+      transparent var(--angle),
+      transparent 360deg
+    );
+
+    &:hover {
+      animation: spin 0.6s ease-in-out;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: linear-gradient(
+        rgba(241, 94, 174, 0.8),
+        rgba(255, 152, 0, 0.8)
+      );
+      clip-path: polygon(6% 28%, 50% 10%, 66% 42%, 91% 71%, 50% 80%, 3% 74%);
+    }
+
+    @keyframes spin {
+      0% {
+        --angle: 0deg;
+      }
+      5% {
+        --angle: 18deg;
+      }
+      10% {
+        --angle: 36deg;
+      }
+      15% {
+        --angle: 54deg;
+      }
+      20% {
+        --angle: 72deg;
+      }
+      25% {
+        --angle: 90deg;
+      }
+      30% {
+        --angle: 108deg;
+      }
+      35% {
+        --angle: 126deg;
+      }
+      40% {
+        --angle: 144deg;
+      }
+      45% {
+        --angle: 162deg;
+      }
+      50% {
+        --angle: 180deg;
+      }
+      55% {
+        --angle: 198deg;
+      }
+      60% {
+        --angle: 216deg;
+      }
+      65% {
+        --angle: 234deg;
+      }
+      70% {
+        --angle: 252deg;
+      }
+      75% {
+        --angle: 270deg;
+      }
+      80% {
+        --angle: 288deg;
+      }
+      85% {
+        --angle: 306deg;
+      }
+      90% {
+        --angle: 324deg;
+      }
+      95% {
+        --angle: 342deg;
+      }
+      100% {
+        --angle: 360deg;
+      }
+    }
+  }
+}
