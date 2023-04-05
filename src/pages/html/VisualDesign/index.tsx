@@ -25,12 +25,13 @@ import SudokuImageAnimation from "./components/SudokuImageAnimation";
 import TextWrap from "./components/TextWrap";
 import WaterDropLogin from "./components/WaterDropLogin";
 import TextShadow from "./components/TextShadow";
-import HouseRaceLamp from "./components/HorseRacelamp";
-import HoverEnlargement from "./components/HoverEnlargement";
+import HorseRaceLamp from "./components/HorseRacelamp";
+import HarmonyLogo from "./components/HarmonyLogo";
 import Preserve3D from "./components/Preserve3D";
 import RotateAndBgFixed from "./components/RotateAndBgFixed";
 import HexagonalMesh from "./components/HexagonalMesh";
 import HexagonalRadar from "./components/HexagonalRadar";
+import HoverEnlargement from "./components/HoverEnlargement";
 import styles from "./index.module.scss";
 
 const { GridBox } = GridContent;
@@ -56,12 +57,13 @@ const gridboxList = [
   { element: <SudokuImageAnimation /> },
   { element: <WaterDropLogin /> },
   { element: <TextShadow /> },
-  { element: <HouseRaceLamp /> },
-  { element: <HoverEnlargement /> },
+  { element: <HorseRaceLamp /> },
+  { element: <HarmonyLogo /> },
   { element: <Preserve3D /> },
   { element: <RotateAndBgFixed /> },
   { element: <HexagonalMesh /> },
   { element: <HexagonalRadar /> },
+  { element: <HoverEnlargement /> },
 ];
 
 const VisualDesign = () => {
