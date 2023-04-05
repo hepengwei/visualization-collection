@@ -3,7 +3,7 @@ import styles from "./index.module.scss";
 
 const list = new Array(4).fill(0);
 
-const HouseRaceLamp = () => {
+const HorseRaceLamp = () => {
   const renderTextList = () => (
     <span>
       Police line do not cross - Police line do not cross - Police line do not
@@ -24,4 +24,4 @@ const HouseRaceLamp = () => {
   );
 };
 
-export default HouseRaceLamp;
+export default HorseRaceLamp;
