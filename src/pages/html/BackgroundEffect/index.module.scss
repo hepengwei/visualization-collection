@@ -235,6 +235,55 @@
       calc($signWidth * -1 - 1px) calc($signWidth * -1 - 1px);
   }
 
+  .bg15 {
+    @include bg;
+    $itemWidth: 84px;
+    $color: #fff;
+    $from: from -30deg at;
+    background: linear-gradient(#0000 50%, #0004 0),
+      conic-gradient($from 90%, $color 240deg, #0000 0),
+      conic-gradient($from 75%, #71e9a0 240deg, #0000 0),
+      conic-gradient($from 25%, #0000 240deg, $color 0),
+      conic-gradient($from 40%, $color 240deg, #2a6a9b 0);
+    background-size: calc(1.5 * $itemWidth) $itemWidth;
+  }
+
+  .bg16 {
+    @include bg;
+    $itemWidth: 70px;
+    background: linear-gradient(-45deg, #0000 75%, #f67280 0),
+      linear-gradient(45deg, #0000 75%, #f67280 0) 0 calc($itemWidth/2) #355c7d;
+    background-size: $itemWidth $itemWidth;
+  }
+
+  .bg17 {
+    @include bg;
+    $itemWidth: 12px;
+    $color1: #fdf1cc;
+    $color2: #987f69;
+    $g: $color1 3.125%, $color2 0 9.375%, $color1 0 15.625%, $color2 0 21.875%,
+      $color1 0 28.125%, #0000 0;
+    background: linear-gradient(
+          225deg,
+          #0000 3.125%,
+          $color2 0 9.375%,
+          #0000 0 78.125%,
+          $color2 0 84.375%,
+          #0000 0
+        )
+        0 calc($itemWidth / 2),
+      linear-gradient(45deg, $g) 0 $itemWidth,
+      linear-gradient(45deg, $g) calc($itemWidth / -2) calc($itemWidth / -2),
+      linear-gradient(225deg, $g) $itemWidth 0,
+      linear-gradient(225deg, $g) calc($itemWidth / 2) $itemWidth,
+      repeating-linear-gradient(
+        -45deg,
+        $color1 -3.125% 3.125%,
+        $color2 0 9.375%
+      );
+    background-size: calc(2 * $itemWidth) calc(2 * $itemWidth);
+  }
+
   // .bg15 {
   //   @include bg;
   //   --size: 50px;
@@ -261,5 +310,16 @@
   //       calc(2 * var(--size)) var(--size),
   //     repeating-conic-gradient(var(--color1) 0 25%, var(--color2) 0 50%) 0 0 /
   //       calc(2 * var(--size)) calc(2 * var(--size));
+  // }
+
+  // .bg17 {
+  //   @include bg;
+  //   $itemWidth: 100px;
+  //   $color1: #5a3d31;
+  //   $color2: #e5ed88;
+  //   background: radial-gradient(#0000 50%, $color1 52% 55%, $color2 57%) 0 0 /
+  //       $itemWidth $itemWidth,
+  //     repeating-linear-gradient(45deg, $color1 0 25%, $color2 0 50%) 0 0 /
+  //       calc(2 * $itemWidth) calc(2 * $itemWidth);
   // }
 }
