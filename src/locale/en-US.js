@@ -211,6 +211,10 @@ const en_US = {
   "page.AIApplication.sendBarrage": "Send barrage",
 
   // 图片处理工具页
+  "page.imageProcessingTool.extensionTipFront":
+    "If you want to use this tool offline, or if you have images larger than 1350x1350 that need to be processed, it is recommended that you use the",
+  "page.imageProcessingTool.extensionTipBehind":
+    "browser extension, will be the extension of the project folder is loaded into the browser can be used.",
   "page.imageProcessingTool.imageTooSmall":
     "Please select the size above 20x20",
   "page.imageProcessingTool.imageTooLarge":

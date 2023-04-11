@@ -23,6 +23,7 @@ import AddWatermark from "./components/AddWatermark";
 import CoverWithMosaic from "./components/CoverWithMosaic";
 import Compression from "./components/Compression";
 import styles from "./index.module.scss";
+import { div } from "@tensorflow/tfjs-core";
 
 export interface ImgInfo {
   name: string;
@@ -388,6 +389,25 @@ const GameImage = () => {
                 })}
               </p>
             </div>
+          </div>
+        )}
+        {!imgInfo && (
+          <div className={styles.extensionTip}>
+            {intl.formatMessage({
+              id: "page.imageProcessingTool.extensionTipFront",
+            })}
+            <span
+              onClick={() => {
+                window.open(
+                  "https://github.com/hepengwei/processing-image-tool"
+                );
+              }}
+            >
+              &nbsp;processing-image-tool&nbsp;
+            </span>
+            {intl.formatMessage({
+              id: "page.imageProcessingTool.extensionTipBehind",
+            })}
           </div>
         )}
         {imgInfo &&

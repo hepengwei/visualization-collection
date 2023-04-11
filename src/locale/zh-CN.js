@@ -179,6 +179,10 @@ const zh_CN = {
   "page.AIApplication.sendBarrage": "发送弹幕",
 
   // 图片处理工具页
+  "page.imageProcessingTool.extensionTipFront":
+    "如果你想在离线时也使用该工具，或者是你有大于1350x1350尺寸的图片需要处理，那么推荐你使用",
+  "page.imageProcessingTool.extensionTipBehind":
+    "浏览器插件，将该项目中的extension文件夹加载到浏览器中即可使用。",
   "page.imageProcessingTool.imageTooSmall": "请选择20x20以上尺寸的图片",
   "page.imageProcessingTool.imageTooLarge": "请选择1350x1350以下尺寸的图片",
   "page.imageProcessingTool.watermarkSizeLimit":
