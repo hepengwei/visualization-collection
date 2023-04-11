@@ -120,6 +120,18 @@
       }
     }
 
+    .extensionTip {
+      font-size: 13px;
+      color: #666;
+      margin-top: 16px;
+      line-height: 22px;
+      span {
+        color: #0e5e6f;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+
     .operationBtns {
       display: flex;
       justify-content: space-between;

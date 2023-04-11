@@ -24,7 +24,6 @@ import type { MenuProps } from "antd";
 import { useIntl } from "react-intl";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import styles from "./index.module.scss";
-import { spaceToBatchND } from "@tensorflow/tfjs-core";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
