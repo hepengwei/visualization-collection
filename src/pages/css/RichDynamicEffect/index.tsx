@@ -2,6 +2,8 @@
  * 丰富动效
  */
 import React, { useEffect } from "react";
+import adData from "utils/adData";
+import AdBox from "@/components/AdBox";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import DynamicTime from "./components/DynamicTime";
 import FlopTime from "./components/FlopTime";
@@ -19,7 +21,6 @@ import MobiusBand1 from "./components/MobiusBand1";
 import MobiusBand2 from "./components/MobiusBand2";
 import TankShaking from "./components/TankShaking";
 import styles from "./index.module.scss";
-
 
 const RichDynamicEffect = () => {
   const { setScrollTop } = useGlobalContext();
@@ -59,6 +60,9 @@ const RichDynamicEffect = () => {
         <DisplayTextInSmoke />
       </div>
       <div className={styles.box}>
+        <AdBox data={adData[3]} />
+      </div>
+      <div className={styles.box}>
         <PlayVideoInText />
       </div>
       <div className={styles.box}>
@@ -71,6 +75,9 @@ const RichDynamicEffect = () => {
         <div className={styles.box}>
           <TextOutlineAnimation2 />
         </div>
+      </div>
+      <div className={styles.box}>
+        <AdBox data={adData[4]} />
       </div>
       <div className={styles.multipleColumnsBox}>
         <div className={styles.box}>

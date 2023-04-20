@@ -51,6 +51,7 @@ const en_US = {
   "common.red": "Red",
   "common.blue": "Blue",
   "common.white": "White",
+  "common.ad.btnText": "Experience right away",
 
   // 菜单
   "menu.htmlVision": "Html Vision",
@@ -327,6 +328,17 @@ const en_US = {
     "1. Both iframe and postMessage can be cross-domain, while localStorage cannot share data across domains.",
   "page.htmlVision.applicationPageFrame.des12":
     "2. Window in window.postMessage always refers to the window object of the target page to be jumped to.",
+
+  // 广告语
+  "ad.phoneAccessories":
+    "Upgrade your phone game with our top-notch Amazon accessories. Shop now for the ultimate phone experience!",
+  "ad.books":
+    "Unlock the Power of Computing and the Internet with Amazon Books - Expand Your Knowledge Today!",
+  "ad.digitalCamera":
+    "Capture life's moments in stunning detail with our Amazon digital cameras. From breathtaking landscapes to candid portraits, our cameras will help you create memories that last a lifetime. Shop now and unleash your inner photographer!",
+  "ad.officeEquipment":
+    "Upgrade your workspace with Amazon's cutting-edge office gear - productivity, innovation, and style, all in one place!",
+  "ad.sportsElectronics": "Make exercise more intelligent, make health easier!",
 };
 
 export default en_US;
