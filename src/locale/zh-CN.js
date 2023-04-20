@@ -1,6 +1,8 @@
 const zh_CN = {
   // 公共
   "common.logoName": "视觉效果集合",
+  "common.reward": "打赏",
+  "common.reward.tip": "如果觉得网站不错，内容对你有所帮助，再打赏也不迟",
   "common.LanguageSwitch": "中英文切换",
   "common.keepUpdating": "持续更新, 敬请期待",
   "common.comingSoon": "敬请期待",
