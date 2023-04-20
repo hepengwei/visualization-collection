@@ -47,6 +47,7 @@ const zh_CN = {
   "common.red": "红色",
   "common.blue": "蓝色",
   "common.white": "白色",
+  "common.ad.btnText": "马上体验",
 
   // 菜单
   "menu.htmlVision": "Html视觉",
@@ -284,6 +285,16 @@ const zh_CN = {
     "1. iframe和postMessage都是可以跨域的，而localStorage是不能跨域共享数据的。",
   "page.htmlVision.applicationPageFrame.des12":
     "2. window.postMessage中的window始终是指将要跳转的目标页面的window对象。",
+
+  // 广告语
+  "ad.phoneAccessories":
+    "升级你的手机，尽在亚马逊手机配件！从保护壳到充电器，让你的手机更加完美！立即点击，享受更多惊喜！",
+  "ad.books":
+    "探索计算机世界，开启无限可能！亚马逊计算机与互联网类书籍，带你领略科技的魅力，成就你的未来",
+  "ad.digitalCamera":
+    "记录美好瞬间，从这里开始。亚马逊数码相机，让你的每一次拍摄都更加精彩。点击了解更多。",
+  "ad.officeEquipment": "提高工作效率，从亚马逊办公设备开始！点击了解更多！",
+  "ad.sportsElectronics": "让运动更智能，让健康更简单！",
 };
 
 export default zh_CN;

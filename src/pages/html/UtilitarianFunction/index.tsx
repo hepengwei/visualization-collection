@@ -2,6 +2,8 @@
  * 实用功能
  */
 import React, { useEffect } from "react";
+import adData from "utils/adData";
+import AdBox from "@/components/AdBox";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import ShearPlate from "./components/ShearPlate";
 import RecordedAudio from "./components/RecordedAudio";
@@ -27,6 +29,9 @@ const UtilitarianFunction = () => {
       </div>
       <div className={styles.box}>
         <RecordedVideo />
+      </div>
+      <div className={styles.box}>
+        <AdBox data={adData[2]} />
       </div>
       <div className={styles.box}>
         <RecordedScreen />

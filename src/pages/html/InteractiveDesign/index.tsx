@@ -3,6 +3,8 @@
  */
 import React, { useEffect } from "react";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
+import adData from "utils/adData";
+import AdBox from "@/components/AdBox";
 import MagnifyingGlass from "./components/MagnifyingGlass";
 import CropImage from "./components/CropImage";
 import DragShopping from "./components/DragShopping";
@@ -26,6 +28,9 @@ const boxList = [
   { element: <MagnifyingGlass /> },
   { element: <CropImage /> },
   { element: <DragShopping /> },
+  {
+    element: <AdBox data={adData[0]} />,
+  },
   { element: <MouseHover /> },
   { element: <SlideButtonTab /> },
   { element: <FlipBook /> },
@@ -39,6 +44,9 @@ const boxList = [
   { element: <HexagonalMesh2 /> },
   { element: <HexagonalMesh3 /> },
   { element: <IconScroll /> },
+  {
+    element: <AdBox data={adData[1]} />,
+  },
   { element: <WipeSwitchover /> },
 ];
 
