@@ -31,7 +31,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-left: 20px;
+      margin-left: 10px;
       cursor: pointer;
       :global {
         svg {
@@ -51,6 +51,22 @@
               stroke: $globalPrimaryColor;
             }
           }
+        }
+      }
+    }
+  }
+}
+
+.rewardModal {
+  :global {
+    .ant-modal-content {
+      .ant-modal-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        p {
+          margin-top: 10px;
+          color: #666;
         }
       }
     }

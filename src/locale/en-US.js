@@ -1,6 +1,9 @@
 const en_US = {
   // 公共
   "common.logoName": "Visualization Collection",
+  "common.reward": "Reward",
+  "common.reward.tip":
+    "If you find the site good and the content helpful, it's not too late to reward",
   "common.LanguageSwitch": "Chinese-English Switch",
   "common.keepUpdating": "Keep updating, stay tuned",
   "common.comingSoon": "Coming soon",
