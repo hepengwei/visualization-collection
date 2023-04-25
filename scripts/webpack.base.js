@@ -95,6 +95,7 @@ module.exports = function () {
         images: resolveApp("src/images"),
         utils: resolveApp("src/utils"),
         routes: resolveApp("src/routes"),
+        hooks: resolveApp("src/hooks"),
       },
     },
     module: {

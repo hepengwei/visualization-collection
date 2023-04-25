@@ -18,7 +18,7 @@ const App = () => {
   const { locale } = useGlobalContext();
   const routes = useRoutes(routesConfig);
   return (
-    <div className="app_container">
+    <div className="app_container" translate="no">
       <IntlProvider
         locale={locale || "en-us"}
         messages={messages[locale || "en-us"]}

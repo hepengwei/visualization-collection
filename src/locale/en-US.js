@@ -85,6 +85,7 @@ const en_US = {
   "menu.echartsInteraction.barCharts": "Bar Charts",
   "menu.echartsInteraction.pieCharts": "Pie Charts",
   "menu.threeJs3D": "Three.js3D",
+  "menu.threeJs3D.appPageFrame": "Cool 3D Application page",
   "menu.AIApplication": "AI Application",
   "menu.AIApplication.humanPostureDetection": "Human Posture Detection",
   "menu.AIApplication.notBlockPeopleBarrage":
