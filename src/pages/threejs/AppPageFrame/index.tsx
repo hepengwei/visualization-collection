@@ -5,6 +5,8 @@ import { gsap } from "gsap";
 import { useDebounceFn } from "ahooks";
 import useInitialize from "hooks/threejs/useInitialize";
 import { loadGlb } from "utils/threejsUtil";
+import moonImg from "images/threejs/moon.jpg";
+import moonDisplacemenImg from "images/threejs/normal.jpg";
 import styles from "./index.module.scss";
 
 const initRotateY = [0, -1.5, 0];
@@ -62,8 +64,18 @@ const AppPageFrame = () => {
       // 创建并添加行星，创建10组moonInstance
       for (let i = 0; i < 10; i++) {
         // 每组创建100个小行星
-        const moonGeometry = new THREE.SphereGeometry(1, 0.1, 0.1);
-        const moonMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        const moonGeometry = new THREE.SphereGeometry(1.5, 10, 10);
+        // const moonMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        const moonTexture = new THREE.TextureLoader().load(moonImg);
+        const moonDisplacemenTexture = new THREE.TextureLoader().load(
+          moonDisplacemenImg
+        );
+        const moonMaterial = new THREE.MeshStandardMaterial({
+          map: moonTexture,
+          displacementMap: moonDisplacemenTexture, // 位移贴图，制造凹凸
+          displacementScale: 0.5, // 凹凸比例
+        });
+       
         const moonInstance = new THREE.InstancedMesh(
           moonGeometry,
           moonMaterial,
