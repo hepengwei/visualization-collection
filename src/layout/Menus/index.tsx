@@ -188,17 +188,21 @@ const Menus: React.FC = () => {
         ),
       ]
     ),
-    // getItem(
-    //   intl.formatMessage({ id: "menu.threeJs3D" }),
-    //   "threejs",
-    //   <RocketOutlined />,
-    //   [
-    //     getItem(
-    //       intl.formatMessage({ id: "common.comingSoon" }),
-    //       "threejsComingSoon"
-    //     ),
-    //   ]
-    // ),
+    getItem(
+      intl.formatMessage({ id: "menu.threeJs3D" }),
+      "threejs",
+      <RocketOutlined />,
+      [
+        getItem(
+          intl.formatMessage({ id: "menu.threeJs3D.appPageFrame" }),
+          "appPageFrame"
+        ),
+        getItem(
+          intl.formatMessage({ id: "common.comingSoon" }),
+          "threejsComingSoon"
+        ),
+      ]
+    ),
     getItem(
       intl.formatMessage({ id: "menu.AIApplication" }),
       "AIApplication",

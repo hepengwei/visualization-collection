@@ -77,6 +77,7 @@ const zh_CN = {
   "menu.echartsInteraction.barCharts": "柱状图",
   "menu.echartsInteraction.pieCharts": "饼图",
   "menu.threeJs3D": "Three.js3D",
+  "menu.threeJs3D.appPageFrame": "炫酷3D应用页面",
   "menu.AIApplication": "人工智能应用",
   "menu.AIApplication.humanPostureDetection": "人体姿态检测",
   "menu.AIApplication.notBlockPeopleBarrage": "不挡人像的弹幕",

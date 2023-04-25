@@ -1,7 +1,6 @@
 import React from "react";
 import { RouteObject } from "react-router-dom";
 import Home from "pages/Home";
-import EchartsComingSoon from "pages/echarts/EchartsComingSoon";
 import ThreejsComingSoon from "pages/threejs/ThreejsComingSoon";
 import VisualDesign from "pages/html/VisualDesign";
 import InteractiveDesign from "pages/html/InteractiveDesign";
@@ -11,7 +10,7 @@ import AppPageFrame from "pages/html/AppPageFrame";
 import UtilitarianFunction from "pages/html/UtilitarianFunction";
 import DynamicButtons from "pages/css/DynamicButtons";
 import RichDynamicEffect from "pages/css/RichDynamicEffect";
-import MusicVisualization from "pages/css/MusicVisualization";
+// import MusicVisualization from "pages/css/MusicVisualization";
 import DynamicClock from "pages/canvas/DynamicClock";
 import Searchlight from "pages/canvas/Searchlight";
 import GlobuleInteraction from "pages/canvas/GlobuleInteraction";
@@ -23,6 +22,7 @@ import RippleFloatOnTheWater from "pages/canvas/RippleFloatOnTheWater";
 import FlowerBloom from "pages/canvas/FlowerBloom";
 import CodeBgWall from "pages/canvas/CodeBgWall";
 import WordDance from "pages/canvas/WordDance";
+import AppPage3DFrame from "pages/threejs/AppPageFrame";
 import HumanPostureDetection from "pages/AIApplication/HumanPostureDetection";
 import NotBlockPeopleBarrage from "pages/AIApplication/NotBlockPeopleBarrage";
 import GameImage from "pages/GameImage";
@@ -138,15 +138,19 @@ export const contentRoutes: RouteObject[] = [
       },
     ],
   },
-  // {
-  //   path: "/threejs",
-  //   children: [
-  //     {
-  //       path: "/threejs/threejsComingSoon",
-  //       element: <ThreejsComingSoon />,
-  //     },
-  //   ],
-  // },
+  {
+    path: "/threejs",
+    children: [
+      {
+        path: "/threejs/appPageFrame",
+        element: <AppPage3DFrame />,
+      },
+      {
+        path: "/threejs/threejsComingSoon",
+        element: <ThreejsComingSoon />,
+      },
+    ],
+  },
   {
     path: "/AIApplication",
     children: [
