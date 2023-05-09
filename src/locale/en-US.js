@@ -81,6 +81,7 @@ const en_US = {
     "Flower Blooming Animation",
   "menu.canvasDynamicEffect.codeBackgroundWall": "Code Background Wall",
   "menu.canvasDynamicEffect.wordDance": "Word Dance",
+  "menu.canvasDynamicEffect.scratch": "Scratch",
   "menu.echartsInteraction": "Echarts Interaction",
   "menu.echartsInteraction.barCharts": "Bar Charts",
   "menu.echartsInteraction.pieCharts": "Pie Charts",

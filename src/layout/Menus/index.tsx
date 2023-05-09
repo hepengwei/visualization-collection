@@ -171,6 +171,10 @@ const Menus: React.FC = () => {
           intl.formatMessage({ id: "menu.canvasDynamicEffect.wordDance" }),
           "wordDance"
         ),
+        getItem(
+          intl.formatMessage({ id: "menu.canvasDynamicEffect.scratch" }),
+          "scratch"
+        ),
       ]
     ),
     getItem(
@@ -195,7 +199,7 @@ const Menus: React.FC = () => {
       [
         getItem(
           intl.formatMessage({ id: "menu.threeJs3D.appPageFrame" }),
-          "appPageFrame"
+          "threejsAppPageFrame"
         ),
         getItem(
           intl.formatMessage({ id: "common.comingSoon" }),
@@ -270,6 +274,17 @@ const Menus: React.FC = () => {
     return result;
   }, [location]);
 
+  const defaultOpenKeys = useMemo(() => {
+    const { pathname } = location;
+    if (pathname) {
+      const arr = pathname.split("/");
+      if (arr.length >= 2 && arr[1]) {
+        return [arr[1]];
+      }
+    }
+    return ["html"];
+  }, [location]);
+
   useEffect(() => {
     updateMenuWidth();
   }, [collapsed]);
@@ -296,7 +311,7 @@ const Menus: React.FC = () => {
         </div>
 
         <Menu
-          defaultOpenKeys={["html"]}
+          defaultOpenKeys={defaultOpenKeys}
           selectedKeys={selectedKeys}
           mode="inline"
           theme="dark"

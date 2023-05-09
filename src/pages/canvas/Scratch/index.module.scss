@@ -1,0 +1,51 @@
+.container {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  $itemWidth: 12px;
+  $color1: #fdf1cc;
+  $color2: #987f69;
+  $g: $color1 3.125%, $color2 0 9.375%, $color1 0 15.625%, $color2 0 21.875%,
+    $color1 0 28.125%, #0000 0;
+  background: linear-gradient(
+        225deg,
+        #0000 3.125%,
+        $color2 0 9.375%,
+        #0000 0 78.125%,
+        $color2 0 84.375%,
+        #0000 0
+      )
+      0 calc($itemWidth / 2),
+    linear-gradient(45deg, $g) 0 $itemWidth,
+    linear-gradient(45deg, $g) calc($itemWidth / -2) calc($itemWidth / -2),
+    linear-gradient(225deg, $g) $itemWidth 0,
+    linear-gradient(225deg, $g) calc($itemWidth / 2) $itemWidth,
+    repeating-linear-gradient(-45deg, $color1 -3.125% 3.125%, $color2 0 9.375%);
+  background-size: calc(2 * $itemWidth) calc(2 * $itemWidth);
+  position: relative;
+
+  .bottomText {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    font-size: 120px;
+    font-family: "SourceHanSansCN-Bold" !important;
+    text-align: center;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+
+  canvas {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+  }
+}
