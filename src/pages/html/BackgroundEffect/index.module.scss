@@ -322,4 +322,316 @@
   //     repeating-linear-gradient(45deg, $color1 0 25%, $color2 0 50%) 0 0 /
   //       calc(2 * $itemWidth) calc(2 * $itemWidth);
   // }
+
+  .bg18 {
+    @include bg;
+    background: repeating-linear-gradient(
+        60deg,
+        rgba(255, 255, 255, 0.2) 0,
+        rgba(255, 255, 255, 0.2) 2px,
+        black 2px,
+        black 3px,
+        transparent 3px,
+        transparent 20px
+      ),
+      repeating-linear-gradient(
+        300deg,
+        black 0,
+        black 1px,
+        rgba(255, 255, 255, 0.2) 1px,
+        rgba(255, 255, 255, 0.2) 3px,
+        transparent 3px,
+        transparent 20px
+      ),
+      linear-gradient(
+        45deg,
+        rgba(0, 0, 0, 0.2) 0%,
+        rgba(64, 64, 64, 0.2) 15%,
+        rgba(77, 77, 77, 0.2) 40%,
+        rgba(38, 38, 38, 0.2) 60%,
+        rgba(26, 26, 26, 0.2) 80%,
+        rgba(3, 3, 3, 0.2) 100%
+      ),
+      linear-gradient(
+        180deg,
+        hsl(210, 35%, 30%) 0,
+        hsl(220, 45%, 20%) 35%,
+        hsl(235, 45%, 15%) 65%,
+        hsl(210, 50%, 5%) 100%
+      );
+  }
+
+  .bg19 {
+    @include bg;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.5) 0,
+        rgba(255, 255, 255, 0.2) 2px,
+        rgba(0, 0, 0, 0.2) 2px,
+        rgba(0, 0, 0, 0.5) 10px,
+        rgba(255, 255, 255, 0.25) 10px,
+        rgba(255, 255, 255, 0.3) 10px,
+        transparent 11px,
+        transparent 25px
+      ),
+      linear-gradient(
+        135deg,
+        hsla(200, 15%, 35%, 0.25) 0%,
+        hsla(215, 10%, 60%, 0.25) 15%,
+        hsla(200, 35%, 65%, 0.25) 40%,
+        hsla(0, 0%, 50%, 0.25) 60%,
+        hsla(205, 5%, 45%, 0.25) 80%,
+        hsla(195, 30%, 36%, 0.25) 100%
+      ),
+      linear-gradient(
+        135deg,
+        hsla(90, 5%, 15%, 0.5) 0,
+        hsla(90, 25%, 20%, 0.5) 0%,
+        hsla(105, 10%, 45%, 0.5) 30%,
+        hsla(105, 10%, 35%, 0.5) 50%,
+        hsla(95, 5%, 45%, 0.5) 70%,
+        hsla(90, 15%, 30%, 0.5) 100%
+      ),
+      linear-gradient(
+        180deg,
+        hsl(210, 35%, 35%) 0,
+        hsl(220, 45%, 25%) 35%,
+        hsl(235, 45%, 20%) 65%,
+        hsl(210, 50%, 10%) 100%
+      );
+  }
+
+  .bg20 {
+    @include bg;
+    background: repeating-linear-gradient(
+        -1deg,
+        rgba(0, 0, 0, 0.1) 0,
+        rgba(0, 0, 0, 0.1) 1px,
+        rgba(255, 255, 255, 0.1) 1px,
+        rgba(255, 255, 255, 0.1) 2px,
+        transparent 2px,
+        transparent 10px
+      ),
+      repeating-linear-gradient(
+        1deg,
+        transparent 0,
+        transparent 7px,
+        rgba(255, 255, 255, 0.1) 7px,
+        rgba(255, 255, 255, 0.1) 8px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        transparent 0,
+        transparent 12px,
+        rgba(255, 255, 255, 0.2) 12px,
+        rgba(255, 255, 255, 0.1) 13px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        transparent 0,
+        transparent 17px,
+        rgba(0, 0, 0, 0.4) 17px,
+        rgba(0, 0, 0, 0.4) 18px
+      ),
+      linear-gradient(
+        135deg,
+        hsla(200, 25%, 15%, 0.5) 0,
+        hsla(200, 45%, 20%, 0.5) 0%,
+        hsla(215, 30%, 45%, 0.5) 30%,
+        hsla(215, 30%, 35%, 0.5) 50%,
+        hsla(205, 25%, 45%, 0.5) 70%,
+        hsla(200, 35%, 30%, 0.5) 100%
+      ),
+      linear-gradient(
+        180deg,
+        hsl(220, 5%, 35%) 0,
+        hsl(230, 15%, 25%) 35%,
+        hsl(245, 15%, 20%) 65%,
+        hsl(220, 20%, 10%) 100%
+      );
+  }
+
+  .bg21 {
+    @include bg;
+    background: repeating-linear-gradient(
+        -1deg,
+        rgba(0, 0, 0, 0.1) 0,
+        rgba(0, 0, 0, 0.1) 1px,
+        rgba(255, 255, 255, 0.1) 1px,
+        rgba(255, 255, 255, 0.1) 2px,
+        transparent 2px,
+        transparent 10px
+      ),
+      repeating-linear-gradient(
+        1deg,
+        transparent 0,
+        transparent 7px,
+        rgba(255, 255, 255, 0.1) 7px,
+        rgba(255, 255, 255, 0.1) 8px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        transparent 0,
+        transparent 12px,
+        rgba(255, 255, 255, 0.2) 12px,
+        rgba(255, 255, 255, 0.1) 13px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        transparent 0,
+        transparent 17px,
+        rgba(0, 0, 0, 0.4) 17px,
+        rgba(0, 0, 0, 0.4) 18px
+      ),
+      linear-gradient(
+        135deg,
+        hsl(210, 45%, 35%) 0,
+        hsl(215, 65%, 35%) 0%,
+        hsl(210, 55%, 45%) 25%,
+        hsl(215, 45%, 40%) 50%,
+        hsl(205, 60%, 35%) 75%,
+        hsl(210, 45%, 30%) 100%
+      );
+  }
+
+  .bg22 {
+    @include bg;
+    background: radial-gradient(
+        circle farthest-side at 50% 50%,
+        hsl(60, 15%, 15%) 0,
+        hsl(60, 15%, 15%) 15%,
+        transparent 15%,
+        transparent 100%
+      ),
+      radial-gradient(
+        circle farthest-side at 50% 50%,
+        hsl(60, 15%, 15%) 0,
+        hsl(60, 15%, 15%) 15%,
+        transparent 15%,
+        transparent 100%
+      ),
+      radial-gradient(
+        circle farthest-side at 50% 50%,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0.4) 15%,
+        transparent 15%,
+        transparent 100%
+      ),
+      radial-gradient(
+        circle farthest-side at 50% 50%,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0.4) 15%,
+        transparent 15%,
+        transparent 100%
+      ),
+      linear-gradient(
+        145deg,
+        hsla(60, 15%, 15%, 0.5) 0%,
+        hsla(75, 10%, 40%, 0.5) 15%,
+        hsla(60, 35%, 45%, 0.5) 40%,
+        hsla(0, 0%, 30%, 0.5) 60%,
+        hsla(65, 5%, 25%, 0.5) 80%,
+        hsla(55, 30%, 16%, 0.5) 100%
+      ),
+      linear-gradient(
+        50deg,
+        hsl(60, 15%, 15%) 0,
+        hsl(65, 25%, 20%) 10%,
+        hsl(70, 20%, 30%) 25%,
+        hsl(60, 25%, 15%) 40%,
+        hsl(65, 15%, 30%) 60%,
+        hsl(70, 25%, 15%) 70%,
+        hsl(65, 30%, 20%) 90%,
+        hsl(60, 40%, 15%) 100%
+      );
+    background-size: 40px 40px, 40px 40px, 40px 40px, 40px 40px, 100% 100%,
+      100% 100%;
+    background-position: 0 0, 20px 20px, 0 -2px, 20px 22px, 0 0, 0 0;
+  }
+
+  .bg23 {
+    @include bg;
+    background: linear-gradient(
+        120deg,
+        hsla(0, 80%, 20%, 0.5) 0%,
+        hsla(5, 100%, 30%, 0.5) 15%,
+        hsla(10, 100%, 35%, 0.5) 25%,
+        hsla(15, 100%, 50%, 0.5) 35%,
+        hsla(20, 95%, 40%, 0.5) 40%,
+        hsla(10, 85%, 35%, 0.5) 50%,
+        hsla(5, 85%, 30%, 0.5) 65%,
+        hsla(5, 85%, 30%, 0.5) 70%,
+        hsla(0, 95%, 25%, 0.5) 85%,
+        hsla(0, 100%, 20%, 0.5) 100%
+      ),
+      linear-gradient(
+        60deg,
+        hsla(0, 70%, 5%, 0.5) 0,
+        hsla(5, 80%, 10%, 0.5) 10%,
+        hsla(10, 75%, 20%, 0.5) 25%,
+        hsla(0, 80%, 5%, 0.5) 40%,
+        hsla(5, 70%, 20%, 0.5) 60%,
+        hsla(10, 80%, 5%, 0.5) 70%,
+        hsla(5, 85%, 10%, 0.5) 90%,
+        hsla(0, 95%, 5%, 0.5) 100%
+      ),
+      linear-gradient(
+        120deg,
+        hsl(0, 0%, 20%) 0,
+        hsl(220, 5%, 10%) 35%,
+        hsl(235, 5%, 5%) 65%,
+        hsl(0, 0%, 0%) 100%
+      );
+  }
+
+  .bg24 {
+    @include bg;
+    background: radial-gradient(
+        ellipse 150% 150% at 80% 80%,
+        transparent 40%,
+        rgba(255, 255, 255, 0.25) 60%,
+        transparent 100%
+      ),
+      radial-gradient(
+        ellipse 150% 150% at 20% 20%,
+        transparent 40%,
+        rgba(0, 0, 0, 0.25) 60%,
+        transparent 100%
+      ),
+      radial-gradient(
+        ellipse 100% 100% at 50% 50%,
+        transparent 25%,
+        rgba(0, 0, 0, 0.5) 75%
+      ),
+      linear-gradient(
+        100deg,
+        hsla(0, 50%, 25%, 0.25) 0%,
+        hsla(5, 75%, 35%, 0.25) 15%,
+        hsla(10, 75%, 40%, 0.25) 25%,
+        hsla(15, 75%, 55%, 0.25) 35%,
+        hsla(20, 65%, 45%, 0.25) 40%,
+        hsla(10, 55%, 40%, 0.25) 50%,
+        hsla(5, 55%, 35%, 0.25) 65%,
+        hsla(5, 55%, 35%, 0.25) 70%,
+        hsla(0, 65%, 30%, 0.25) 85%,
+        hsla(0, 75%, 25%, 0.25) 100%
+      ),
+      linear-gradient(
+        180deg,
+        hsla(210, 15%, 20%, 0.5) 0,
+        hsla(220, 25%, 10%, 0.5) 35%,
+        hsla(235, 25%, 5%, 0.5) 65%,
+        hsla(0, 0%, 0%, 0.5) 100%
+      ),
+      linear-gradient(
+        180deg,
+        hsl(200, 80%, 30%) 0%,
+        hsl(195, 70%, 45%) 7%,
+        hsl(180, 80%, 70%) 25%,
+        hsl(180, 100%, 60%) 35%,
+        hsl(190, 70%, 55%) 55%,
+        hsl(195, 100%, 35%) 75%,
+        hsl(200, 85%, 25%) 100%
+      );
+  }
 }
