@@ -12,16 +12,6 @@
     cursor: pointer;
     position: relative;
 
-    &::before {
-      top: 0;
-      left: 0;
-    }
-
-    &::after {
-      bottom: 0;
-      right: 0;
-    }
-
     &::before,
     &::after {
       box-sizing: border-box;
@@ -32,12 +22,24 @@
       height: 0;
     }
 
+    &::before {
+      top: 0;
+      left: 0;
+    }
+
+    &::after {
+      bottom: 0;
+      right: 0;
+    }
+
+    $duration: 0.2s;
+
     &:hover::before {
       width: 100%;
       height: 100%;
       border-top-color: #4cc9f0;
       border-right-color: #4cc9f0;
-      transition: width 0.3s ease-out, height 0.3s ease-out 0.3s;
+      transition: width $duration ease-out, height $duration ease-out $duration;
     }
 
     &:hover::after {
@@ -45,7 +47,7 @@
       height: 100%;
       border-bottom-color: #4cc9f0;
       border-left-color: #4cc9f0;
-      transition: width 0.3s ease-out, height 0.3s ease-out 0.3s;
+      transition: width $duration ease-out, height $duration ease-out $duration;
     }
   }
 }
