@@ -22,6 +22,7 @@ import RippleFloatOnTheWater from "pages/canvas/RippleFloatOnTheWater";
 import FlowerBloom from "pages/canvas/FlowerBloom";
 import CodeBgWall from "pages/canvas/CodeBgWall";
 import WordDance from "pages/canvas/WordDance";
+import Scratch from "pages/canvas/Scratch";
 import AppPage3DFrame from "pages/threejs/AppPageFrame";
 import HumanPostureDetection from "pages/AIApplication/HumanPostureDetection";
 import NotBlockPeopleBarrage from "pages/AIApplication/NotBlockPeopleBarrage";
@@ -123,6 +124,10 @@ export const contentRoutes: RouteObject[] = [
         path: "/canvas/wordDance",
         element: <WordDance />,
       },
+      {
+        path: "/canvas/scratch",
+        element: <Scratch />,
+      },
     ],
   },
   {
@@ -142,7 +147,7 @@ export const contentRoutes: RouteObject[] = [
     path: "/threejs",
     children: [
       {
-        path: "/threejs/appPageFrame",
+        path: "/threejs/threejsAppPageFrame",
         element: <AppPage3DFrame />,
       },
       {

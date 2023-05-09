@@ -73,6 +73,7 @@ const zh_CN = {
   "menu.canvasDynamicEffect.flowerBloomingAnimation": "花卉绽放动画",
   "menu.canvasDynamicEffect.codeBackgroundWall": "代码背景墙",
   "menu.canvasDynamicEffect.wordDance": "文字跳舞",
+  "menu.canvasDynamicEffect.scratch": "刮刮乐",
   "menu.echartsInteraction": "Echarts交互",
   "menu.echartsInteraction.barCharts": "柱状图",
   "menu.echartsInteraction.pieCharts": "饼图",
