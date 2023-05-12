@@ -284,45 +284,6 @@
     background-size: calc(2 * $itemWidth) calc(2 * $itemWidth);
   }
 
-  // .bg15 {
-  //   @include bg;
-  //   --size: 50px;
-  //   --color1: #d9ceb2;
-  //   --color2: #948c75;
-  //   --g: calc(2 * var(--size)) calc(2 * var(--size))
-  //     radial-gradient(25% 25%, var(--color1) 99%, #0000 101%);
-  //   background: 0 var(--size) / var(--g), var(--size) 0 / var(--g),
-  //     radial-gradient(50% 50%, var(--color2) 97%, #0000) calc(var(--size) / 2)
-  //       calc(var(--size) / 2) / var(--size) var(--size),
-  //     linear-gradient(90deg, var(--color1) 50%, var(--color2) 0) 0 0 /
-  //       calc(2 * var(--size));
-  // }
-
-  // .bg16 {
-  //   @include bg;
-  //   --size: 50px;
-  //   --color1: #d9ceb2;
-  //   --color2: #948c75;
-
-  //   background: radial-gradient(25% 50%, var(--color1) 98%, #0000)
-  //       var(--size) 0 / calc(2 * var(--size)) var(--size),
-  //     radial-gradient(25% 50%, var(--color2) 98%, #0000) 0 0 /
-  //       calc(2 * var(--size)) var(--size),
-  //     repeating-conic-gradient(var(--color1) 0 25%, var(--color2) 0 50%) 0 0 /
-  //       calc(2 * var(--size)) calc(2 * var(--size));
-  // }
-
-  // .bg17 {
-  //   @include bg;
-  //   $itemWidth: 100px;
-  //   $color1: #5a3d31;
-  //   $color2: #e5ed88;
-  //   background: radial-gradient(#0000 50%, $color1 52% 55%, $color2 57%) 0 0 /
-  //       $itemWidth $itemWidth,
-  //     repeating-linear-gradient(45deg, $color1 0 25%, $color2 0 50%) 0 0 /
-  //       calc(2 * $itemWidth) calc(2 * $itemWidth);
-  // }
-
   .bg18 {
     @include bg;
     background: repeating-linear-gradient(
@@ -633,5 +594,87 @@
         hsl(195, 100%, 35%) 75%,
         hsl(200, 85%, 25%) 100%
       );
+  }
+
+  .bg25 {
+    @include bg;
+    $size: 100px;
+    $g: #0000 52%, #170409 54% 57%, #0000 59%;
+    background: radial-gradient(farthest-side at -33.33% 50%, $g) 0
+        calc($size/2),
+      radial-gradient(farthest-side at 50% 133.33%, $g) calc($size/2) 0,
+      radial-gradient(farthest-side at 133.33% 50%, $g),
+      radial-gradient(farthest-side at 50% -33.33%, $g), #67917a;
+    background-size: calc($size/4.667) $size, $size calc($size/4.667);
+  }
+
+  .bg26 {
+    @include bg;
+    $size: 20px;
+    $g: 15px;
+    $color1: #c02942;
+    $color2: #53777a;
+    background: conic-gradient(
+          at $size calc(100% - $size),
+          #0000 270deg,
+          $color1 0
+        )
+        calc($size + $g) 0,
+      linear-gradient($color2 $size, #0000 0) 0 $g,
+      conic-gradient(
+        at $size calc(100% - $size),
+        #0000 90deg,
+        $color2 0 180deg,
+        $color1 0
+      ),
+      #ecd078;
+    background-size: calc(2 * ($size + $g)) calc(2 * ($size + $g));
+  }
+
+  .bg27 {
+    @include bg;
+    $size: 40px;
+    $color1: #72e21f 25%, #0000 0;
+    $color2: #044012;
+    $g1: conic-gradient(at 62.5% 12.5%, $color1);
+    $g2: conic-gradient(at 87.5% 62.5%, $color1);
+    $g3: conic-gradient(at 25% 12.5%, $color1);
+    background: $g1 calc($size/-8) calc($size/2),
+      $g1 calc(-3 * $size/8) calc($size/4), $g2 calc(3 * $size/8) calc($size/4),
+      $g2 calc($size/-8) 0, $g3 0 calc($size/-4), $g3 calc($size/-4) 0,
+      conic-gradient(at 87.5% 87.5%, $color1) calc($size/8) 0 $color2;
+    background-size: $size $size;
+  }
+
+  .bg28 {
+    @include bg;
+    $size: 20px;
+    $g: #0000 83%, #b09f79 85% 99%, #0000 101%;
+    background: radial-gradient(27% 29% at right, $g) calc($size / 2) $size,
+      radial-gradient(27% 29% at left, $g) calc($size / -2) $size,
+      radial-gradient(29% 27% at top, $g) 0 calc($size / 2),
+      radial-gradient(29% 27% at bottom, $g) 0 calc($size / -2) #476074;
+    background-size: calc(2 * $size) calc(2 * $size);
+  }
+
+  .bg29 {
+    @include bg;
+    $size: 12px;
+    $b: 3;
+    $color1: #615375;
+    $color2: #8eb2c5;
+    $g: #0000 calc(100% - $size / $b - 1px),
+      $color1 calc(100% - $size / $b) calc(100% - 1px), #0000;
+    $r: calc(2.414 * $size);
+    $p: calc(1.414 * $size);
+    background: radial-gradient($r at 0 0, $g) $r $r,
+      radial-gradient($size at 0 0, $g) $p $p,
+      radial-gradient($r at 0 100%, $g) 0 $p,
+      radial-gradient($size at 0 100%, $g) calc(-1 * $size) $r,
+      radial-gradient($r at 100% 0, $g) $p 0,
+      radial-gradient($size at 100% 0, $g) $r calc(-1 * $size),
+      radial-gradient($r at 100% 100%, $g) calc(-1 * $size) calc(-1 * $size),
+      radial-gradient($size at 100% 100%, $g) $color2;
+    background-size: calc(2 * $r) calc(2 * $r);
   }
 }
