@@ -252,6 +252,7 @@ const en_US = {
   "page.imageProcessingTool.redGreyFilter": "Red-grey Filter",
   "page.imageProcessingTool.greenGreyFilter": "Green-grey Filter",
   "page.imageProcessingTool.blueGreyFilter": "Blue-grey Filter",
+  "page.imageProcessingTool.gaussianBlur": "Gaussian Blur",
   "page.imageProcessingTool.jpgToPng": "JPG To PNG",
   "page.imageProcessingTool.pngToJpg": "PNG To JPG",
   "page.imageProcessingTool.pleaseEnterBrightness":

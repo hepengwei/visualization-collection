@@ -217,6 +217,7 @@ const zh_CN = {
   "page.imageProcessingTool.redGreyFilter": "红灰色滤镜",
   "page.imageProcessingTool.greenGreyFilter": "绿灰色滤镜",
   "page.imageProcessingTool.blueGreyFilter": "蓝灰色滤镜",
+  "page.imageProcessingTool.gaussianBlur": "高斯模糊",
   "page.imageProcessingTool.jpgToPng": "JPG转PNG",
   "page.imageProcessingTool.pngToJpg": "PNG转JPG",
   "page.imageProcessingTool.pleaseEnterBrightness": "请输入亮度值",

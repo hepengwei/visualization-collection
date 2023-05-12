@@ -25,6 +25,7 @@ import {
   toRedAndGrey,
   toGreenAndGrey,
   toBlueAndGrey,
+  toGaussianBlur,
   jpgToPng,
   pngToJpg,
 } from "utils/imageUtil";
@@ -65,6 +66,7 @@ interface ImgStatusInfo {
   toRedAndGreyStatus: Status;
   toGreenAndGreyStatus: Status;
   toBlueAndGreyStatus: Status;
+  toGaussianBlurStatus: Status;
   jpgToPngStatus: Status;
   pngToJpgStatus: Status;
 }
@@ -88,6 +90,7 @@ const defaultImgStatus = {
   toRedAndGreyStatus: { doing: false, imageData: null },
   toGreenAndGreyStatus: { doing: false, imageData: null },
   toBlueAndGreyStatus: { doing: false, imageData: null },
+  toGaussianBlurStatus: { doing: false, imageData: null },
   jpgToPngStatus: { doing: false, imageData: null },
   pngToJpgStatus: { doing: false, imageData: null },
 };
@@ -345,6 +348,17 @@ const BasicOperation = (props: BasicOperationProps) => {
           >
             {intl.formatMessage({
               id: "page.imageProcessingTool.blueGreyFilter",
+            })}
+          </Button>
+          <Button
+            type="primary"
+            className={styles.operationBtn}
+            onClick={() =>
+              doTask(imgStatusInfo.current.toGaussianBlurStatus, toGaussianBlur)
+            }
+          >
+            {intl.formatMessage({
+              id: "page.imageProcessingTool.gaussianBlur",
             })}
           </Button>
           {["JPG", "JPEG"].includes(imgInfo.fileType) && (
