@@ -123,6 +123,7 @@ const zh_CN = {
   "page.htmlVision.interactiveDesign.previousPage": "前一页",
   "page.htmlVision.interactiveDesign.nextPage": "后一页",
   "page.htmlVision.interactiveDesign.personalArticle": "个人文章",
+  "page.htmlVision.interactiveDesign.autoCompletePunctuation": "自动补全标点输入框",
 
   // Html视觉-实用功能页
   "page.htmlVision.utilitarianFunction.operatingShears": "操作剪切板",

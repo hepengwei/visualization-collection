@@ -22,6 +22,7 @@ import HexagonalMesh2 from "./components/HexagonalMesh2";
 import HexagonalMesh3 from "./components/HexagonalMesh3";
 import IconScroll from "./components/IconScroll";
 import WipeSwitchover from "./components/WipeSwitchover";
+import AutoCompletePunctuation from "./components/AutoCompletePunctuation";
 import styles from "./index.module.scss";
 
 const boxList = [
@@ -48,6 +49,7 @@ const boxList = [
     element: <AdBox data={adData[1]} />,
   },
   { element: <WipeSwitchover /> },
+  { element: <AutoCompletePunctuation /> },
 ];
 
 const InteractiveDesign = () => {

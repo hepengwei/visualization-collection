@@ -141,6 +141,8 @@ const en_US = {
   "page.htmlVision.interactiveDesign.previousPage": "Previous Page",
   "page.htmlVision.interactiveDesign.nextPage": "Next Page",
   "page.htmlVision.interactiveDesign.personalArticle": "Personal Article",
+  "page.htmlVision.interactiveDesign.autoCompletePunctuation":
+    "Automatically complete the punctuation input box",
 
   // Html视觉-实用功能页
   "page.htmlVision.utilitarianFunction.operatingShears": "Operating Shears",
