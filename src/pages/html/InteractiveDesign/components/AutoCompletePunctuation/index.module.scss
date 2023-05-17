@@ -1,0 +1,54 @@
+.container {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 940px;
+    display: flex;
+    padding-top: 50px;
+
+    $lineHeight: 22px;
+    $padding: 10px;
+
+    textarea {
+      box-sizing: border-box;
+      display: flex;
+      width: 440px;
+      font-size: 14px;
+      font-family: "SourceHanSansCN-Regular" !important;
+      line-height: $lineHeight;
+      padding: $padding;
+      border: 2px solid #333;
+      &:focus,
+      &:active {
+        border: 2px solid #4c78fc;
+        outline: 2px #4c78fc;
+      }
+    }
+
+    div {
+      box-sizing: border-box;
+      display: flex;
+      width: 440px;
+      height: calc($lineHeight * 5 + $padding * 2);
+      font-size: 14px;
+      line-height: $lineHeight;
+      padding: $padding;
+      border: 2px solid #333;
+      background-color: #fff;
+      color: #222;
+      &:focus,
+      &:active {
+        border: 2px solid #4c78fc;
+        outline: 2px #4c78fc;
+      }
+    }
+  }
+}
