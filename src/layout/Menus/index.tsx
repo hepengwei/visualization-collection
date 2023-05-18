@@ -202,6 +202,10 @@ const Menus: React.FC = () => {
           "threejsAppPageFrame"
         ),
         getItem(
+          intl.formatMessage({ id: "menu.threeJs3D.carShow" }),
+          "carShow"
+        ),
+        getItem(
           intl.formatMessage({ id: "common.comingSoon" }),
           "threejsComingSoon"
         ),
