@@ -87,6 +87,7 @@ const en_US = {
   "menu.echartsInteraction.pieCharts": "Pie Charts",
   "menu.threeJs3D": "Three.js3D",
   "menu.threeJs3D.appPageFrame": "Cool 3D Application page",
+  "menu.threeJs3D.carShow": "Car Show",
   "menu.AIApplication": "AI Application",
   "menu.AIApplication.humanPostureDetection": "Human Posture Detection",
   "menu.AIApplication.notBlockPeopleBarrage":
@@ -211,6 +212,19 @@ const en_US = {
   "page.canvasDynamicEffect.score": "Score",
   "page.canvasDynamicEffect.videoIsSlowToLoad":
     "The video is slow to load, please wait patiently",
+
+  // Three.js3D
+  "page.threeJs3D.abrazine": "Abrazine",
+  "page.threeJs3D.cryolite": "Cryolite",
+  "page.threeJs3D.ordinary": "Ordinary",
+  "page.threeJs3D.transparent": "Transparent",
+  "page.threeJs3D.carDisplayAndMatching": "Car display and matching",
+  "page.threeJs3D.bodyColor": "Body Color",
+  "page.threeJs3D.anteriorFaceColor": "Anterior Face Color",
+  "page.threeJs3D.hoodColor": "Hood Color",
+  "page.threeJs3D.hubColor": "Hub Color",
+  "page.threeJs3D.filmMaterial": "Film Material",
+  "page.threeJs3D.windshieldMaterial": "Windshield Material",
 
   // 人工智能应用
   "page.AIApplication.humanPostureDetection":

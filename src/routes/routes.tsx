@@ -24,6 +24,7 @@ import CodeBgWall from "pages/canvas/CodeBgWall";
 import WordDance from "pages/canvas/WordDance";
 import Scratch from "pages/canvas/Scratch";
 import AppPage3DFrame from "pages/threejs/AppPageFrame";
+import CarShow from "pages/threejs/CarShow";
 import HumanPostureDetection from "pages/AIApplication/HumanPostureDetection";
 import NotBlockPeopleBarrage from "pages/AIApplication/NotBlockPeopleBarrage";
 import GameImage from "pages/GameImage";
@@ -149,6 +150,10 @@ export const contentRoutes: RouteObject[] = [
       {
         path: "/threejs/threejsAppPageFrame",
         element: <AppPage3DFrame />,
+      },
+      {
+        path: "/threejs/carShow",
+        element: <CarShow />,
       },
       {
         path: "/threejs/threejsComingSoon",

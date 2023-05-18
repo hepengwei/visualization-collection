@@ -79,6 +79,7 @@ const zh_CN = {
   "menu.echartsInteraction.pieCharts": "饼图",
   "menu.threeJs3D": "Three.js3D",
   "menu.threeJs3D.appPageFrame": "炫酷3D应用页面",
+  "menu.threeJs3D.carShow": "汽车展览",
   "menu.AIApplication": "人工智能应用",
   "menu.AIApplication.humanPostureDetection": "人体姿态检测",
   "menu.AIApplication.notBlockPeopleBarrage": "不挡人像的弹幕",
@@ -123,7 +124,8 @@ const zh_CN = {
   "page.htmlVision.interactiveDesign.previousPage": "前一页",
   "page.htmlVision.interactiveDesign.nextPage": "后一页",
   "page.htmlVision.interactiveDesign.personalArticle": "个人文章",
-  "page.htmlVision.interactiveDesign.autoCompletePunctuation": "自动补全标点输入框",
+  "page.htmlVision.interactiveDesign.autoCompletePunctuation":
+    "自动补全标点输入框",
 
   // Html视觉-实用功能页
   "page.htmlVision.utilitarianFunction.operatingShears": "操作剪切板",
@@ -177,6 +179,19 @@ const zh_CN = {
   "page.canvasDynamicEffect.gameHasPaused": "游戏已暂停",
   "page.canvasDynamicEffect.score": "分数",
   "page.canvasDynamicEffect.videoIsSlowToLoad": "视频加载比较慢，请耐心等待",
+
+  // Three.js3D
+  "page.threeJs3D.abrazine": "磨砂",
+  "page.threeJs3D.cryolite": "冰晶",
+  "page.threeJs3D.ordinary": "普通",
+  "page.threeJs3D.transparent": "透亮",
+  "page.threeJs3D.carDisplayAndMatching": "汽车展示与选配",
+  "page.threeJs3D.bodyColor": "车身颜色",
+  "page.threeJs3D.anteriorFaceColor": "前脸颜色",
+  "page.threeJs3D.hoodColor": "引擎盖颜色",
+  "page.threeJs3D.hubColor": "轮毂颜色",
+  "page.threeJs3D.filmMaterial": "贴膜材质",
+  "page.threeJs3D.windshieldMaterial": "挡风玻璃材质",
 
   // 人工智能应用
   "page.AIApplication.humanPostureDetection":
