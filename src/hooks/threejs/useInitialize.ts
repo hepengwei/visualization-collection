@@ -1,14 +1,17 @@
 import { useRef, useEffect, RefObject } from "react";
 import * as THREE from "three";
 
+type Handle = (
+  scene: THREE.Scene,
+  camera: THREE.PerspectiveCamera,
+  renderer: THREE.WebGLRenderer
+) => void;
+
 const useInitialize = (
   conatinerRef: RefObject<HTMLDivElement>,
-  initializeHandle?: (
-    scene: THREE.Scene,
-    camera: THREE.PerspectiveCamera,
-    renderer: THREE.WebGLRenderer
-  ) => void,
-  resizeHandle?: () => void
+  initializeHandle?: Handle | null,
+  resizeHandle?: Handle | null,
+  renderHandle?: Handle | null
 ) => {
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
@@ -18,6 +21,8 @@ const useInitialize = (
   const render = () => {
     if (sceneRef.current && cameraRef.current && rendererRef.current) {
       rendererRef.current.render(sceneRef.current, cameraRef.current);
+      renderHandle &&
+        renderHandle(sceneRef.current, cameraRef.current, rendererRef.current);
       frameId.current = window.requestAnimationFrame(render);
     }
   };
@@ -57,7 +62,12 @@ const useInitialize = (
   };
 
   const onResize = () => {
-    if (conatinerRef.current && rendererRef.current && cameraRef.current) {
+    if (
+      conatinerRef.current &&
+      sceneRef.current &&
+      cameraRef.current &&
+      rendererRef.current
+    ) {
       const { clientWidth, clientHeight } = conatinerRef.current;
 
       // 更新相机
@@ -70,7 +80,8 @@ const useInitialize = (
       // 设置渲染器的像素比
       rendererRef.current.setPixelRatio(window.devicePixelRatio);
 
-      resizeHandle && resizeHandle();
+      resizeHandle &&
+        resizeHandle(sceneRef.current, cameraRef.current, rendererRef.current);
     }
   };
 
@@ -79,9 +90,7 @@ const useInitialize = (
     window.addEventListener("resize", onResize);
 
     return () => {
-      if (frameId.current) {
-        window.cancelAnimationFrame(frameId.current);
-      }
+      frameId.current && window.cancelAnimationFrame(frameId.current);
       window.removeEventListener("resize", onResize);
     };
   }, []);

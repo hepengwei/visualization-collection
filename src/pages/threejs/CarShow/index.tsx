@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { useIntl } from "react-intl";
 import * as THREE from "three";
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import useInitialize from "hooks/threejs/useInitialize";
 import { loadGlb } from "utils/threejsUtil";
 import styles from "./index.module.scss";
 
@@ -58,11 +59,8 @@ const glassMeterial = new THREE.MeshPhysicalMaterial({
 
 const CarShow = () => {
   const intl = useIntl();
-  const conatinerRef = useRef<HTMLDivElement>(null);
-  const sceneRef = useRef<THREE.Scene | null>(null);
-  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const frameId = useRef<number>(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const controlsRef = useRef<OrbitControls | null>(null);
   const carComponent = useRef<CarComponent>({ carWheels: [] });
 
   const filmMaterialList = [
@@ -92,40 +90,19 @@ const CarShow = () => {
     },
   ];
 
-  const render = () => {
-    if (sceneRef.current && cameraRef.current && rendererRef.current) {
-      rendererRef.current.render(sceneRef.current, cameraRef.current);
-      frameId.current = window.requestAnimationFrame(render);
-    }
-  };
-
-  const init = () => {
-    if (conatinerRef.current) {
-      const { clientWidth, clientHeight } = conatinerRef.current;
-
-      const scene = new THREE.Scene();
-      sceneRef.current = scene;
+  const initializeHandle = (
+    scene: THREE.Scene,
+    camera: THREE.PerspectiveCamera,
+    renderer: THREE.WebGLRenderer
+  ) => {
+    if (containerRef.current) {
       scene.background = new THREE.Color("#ddd");
-
-      const camera = new THREE.PerspectiveCamera(
-        75,
-        clientWidth / clientHeight,
-        0.1,
-        1000
-      );
-      cameraRef.current = camera;
       camera.position.set(0, 2, 4);
-
-      const renderer = new THREE.WebGLRenderer({ antialias: true });
-      rendererRef.current = renderer;
-      renderer.setSize(clientWidth, clientHeight);
-      renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setClearColor("#000");
 
-      conatinerRef.current.append(renderer.domElement);
-      render();
-
       const controls = new OrbitControls(camera, renderer.domElement);
+      controlsRef.current = controls;
+      controls.autoRotate = true;
 
       // 添加网格地面
       const gridHelper = new THREE.GridHelper(15, 15);
@@ -198,17 +175,13 @@ const CarShow = () => {
     }
   };
 
-  const onResize = () => {
-    if (conatinerRef.current && rendererRef.current && cameraRef.current) {
-      const { clientWidth, clientHeight } = conatinerRef.current;
-      cameraRef.current.aspect = clientWidth / clientHeight;
-      cameraRef.current.updateProjectionMatrix();
-      // 更新渲染器
-      rendererRef.current.setSize(clientWidth, clientHeight);
-      // 设置渲染器的像素比
-      rendererRef.current.setPixelRatio(window.devicePixelRatio);
+  const renderHandle = () => {
+    if (controlsRef.current) {
+      controlsRef.current?.update();
     }
   };
+
+  useInitialize(containerRef, initializeHandle, null, renderHandle);
 
   const selectBodyColor = (color: any) => {
     bodyMeterial.color.set(color);
@@ -242,20 +215,8 @@ const CarShow = () => {
     glassMeterial.transmission = transmission;
   };
 
-  useEffect(() => {
-    init();
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      if (frameId.current) {
-        window.cancelAnimationFrame(frameId.current);
-      }
-      window.removeEventListener("resize", onResize);
-    };
-  }, []);
-
   return (
-    <div className={styles.container} ref={conatinerRef}>
+    <div className={styles.container} ref={containerRef}>
       <div className={styles.content}>
         <div className={styles.title}>
           {intl.formatMessage({ id: "page.threeJs3D.carDisplayAndMatching" })}
