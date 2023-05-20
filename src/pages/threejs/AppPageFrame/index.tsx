@@ -75,7 +75,7 @@ const AppPageFrame = () => {
           displacementMap: moonDisplacemenTexture, // 位移贴图，制造凹凸
           displacementScale: 0.5, // 凹凸比例
         });
-       
+
         const moonInstance = new THREE.InstancedMesh(
           moonGeometry,
           moonMaterial,
@@ -116,7 +116,7 @@ const AppPageFrame = () => {
     }
   };
 
-  const { scene, camera, renderer } = useInitialize(
+  const { camera } = useInitialize(
     containerRef,
     initializeHandle,
     resizeHandle
