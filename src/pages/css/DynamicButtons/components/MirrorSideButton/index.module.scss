@@ -4,8 +4,8 @@
     height: 48px;
     font-size: 24px;
     background-color: transparent;
-    color: #35a2fd;
-    border: 2px solid #35a2fd;
+    color: $buttonColor;
+    border: 2px solid $buttonColor;
     cursor: pointer;
     overflow: hidden;
     position: relative;
@@ -30,9 +30,9 @@
       }
     }
 
-    &:active{
-      color: #35a2fd99;
-      border: 2px solid #35a2fd99;
+    &:active {
+      color: $buttonColor2;
+      border: 2px solid $buttonColor2;
     }
   }
 }
