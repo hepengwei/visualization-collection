@@ -17,7 +17,11 @@ import ShakeButton from "./components/ShakeButton";
 import Skew3DButton from "./components/Skew3DButton";
 import HoverCircleButton from "./components/HoverCircleButton";
 import PunkEffectButton from "./components/PunkEffectButton";
+import PunkEffectButton2 from "./components/PunkEffectButton2";
 import BirdButton from "./components/BirdButton";
+import ObliqueLineButton from "./components/ObliqueLineButton";
+import LightningBorderButton from "./components/LightningBorderButton";
+
 import styles from "./index.module.scss";
 
 const { GridBox } = GridContent;
@@ -42,7 +46,10 @@ const gridboxList = [
   { element: <Skew3DButton /> },
   { element: <HoverCircleButton /> },
   { element: <PunkEffectButton /> },
+  { element: <PunkEffectButton2 /> },
   { element: <BirdButton /> },
+  { element: <ObliqueLineButton /> },
+  { element: <LightningBorderButton /> },
 ];
 
 const DynamicButtons = () => {

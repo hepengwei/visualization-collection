@@ -4,14 +4,14 @@
     height: 48px;
     border: 0;
     border-radius: 6px;
-    background: #35a2fd;
+    background: $buttonColor;
     display: flex;
     justify-content: center;
     align-items: center;
     color: #ffffff;
     font-size: 24px;
     cursor: pointer;
-    box-shadow: 0px 10px 20px -10px #35a2fd;
+    box-shadow: 0px 10px 20px -10px $buttonColor;
     animation: 0.2s ease 0s 1 normal none running show,
       1.2s ease 1s infinite normal none running shake;
 
