@@ -60,6 +60,7 @@ const zh_CN = {
   "menu.cssDynamicEffect": "Css动效",
   "menu.cssDynamicEffect.dynamicEffectButton": "动效按钮",
   "menu.cssDynamicEffect.richDynamicEffect": "丰富动效",
+  "menu.cssDynamicEffect.generateRegularPolygon": "生成正多边形",
   "menu.cssDynamicEffect.musicVisualization": "音乐可视化",
   "menu.canvasDynamicEffect": "Canvas动效",
   "menu.canvasDynamicEffect.dynamicClock": "动态时钟",
@@ -168,6 +169,8 @@ const zh_CN = {
   "page.cssDynamicEffect.richDynamicEffect.mobiusRingsCircleDots":
     "莫比乌斯环循环圆点动效",
   "page.cssDynamicEffect.richDynamicEffect.tankShaking": "水罐摇晃动效",
+  "page.cssDynamicEffect.generateRegularPolygon.numberOfSides": "边数",
+  "page.cssDynamicEffect.generateRegularPolygon.rotation": "旋转",
 
   // Canvas动效
   "page.canvasDynamicEffect.dynamicClock": "动态时钟效果",
