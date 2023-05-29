@@ -1,7 +1,6 @@
 import React from "react";
 import { RouteObject } from "react-router-dom";
 import Home from "pages/Home";
-import ThreejsComingSoon from "pages/threejs/ThreejsComingSoon";
 import VisualDesign from "pages/html/VisualDesign";
 import InteractiveDesign from "pages/html/InteractiveDesign";
 import BackgroundEffect from "pages/html/BackgroundEffect";
@@ -154,10 +153,6 @@ export const contentRoutes: RouteObject[] = [
       {
         path: "/threejs/carShow",
         element: <CarShow />,
-      },
-      {
-        path: "/threejs/threejsComingSoon",
-        element: <ThreejsComingSoon />,
       },
     ],
   },
