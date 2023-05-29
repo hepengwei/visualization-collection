@@ -98,6 +98,12 @@ const Menus: React.FC = () => {
           intl.formatMessage({ id: "menu.cssDynamicEffect.richDynamicEffect" }),
           "richDynamicEffect"
         ),
+        getItem(
+          intl.formatMessage({
+            id: "menu.cssDynamicEffect.generateRegularPolygon",
+          }),
+          "generateRegularPolygon"
+        ),
         // getItem(
         //   intl.formatMessage({
         //     id: "menu.cssDynamicEffect.musicVisualization",

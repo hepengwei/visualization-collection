@@ -64,6 +64,7 @@ const en_US = {
   "menu.cssDynamicEffect": "Css Dynamic Effect",
   "menu.cssDynamicEffect.dynamicEffectButton": "Dynamic Effect Button",
   "menu.cssDynamicEffect.richDynamicEffect": "Rich Dynamic Effect",
+  "menu.cssDynamicEffect.generateRegularPolygon": "Generate Regular Polygon",
   "menu.cssDynamicEffect.musicVisualization": "Music Visualization",
   "menu.canvasDynamicEffect": "Canvas Dynamic Effect",
   "menu.canvasDynamicEffect.dynamicClock": "Dynamic Clock",
@@ -200,6 +201,9 @@ const en_US = {
     "Mobius loop circle dots dynamic effect",
   "page.cssDynamicEffect.richDynamicEffect.tankShaking":
     "Tank shaking dynamic effect",
+  "page.cssDynamicEffect.generateRegularPolygon.numberOfSides":
+    "Number of sides",
+  "page.cssDynamicEffect.generateRegularPolygon.rotation": "Rotation",
 
   // Canvas动效
   "page.canvasDynamicEffect.dynamicClock": "Dynamic clock effect",

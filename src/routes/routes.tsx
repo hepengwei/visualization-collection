@@ -9,6 +9,7 @@ import AppPageFrame from "pages/html/AppPageFrame";
 import UtilitarianFunction from "pages/html/UtilitarianFunction";
 import DynamicButtons from "pages/css/DynamicButtons";
 import RichDynamicEffect from "pages/css/RichDynamicEffect";
+import GenerateRegularPolygon from "pages/css/GenerateRegularPolygon";
 // import MusicVisualization from "pages/css/MusicVisualization";
 import DynamicClock from "pages/canvas/DynamicClock";
 import Searchlight from "pages/canvas/Searchlight";
@@ -70,6 +71,10 @@ export const contentRoutes: RouteObject[] = [
       {
         path: "/css/richDynamicEffect",
         element: <RichDynamicEffect />,
+      },
+      {
+        path: "/css/generateRegularPolygon",
+        element: <GenerateRegularPolygon />,
       },
       // {
       //   path: "/css/musicVisualization",
