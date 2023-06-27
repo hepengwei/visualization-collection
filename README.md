@@ -6,7 +6,7 @@
 ## 在线体验(PC端)
 #### 体验地址：[http://hepengwei.cn](http://hepengwei.cn)
 
-#### Vue版本：即将发布，敬请期待！
+#### Vue版本：[https://github.com/hepengwei/visualization-collection-vue](https://github.com/hepengwei/visualization-collection-vue)
 <br/>
 
 ## 应用展示(部分效果)
