@@ -124,7 +124,7 @@ const TakeIDPhotos = () => {
       solutionPath:
         "https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation",
     };
-    message.warning("努力加载中，请稍等");
+    message.warning(intl.formatMessage({ id: "common.tryingToLoad" }));
 
     const segmentater = await bodySegmentation.createSegmenter(
       model,
@@ -180,9 +180,7 @@ const TakeIDPhotos = () => {
     } else if (videoStatus === VideoStatus.inRecording) {
       if (videoRef.current && canvasRef.current) {
         videoRef.current.srcObject = null;
-        if (frameId.current) {
-          window.cancelAnimationFrame(frameId.current);
-        }
+        frameId.current && window.cancelAnimationFrame(frameId.current);
         const imageUrl = canvasRef.current.toDataURL("image/jpeg");
         setFileName(`${new Date().getTime()}.jpeg`);
         setImageUrl(imageUrl);
