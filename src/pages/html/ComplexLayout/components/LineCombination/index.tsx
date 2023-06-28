@@ -9,14 +9,14 @@ let movePointIndex = 0;
 let movePointV = 4;
 
 const LineCombination = () => {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // 移动光点
   const movePoint = () => {
     if (containerRef.current) {
       const nativeNode = ReactDOM.findDOMNode(
         containerRef.current
-      ) as HTMLButtonElement;
+      ) as HTMLDivElement;
       if (nativeNode) {
         const { length } = nativeNode.children;
         const box = nativeNode.children[movePointIndex] as HTMLDivElement;
@@ -105,9 +105,7 @@ const LineCombination = () => {
       frameId = requestAnimationFrame(movePoint);
     }
     return () => {
-      if (frameId) {
-        cancelAnimationFrame(frameId);
-      }
+      frameId && cancelAnimationFrame(frameId);
     };
   }, []);
 

@@ -1,5 +1,5 @@
 /**
- * 背景效果
+ * 背景图案
  */
 import React, { useEffect } from "react";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
