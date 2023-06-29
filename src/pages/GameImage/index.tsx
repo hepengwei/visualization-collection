@@ -23,9 +23,8 @@ import AddWatermark from "./components/AddWatermark";
 import CoverWithMosaic from "./components/CoverWithMosaic";
 import Compression from "./components/Compression";
 import styles from "./index.module.scss";
-import { div } from "@tensorflow/tfjs-core";
 
-export interface ImgInfo {
+interface ImgInfo {
   name: string;
   fileType: string;
   size: number;
@@ -33,6 +32,16 @@ export interface ImgInfo {
   width: number;
   height: number;
   imageData: ImageData;
+}
+
+export interface TobPageProps {
+  imgInfo: ImgInfo;
+  exportImage: (imageData: ImageData, exportImageType?: string) => void;
+  imgDragOver: boolean;
+  onDragOver: (e: React.DragEvent) => void;
+  onDragLeave: (e: React.DragEvent) => void;
+  onDrop: (e: React.DragEvent) => void;
+  onClear: () => void;
 }
 
 enum TabId {
@@ -191,158 +200,79 @@ const GameImage = () => {
     setImgInfo(null);
   };
 
+  const tabPageProps = {
+    imgInfo: imgInfo as ImgInfo,
+    exportImage,
+    imgDragOver,
+    onDragOver,
+    onDragLeave,
+    onDrop,
+    onClear,
+  };
+
   const tabsList = [
     {
       id: TabId.basicOperation,
       label: intl.formatMessage({
         id: "menu.imageProcessingTool.basicOperation",
       }),
-      element: (
-        <BasicOperation
-          imgInfo={imgInfo as ImgInfo}
-          exportImage={exportImage}
-          imgDragOver={imgDragOver}
-          onDragOver={onDragOver}
-          onDragLeave={onDragLeave}
-          onDrop={onDrop}
-          onClear={onClear}
-        />
-      ),
+      element: <BasicOperation {...tabPageProps} />,
     },
     {
       id: TabId.rectClip,
       label: intl.formatMessage({
         id: "menu.imageProcessingTool.rectangularClipping",
       }),
-      element: (
-        <RectClip
-          imgInfo={imgInfo as ImgInfo}
-          exportImage={exportImage}
-          imgDragOver={imgDragOver}
-          onDragOver={onDragOver}
-          onDragLeave={onDragLeave}
-          onDrop={onDrop}
-          onClear={onClear}
-        />
-      ),
+      element: <RectClip {...tabPageProps} />,
     },
     {
       id: TabId.radiusClip,
       label: intl.formatMessage({
         id: "menu.imageProcessingTool.roundedCornerClipping",
       }),
-      element: (
-        <RadiusClip
-          imgInfo={imgInfo as ImgInfo}
-          exportImage={exportImage}
-          imgDragOver={imgDragOver}
-          onDragOver={onDragOver}
-          onDragLeave={onDragLeave}
-          onDrop={onDrop}
-          onClear={onClear}
-        />
-      ),
+      element: <RadiusClip {...tabPageProps} />,
     },
     {
       id: TabId.changeSize,
       label: intl.formatMessage({
         id: "menu.imageProcessingTool.modifyTheSize",
       }),
-      element: (
-        <ChangeSize
-          imgInfo={imgInfo as ImgInfo}
-          exportImage={exportImage}
-          imgDragOver={imgDragOver}
-          onDragOver={onDragOver}
-          onDragLeave={onDragLeave}
-          onDrop={onDrop}
-          onClear={onClear}
-        />
-      ),
+      element: <ChangeSize {...tabPageProps} />,
     },
     {
       id: TabId.changeBrightness,
       label: intl.formatMessage({
         id: "menu.imageProcessingTool.modifyBrightness",
       }),
-      element: (
-        <ChangeBrightness
-          imgInfo={imgInfo as ImgInfo}
-          exportImage={exportImage}
-          imgDragOver={imgDragOver}
-          onDragOver={onDragOver}
-          onDragLeave={onDragLeave}
-          onDrop={onDrop}
-          onClear={onClear}
-        />
-      ),
+      element: <ChangeBrightness {...tabPageProps} />,
     },
     {
       id: TabId.changeDiaphaneity,
       label: intl.formatMessage({
         id: "menu.imageProcessingTool.modifyTransparency",
       }),
-      element: (
-        <ChangeDiaphaneity
-          imgInfo={imgInfo as ImgInfo}
-          exportImage={exportImage}
-          imgDragOver={imgDragOver}
-          onDragOver={onDragOver}
-          onDragLeave={onDragLeave}
-          onDrop={onDrop}
-          onClear={onClear}
-        />
-      ),
+      element: <ChangeDiaphaneity {...tabPageProps} />,
     },
     {
       id: TabId.addWatermark,
       label: intl.formatMessage({
         id: "menu.imageProcessingTool.addWatermark",
       }),
-      element: (
-        <AddWatermark
-          imgInfo={imgInfo as ImgInfo}
-          exportImage={exportImage}
-          imgDragOver={imgDragOver}
-          onDragOver={onDragOver}
-          onDragLeave={onDragLeave}
-          onDrop={onDrop}
-          onClear={onClear}
-        />
-      ),
+      element: <AddWatermark {...tabPageProps} />,
     },
     {
       id: TabId.coverWithMosaic,
       label: intl.formatMessage({
         id: "menu.imageProcessingTool.coverWithMosaics",
       }),
-      element: (
-        <CoverWithMosaic
-          imgInfo={imgInfo as ImgInfo}
-          exportImage={exportImage}
-          imgDragOver={imgDragOver}
-          onDragOver={onDragOver}
-          onDragLeave={onDragLeave}
-          onDrop={onDrop}
-          onClear={onClear}
-        />
-      ),
+      element: <CoverWithMosaic {...tabPageProps} />,
     },
     {
       id: TabId.photoCompression,
       label: intl.formatMessage({
         id: "menu.imageProcessingTool.imageCompression",
       }),
-      element: (
-        <Compression
-          imgInfo={imgInfo as ImgInfo}
-          imgDragOver={imgDragOver}
-          onDragOver={onDragOver}
-          onDragLeave={onDragLeave}
-          onDrop={onDrop}
-          onClear={onClear}
-        />
-      ),
+      element: <Compression {...tabPageProps} />,
     },
   ];
   const [selectedTabId, setSelectedTabId] = useState<TabId>(tabsList[0].id);

@@ -3,19 +3,9 @@
  */
 import React from "react";
 import RectSelect from "../RectSelect";
-import { ImgInfo } from "../../index";
+import { TobPageProps } from "../../index";
 
-interface CoverWithMosaicProps {
-  imgInfo: ImgInfo;
-  exportImage: (imageData: ImageData, exportImageType?: string) => void;
-  imgDragOver: boolean;
-  onDragOver: (e: React.DragEvent) => void;
-  onDragLeave: (e: React.DragEvent) => void;
-  onDrop: (e: React.DragEvent) => void;
-  onClear: () => void;
-}
-
-const CoverWithMosaic = (props: CoverWithMosaicProps) => {
+const CoverWithMosaic = (props: TobPageProps) => {
   return <RectSelect {...props} type="mosaic" />;
 };
 

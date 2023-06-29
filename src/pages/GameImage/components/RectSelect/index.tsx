@@ -7,17 +7,10 @@ import { Button, Checkbox, InputNumber, message } from "antd";
 import { useIntl } from "react-intl";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import { rectClip, mosaic } from "utils/imageUtil";
-import { ImgInfo } from "../../index";
+import { TobPageProps } from "../../index";
 import styles from "./index.module.scss";
 
-interface RectSelectProps {
-  imgInfo: ImgInfo;
-  exportImage: (imageData: ImageData, exportImageType?: string) => void;
-  imgDragOver: boolean;
-  onDragOver: (e: React.DragEvent) => void;
-  onDragLeave: (e: React.DragEvent) => void;
-  onDrop: (e: React.DragEvent) => void;
-  onClear: () => void;
+interface RectSelectProps extends TobPageProps {
   type: "clip" | "mosaic";
 }
 

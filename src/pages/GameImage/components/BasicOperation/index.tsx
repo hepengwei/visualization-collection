@@ -29,18 +29,8 @@ import {
   jpgToPng,
   pngToJpg,
 } from "utils/imageUtil";
-import { ImgInfo } from "../../index";
+import { TobPageProps } from "../../index";
 import styles from "../../index.module.scss";
-
-interface BasicOperationProps {
-  imgInfo: ImgInfo;
-  exportImage: (imageData: ImageData, exportImageType?: string) => void;
-  imgDragOver: boolean;
-  onDragOver: (e: React.DragEvent) => void;
-  onDragLeave: (e: React.DragEvent) => void;
-  onDrop: (e: React.DragEvent) => void;
-  onClear: () => void;
-}
 
 interface Status {
   doing: boolean;
@@ -98,7 +88,7 @@ const defaultImgStatus = {
 const primaryColor = "#0E5E6F";
 const primaryShallowColor = "#3A8891";
 
-const BasicOperation = (props: BasicOperationProps) => {
+const BasicOperation = (props: TobPageProps) => {
   const {
     imgInfo,
     exportImage,

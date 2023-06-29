@@ -6,24 +6,14 @@ import { Checkbox, InputNumber, Button, message } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useIntl } from "react-intl";
 import { sizeTostr, changeSize } from "utils/imageUtil";
-import { ImgInfo } from "../../index";
+import { TobPageProps } from "../../index";
 import styles from "../../index.module.scss";
-
-interface ChangeSizeProps {
-  imgInfo: ImgInfo;
-  exportImage: (imageData: ImageData, exportImageType?: string) => void;
-  imgDragOver: boolean;
-  onDragOver: (e: React.DragEvent) => void;
-  onDragLeave: (e: React.DragEvent) => void;
-  onDrop: (e: React.DragEvent) => void;
-  onClear: () => void;
-}
 
 const primaryColor = "#0E5E6F";
 const primaryShallowColor = "#3A8891";
 const maxWidthHeight = 10000;
 
-const ChangeSize = (props: ChangeSizeProps) => {
+const ChangeSize = (props: TobPageProps) => {
   const {
     imgInfo,
     exportImage,

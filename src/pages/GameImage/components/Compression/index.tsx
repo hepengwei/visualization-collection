@@ -7,23 +7,14 @@ import { useIntl } from "react-intl";
 import { exportToImage } from "utils/fileUtil";
 import { sizeTostr, compression } from "utils/imageUtil";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
-import { ImgInfo } from "../../index";
+import { TobPageProps } from "../../index";
 import styles from "../../index.module.scss";
-
-interface CompressionProps {
-  imgInfo: ImgInfo;
-  imgDragOver: boolean;
-  onDragOver: (e: React.DragEvent) => void;
-  onDragLeave: (e: React.DragEvent) => void;
-  onDrop: (e: React.DragEvent) => void;
-  onClear: () => void;
-}
 
 const primaryColor = "#0E5E6F";
 const primaryShallowColor = "#3A8891";
 const defaultCompressionDegree = 70;
 
-const Compression = (props: CompressionProps) => {
+const Compression = (props: TobPageProps) => {
   const { imgInfo, imgDragOver, onDragOver, onDragLeave, onDrop, onClear } =
     props;
   const intl = useIntl();
