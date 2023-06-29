@@ -5,24 +5,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button, Checkbox, InputNumber, message } from "antd";
 import { useIntl } from "react-intl";
 import { radiusClip } from "utils/imageUtil";
-import { ImgInfo } from "../../index";
+import { TobPageProps } from "../../index";
 import styles from "./index.module.scss";
-
-interface RadiusClipProps {
-  imgInfo: ImgInfo;
-  exportImage: (imageData: ImageData, exportImageType?: string) => void;
-  imgDragOver: boolean;
-  onDragOver: (e: React.DragEvent) => void;
-  onDragLeave: (e: React.DragEvent) => void;
-  onDrop: (e: React.DragEvent) => void;
-  onClear: () => void;
-}
 
 const primaryColor = "#0E5E6F";
 const primaryShallowColor = "#3A8891";
 const defaultBorderRadius = 4;
 
-const RadiusClip = (props: RadiusClipProps) => {
+const RadiusClip = (props: TobPageProps) => {
   const {
     imgInfo,
     exportImage,

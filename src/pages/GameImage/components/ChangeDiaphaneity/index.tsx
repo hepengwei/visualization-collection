@@ -6,23 +6,13 @@ import { Row, Col, Slider, InputNumber, Button, Checkbox, message } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useIntl } from "react-intl";
 import { sizeTostr, changeDiaphaneity } from "utils/imageUtil";
-import { ImgInfo } from "../../index";
+import { TobPageProps } from "../../index";
 import styles from "../../index.module.scss";
-
-interface ChangeDiaphaneityProps {
-  imgInfo: ImgInfo;
-  exportImage: (imageData: ImageData, exportImageType?: string) => void;
-  imgDragOver: boolean;
-  onDragOver: (e: React.DragEvent) => void;
-  onDragLeave: (e: React.DragEvent) => void;
-  onDrop: (e: React.DragEvent) => void;
-  onClear: () => void;
-}
 
 const primaryColor = "#0E5E6F";
 const primaryShallowColor = "#3A8891";
 
-const ChangeDiaphaneity = (props: ChangeDiaphaneityProps) => {
+const ChangeDiaphaneity = (props: TobPageProps) => {
   const {
     imgInfo,
     exportImage,

@@ -8,18 +8,8 @@ import { useIntl } from "react-intl";
 import { FolderAddOutlined } from "@ant-design/icons";
 import { fileOrBlobToDataURL, getCanvasImgData } from "utils/fileUtil";
 import { addWatermark } from "utils/imageUtil";
-import { ImgInfo } from "../../index";
+import { TobPageProps } from "../../index";
 import styles from "./index.module.scss";
-
-interface ClipProps {
-  imgInfo: ImgInfo;
-  exportImage: (imageData: ImageData, exportImageType?: string) => void;
-  imgDragOver: boolean;
-  onDragOver: (e: React.DragEvent) => void;
-  onDragLeave: (e: React.DragEvent) => void;
-  onDrop: (e: React.DragEvent) => void;
-  onClear: () => void;
-}
 
 export interface WatermarkInfo {
   name: string;
@@ -33,7 +23,7 @@ const primaryColor = "#0E5E6F";
 const primaryShallowColor = "#3A8891";
 const watermarkMinWidthHeight = 20; // 水印的最小宽高
 
-const AddWatermark = (props: ClipProps) => {
+const AddWatermark = (props: TobPageProps) => {
   const {
     imgInfo,
     exportImage,
