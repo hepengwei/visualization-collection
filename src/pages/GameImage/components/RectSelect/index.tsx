@@ -7,10 +7,10 @@ import { Button, Checkbox, InputNumber, message } from "antd";
 import { useIntl } from "react-intl";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import { rectClip, mosaic } from "utils/imageUtil";
-import { TobPageProps } from "../../index";
+import { TabPageProps } from "../../index";
 import styles from "./index.module.scss";
 
-interface RectSelectProps extends TobPageProps {
+interface RectSelectProps extends TabPageProps {
   type: "clip" | "mosaic";
 }
 
@@ -48,7 +48,6 @@ const RectClip = (props: RectSelectProps) => {
   const [mosaicSize, setMosaicSize] = useState<number>(defaultMosaicSize);
   const doing = useRef<boolean>(false);
   const clipBoxRef = useRef<HTMLDivElement>(null);
-  const img2Ref = useRef<HTMLImageElement>(null);
 
   const defaultWidth = Math.max(
     Math.floor(imgInfo.width / 2),
@@ -421,7 +420,6 @@ const RectClip = (props: RectSelectProps) => {
                     clipBoxLeft + clipBoxWidth
                   }px, ${clipBoxTop + clipBoxHeight}px, ${clipBoxLeft}px)`,
                 }}
-                ref={img2Ref}
               />
               <div
                 className={styles.clipBox}

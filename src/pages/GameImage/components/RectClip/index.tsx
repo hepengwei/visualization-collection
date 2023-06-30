@@ -3,9 +3,9 @@
  */
 import React from "react";
 import RectSelect from "../RectSelect";
-import { TobPageProps } from "../../index";
+import { TabPageProps } from "../../index";
 
-const RectClip = (props: TobPageProps) => {
+const RectClip = (props: TabPageProps) => {
   return <RectSelect {...props} type="clip" />;
 };
 

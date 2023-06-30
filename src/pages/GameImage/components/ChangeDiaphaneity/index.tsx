@@ -2,17 +2,15 @@
  * 图片处理工具-修改透明度Tab页
  */
 import React, { useRef, useEffect, useState } from "react";
-import { Row, Col, Slider, InputNumber, Button, Checkbox, message } from "antd";
+import { Slider, InputNumber, Button, Checkbox, message } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useIntl } from "react-intl";
-import { sizeTostr, changeDiaphaneity } from "utils/imageUtil";
-import { TobPageProps } from "../../index";
+import { changeDiaphaneity } from "utils/imageUtil";
+import FileBox from "../FileBox";
+import { TabPageProps } from "../../index";
 import styles from "../../index.module.scss";
 
-const primaryColor = "#0E5E6F";
-const primaryShallowColor = "#3A8891";
-
-const ChangeDiaphaneity = (props: TobPageProps) => {
+const ChangeDiaphaneity = (props: TabPageProps) => {
   const {
     imgInfo,
     exportImage,
@@ -85,39 +83,13 @@ const ChangeDiaphaneity = (props: TobPageProps) => {
 
   return (
     <div>
-      <div
-        className={styles.imgBox}
-        style={{
-          borderColor: imgDragOver ? primaryColor : primaryShallowColor,
-        }}
+      <FileBox
+        imgInfo={imgInfo}
+        imgDragOver={imgDragOver}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}
-      >
-        <div className={styles.fileBox}>
-          <img src={imgInfo.imgUrl} alt="" />
-          <div className={styles.fileInfo}>
-            <div className={styles.item}>
-              {intl.formatMessage({ id: "page.imageProcessingTool.filename" })}
-              ：{imgInfo.name}
-            </div>
-            <div className={styles.item}>
-              {intl.formatMessage({ id: "page.imageProcessingTool.format" })}：
-              {imgInfo.fileType}
-            </div>
-            <div className={styles.item}>
-              {intl.formatMessage({ id: "common.dimension" })}：
-              {imgInfo.width && imgInfo.height
-                ? `${imgInfo.width}x${imgInfo.height}`
-                : intl.formatMessage({ id: "common.unknown" })}
-            </div>
-            <div className={styles.item}>
-              {intl.formatMessage({ id: "common.size" })}：
-              {sizeTostr(imgInfo.size)}
-            </div>
-          </div>
-        </div>
-      </div>
+      />
       {imgTypeQualified && (
         <div className={styles.operationBtns}>
           <div className={styles.left}>

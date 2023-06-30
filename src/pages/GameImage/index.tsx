@@ -24,7 +24,7 @@ import CoverWithMosaic from "./components/CoverWithMosaic";
 import Compression from "./components/Compression";
 import styles from "./index.module.scss";
 
-interface ImgInfo {
+export interface ImgInfo {
   name: string;
   fileType: string;
   size: number;
@@ -34,7 +34,7 @@ interface ImgInfo {
   imageData: ImageData;
 }
 
-export interface TobPageProps {
+export interface TabPageProps {
   imgInfo: ImgInfo;
   exportImage: (imageData: ImageData, exportImageType?: string) => void;
   imgDragOver: boolean;

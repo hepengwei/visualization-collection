@@ -6,7 +6,6 @@ import { Button, message } from "antd";
 import { cloneDeep } from "lodash-es";
 import { useIntl } from "react-intl";
 import {
-  sizeTostr,
   flipSideToSide,
   flipUpsideDown,
   leftRotate,
@@ -29,7 +28,8 @@ import {
   jpgToPng,
   pngToJpg,
 } from "utils/imageUtil";
-import { TobPageProps } from "../../index";
+import FileBox from "../FileBox";
+import { TabPageProps } from "../../index";
 import styles from "../../index.module.scss";
 
 interface Status {
@@ -85,10 +85,7 @@ const defaultImgStatus = {
   pngToJpgStatus: { doing: false, imageData: null },
 };
 
-const primaryColor = "#0E5E6F";
-const primaryShallowColor = "#3A8891";
-
-const BasicOperation = (props: TobPageProps) => {
+const BasicOperation = (props: TabPageProps) => {
   const {
     imgInfo,
     exportImage,
@@ -130,39 +127,13 @@ const BasicOperation = (props: TobPageProps) => {
 
   return (
     <div>
-      <div
-        className={styles.imgBox}
-        style={{
-          borderColor: imgDragOver ? primaryColor : primaryShallowColor,
-        }}
+      <FileBox
+        imgInfo={imgInfo}
+        imgDragOver={imgDragOver}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}
-      >
-        <div className={styles.fileBox}>
-          <img src={imgInfo.imgUrl} alt="" />
-          <div className={styles.fileInfo}>
-            <div className={styles.item}>
-              {intl.formatMessage({ id: "page.imageProcessingTool.filename" })}
-              ：{imgInfo.name}
-            </div>
-            <div className={styles.item}>
-              {intl.formatMessage({ id: "page.imageProcessingTool.format" })}：
-              {imgInfo.fileType}
-            </div>
-            <div className={styles.item}>
-              {intl.formatMessage({ id: "common.dimension" })}：
-              {imgInfo.width && imgInfo.height
-                ? `${imgInfo.width}x${imgInfo.height}`
-                : intl.formatMessage({ id: "common.unknown" })}
-            </div>
-            <div className={styles.item}>
-              {intl.formatMessage({ id: "common.size" })}：
-              {sizeTostr(imgInfo.size)}
-            </div>
-          </div>
-        </div>
-      </div>
+      />
       <div className={styles.operationBtns}>
         <div className={styles.left}>
           <Button

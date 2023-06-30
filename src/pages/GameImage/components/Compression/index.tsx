@@ -5,16 +5,15 @@ import React, { useRef, useEffect, useState } from "react";
 import { InputNumber, Button, message } from "antd";
 import { useIntl } from "react-intl";
 import { exportToImage } from "utils/fileUtil";
-import { sizeTostr, compression } from "utils/imageUtil";
+import { compression } from "utils/imageUtil";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
-import { TobPageProps } from "../../index";
+import FileBox from "../FileBox";
+import { TabPageProps } from "../../index";
 import styles from "../../index.module.scss";
 
-const primaryColor = "#0E5E6F";
-const primaryShallowColor = "#3A8891";
 const defaultCompressionDegree = 70;
 
-const Compression = (props: TobPageProps) => {
+const Compression = (props: TabPageProps) => {
   const { imgInfo, imgDragOver, onDragOver, onDragLeave, onDrop, onClear } =
     props;
   const intl = useIntl();
@@ -94,39 +93,13 @@ const Compression = (props: TobPageProps) => {
 
   return (
     <div>
-      <div
-        className={styles.imgBox}
-        style={{
-          borderColor: imgDragOver ? primaryColor : primaryShallowColor,
-        }}
+      <FileBox
+        imgInfo={imgInfo}
+        imgDragOver={imgDragOver}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}
-      >
-        <div className={styles.fileBox}>
-          <img src={imgInfo.imgUrl} alt="" />
-          <div className={styles.fileInfo}>
-            <div className={styles.item}>
-              {intl.formatMessage({ id: "page.imageProcessingTool.filename" })}
-              ：{imgInfo.name}
-            </div>
-            <div className={styles.item}>
-              {intl.formatMessage({ id: "page.imageProcessingTool.format" })}：
-              {imgInfo.fileType}
-            </div>
-            <div className={styles.item}>
-              {intl.formatMessage({ id: "common.dimension" })}：
-              {imgInfo.width && imgInfo.height
-                ? `${imgInfo.width}x${imgInfo.height}`
-                : intl.formatMessage({ id: "common.unknown" })}
-            </div>
-            <div className={styles.item}>
-              {intl.formatMessage({ id: "common.size" })}：
-              {sizeTostr(imgInfo.size)}
-            </div>
-          </div>
-        </div>
-      </div>
+      />
       <div className={styles.operationBtns}>
         <div className={styles.left}>
           <InputNumber
