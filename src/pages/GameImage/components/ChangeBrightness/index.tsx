@@ -4,14 +4,12 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Slider, InputNumber, Button, message } from "antd";
 import { useIntl } from "react-intl";
-import { sizeTostr, changeBrightness } from "utils/imageUtil";
-import { TobPageProps } from "../../index";
+import { changeBrightness } from "utils/imageUtil";
+import FileBox from "../FileBox";
+import { TabPageProps } from "../../index";
 import styles from "../../index.module.scss";
 
-const primaryColor = "#0E5E6F";
-const primaryShallowColor = "#3A8891";
-
-const ChangeBrightness = (props: TobPageProps) => {
+const ChangeBrightness = (props: TabPageProps) => {
   const {
     imgInfo,
     exportImage,
@@ -61,39 +59,13 @@ const ChangeBrightness = (props: TobPageProps) => {
 
   return (
     <div>
-      <div
-        className={styles.imgBox}
-        style={{
-          borderColor: imgDragOver ? primaryColor : primaryShallowColor,
-        }}
+      <FileBox
+        imgInfo={imgInfo}
+        imgDragOver={imgDragOver}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}
-      >
-        <div className={styles.fileBox}>
-          <img src={imgInfo.imgUrl} alt="" />
-          <div className={styles.fileInfo}>
-            <div className={styles.item}>
-              {intl.formatMessage({ id: "page.imageProcessingTool.filename" })}
-              ：{imgInfo.name}
-            </div>
-            <div className={styles.item}>
-              {intl.formatMessage({ id: "page.imageProcessingTool.format" })}：
-              {imgInfo.fileType}
-            </div>
-            <div className={styles.item}>
-              {intl.formatMessage({ id: "common.dimension" })}：
-              {imgInfo.width && imgInfo.height
-                ? `${imgInfo.width}x${imgInfo.height}`
-                : intl.formatMessage({ id: "common.unknown" })}
-            </div>
-            <div className={styles.item}>
-              {intl.formatMessage({ id: "common.size" })}：
-              {sizeTostr(imgInfo.size)}
-            </div>
-          </div>
-        </div>
-      </div>
+      />
       <div className={styles.operationBtns}>
         <div className={styles.left}>
           <div className={styles.operationBtn}>

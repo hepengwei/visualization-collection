@@ -8,7 +8,7 @@ import { useIntl } from "react-intl";
 import { FolderAddOutlined } from "@ant-design/icons";
 import { fileOrBlobToDataURL, getCanvasImgData } from "utils/fileUtil";
 import { addWatermark } from "utils/imageUtil";
-import { TobPageProps } from "../../index";
+import { TabPageProps } from "../../index";
 import styles from "./index.module.scss";
 
 export interface WatermarkInfo {
@@ -23,7 +23,7 @@ const primaryColor = "#0E5E6F";
 const primaryShallowColor = "#3A8891";
 const watermarkMinWidthHeight = 20; // 水印的最小宽高
 
-const AddWatermark = (props: TobPageProps) => {
+const AddWatermark = (props: TabPageProps) => {
   const {
     imgInfo,
     exportImage,
@@ -54,7 +54,6 @@ const AddWatermark = (props: TobPageProps) => {
   const [clipBoxTop, setClipBoxTop] = useState<number>(0);
   const [clipBoxLeft, setClipBoxLeft] = useState<number>(0);
 
-  const isKeyDown = useRef<boolean>(false);
   const isGetar = useRef<boolean>(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const leftBoxRef = useRef<HTMLDivElement>(null);
@@ -209,7 +208,6 @@ const AddWatermark = (props: TobPageProps) => {
   };
 
   const onMouseUp = () => {
-    isKeyDown.current = false;
     isGetar.current = false;
   };
 

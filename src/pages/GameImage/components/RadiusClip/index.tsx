@@ -5,14 +5,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button, Checkbox, InputNumber, message } from "antd";
 import { useIntl } from "react-intl";
 import { radiusClip } from "utils/imageUtil";
-import { TobPageProps } from "../../index";
+import { TabPageProps } from "../../index";
 import styles from "./index.module.scss";
 
 const primaryColor = "#0E5E6F";
 const primaryShallowColor = "#3A8891";
 const defaultBorderRadius = 4;
 
-const RadiusClip = (props: TobPageProps) => {
+const RadiusClip = (props: TabPageProps) => {
   const {
     imgInfo,
     exportImage,
