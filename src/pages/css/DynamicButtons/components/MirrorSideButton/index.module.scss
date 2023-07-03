@@ -1,7 +1,7 @@
 .container {
   button {
-    width: 160px;
-    height: 48px;
+    width: $dynamicButtonsWidth;
+    height: $dynamicButtonsHeight;
     font-size: 24px;
     background-color: transparent;
     color: $buttonColor;

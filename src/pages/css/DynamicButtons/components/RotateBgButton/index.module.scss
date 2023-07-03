@@ -1,6 +1,6 @@
 .container {
-  width: 160px;
-  height: 48px;
+  width: $dynamicButtonsWidth;
+  height: $dynamicButtonsHeight;
   border-radius: 6px;
   background-size: 200% 600%;
   background-image: radial-gradient(
@@ -15,4 +15,5 @@
   justify-content: center;
   color: #ffffff;
   font-size: 24px;
+  cursor: pointer;
 }
