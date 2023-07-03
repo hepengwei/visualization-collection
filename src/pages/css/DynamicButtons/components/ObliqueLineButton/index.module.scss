@@ -1,8 +1,8 @@
 .container {
   button {
     box-sizing: border-box;
-    width: 160px;
-    height: 48px;
+    width: $dynamicButtonsWidth;
+    height: $dynamicButtonsHeight;
     overflow: hidden;
     display: flex;
     justify-content: center;

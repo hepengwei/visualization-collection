@@ -21,7 +21,6 @@ const DynamicButtons = () => {
         } else {
           const arr = bgPos.split(" ");
           let x = Number(arr[0].substring(0, arr[0].length - 1)) / 100 - r;
-          const oldX = x;
           let y = Number(arr[1].substring(0, arr[1].length - 1)) / 100 - r;
 
           x = x * Math.cos(speedDeg) - y * Math.sin(speedDeg);

@@ -1,7 +1,7 @@
 .container {
   .buttonBox {
-    width: 160px;
-    height: 48px;
+    width: $dynamicButtonsWidth;
+    height: $dynamicButtonsHeight;
     cursor: pointer;
     position: relative;
 

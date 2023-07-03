@@ -1,7 +1,7 @@
 .container {
   button {
-    width: 160px;
-    height: 48px;
+    width: $dynamicButtonsWidth;
+    height: $dynamicButtonsHeight;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -1,7 +1,7 @@
 .container {
   button {
-    width: 160px;
-    height: 48px;
+    width: $dynamicButtonsWidth;
+    height: $dynamicButtonsHeight;
     border: 0;
     border-radius: 24px;
     display: flex;
@@ -10,7 +10,7 @@
     font-size: 24px;
     cursor: pointer;
     color: #ffffff;
-    background: linear-gradient(to right, #C635FE 50%, $buttonColor 50%);
+    background: linear-gradient(to right, #c635fe 50%, $buttonColor 50%);
     background-size: 200% 100%;
     background-position: 100% 0%;
     transition: all 0.5s ease;

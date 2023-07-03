@@ -19,8 +19,8 @@
 
   .box1 {
     .btn {
-      width: 160px;
-      height: 48px;
+      width: $dynamicButtonsWidth;
+      height: $dynamicButtonsHeight;
       margin: 20px;
 
       button {
