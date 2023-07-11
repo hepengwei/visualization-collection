@@ -85,7 +85,7 @@ const HumanPostureDetection = () => {
       const pointList = poses[0]?.keypoints || [];
 
       // 将这 17 个关键点的坐标信息 画到 canvas 上
-      pointList.forEach(({ x, y, score, name }: any) => {
+      pointList.forEach(({ x, y, score }: any) => {
         if (score > 0.5) {
           // 画点
           drawPoint(

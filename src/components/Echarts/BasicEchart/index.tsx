@@ -60,9 +60,8 @@ const BasicEchart = (
 
   //初始化图表，设置配置项
   const renderChart = useCallback(() => {
-    let render;
     if (chartRef.current) {
-      render = echarts?.getInstanceByDom(chartRef.current);
+      const render = echarts?.getInstanceByDom(chartRef.current);
       if (render) {
         chartInstance.current = render;
       } else {

@@ -24,7 +24,6 @@ import {
   BarSeriesOption,
   PieChart,
   PieSeriesOption,
-  GraphSeriesOption,
 } from "echarts/charts";
 import { LabelLayout, UniversalTransition } from "echarts/features";
 import { CanvasRenderer } from "echarts/renderers";

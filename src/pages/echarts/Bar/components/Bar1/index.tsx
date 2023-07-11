@@ -7,7 +7,7 @@ const Bar1 = () => {
   const [echartData, setEchartData] = useState<any[]>([]);
 
   const getData = () => {
-    const data = [];
+    const data: number[][] = [];
     const num = 60;
     for (let i = 0; i < num; i++) {
       const now = new Date();

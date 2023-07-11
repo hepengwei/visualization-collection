@@ -128,8 +128,6 @@ const iconData = {
   },
 };
 
-type IconData = Record<string, any>;
-
 // 根据当前未转换坐标获取椭圆下一个未转换点的坐标
 function getEllipseNextPos(
   a: number,
@@ -218,8 +216,8 @@ interface PeopleAnimationProps {
 
 const PeopleAnimation = (props: PeopleAnimationProps) => {
   const { noDropCoins = false, clickNoDropCoins = false } = props;
-  const content = useRef(null);
-  const giftBoxRef = useRef(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const giftBoxRef = useRef<HTMLDivElement>(null);
 
   const giftBoxClick = () => {
     if (!clickNoDropCoins && !isCoinsMoving) {
@@ -234,7 +232,7 @@ const PeopleAnimation = (props: PeopleAnimationProps) => {
     let toOY = getEllipseY(a, b, toOX);
 
     function loop() {
-      if (content.current) {
+      if (contentRef.current) {
         const transitionPos = getEllipseTransitionPos(
           toOX,
           toOY,
@@ -244,7 +242,7 @@ const PeopleAnimation = (props: PeopleAnimationProps) => {
         );
         const { transitionX, transitionY } = transitionPos;
         const nativeNode = ReactDOM.findDOMNode(
-          content.current
+          contentRef.current
         ) as HTMLImageElement;
         if (!nativeNode) return;
         if (nativeNode.offsetWidth < 350) {
@@ -387,22 +385,20 @@ const PeopleAnimation = (props: PeopleAnimationProps) => {
         }
       }
 
-      frameId = requestAnimationFrame(loop);
+      frameId = window.requestAnimationFrame(loop);
     }
-    frameId = requestAnimationFrame(loop);
+    frameId = window.requestAnimationFrame(loop);
 
     return () => {
-      if (frameId) {
-        cancelAnimationFrame(frameId);
-      }
+      frameId && window.cancelAnimationFrame(frameId);
     };
   }, []);
 
   return (
     <div className={styles.container}>
-      <div className={styles.content} ref={content}>
+      <div className={styles.content} ref={contentRef}>
         <img src={people} alt="" className={styles.people} />
-        <div className={styles.giftBox} ref={giftBoxRef} onClick={giftBoxClick}>
+        <div className={styles.giftBox} onClick={giftBoxClick} ref={giftBoxRef}>
           <img src={coin1} alt="" className={styles.coin} />
           <img src={coin2} alt="" className={styles.coin} />
           <img src={coin3} alt="" className={styles.coin} />

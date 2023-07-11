@@ -10,7 +10,7 @@ const DisplayTextInSmoke = () => {
     if (pRef.current) {
       Array.prototype.forEach.call(
         pRef.current.children,
-        (span: HTMLSpanElement, index: number) => {
+        (span: HTMLSpanElement) => {
           let className = styles.span1;
           if (span.className === styles.span1) {
             className = styles.span2;
