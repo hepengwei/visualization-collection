@@ -38,7 +38,7 @@ const FlopTime = () => {
       }
     }
 
-    const timer = setInterval(() => {
+    const timer = window.setInterval(() => {
       // 获取当前时间
       let now = new Date();
       // 格式化当前时间，例如现在是20:30:10，则输出"203010"字符串
@@ -62,7 +62,7 @@ const FlopTime = () => {
 
     return () => {
       if (timer) {
-        clearInterval(timer);
+        window.clearInterval(timer);
       }
     };
   }, []);

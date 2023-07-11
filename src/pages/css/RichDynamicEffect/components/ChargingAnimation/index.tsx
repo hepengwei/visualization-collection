@@ -2,7 +2,7 @@ import React, { useLayoutEffect } from "react";
 import ModuleTitle from "components/ModuleTitle";
 import styles from "./index.module.scss";
 
-const list = new Array(15).fill("1");
+const list = new Array(15).fill(0);
 
 const DynamicTime = () => {
   useLayoutEffect(() => {
@@ -22,7 +22,7 @@ const DynamicTime = () => {
       <div className={styles.contrast}>
         <div className={styles.circle}></div>
         <ul className={styles.bubbles}>
-          {list.map((item: string, index: number) => {
+          {list.map((item: number, index: number) => {
             const width = `${Math.random() * 15 + 15}px`;
             const left = `${Math.random() * 70 + 15}px`;
             const duration = `${Math.random() * 5 + 2}s`;

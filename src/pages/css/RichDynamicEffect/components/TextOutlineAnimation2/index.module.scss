@@ -13,6 +13,7 @@
   $animationTime: 6s;
   $dottedLineLength: 60;
   $dottedLineSpace: 300;
+  $delaySpace: -1.2s;
 
   .content {
     display: flex;
@@ -37,19 +38,19 @@
         }
         &:nth-of-type(2) {
           stroke: $color2;
-          animation-delay: -1.2s;
+          animation-delay: $delaySpace;
         }
         &:nth-of-type(3) {
           stroke: $color3;
-          animation-delay: -2.4s;
+          animation-delay: $delaySpace * 2;
         }
         &:nth-of-type(4) {
           stroke: $color4;
-          animation-delay: -3.6s;
+          animation-delay: $delaySpace * 3;
         }
         &:nth-of-type(5) {
           stroke: $color5;
-          animation-delay: -4.8s;
+          animation-delay: $delaySpace * 4;
         }
       }
     }

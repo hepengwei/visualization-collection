@@ -1,8 +1,7 @@
 import React from "react";
 import styles from "./index.module.scss";
 
-const spanNum = 9;
-const list = new Array(spanNum).fill(0);
+const list = new Array(9).fill(0);
 
 const SudokuImageAnimation = () => {
   return (
