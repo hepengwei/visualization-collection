@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  font-size: 46px;
+  .num {
+    width: 46px;
+    height: 46px;
+    font-size: 32px;
+    font-weight: 500;
+    background: #425684;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 4px;
+  }
+  .unit {
+    margin: 0 4px;
+  }
+}
