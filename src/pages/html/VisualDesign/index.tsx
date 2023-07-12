@@ -32,6 +32,7 @@ import RotateAndBgFixed from "./components/RotateAndBgFixed";
 import HexagonalMesh from "./components/HexagonalMesh";
 import HexagonalRadar from "./components/HexagonalRadar";
 import HoverEnlargement from "./components/HoverEnlargement";
+import ActivityCountDown from "./components/ActivityCountDown";
 import styles from "./index.module.scss";
 
 const { GridBox } = GridContent;
@@ -64,6 +65,7 @@ const gridboxList = [
   { element: <HexagonalMesh /> },
   { element: <HexagonalRadar /> },
   { element: <HoverEnlargement /> },
+  { element: <ActivityCountDown /> },
 ];
 
 const VisualDesign = () => {
