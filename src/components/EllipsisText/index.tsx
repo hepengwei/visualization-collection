@@ -20,6 +20,7 @@ interface EllipsisTextProps {
   buttonTextWeight?: number;
   onClickButton?: (e: React.SyntheticEvent<any, Event>) => void;
   style?: Record<string, any>;
+  onTextOverChange?: (isOver: boolean) => void;
 }
 
 const ellipsis = "...";
@@ -33,6 +34,7 @@ const EllipsisText = (props: EllipsisTextProps) => {
     buttonTextWeight = 400, // 右下角按钮字体粗细
     onClickButton, // 点击右下角按钮的回调
     style, // 组件样式
+    onTextOverChange, // 文字是否超出状态改变的回调
   } = props;
   let fontSize = 12;
   let textWeight = 400;
@@ -49,6 +51,7 @@ const EllipsisText = (props: EllipsisTextProps) => {
   if (!text) return <div ref={textRef}></div>;
 
   const [width, setWidth] = useState(0);
+  const isOverRef = useRef<boolean>(false);
 
   const data = useMemo(() => {
     let finalText = text;
@@ -92,6 +95,10 @@ const EllipsisText = (props: EllipsisTextProps) => {
       } else {
         finalText = text;
       }
+    }
+    if (isOver !== isOverRef.current) {
+      isOverRef.current = isOver;
+      onTextOverChange && onTextOverChange(isOver);
     }
     return {
       textStyle: {
