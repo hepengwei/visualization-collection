@@ -82,7 +82,7 @@ const ActivityCountDown = (props: ActivityCountDownProps) => {
         overRef.current = true;
         overCallback && overCallback();
         if (timer.current) {
-          clearInterval(timer.current);
+          window.clearInterval(timer.current);
           timer.current = 0;
         }
       }
@@ -94,7 +94,7 @@ const ActivityCountDown = (props: ActivityCountDownProps) => {
 
   useEffect(() => {
     return () => {
-      timer.current && clearInterval(timer.current);
+      timer.current && window.clearInterval(timer.current);
     };
   }, []);
 

@@ -106,6 +106,8 @@ const en_US = {
 
   // Html视觉-视觉设计页
   "page.htmlVision.visualDesign.displaysCustomRows":
+    "This component is a text component that displays ellipses when exceeded, and can also dynamically obtain whether text is exceeded.",
+  "page.htmlVision.visualDesign.displaysCustomRows2":
     "This component is a text component that displays the number of user-defined lines, and displays ellipses when the number exceeds. It also supports the display of user-defined text buttons when ellipses appear at the end.",
   "page.htmlVision.visualDesign.thisIsText": "This is the text.",
   "page.htmlVision.visualDesign.brighten": "Brighten",
