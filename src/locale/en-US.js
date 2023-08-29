@@ -67,6 +67,7 @@ const en_US = {
   "menu.cssDynamicEffect.generateRegularPolygon": "Generate Regular Polygon",
   "menu.cssDynamicEffect.musicVisualization": "Music Visualization",
   "menu.canvasDynamicEffect": "Canvas Dynamic Effect",
+  "menu.canvasDynamicEffect.sphereCollisionExample": "sphere-collision Example",
   "menu.canvasDynamicEffect.dynamicClock": "Dynamic Clock",
   "menu.canvasDynamicEffect.searchlightEffect": "Searchlight Effect",
   "menu.canvasDynamicEffect.sphereCollisionInteraction":
@@ -208,6 +209,7 @@ const en_US = {
   "page.cssDynamicEffect.generateRegularPolygon.rotation": "Rotation",
 
   // Canvas动效
+  "page.canvasDynamicEffect.sphereCollisionExample": "sphere-collision example",
   "page.canvasDynamicEffect.dynamicClock": "Dynamic clock effect",
   "page.canvasDynamicEffect.searchlight": "Searchlight effect",
   "page.canvasDynamicEffect.startGame": "Start Game",

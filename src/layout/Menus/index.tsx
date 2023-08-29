@@ -118,6 +118,12 @@ const Menus: React.FC = () => {
       <PlayCircleOutlined />,
       [
         getItem(
+          intl.formatMessage({
+            id: "menu.canvasDynamicEffect.sphereCollisionExample",
+          }),
+          "sphereCollisionExample"
+        ),
+        getItem(
           intl.formatMessage({ id: "menu.canvasDynamicEffect.dynamicClock" }),
           "dynamicClock"
         ),
