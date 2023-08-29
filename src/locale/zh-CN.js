@@ -63,6 +63,7 @@ const zh_CN = {
   "menu.cssDynamicEffect.generateRegularPolygon": "生成正多边形",
   "menu.cssDynamicEffect.musicVisualization": "音乐可视化",
   "menu.canvasDynamicEffect": "Canvas动效",
+  "menu.canvasDynamicEffect.sphereCollisionExample": "sphere-collision库示例",
   "menu.canvasDynamicEffect.dynamicClock": "动态时钟",
   "menu.canvasDynamicEffect.searchlightEffect": "探照灯效果",
   "menu.canvasDynamicEffect.sphereCollisionInteraction": "球体碰撞交互",
@@ -175,6 +176,7 @@ const zh_CN = {
   "page.cssDynamicEffect.generateRegularPolygon.rotation": "旋转",
 
   // Canvas动效
+  "page.canvasDynamicEffect.sphereCollisionExample": "sphere-collision库示例",
   "page.canvasDynamicEffect.dynamicClock": "动态时钟效果",
   "page.canvasDynamicEffect.searchlight": "探照灯效果",
   "page.canvasDynamicEffect.startGame": "开 始 游 戏",

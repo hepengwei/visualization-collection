@@ -1,3 +1,6 @@
+/**
+ * 刮刮乐
+ */
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import React, { useEffect, useRef } from "react";
 import { useIntl } from "react-intl";

@@ -11,6 +11,7 @@ import DynamicButtons from "pages/css/DynamicButtons";
 import RichDynamicEffect from "pages/css/RichDynamicEffect";
 import GenerateRegularPolygon from "pages/css/GenerateRegularPolygon";
 // import MusicVisualization from "pages/css/MusicVisualization";
+import SphereCollisionExample from "pages/canvas/SphereCollisionExample";
 import DynamicClock from "pages/canvas/DynamicClock";
 import Searchlight from "pages/canvas/Searchlight";
 import GlobuleInteraction from "pages/canvas/GlobuleInteraction";
@@ -85,6 +86,10 @@ export const contentRoutes: RouteObject[] = [
   {
     path: "/canvas",
     children: [
+      {
+        path: "/canvas/sphereCollisionExample",
+        element: <SphereCollisionExample />,
+      },
       {
         path: "/canvas/dynamicClock",
         element: <DynamicClock />,
