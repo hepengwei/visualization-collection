@@ -20,7 +20,6 @@ const globuleOptionList: GlobuleOptions[] = [
     //  gDirection: "toTop",
     gDirection: "toBottom",
     gCoefficient: 0.2,
-    collisionLossV: 1.2,
     moveLossV: 0.006,
     requiredMouseInteraction: true,
     mouseInteractionBehavior: "drag",
@@ -30,7 +29,6 @@ const globuleOptionList: GlobuleOptions[] = [
     radius: 26,
     gDirection: "toBottom",
     gCoefficient: 0.3,
-    collisionLossV: 0.8,
     moveLossV: 0.006,
     requiredMouseInteraction: true,
     mouseInteractionBehavior: "drag",
@@ -41,7 +39,6 @@ const globuleOptionList: GlobuleOptions[] = [
     //  gDirection: "toLeft",
     gDirection: "toBottom",
     gCoefficient: 0.25,
-    collisionLossV: 0.9,
     moveLossV: 0.006,
     requiredMouseInteraction: true,
     mouseInteractionBehavior: "drag",
@@ -52,7 +49,6 @@ const globuleOptionList: GlobuleOptions[] = [
     //  gDirection: "toRight",
     gDirection: "toBottom",
     gCoefficient: 0.25,
-    collisionLossV: 1,
     moveLossV: 0.006,
     requiredMouseInteraction: true,
     mouseInteractionBehavior: "drag",
@@ -134,6 +130,7 @@ const FreeFallingBody = () => {
         boxSizing: "border-box",
         width: "100%",
         height: "100%",
+        overflow: "hidden",
       }}
       ref={boxRef}
     >
