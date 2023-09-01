@@ -214,15 +214,36 @@ const exampleList: ExampleListItem[] = [
       },
     ],
   },
+  // {
+  //   id: "sphereCollisionExample11",
+  //   globuleList: [
+  //     {
+  //       initX: canvasCenterX,
+  //       initY: globuleRadius,
+  //       vx: 0,
+  //       vy: 0,
+  //       radius: globuleRadius,
+  //       gDirection: "toBottom",
+  //       gCoefficient: 0.3,
+  //     },
+  //     {
+  //       initX: canvasCenterX,
+  //       initY: globuleRadius * 4,
+  //       vx: 0,
+  //       vy: 0,
+  //       radius: globuleRadius * 2,
+  //       gDirection: "toBottom",
+  //       gCoefficient: 0.25,
+  //     },
+  //   ],
+  // },
 ];
 
 const SphereCollisionExample = () => {
   const intl = useIntl();
   const containerRef = useRef<HTMLDivElement>(null);
   const [componentMounted, setComponentMounted] = useState<boolean>(false);
-  const [sphereCollisionList, setSphereCollisionList] = useState<
-    (SphereCollisionC | null)[]
-  >([]);
+  const sphereCollisionList = useRef<(SphereCollisionC | null)[]>([]);
 
   // 每一帧绘制所有球体之前执行的函数
   const beforeDrawGlobules = (sphereCollision: SphereCollisionC) => {
@@ -236,7 +257,7 @@ const SphereCollisionExample = () => {
 
   useEffect(() => {
     if (componentMounted) {
-      const scList = exampleList.map((item: ExampleListItem) => {
+      sphereCollisionList.current = exampleList.map((item: ExampleListItem) => {
         const canvas = document.getElementById(item.id) as HTMLCanvasElement;
         if (canvas) {
           canvas.width = canvasWidth;
@@ -253,12 +274,14 @@ const SphereCollisionExample = () => {
         }
         return null;
       });
-      setSphereCollisionList(scList);
     }
 
     return () => {
-      if (sphereCollisionList && sphereCollisionList.length > 0) {
-        for (let sphereCollision of sphereCollisionList) {
+      if (
+        sphereCollisionList.current &&
+        sphereCollisionList.current.length > 0
+      ) {
+        for (let sphereCollision of sphereCollisionList.current) {
           sphereCollision && sphereCollision.stop();
         }
       }

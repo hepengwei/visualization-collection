@@ -17,6 +17,7 @@ const ParticlesBg = (props) => {
         boxSizing: "border-box",
         width: "100%",
         height: "100%",
+        overflow: "hidden",
         backgroundColor: "#000000",
       }}
       id="particles-js"

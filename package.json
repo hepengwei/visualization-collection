@@ -98,7 +98,7 @@
     "react-intl": "^6.2.8",
     "react-router-dom": "^6.4.2",
     "react-tilt": "^0.1.4",
-    "sphere-collision": "^1.1.8",
+    "sphere-collision": "^1.1.9",
     "swiper": "^9.2.0",
     "three": "^0.151.3",
     "typed.js": "^2.0.12",
