@@ -4,11 +4,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useIntl } from "react-intl";
 import SphereCollision from "sphere-collision";
-import type {
-  SphereCollisionC,
-  GlobuleC,
-  GlobuleOptions,
-} from "sphere-collision/types";
+import type { SphereCollisionC, GlobuleOptions } from "sphere-collision/types";
 import ModuleTitle from "@/components/ModuleTitle";
 
 interface ExampleListItem {
@@ -20,6 +16,7 @@ const canvasWidth = 200; // 每个示例画布宽度
 const canvasHeight = 260; // 每个示例画布高度
 const canvasBgColor = "#111"; // 画布背景颜色
 const globuleRadius = 16; // 球半径
+const perfectlyElasticCollision = false; // 球体是否完全弹性碰撞
 const marginTop = 30;
 const rowMaxNum = 5; // 一行最大示例数
 const canvasCenterX = Math.floor(canvasWidth / 2);
@@ -33,6 +30,7 @@ const exampleList: ExampleListItem[] = [
         vx: 0,
         vy: 2,
         radius: globuleRadius,
+        perfectlyElasticCollision,
       },
       {
         initX: canvasCenterX,
@@ -40,6 +38,7 @@ const exampleList: ExampleListItem[] = [
         vx: 0,
         vy: 1,
         radius: globuleRadius,
+        perfectlyElasticCollision,
       },
     ],
   },
@@ -52,6 +51,7 @@ const exampleList: ExampleListItem[] = [
         vx: 0,
         vy: 2,
         radius: globuleRadius,
+        perfectlyElasticCollision,
       },
       {
         initX: canvasCenterX,
@@ -59,6 +59,7 @@ const exampleList: ExampleListItem[] = [
         vx: 0,
         vy: -2,
         radius: globuleRadius,
+        perfectlyElasticCollision,
       },
     ],
   },
@@ -71,6 +72,7 @@ const exampleList: ExampleListItem[] = [
         vx: 0,
         vy: 2,
         radius: globuleRadius,
+        perfectlyElasticCollision,
       },
       {
         initX: Math.floor(canvasCenterX + globuleRadius / 2),
@@ -78,6 +80,7 @@ const exampleList: ExampleListItem[] = [
         vx: 0,
         vy: 1,
         radius: globuleRadius,
+        perfectlyElasticCollision,
       },
     ],
   },
@@ -90,6 +93,7 @@ const exampleList: ExampleListItem[] = [
         vx: 0,
         vy: 2,
         radius: globuleRadius,
+        perfectlyElasticCollision,
       },
       {
         initX: Math.floor(canvasCenterX + globuleRadius / 2),
@@ -97,6 +101,7 @@ const exampleList: ExampleListItem[] = [
         vx: 0,
         vy: -2,
         radius: globuleRadius,
+        perfectlyElasticCollision,
       },
     ],
   },
@@ -109,6 +114,7 @@ const exampleList: ExampleListItem[] = [
         vx: 0,
         vy: 2,
         radius: globuleRadius,
+        perfectlyElasticCollision,
       },
       {
         initX: Math.floor(canvasCenterX - globuleRadius) + globuleRadius * 2,
@@ -116,6 +122,7 @@ const exampleList: ExampleListItem[] = [
         vx: 0,
         vy: 2,
         radius: globuleRadius,
+        perfectlyElasticCollision,
       },
     ],
   },
@@ -128,6 +135,7 @@ const exampleList: ExampleListItem[] = [
         vx: 0,
         vy: 2,
         radius: globuleRadius,
+        perfectlyElasticCollision,
       },
       {
         initX: Math.floor(canvasCenterX - globuleRadius) + globuleRadius * 2,
@@ -135,6 +143,7 @@ const exampleList: ExampleListItem[] = [
         vx: 0,
         vy: 1,
         radius: globuleRadius,
+        perfectlyElasticCollision,
       },
     ],
   },
@@ -147,6 +156,7 @@ const exampleList: ExampleListItem[] = [
         vx: 1.6,
         vy: 3.2,
         radius: globuleRadius,
+        perfectlyElasticCollision,
       },
       {
         initX: globuleRadius * 5,
@@ -154,6 +164,7 @@ const exampleList: ExampleListItem[] = [
         vx: 1,
         vy: 2,
         radius: globuleRadius,
+        perfectlyElasticCollision,
       },
     ],
   },
@@ -166,6 +177,7 @@ const exampleList: ExampleListItem[] = [
         vx: 1,
         vy: 2,
         radius: globuleRadius,
+        perfectlyElasticCollision,
       },
       {
         initX: globuleRadius * 8,
@@ -173,6 +185,7 @@ const exampleList: ExampleListItem[] = [
         vx: -1,
         vy: -2,
         radius: globuleRadius,
+        perfectlyElasticCollision,
       },
     ],
   },
@@ -185,6 +198,7 @@ const exampleList: ExampleListItem[] = [
         vx: 1,
         vy: 2,
         radius: globuleRadius,
+        perfectlyElasticCollision,
       },
       {
         initX: globuleRadius * 10,
@@ -192,6 +206,7 @@ const exampleList: ExampleListItem[] = [
         vx: -1,
         vy: -2,
         radius: globuleRadius,
+        perfectlyElasticCollision,
       },
     ],
   },
@@ -204,6 +219,7 @@ const exampleList: ExampleListItem[] = [
         vx: 0,
         vy: 2,
         radius: globuleRadius,
+        perfectlyElasticCollision,
       },
       {
         initX: canvasCenterX,
@@ -211,6 +227,7 @@ const exampleList: ExampleListItem[] = [
         vx: 0,
         vy: 0,
         radius: globuleRadius,
+        perfectlyElasticCollision,
       },
     ],
   },
@@ -225,6 +242,7 @@ const exampleList: ExampleListItem[] = [
   //       radius: globuleRadius,
   //       gDirection: "toBottom",
   //       gCoefficient: 0.3,
+  //       perfectlyElasticCollision,
   //     },
   //     {
   //       initX: canvasCenterX,
@@ -233,7 +251,71 @@ const exampleList: ExampleListItem[] = [
   //       vy: 0,
   //       radius: globuleRadius * 2,
   //       gDirection: "toBottom",
-  //       gCoefficient: 0.25,
+  //       gCoefficient: 0.2,
+  //       perfectlyElasticCollision,
+  //     },
+  //   ],
+  // },
+  // {
+  //   id: "sphereCollisionExample12",
+  //   globuleList: [
+  //     {
+  //       initX: canvasCenterX,
+  //       initY: canvasHeight - globuleRadius * 6,
+  //       vx: 2,
+  //       vy: 0,
+  //       radius: globuleRadius,
+  //       perfectlyElasticCollision,
+  //     },
+  //     {
+  //       initX: canvasCenterX,
+  //       initY: canvasHeight - globuleRadius * 4,
+  //       vx: 0,
+  //       vy: -2,
+  //       radius: globuleRadius,
+  //       perfectlyElasticCollision,
+  //     },
+  //   ],
+  // },
+  // {
+  //   id: "sphereCollisionExample13",
+  //   globuleList: [
+  //     {
+  //       initX: canvasCenterX,
+  //       initY: globuleRadius * 4,
+  //       vx: 0,
+  //       vy: 2,
+  //       radius: globuleRadius,
+  //       perfectlyElasticCollision,
+  //     },
+  //     {
+  //       initX: canvasCenterX,
+  //       initY: globuleRadius * 6,
+  //       vx: 2,
+  //       vy: 0,
+  //       radius: globuleRadius,
+  //       perfectlyElasticCollision,
+  //     },
+  //   ],
+  // },
+  // {
+  //   id: "sphereCollisionExample14",
+  //   globuleList: [
+  //     {
+  //       initX: globuleRadius * 2,
+  //       initY: globuleRadius,
+  //       vx: 1.6,
+  //       vy: 3.2,
+  //       radius: globuleRadius,
+  //       perfectlyElasticCollision,
+  //     },
+  //     {
+  //       initX: globuleRadius * 8,
+  //       initY: globuleRadius * 14,
+  //       vx: 0,
+  //       vy: 0,
+  //       radius: globuleRadius,
+  //       perfectlyElasticCollision,
   //     },
   //   ],
   // },

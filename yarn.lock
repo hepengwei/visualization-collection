@@ -7682,10 +7682,10 @@ spdy@^4.0.2:
     select-hose "^2.0.0"
     spdy-transport "^3.0.0"
 
-sphere-collision@^1.1.9:
-  version "1.1.9"
-  resolved "https://registry.yarnpkg.com/sphere-collision/-/sphere-collision-1.1.9.tgz#0f00cbb6a2e6ef3653cba4d6e8a056acb0daa3b8"
-  integrity sha512-iHuGM9wA/sqZEtdGATXWdIsTxr7JWeaLdMmqtf435S7Ct6qZUqFTE3EZq4mV19o3NOUUbfNgyFk4+phfW4LLRg==
+sphere-collision@^1.1.10:
+  version "1.1.10"
+  resolved "https://registry.yarnpkg.com/sphere-collision/-/sphere-collision-1.1.10.tgz#9e0a93603d07bc91ae4cbb133ab375c4dea6d2be"
+  integrity sha512-0BulYJLWnkWcvE5AKtaVk4svTFYdNR07Zw8oOG5sD7ozlq6oowwEhJBWp7p2Z8fg2/aYWZydrLvMP2UsSdIlLg==
 
 ssr-window@^4.0.2:
   version "4.0.2"
