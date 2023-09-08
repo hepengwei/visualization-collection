@@ -26,6 +26,7 @@ import WordDance from "pages/canvas/WordDance";
 import Scratch from "pages/canvas/Scratch";
 import AppPage3DFrame from "pages/threejs/AppPageFrame";
 import CarShow from "pages/threejs/CarShow";
+import RubiksCube from "pages/threejs/RubiksCube";
 import HumanPostureDetection from "pages/AIApplication/HumanPostureDetection";
 import NotBlockPeopleBarrage from "pages/AIApplication/NotBlockPeopleBarrage";
 import GameImage from "pages/GameImage";
@@ -163,6 +164,10 @@ export const contentRoutes: RouteObject[] = [
       {
         path: "/threejs/carShow",
         element: <CarShow />,
+      },
+      {
+        path: "/threejs/rubiksCube",
+        element: <RubiksCube />,
       },
     ],
   },

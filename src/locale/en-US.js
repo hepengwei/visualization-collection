@@ -90,6 +90,7 @@ const en_US = {
   "menu.threeJs3D": "Three.js3D",
   "menu.threeJs3D.appPageFrame": "Cool 3D Application page",
   "menu.threeJs3D.carShow": "Car Show",
+  "menu.threeJs3D.rubiksCube": "Level 3 Rubik's Cube",
   "menu.AIApplication": "AI Application",
   "menu.AIApplication.humanPostureDetection": "Human Posture Detection",
   "menu.AIApplication.notBlockPeopleBarrage":
