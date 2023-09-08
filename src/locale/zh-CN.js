@@ -82,6 +82,7 @@ const zh_CN = {
   "menu.threeJs3D": "Three.js3D",
   "menu.threeJs3D.appPageFrame": "炫酷3D应用页面",
   "menu.threeJs3D.carShow": "汽车展览",
+  "menu.threeJs3D.rubiksCube": "3阶魔方",
   "menu.AIApplication": "人工智能应用",
   "menu.AIApplication.humanPostureDetection": "人体姿态检测",
   "menu.AIApplication.notBlockPeopleBarrage": "不挡人像的弹幕",
