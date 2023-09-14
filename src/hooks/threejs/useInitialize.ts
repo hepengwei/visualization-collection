@@ -20,9 +20,9 @@ const useInitialize = (
 
   const render = () => {
     if (sceneRef.current && cameraRef.current && rendererRef.current) {
-      rendererRef.current.render(sceneRef.current, cameraRef.current);
       renderHandle &&
         renderHandle(sceneRef.current, cameraRef.current, rendererRef.current);
+      rendererRef.current.render(sceneRef.current, cameraRef.current);
       frameId.current = window.requestAnimationFrame(render);
     }
   };
@@ -50,6 +50,7 @@ const useInitialize = (
       rendererRef.current = renderer;
       renderer.setSize(clientWidth, clientHeight);
       renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.shadowMap.enabled = true;
 
       // 将Canvas插入到页面
       conatinerRef.current.append(renderer.domElement);
