@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import { useIntl } from "react-intl";
 import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
@@ -28,11 +27,9 @@ const lightInitPositionList = [
   { x: -100, y: -50, z: 100, intensity: 1 },
   { x: 0, y: 50, z: 20, intensity: 1 },
   { x: 0, y: -50, z: 20, intensity: 1 },
-  // { x: 30, y: 30, z: 0, intensity: 20 },
 ];
 
 const RubiksCube = () => {
-  const intl = useIntl();
   const containerRef = useRef<HTMLDivElement>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
   const lightList = useRef<THREE.DirectionalLight[]>([]); // 存放所有平行光源
@@ -130,7 +127,7 @@ const RubiksCube = () => {
     gsapAnimationRef.current = gsap.to(options, {
       angle,
       duration: (angle / Math.PI) * rotatePIDuration,
-      ease: "power2.out",
+      ease: "power1.inOut",
       onUpdate: () => {
         if (rotationAxis) {
           const toAngle = options.angle;
@@ -213,18 +210,12 @@ const RubiksCube = () => {
         light.castShadow = true;
         lightList.current.push(light);
         scene.add(light);
-
-        // const a = new THREE.Mesh(
-        //   new THREE.BoxGeometry(4, 4, 4),
-        //   new THREE.MeshBasicMaterial({ color: "green" })
-        // );
-        // a.position.set(x, y, z);
-        // scene.add(a);
       });
 
       const controls = new OrbitControls(camera, renderer.domElement);
       controlsRef.current = controls;
       controls.autoRotate = true;
+      controls.autoRotateSpeed = 3;
     }
 
     // 创建魔方
@@ -273,29 +264,9 @@ const RubiksCube = () => {
     timerRef.current = window.setTimeout(rotateOnce, rotateInterval);
   };
 
-  const renderHandle = (
-    scene: THREE.Scene,
-    camera: THREE.PerspectiveCamera
-  ) => {
+  const renderHandle = () => {
     if (controlsRef.current) {
       controlsRef.current?.update();
-      // 让光源跟随相机转动
-      // const { x, y, z } = camera.position;
-      // const cameraMove = {
-      //   x: x - cameraInitPosition.x,
-      //   y: y - cameraInitPosition.y,
-      //   z: z - cameraInitPosition.z,
-      // };
-      // lightList.current.forEach(
-      //   (light: THREE.DirectionalLight, index: number) => {
-      //     const initPosition = lightInitPositionList[index];
-      //     light.position.set(
-      //       initPosition.x - cameraMove.x,
-      //       initPosition.y - cameraMove.y,
-      //       initPosition.z - cameraMove.z
-      //     );
-      //   }
-      // );
     }
   };
 
