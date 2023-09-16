@@ -134,7 +134,7 @@ const AddWatermark = (props: TabPageProps) => {
                 init();
                 message.error(
                   intl.formatMessage({
-                    id: "page.imageProcessingTool.parsingDataFailure",
+                    id: "common.parsingDataFailure",
                   })
                 );
               }
@@ -144,7 +144,7 @@ const AddWatermark = (props: TabPageProps) => {
               init();
               message.error(
                 intl.formatMessage({
-                  id: "page.imageProcessingTool.parsingDataFailure",
+                  id: "common.parsingDataFailure",
                 })
               );
             };
@@ -154,7 +154,7 @@ const AddWatermark = (props: TabPageProps) => {
             init();
             message.error(
               intl.formatMessage({
-                id: "page.imageProcessingTool.parsingDataFailure",
+                id: "common.parsingDataFailure",
               })
             );
           }

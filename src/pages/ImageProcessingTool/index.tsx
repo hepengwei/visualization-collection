@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { Button, message } from "antd";
 import { FolderAddOutlined } from "@ant-design/icons";
 import { useIntl } from "react-intl";
-import Tabs from "./components/Tabs";
+import Tabs from "components/Tabs";
 import {
   fileOrBlobToDataURL,
   getImageType,
@@ -141,7 +141,7 @@ const GameImage = () => {
                 setImgInfo(null);
                 message.error(
                   intl.formatMessage({
-                    id: "page.imageProcessingTool.parsingDataFailure",
+                    id: "common.parsingDataFailure",
                   })
                 );
               }
@@ -150,7 +150,7 @@ const GameImage = () => {
               setImgInfo(null);
               message.error(
                 intl.formatMessage({
-                  id: "page.imageProcessingTool.parsingDataFailure",
+                  id: "common.parsingDataFailure",
                 })
               );
             };
@@ -159,7 +159,7 @@ const GameImage = () => {
             setImgInfo(null);
             message.error(
               intl.formatMessage({
-                id: "page.imageProcessingTool.parsingDataFailure",
+                id: "common.parsingDataFailure",
               })
             );
           }

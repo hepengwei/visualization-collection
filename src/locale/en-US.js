@@ -30,10 +30,11 @@ const en_US = {
   "common.saveSuccessfully": "Save successfully",
   "common.saveFailed": "Failed to save, the browser does not support",
   "common.parsingDataFailure":
-    "Data parsing failed. Please replace it with another picture",
+    "Data parsing failed. Please replace it with another file",
   "common.uploadFile": "Upload File",
   "common.dragTheFileHere": "Or drag the file here",
-  "common.supportedImageType": "Jpg, jpeg, and png are supported",
+  "common.supportedImageType": "jpg, jpeg, and png are supported",
+  "common.supportedVideoType": "mp4 are supported",
   "common.pleaseUploadPicture": "Please upload the picture first",
   "common.deviceNotFound": "Requested device not found",
   "common.impowerOpenMicrophone":
@@ -45,8 +46,12 @@ const en_US = {
   "common.browserTooLow":
     "Your browser version is too low, please update your browser",
   "common.backgroundColor": "Background Color",
+  "common.filename": "Filename",
+  "common.format": "Format",
   "common.dimension": "Dimension",
   "common.size": "Size",
+  "common.width": "Width",
+  "common.height": "Height",
   "common.transparency": "Transparency",
   "common.red": "Red",
   "common.blue": "Blue",
@@ -105,6 +110,15 @@ const en_US = {
   "menu.imageProcessingTool.addWatermark": "Add Watermark",
   "menu.imageProcessingTool.coverWithMosaics": "Cover With Mosaics",
   "menu.imageProcessingTool.imageCompression": "Image Compression",
+  "menu.videoProcessingTool": "Video Processing Tool",
+  "menu.videoProcessingTool.rotate": "Rotate",
+  "menu.videoProcessingTool.clipping": "Clipping",
+  "menu.videoProcessingTool.combine": "Combine",
+  "menu.videoProcessingTool.varyingVelocity": "Varying Velocity",
+  "menu.videoProcessingTool.addWatermark": "Add Watermark",
+  "menu.videoProcessingTool.generateGIF": "Generate GIF",
+  "menu.videoProcessingTool.AIGenerateSubtitles": "AI Generated Subtitles",
+  "menu.videoProcessingTool.addAudio": "Add Audio",
 
   // Html视觉-视觉设计页
   "page.htmlVision.visualDesign.displaysCustomRows":
@@ -257,8 +271,6 @@ const en_US = {
   "page.imageProcessingTool.uploadWatermark": "Upload watermark",
   "page.imageProcessingTool.distanceLeft": "Distance left",
   "page.imageProcessingTool.distanceTop": "Distance Top",
-  "page.imageProcessingTool.filename": "Filename",
-  "page.imageProcessingTool.format": "Format",
   "page.imageProcessingTool.flipSideToSide": "Flip Side To Side",
   "page.imageProcessingTool.flipTopToBottom": "Flip Top To Bottom",
   "page.imageProcessingTool.rotateLeft": "Rotate Left",
@@ -293,8 +305,6 @@ const en_US = {
   "page.imageProcessingTool.becomeOpaque": "Become opaque",
   "page.imageProcessingTool.pleaseEnterWidthOrHeight":
     "Please enter width or height",
-  "page.imageProcessingTool.width": "Width",
-  "page.imageProcessingTool.height": "Height",
   "page.imageProcessingTool.whetherMaintainOriginalProportion":
     "Whether to maintain the original proportion",
   "page.imageProcessingTool.compressibility": "Compressibility",
@@ -356,17 +366,6 @@ const en_US = {
     "1. Both iframe and postMessage can be cross-domain, while localStorage cannot share data across domains.",
   "page.htmlVision.applicationPageFrame.des12":
     "2. Window in window.postMessage always refers to the window object of the target page to be jumped to.",
-
-  // 广告语
-  "ad.phoneAccessories":
-    "Upgrade your phone game with our top-notch Amazon accessories. Shop now for the ultimate phone experience!",
-  "ad.books":
-    "Unlock the Power of Computing and the Internet with Amazon Books - Expand Your Knowledge Today!",
-  "ad.digitalCamera":
-    "Capture life's moments in stunning detail with our Amazon digital cameras. From breathtaking landscapes to candid portraits, our cameras will help you create memories that last a lifetime. Shop now and unleash your inner photographer!",
-  "ad.officeEquipment":
-    "Upgrade your workspace with Amazon's cutting-edge office gear - productivity, innovation, and style, all in one place!",
-  "ad.sportsElectronics": "Make exercise more intelligent, make health easier!",
 };
 
 export default en_US;

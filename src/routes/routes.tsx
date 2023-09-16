@@ -29,7 +29,8 @@ import CarShow from "pages/threejs/CarShow";
 import RubiksCube from "pages/threejs/RubiksCube";
 import HumanPostureDetection from "pages/AIApplication/HumanPostureDetection";
 import NotBlockPeopleBarrage from "pages/AIApplication/NotBlockPeopleBarrage";
-import GameImage from "pages/GameImage";
+import ImageProcessingTool from "pages/ImageProcessingTool";
+import VideoProcessingTool from "pages/VideoProcessingTool";
 import Bar from "pages/echarts/Bar";
 import Pie from "pages/echarts/Pie";
 
@@ -185,8 +186,12 @@ export const contentRoutes: RouteObject[] = [
     ],
   },
   {
-    path: "/gameImage",
-    element: <GameImage />,
+    path: "/imageProcessingTool",
+    element: <ImageProcessingTool />,
+  },
+  {
+    path: "/videoProcessingTool",
+    element: <VideoProcessingTool />,
   },
 ];
 

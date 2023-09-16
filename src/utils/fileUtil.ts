@@ -67,13 +67,14 @@ export const getImgInfo = (
   }
 };
 
-// 根据buffer中的文件头信息判断图片类型
+// 根据buffer中的文件头信息判断文件类型
 export const getImageType = (buffer: Buffer) => {
   let fileType = "";
   if (buffer) {
     const view = new DataView(buffer);
     const first4Byte = view.getUint32(0, false);
     const hexValue = Number(first4Byte).toString(16).toUpperCase();
+    console.log(6666, first4Byte, Number(first4Byte).toString(16), hexValue);
     switch (hexValue) {
       case "FFD8FFDB":
         fileType = "JPG";
