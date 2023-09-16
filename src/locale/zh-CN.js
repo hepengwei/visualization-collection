@@ -27,10 +27,11 @@ const zh_CN = {
   "common.save": "保存",
   "common.saveSuccessfully": "保存成功",
   "common.saveFailed": "保存失败，浏览器不支持",
-  "common.parsingDataFailure": "解析数据失败，请更换其他图片",
+  "common.parsingDataFailure": "解析数据失败，请更换其他文件",
   "common.uploadFile": "上传文件",
   "common.dragTheFileHere": "或将文件拖到此处",
   "common.supportedImageType": "支持jpg、jpeg、png格式",
+  "common.supportedVideoType": "支持mp4格式",
   "common.pleaseUploadPicture": "请先上传图片",
   "common.deviceNotFound": "请求的设备未找到",
   "common.impowerOpenMicrophone":
@@ -41,8 +42,12 @@ const zh_CN = {
   "common.notSupportGetDisplayMedia": "浏览器不支持getDisplayMedia",
   "common.browserTooLow": "您的浏览器版本过低，请更新浏览器",
   "common.backgroundColor": "背景色",
+  "common.filename": "文件名",
+  "common.format": "格式",
   "common.dimension": "尺寸",
   "common.size": "大小",
+  "common.width": "宽度",
+  "common.height": "高度",
   "common.transparency": "透明色",
   "common.red": "红色",
   "common.blue": "蓝色",
@@ -96,6 +101,15 @@ const zh_CN = {
   "menu.imageProcessingTool.addWatermark": "添加水印",
   "menu.imageProcessingTool.coverWithMosaics": "打马赛克",
   "menu.imageProcessingTool.imageCompression": "图片压缩",
+  "menu.videoProcessingTool": "视频处理工具",
+  "menu.videoProcessingTool.rotate": "旋转",
+  "menu.videoProcessingTool.clipping": "裁剪",
+  "menu.videoProcessingTool.combine": "合并",
+  "menu.videoProcessingTool.varyingVelocity": "变速",
+  "menu.videoProcessingTool.addWatermark": "添加水印",
+  "menu.videoProcessingTool.generateGIF": "生成GIF图",
+  "menu.videoProcessingTool.AIGenerateSubtitles": "AI生成字幕",
+  "menu.videoProcessingTool.addAudio": "添加音频",
 
   // Html视觉-视觉设计页
   "page.htmlVision.visualDesign.displaysCustomRows":
@@ -221,8 +235,6 @@ const zh_CN = {
   "page.imageProcessingTool.uploadWatermark": "上传水印",
   "page.imageProcessingTool.distanceLeft": "距离左侧",
   "page.imageProcessingTool.distanceTop": "距离顶部",
-  "page.imageProcessingTool.filename": "文件名",
-  "page.imageProcessingTool.format": "格式",
   "page.imageProcessingTool.flipSideToSide": "左右翻转",
   "page.imageProcessingTool.flipTopToBottom": "上下翻转",
   "page.imageProcessingTool.rotateLeft": "左旋转",
@@ -253,8 +265,6 @@ const zh_CN = {
   "page.imageProcessingTool.becomeTransparent": "变透明",
   "page.imageProcessingTool.becomeOpaque": "变不透",
   "page.imageProcessingTool.pleaseEnterWidthOrHeight": "请输入宽度或高度",
-  "page.imageProcessingTool.width": "宽度",
-  "page.imageProcessingTool.height": "高度",
   "page.imageProcessingTool.whetherMaintainOriginalProportion":
     "是否保持原比例",
   "page.imageProcessingTool.compressibility": "压缩率",
@@ -312,16 +322,6 @@ const zh_CN = {
     "1. iframe和postMessage都是可以跨域的，而localStorage是不能跨域共享数据的。",
   "page.htmlVision.applicationPageFrame.des12":
     "2. window.postMessage中的window始终是指将要跳转的目标页面的window对象。",
-
-  // 广告语
-  "ad.phoneAccessories":
-    "升级你的手机，尽在亚马逊手机配件！从保护壳到充电器，让你的手机更加完美！立即点击，享受更多惊喜！",
-  "ad.books":
-    "探索计算机世界，开启无限可能！亚马逊计算机与互联网类书籍，带你领略科技的魅力，成就你的未来",
-  "ad.digitalCamera":
-    "记录美好瞬间，从这里开始。亚马逊数码相机，让你的每一次拍摄都更加精彩。点击了解更多。",
-  "ad.officeEquipment": "提高工作效率，从亚马逊办公设备开始！点击了解更多！",
-  "ad.sportsElectronics": "让运动更智能，让健康更简单！",
 };
 
 export default zh_CN;

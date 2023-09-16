@@ -135,7 +135,7 @@ const ChangeSize = (props: TabPageProps) => {
             precision={0}
             value={toWidth}
             addonBefore={intl.formatMessage({
-              id: "page.imageProcessingTool.width",
+              id: "common.width",
             })}
             onChange={onWidthChange}
           />
@@ -147,7 +147,7 @@ const ChangeSize = (props: TabPageProps) => {
             precision={0}
             value={toHeight}
             addonBefore={intl.formatMessage({
-              id: "page.imageProcessingTool.height",
+              id: "common.height",
             })}
             onChange={onHeightChange}
           />

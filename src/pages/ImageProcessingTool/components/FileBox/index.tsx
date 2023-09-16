@@ -33,11 +33,11 @@ const FileBox = (props: FileBoxProps) => {
         <img src={imgInfo.imgUrl} alt="" />
         <div className={styles.fileInfo}>
           <div className={styles.item}>
-            {intl.formatMessage({ id: "page.imageProcessingTool.filename" })}：
+            {intl.formatMessage({ id: "common.filename" })}：
             {imgInfo.name}
           </div>
           <div className={styles.item}>
-            {intl.formatMessage({ id: "page.imageProcessingTool.format" })}：
+            {intl.formatMessage({ id: "common.format" })}：
             {imgInfo.fileType}
           </div>
           <div className={styles.item}>

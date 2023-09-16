@@ -17,6 +17,7 @@ import {
   RocketOutlined,
   FireOutlined,
   FileImageOutlined,
+  VideoCameraAddOutlined,
 } from "@ant-design/icons";
 import { useDebounceFn } from "ahooks";
 import { Button, Menu } from "antd";
@@ -244,8 +245,13 @@ const Menus: React.FC = () => {
     ),
     getItem(
       intl.formatMessage({ id: "menu.imageProcessingTool" }),
-      "gameImage",
+      "imageProcessingTool",
       <FileImageOutlined />
+    ),
+    getItem(
+      intl.formatMessage({ id: "menu.videoProcessingTool" }),
+      "videoProcessingTool",
+      <VideoCameraAddOutlined />
     ),
   ];
 

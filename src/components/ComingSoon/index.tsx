@@ -10,6 +10,7 @@ const ComingSoon = () => {
         boxSizing: "border-box",
         width: "100%",
         height: "100%",
+        minHeight: "320px",
         color: "#ffffff",
         fontSize: "24px",
         fontFamily: "SourceHanSansCN-Medium",
