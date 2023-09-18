@@ -6,7 +6,10 @@ import ReactDOM from "react-dom";
 import { Button, InputNumber, message } from "antd";
 import { useIntl } from "react-intl";
 import { FolderAddOutlined } from "@ant-design/icons";
-import { fileOrBlobToDataURL, getCanvasImgData } from "utils/fileUtil";
+import {
+  getImgInfo,
+  ImgInfo,
+} from "utils/fileUtil";
 import { addWatermark } from "utils/imageUtil";
 import { TabPageProps } from "../../index";
 import styles from "./index.module.scss";
@@ -35,9 +38,7 @@ const AddWatermark = (props: TabPageProps) => {
   } = props;
   const intl = useIntl();
   const [imgSizeQualified, setImgSizeQualified] = useState<boolean>(false);
-  const [watermarkInfo, setWatermarkInfo] = useState<WatermarkInfo | null>(
-    null
-  );
+  const [watermarkInfo, setWatermarkInfo] = useState<ImgInfo | null>(null);
   const doing = useRef<boolean>(false);
   const clipBoxRef = useRef<HTMLDivElement>(null);
 
@@ -79,94 +80,46 @@ const AddWatermark = (props: TabPageProps) => {
     setClipBoxTop(0);
   };
 
-  const getImgInfo = (files: FileList) => {
-    if (!files) return;
-    for (let i = 0, l = files.length; i < l; i++) {
-      const file = files[i];
-      const { type } = file;
-      const typeArr = type.split("/");
-      if (typeArr[0] !== "image") return;
-      var reader = new FileReader();
-      reader.onload = function (e: any) {
-        const buffer = e.target.result;
-        const blob = new Blob([buffer]);
-        fileOrBlobToDataURL(blob, function (dataUrl: string | null) {
-          if (dataUrl) {
-            const image = new Image();
-            image.onload = function () {
-              const width = image.width;
-              const height = image.height;
-              if (width <= 20 || height <= 20) {
-                setWatermarkInfo(null);
-                init();
-                message.error(
-                  intl.formatMessage({
-                    id: "page.imageProcessingTool.watermarkSizeLimit",
-                  })
-                );
-                return;
-              } else if (width > imgInfo.width || height > imgInfo.height) {
-                setWatermarkInfo(null);
-                init();
-                message.error(
-                  intl.formatMessage({
-                    id: "page.imageProcessingTool.watermarkSizeTooLarge",
-                  })
-                );
-                return;
-              }
-              const imageData = getCanvasImgData(dataUrl, width, height);
-              if (imageData) {
-                const watermarkInfo: WatermarkInfo = {
-                  name: file.name,
-                  width,
-                  height,
-                  imgUrl: dataUrl,
-                  imageData,
-                };
-                setWatermarkInfo(watermarkInfo);
-                setClipBoxWidth(watermarkInfo.width);
-                setClipBoxHeight(watermarkInfo.height);
-                setClipBoxLeft(0);
-                setClipBoxTop(0);
-              } else {
-                setWatermarkInfo(null);
-                init();
-                message.error(
-                  intl.formatMessage({
-                    id: "common.parsingDataFailure",
-                  })
-                );
-              }
-            };
-            image.onerror = function () {
-              setWatermarkInfo(null);
-              init();
-              message.error(
-                intl.formatMessage({
-                  id: "common.parsingDataFailure",
-                })
-              );
-            };
-            image.src = dataUrl;
-          } else {
-            setWatermarkInfo(null);
-            init();
-            message.error(
-              intl.formatMessage({
-                id: "common.parsingDataFailure",
-              })
-            );
-          }
-        });
-      };
-      reader.readAsArrayBuffer(file);
-    }
-  };
-
   const onUploadWatermarkChange = (e: any) => {
     const { files } = e.target;
-    getImgInfo(files);
+    if (!files || files.length === 0) return;
+    getImgInfo(files[0], (newWatermarkInfo: ImgInfo | null) => {
+      if (newWatermarkInfo) {
+        const { width, height } = newWatermarkInfo;
+        if (width <= 20 || height <= 20) {
+          setWatermarkInfo(null);
+          init();
+          message.error(
+            intl.formatMessage({
+              id: "common.watermarkSizeLimit",
+            })
+          );
+          return;
+        } else if (width > imgInfo.width || height > imgInfo.height) {
+          setWatermarkInfo(null);
+          init();
+          message.error(
+            intl.formatMessage({
+              id: "common.watermarkSizeTooLarge",
+            })
+          );
+          return;
+        }
+        setWatermarkInfo(newWatermarkInfo);
+        setClipBoxWidth(width);
+        setClipBoxHeight(height);
+        setClipBoxLeft(0);
+        setClipBoxTop(0);
+      } else {
+        setWatermarkInfo(null);
+        init();
+        message.error(
+          intl.formatMessage({
+            id: "common.parsingDataFailure",
+          })
+        );
+      }
+    });
   };
 
   const onMouseMove = (e: React.MouseEvent) => {
@@ -338,7 +291,7 @@ const AddWatermark = (props: TabPageProps) => {
                 <Button type="primary" className={styles.uploadBtn}>
                   <FolderAddOutlined />
                   {intl.formatMessage({
-                    id: "page.imageProcessingTool.uploadWatermark",
+                    id: "common.uploadWatermark",
                   })}
                   <input
                     type="file"
@@ -360,7 +313,7 @@ const AddWatermark = (props: TabPageProps) => {
                     precision={0}
                     value={clipBoxLeft}
                     addonBefore={intl.formatMessage({
-                      id: "page.imageProcessingTool.distanceLeft",
+                      id: "common.distanceLeft",
                     })}
                     onChange={(value: number | null) => {
                       setClipBoxLeft(value || 0);
@@ -378,7 +331,7 @@ const AddWatermark = (props: TabPageProps) => {
                     precision={0}
                     value={clipBoxTop}
                     addonBefore={intl.formatMessage({
-                      id: "page.imageProcessingTool.distanceTop",
+                      id: "common.distanceTop",
                     })}
                     onChange={(value: number | null) => {
                       setClipBoxTop(value || 0);

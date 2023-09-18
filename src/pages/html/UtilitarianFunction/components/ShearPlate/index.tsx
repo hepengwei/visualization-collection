@@ -50,12 +50,16 @@ const ShearPlate = () => {
   };
 
   const getImageInfo = (files: FileList) => {
-    getImgInfo(files, (imgInfo) => {
-      if (!imgInfo) {
-        message.error(intl.formatMessage({ id: "common.parsingDataFailure" }));
-      }
-      setImgInfo(imgInfo);
-    });
+    if (files && files.length > 0) {
+      getImgInfo(files[0], (imgInfo) => {
+        if (!imgInfo) {
+          message.error(
+            intl.formatMessage({ id: "common.parsingDataFailure" })
+          );
+        }
+        setImgInfo(imgInfo);
+      });
+    }
   };
 
   const onUploadChange = (e: any) => {

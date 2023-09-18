@@ -1,6 +1,6 @@
 import React from "react";
 import { useIntl } from "react-intl";
-import { sizeTostr } from "utils/imageUtil";
+import { sizeTostr } from "utils/fileUtil";
 import type { VideoInfo } from "../../index";
 import styles from "../../index.module.scss";
 

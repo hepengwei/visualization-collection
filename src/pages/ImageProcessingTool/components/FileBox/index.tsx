@@ -1,7 +1,6 @@
 import React from "react";
 import { useIntl } from "react-intl";
-import { sizeTostr } from "utils/imageUtil";
-import type { ImgInfo } from "../../index";
+import { sizeTostr, ImgInfo } from "utils/fileUtil";
 import styles from "../../index.module.scss";
 
 interface FileBoxProps {

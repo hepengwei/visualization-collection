@@ -56,6 +56,22 @@ const en_US = {
   "common.red": "Red",
   "common.blue": "Blue",
   "common.white": "White",
+  "common.watermarkSizeLimit":
+    "Please select watermark images of 20x20 and above",
+  "common.watermarkSizeTooLarge":
+    "Please select a watermark image that is smaller than the size of the target image",
+  "common.uploadWatermark": "Upload watermark",
+  "common.distanceLeft": "Distance left",
+  "common.distanceTop": "Distance Top",
+  "common.clippingWidth": "Clipping width",
+  "common.clippingHeight": "Clipping height",
+  "common.flipSideToSide": "Flip Side To Side",
+  "common.flipTopToBottom": "Flip Top To Bottom",
+  "common.rotateLeft": "Rotate Left",
+  "common.rotateRight": "Rotate Right",
+  "common.graying": "Graying",
+  "common.vampix": "Vampix",
+  "common.mosaicGrainSize": "Mosaic grain size",
   "common.ad.btnText": "Experience right away",
 
   // 菜单
@@ -264,19 +280,6 @@ const en_US = {
     "Please select the size above 20x20",
   "page.imageProcessingTool.imageTooLarge":
     "Please select the size below 1350x1350",
-  "page.imageProcessingTool.watermarkSizeLimit":
-    "Please select watermark images of 20x20 and above",
-  "page.imageProcessingTool.watermarkSizeTooLarge":
-    "Please select a watermark image that is smaller than the size of the target image",
-  "page.imageProcessingTool.uploadWatermark": "Upload watermark",
-  "page.imageProcessingTool.distanceLeft": "Distance left",
-  "page.imageProcessingTool.distanceTop": "Distance Top",
-  "page.imageProcessingTool.flipSideToSide": "Flip Side To Side",
-  "page.imageProcessingTool.flipTopToBottom": "Flip Top To Bottom",
-  "page.imageProcessingTool.rotateLeft": "Rotate Left",
-  "page.imageProcessingTool.rotateRight": "Rotate Right",
-  "page.imageProcessingTool.graying": "Graying",
-  "page.imageProcessingTool.vampix": "Vampix",
   "page.imageProcessingTool.shmpch": "Shmpch",
   "page.imageProcessingTool.edgeSharpening": "Edge Sharpening",
   "page.imageProcessingTool.filterContrast": "Filter Contrast",
@@ -315,9 +318,6 @@ const en_US = {
     "Clipped and converted to PNG format",
   "page.imageProcessingTool.WhetherRetainOriginalDimension":
     "Whether to retain the original dimension",
-  "page.imageProcessingTool.clippingWidth": "Clipping width",
-  "page.imageProcessingTool.clippingHeight": "Clipping height",
-  "page.imageProcessingTool.mosaicGrainSize": "Mosaic grain size",
 
   // Html视觉-应用页面框架页
   "page.htmlVision.applicationPageFrame.secondPage": "Second Page",
