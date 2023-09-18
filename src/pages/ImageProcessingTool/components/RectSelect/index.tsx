@@ -494,7 +494,7 @@ const RectClip = (props: RectSelectProps) => {
               precision={0}
               value={clipBoxWidth}
               addonBefore={intl.formatMessage({
-                id: "page.imageProcessingTool.clippingWidth",
+                id: "common.clippingWidth",
               })}
               onChange={(value: number | null) => {
                 const { width } = imgInfo;
@@ -512,7 +512,7 @@ const RectClip = (props: RectSelectProps) => {
               precision={0}
               value={clipBoxHeight}
               addonBefore={intl.formatMessage({
-                id: "page.imageProcessingTool.clippingHeight",
+                id: "common.clippingHeight",
               })}
               onChange={(value: number | null) => {
                 const { height } = imgInfo;
@@ -530,7 +530,7 @@ const RectClip = (props: RectSelectProps) => {
               precision={0}
               value={clipBoxLeft}
               addonBefore={intl.formatMessage({
-                id: "page.imageProcessingTool.distanceLeft",
+                id: "common.distanceLeft",
               })}
               onChange={(value: number | null) => {
                 setClipBoxLeft(value || 0);
@@ -548,7 +548,7 @@ const RectClip = (props: RectSelectProps) => {
               precision={0}
               value={clipBoxTop}
               addonBefore={intl.formatMessage({
-                id: "page.imageProcessingTool.distanceTop",
+                id: "common.distanceTop",
               })}
               onChange={(value: number | null) => {
                 setClipBoxTop(value || 0);
@@ -567,7 +567,7 @@ const RectClip = (props: RectSelectProps) => {
                 precision={0}
                 value={mosaicSize}
                 addonBefore={intl.formatMessage({
-                  id: "page.imageProcessingTool.mosaicGrainSize",
+                  id: "common.mosaicGrainSize",
                 })}
                 onChange={(value: number | null) => {
                   setMosaicSize(value || 0);

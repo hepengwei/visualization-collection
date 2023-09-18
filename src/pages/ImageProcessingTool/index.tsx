@@ -7,11 +7,10 @@ import { FolderAddOutlined } from "@ant-design/icons";
 import { useIntl } from "react-intl";
 import Tabs from "components/Tabs";
 import {
-  fileOrBlobToDataURL,
-  getImageType,
-  getCanvasImgData,
+  getImgInfo,
   imageDataToBlob,
   exportToImage,
+  ImgInfo,
 } from "utils/fileUtil";
 import BasicOperation from "./components/BasicOperation";
 import RectClip from "./components/RectClip";
@@ -23,16 +22,6 @@ import AddWatermark from "./components/AddWatermark";
 import CoverWithMosaic from "./components/CoverWithMosaic";
 import Compression from "./components/Compression";
 import styles from "./index.module.scss";
-
-export interface ImgInfo {
-  name: string;
-  fileType: string;
-  size: number;
-  imgUrl: string;
-  width: number;
-  height: number;
-  imageData: ImageData;
-}
 
 export interface TabPageProps {
   imgInfo: ImgInfo;
@@ -103,75 +92,23 @@ const GameImage = () => {
     setSelectedTabId(tabId);
   };
 
-  const getImgInfo = (files: FileList) => {
-    if (!files) return;
-    for (let i = 0, l = files.length; i < l; i++) {
-      const file = files[i];
-      const { type } = file;
-      const typeArr = type.split("/");
-      if (typeArr[0] !== "image") return;
-      let fileType = typeArr[1].toUpperCase();
-      var reader = new FileReader();
-      reader.onload = function (e: any) {
-        const buffer = e.target.result;
-        const imageType = getImageType(buffer);
-        if (imageType) {
-          fileType = imageType;
-        }
-        const blob = new Blob([buffer]);
-        fileOrBlobToDataURL(blob, function (dataUrl: string | null) {
-          if (dataUrl) {
-            const image = new Image();
-            image.onload = function () {
-              const width = image.width;
-              const height = image.height;
-              const imageData = getCanvasImgData(dataUrl, width, height);
-              if (imageData) {
-                const imgInfo: ImgInfo = {
-                  name: file.name,
-                  fileType,
-                  size: file.size,
-                  width,
-                  height,
-                  imgUrl: dataUrl,
-                  imageData,
-                };
-                setImgInfo(imgInfo);
-              } else {
-                setImgInfo(null);
-                message.error(
-                  intl.formatMessage({
-                    id: "common.parsingDataFailure",
-                  })
-                );
-              }
-            };
-            image.onerror = function () {
-              setImgInfo(null);
-              message.error(
-                intl.formatMessage({
-                  id: "common.parsingDataFailure",
-                })
-              );
-            };
-            image.src = dataUrl;
-          } else {
-            setImgInfo(null);
-            message.error(
-              intl.formatMessage({
-                id: "common.parsingDataFailure",
-              })
-            );
-          }
-        });
-      };
-      reader.readAsArrayBuffer(file);
-    }
+  const getImageInfo = (files: FileList) => {
+    if (!files || files.length === 0) return;
+    getImgInfo(files[0], (newImgInfo: ImgInfo | null) => {
+      setImgInfo(newImgInfo);
+      if (!newImgInfo) {
+        message.error(
+          intl.formatMessage({
+            id: "common.parsingDataFailure",
+          })
+        );
+      }
+    });
   };
 
   const onUploadChange = (e: any) => {
     const { files } = e.target;
-    getImgInfo(files);
+    getImageInfo(files);
   };
 
   const onDragOver = (e: React.DragEvent) => {
@@ -193,7 +130,7 @@ const GameImage = () => {
     e.preventDefault();
     imgDragOver && setImgDragOver(false);
     const { files } = e.dataTransfer;
-    getImgInfo(files);
+    getImageInfo(files);
   };
 
   const onClear = () => {

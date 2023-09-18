@@ -110,7 +110,11 @@ const BasicOperation = (props: TabPageProps) => {
       return;
     } else if (imgInfo?.imageData) {
       status.doing = true;
-      const newImageData = method(imgInfo.imageData);
+      let data = imgInfo.imageData;
+      if (method === toGaussianBlur) {
+        data = cloneDeep(data);
+      }
+      const newImageData = method(data);
       if (newImageData) {
         status.imageData = newImageData;
         exportImage(newImageData, exportImageType);
@@ -144,7 +148,7 @@ const BasicOperation = (props: TabPageProps) => {
             }
           >
             {intl.formatMessage({
-              id: "page.imageProcessingTool.flipSideToSide",
+              id: "common.flipSideToSide",
             })}
           </Button>
           <Button
@@ -155,7 +159,7 @@ const BasicOperation = (props: TabPageProps) => {
             }
           >
             {intl.formatMessage({
-              id: "page.imageProcessingTool.flipTopToBottom",
+              id: "common.flipTopToBottom",
             })}
           </Button>
           <Button
@@ -165,7 +169,7 @@ const BasicOperation = (props: TabPageProps) => {
               doTask(imgStatusInfo.current.leftRotateStatus, leftRotate)
             }
           >
-            {intl.formatMessage({ id: "page.imageProcessingTool.rotateLeft" })}
+            {intl.formatMessage({ id: "common.rotateLeft" })}
           </Button>
           <Button
             type="primary"
@@ -174,14 +178,14 @@ const BasicOperation = (props: TabPageProps) => {
               doTask(imgStatusInfo.current.rightRotateStatus, rightRotate)
             }
           >
-            {intl.formatMessage({ id: "page.imageProcessingTool.rotateRight" })}
+            {intl.formatMessage({ id: "common.rotateRight" })}
           </Button>
           <Button
             type="primary"
             className={styles.operationBtn}
             onClick={() => doTask(imgStatusInfo.current.toGreyStatus, toGrey)}
           >
-            {intl.formatMessage({ id: "page.imageProcessingTool.graying" })}
+            {intl.formatMessage({ id: "common.graying" })}
           </Button>
           <Button
             type="primary"
@@ -193,7 +197,7 @@ const BasicOperation = (props: TabPageProps) => {
               )
             }
           >
-            {intl.formatMessage({ id: "page.imageProcessingTool.vampix" })}
+            {intl.formatMessage({ id: "common.vampix" })}
           </Button>
           <Button
             type="primary"
