@@ -196,3 +196,13 @@
     }
   }
 }
+
+:global {
+  .ant-modal-root {
+    .ant-modal-content {
+      .ant-modal-close {
+        display: none !important;
+      }
+    }
+  }
+}

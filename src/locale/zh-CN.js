@@ -15,6 +15,7 @@ const zh_CN = {
   "common.noData": "暂无",
   "common.unknown": "未知",
   "common.confirm": "确定",
+  "common.cancel": "取消",
   "common.clear": "清空",
   "common.play": "播放",
   "common.pause": "暂停",
@@ -66,6 +67,7 @@ const zh_CN = {
   "common.graying": "灰化",
   "common.vampix": "黑白化",
   "common.mosaicGrainSize": "马赛克颗粒大小",
+  "common.parsingData": "解析数据中",
   "common.ad.btnText": "马上体验",
 
   // 菜单
@@ -116,7 +118,8 @@ const zh_CN = {
   "menu.imageProcessingTool.coverWithMosaics": "打马赛克",
   "menu.imageProcessingTool.imageCompression": "图片压缩",
   "menu.videoProcessingTool": "视频处理工具",
-  "menu.videoProcessingTool.rotate": "旋转",
+  "menu.videoProcessingTool.basicOperation": "基础操作",
+  "menu.videoProcessingTool.modifyTheSize": "修改尺寸",
   "menu.videoProcessingTool.clipping": "裁剪",
   "menu.videoProcessingTool.combine": "合并",
   "menu.videoProcessingTool.varyingVelocity": "变速",
@@ -273,6 +276,9 @@ const zh_CN = {
   "page.imageProcessingTool.filletRadius": "圆角半径",
   "page.imageProcessingTool.clippedAndConvertedToPng": "裁剪后转成PNG格式",
   "page.imageProcessingTool.WhetherRetainOriginalDimension": "是否保留原尺寸",
+
+  // 视频处理工具页
+  "page.videoProcessingTool.generatingVideo": "努力生成视频中",
 
   // Html视觉-应用页面框架页
   "page.htmlVision.applicationPageFrame.secondPage": "第二页",

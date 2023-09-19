@@ -17,6 +17,7 @@ const en_US = {
   "common.noData": "No data",
   "common.unknown": "Unknown",
   "common.confirm": "Confirm",
+  "common.cancel": "Cancel",
   "common.clear": "Clear",
   "common.play": "Play",
   "common.pause": "Pause",
@@ -72,6 +73,7 @@ const en_US = {
   "common.graying": "Graying",
   "common.vampix": "Vampix",
   "common.mosaicGrainSize": "Mosaic grain size",
+  "common.parsingData": "Parsing data",
   "common.ad.btnText": "Experience right away",
 
   // 菜单
@@ -127,7 +129,8 @@ const en_US = {
   "menu.imageProcessingTool.coverWithMosaics": "Cover With Mosaics",
   "menu.imageProcessingTool.imageCompression": "Image Compression",
   "menu.videoProcessingTool": "Video Processing Tool",
-  "menu.videoProcessingTool.rotate": "Rotate",
+  "menu.videoProcessingTool.basicOperation": "Basic Operation",
+  "menu.videoProcessingTool.modifyTheSize": "Modify The Size",
   "menu.videoProcessingTool.clipping": "Clipping",
   "menu.videoProcessingTool.combine": "Combine",
   "menu.videoProcessingTool.varyingVelocity": "Varying Velocity",
@@ -318,6 +321,9 @@ const en_US = {
     "Clipped and converted to PNG format",
   "page.imageProcessingTool.WhetherRetainOriginalDimension":
     "Whether to retain the original dimension",
+
+  // 视频处理工具页
+  "page.videoProcessingTool.generatingVideo": "Work hard at generating video",
 
   // Html视觉-应用页面框架页
   "page.htmlVision.applicationPageFrame.secondPage": "Second Page",
