@@ -9,7 +9,7 @@ import Tabs from "components/Tabs";
 import {
   getImgInfo,
   imageDataToBlob,
-  exportToImage,
+  exportFile,
   ImgInfo,
 } from "utils/fileUtil";
 import BasicOperation from "./components/BasicOperation";
@@ -56,36 +56,24 @@ const GameImage = () => {
   // 导出图片
   const exportImage = (imageData: ImageData, exportImageType?: string) => {
     if (!imageData || !imgInfo) return;
-    imageDataToBlob(
-      imageData,
-      exportImageType || imgInfo.fileType,
-      (blob: Blob | null) => {
-        if (blob) {
-          let imgName = "image";
-          if (imgInfo && imgInfo.name) {
-            const arr = imgInfo.name.split(".");
-            if (arr.length > 1) {
-              arr.splice(
-                arr.length - 1,
-                1,
-                exportImageType
-                  ? exportImageType.toLowerCase()
-                  : imgInfo.fileType.toLowerCase()
-              );
-              imgName = arr.join(".");
-            } else {
-              arr.push(
-                exportImageType
-                  ? exportImageType.toLowerCase()
-                  : imgInfo.fileType.toLowerCase()
-              );
-              imgName = arr.join(".");
-            }
+    const finalImageType = exportImageType
+      ? exportImageType.toLowerCase()
+      : imgInfo.fileType.toLowerCase();
+    imageDataToBlob(imageData, finalImageType, (blob: Blob | null) => {
+      if (blob) {
+        let imgName = "image";
+        if (imgInfo && imgInfo.name) {
+          const arr = imgInfo.name.split(".");
+          if (arr.length > 1) {
+            arr.splice(arr.length - 1, 1, finalImageType);
+          } else {
+            arr.push(finalImageType);
           }
-          exportToImage(blob, imgName);
+          imgName = arr.join(".");
         }
+        exportFile(blob, imgName);
       }
-    );
+    });
   };
 
   const onTabsChange = (tabId: TabId) => {

@@ -101,7 +101,6 @@ export const getImageType = (buffer: Buffer) => {
     const view = new DataView(buffer as any);
     const first4Byte = view.getUint32(0, false);
     const hexValue = Number(first4Byte).toString(16).toUpperCase();
-    console.log(6666, first4Byte, Number(first4Byte).toString(16), hexValue);
     switch (hexValue) {
       case "FFD8FFDB":
         fileType = "JPG";
@@ -181,7 +180,7 @@ export const imageDataToDataURL = (imageData: ImageData) => {
 // ImageData对象转Blob
 export const imageDataToBlob = (
   imageData: ImageData,
-  exportImageType = "PNG",
+  exportImageType = "png",
   cb: (blob: Blob | null) => void
 ) => {
   if (!imageData) {
@@ -262,16 +261,30 @@ export const getCanvasImgDataByBitmap = (
   return null;
 };
 
-// 导出图片
-export const exportToImage = (blob: Blob, imgName: string) => {
+// 导出文件
+export const exportFile = (blob: Blob, fileName: string) => {
   if (!blob) return;
   var a = document.createElement("a");
   a.style.visibility = "hidden";
   document.body.appendChild(a);
-  a.download = imgName;
+  a.download = fileName;
   const objUrl = window.URL.createObjectURL(blob);
   a.href = objUrl;
   a.click();
   document.body.removeChild(a);
   window.URL.revokeObjectURL(objUrl);
+};
+
+// 导出视频
+export const exportVideo = (videoChunks: any[], name?: string) => {
+  if (!videoChunks || videoChunks.length === 0) return;
+  const blob = new Blob(videoChunks, {
+    type: `video/webm`,
+  });
+  let videoName = "video.webm";
+  if (name) {
+    const arr = name.split(".");
+    videoName = `${arr[0]}.webm`;
+  }
+  exportFile(blob, videoName);
 };

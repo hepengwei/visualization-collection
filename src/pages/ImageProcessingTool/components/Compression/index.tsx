@@ -4,7 +4,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { InputNumber, Button, message } from "antd";
 import { useIntl } from "react-intl";
-import { exportToImage } from "utils/fileUtil";
+import { exportFile } from "utils/fileUtil";
 import { compression } from "utils/imageUtil";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import FileBox from "../FileBox";
@@ -37,7 +37,7 @@ const Compression = (props: TabPageProps) => {
         imgName = arr.join(".");
       }
     }
-    exportToImage(blob, imgName);
+    exportFile(blob, imgName);
   };
 
   // 点击确定
