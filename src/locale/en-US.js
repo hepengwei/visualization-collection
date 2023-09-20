@@ -35,7 +35,7 @@ const en_US = {
   "common.uploadFile": "Upload File",
   "common.dragTheFileHere": "Or drag the file here",
   "common.supportedImageType": "jpg, jpeg, and png are supported",
-  "common.supportedVideoType": "mp4 are supported",
+  "common.supportedVideoType": "webm and mp4 are supported",
   "common.pleaseUploadPicture": "Please upload the picture first",
   "common.deviceNotFound": "Requested device not found",
   "common.impowerOpenMicrophone":
@@ -53,6 +53,7 @@ const en_US = {
   "common.size": "Size",
   "common.width": "Width",
   "common.height": "Height",
+  "common.duration": "Duration",
   "common.transparency": "Transparency",
   "common.red": "Red",
   "common.blue": "Blue",
@@ -74,6 +75,9 @@ const en_US = {
   "common.vampix": "Vampix",
   "common.mosaicGrainSize": "Mosaic grain size",
   "common.parsingData": "Parsing data",
+  "common.whetherMaintainOriginalProportion":
+    "Whether to maintain the original proportion",
+  "common.pleaseEnterWidthOrHeight": "Please enter width or height",
   "common.ad.btnText": "Experience right away",
 
   // 菜单
@@ -309,10 +313,6 @@ const en_US = {
   "page.imageProcessingTool.whetherValueFixed": "Whether the value is fixed",
   "page.imageProcessingTool.becomeTransparent": "Become transparent",
   "page.imageProcessingTool.becomeOpaque": "Become opaque",
-  "page.imageProcessingTool.pleaseEnterWidthOrHeight":
-    "Please enter width or height",
-  "page.imageProcessingTool.whetherMaintainOriginalProportion":
-    "Whether to maintain the original proportion",
   "page.imageProcessingTool.compressibility": "Compressibility",
   "page.imageProcessingTool.pleaseEnterFilletRadius":
     "Please enter the fillet radius",
@@ -323,6 +323,8 @@ const en_US = {
     "Whether to retain the original dimension",
 
   // 视频处理工具页
+  "page.videoProcessingTool.tip":
+    "The tool processing video will be very slow, because it is a pure front-end implementation, the correct approach is to upload the file to the background for processing, here is only to provide a pure front-end video processing solution.",
   "page.videoProcessingTool.generatingVideo": "Work hard at generating video",
 
   // Html视觉-应用页面框架页

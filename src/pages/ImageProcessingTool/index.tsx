@@ -212,58 +212,58 @@ const GameImage = () => {
           onChange={onTabsChange}
         />
         {!imgInfo && (
-          <div
-            className={styles.imgBox}
-            style={{
-              borderColor: imgDragOver ? primaryColor : primaryShallowColor,
-            }}
-            onDragOver={onDragOver}
-            onDragLeave={onDragLeave}
-            onDrop={onDrop}
-          >
-            <div className={styles.emptyBox}>
-              <Button type="primary" className={styles.uploadBtn}>
-                <FolderAddOutlined />
-                {intl.formatMessage({
-                  id: "common.uploadFile",
-                })}
-                <input
-                  type="file"
-                  accept="image/jpg, image/jpeg, image/png"
-                  onChange={onUploadChange}
-                />
-              </Button>
-              <p className={styles.text}>
-                {intl.formatMessage({
-                  id: "common.dragTheFileHere",
-                })}
-              </p>
-              <p className={styles.tips}>
-                {intl.formatMessage({
-                  id: "common.supportedImageType",
-                })}
-              </p>
-            </div>
-          </div>
-        )}
-        {!imgInfo && (
-          <div className={styles.extensionTip}>
-            {intl.formatMessage({
-              id: "page.imageProcessingTool.extensionTipFront",
-            })}
-            <span
-              onClick={() => {
-                window.open(
-                  "https://github.com/hepengwei/processing-image-tool"
-                );
+          <>
+            <div
+              className={styles.imgBox}
+              style={{
+                borderColor: imgDragOver ? primaryColor : primaryShallowColor,
               }}
+              onDragOver={onDragOver}
+              onDragLeave={onDragLeave}
+              onDrop={onDrop}
             >
-              &nbsp;processing-image-tool&nbsp;
-            </span>
-            {intl.formatMessage({
-              id: "page.imageProcessingTool.extensionTipBehind",
-            })}
-          </div>
+              <div className={styles.emptyBox}>
+                <Button type="primary" className={styles.uploadBtn}>
+                  <FolderAddOutlined />
+                  {intl.formatMessage({
+                    id: "common.uploadFile",
+                  })}
+                  <input
+                    type="file"
+                    accept="image/jpg, image/jpeg, image/png"
+                    onChange={onUploadChange}
+                  />
+                </Button>
+                <p className={styles.text}>
+                  {intl.formatMessage({
+                    id: "common.dragTheFileHere",
+                  })}
+                </p>
+                <p className={styles.tips}>
+                  {intl.formatMessage({
+                    id: "common.supportedImageType",
+                  })}
+                </p>
+              </div>
+            </div>
+            <div className={styles.tip}>
+              {intl.formatMessage({
+                id: "page.imageProcessingTool.extensionTipFront",
+              })}
+              <span
+                onClick={() => {
+                  window.open(
+                    "https://github.com/hepengwei/processing-image-tool"
+                  );
+                }}
+              >
+                &nbsp;processing-image-tool&nbsp;
+              </span>
+              {intl.formatMessage({
+                id: "page.imageProcessingTool.extensionTipBehind",
+              })}
+            </div>
+          </>
         )}
         {imgInfo &&
           tabsList.filter((item) => item.id === selectedTabId)[0].element}

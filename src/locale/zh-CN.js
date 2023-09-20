@@ -32,7 +32,7 @@ const zh_CN = {
   "common.uploadFile": "上传文件",
   "common.dragTheFileHere": "或将文件拖到此处",
   "common.supportedImageType": "支持jpg、jpeg、png格式",
-  "common.supportedVideoType": "支持mp4格式",
+  "common.supportedVideoType": "支持webm、mp4格式",
   "common.pleaseUploadPicture": "请先上传图片",
   "common.deviceNotFound": "请求的设备未找到",
   "common.impowerOpenMicrophone":
@@ -49,6 +49,7 @@ const zh_CN = {
   "common.size": "大小",
   "common.width": "宽度",
   "common.height": "高度",
+  "common.duration": "时长",
   "common.transparency": "透明色",
   "common.red": "红色",
   "common.blue": "蓝色",
@@ -68,6 +69,8 @@ const zh_CN = {
   "common.vampix": "黑白化",
   "common.mosaicGrainSize": "马赛克颗粒大小",
   "common.parsingData": "解析数据中",
+  "common.whetherMaintainOriginalProportion": "是否保持原比例",
+  "common.pleaseEnterWidthOrHeight": "请输入宽度或高度",
   "common.ad.btnText": "马上体验",
 
   // 菜单
@@ -268,9 +271,6 @@ const zh_CN = {
   "page.imageProcessingTool.whetherValueFixed": "是否统一为固定值",
   "page.imageProcessingTool.becomeTransparent": "变透明",
   "page.imageProcessingTool.becomeOpaque": "变不透",
-  "page.imageProcessingTool.pleaseEnterWidthOrHeight": "请输入宽度或高度",
-  "page.imageProcessingTool.whetherMaintainOriginalProportion":
-    "是否保持原比例",
   "page.imageProcessingTool.compressibility": "压缩率",
   "page.imageProcessingTool.pleaseEnterFilletRadius": "请输入圆角半径",
   "page.imageProcessingTool.filletRadius": "圆角半径",
@@ -278,6 +278,8 @@ const zh_CN = {
   "page.imageProcessingTool.WhetherRetainOriginalDimension": "是否保留原尺寸",
 
   // 视频处理工具页
+  "page.videoProcessingTool.tip":
+    "该工具处理视频会非常慢，因为是纯前端实现的，正确做法还是将文件上传到后台进行处理，这里只是提供一种纯前端实现视频处理的解决方案。",
   "page.videoProcessingTool.generatingVideo": "努力生成视频中",
 
   // Html视觉-应用页面框架页

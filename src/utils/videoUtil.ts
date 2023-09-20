@@ -5,6 +5,7 @@ import {
   rightRotate,
   toGrey,
   toBlackAndWhite,
+  changeSize,
 } from "./imageUtil";
 
 interface MehtodFn {
@@ -90,4 +91,43 @@ export const toBlackAndWhiteVideo = (
   callback: (newImageDataList: ImageData[]) => void
 ) => {
   dealImageDataList(imageDataList, toBlackAndWhite, callback);
+};
+
+// 修改尺寸
+export const changeSizeVideo = (
+  dataList: string[] | ImageData[],
+  width: number,
+  height: number,
+  newWidth: number,
+  newHeight: number,
+  maxWidthHeight = 10000,
+  callback: (newImageDataList: ImageData[]) => void
+) => {
+  const result: ImageData[] = [];
+  if (dataList && dataList.length > 0) {
+    const l = dataList.length;
+    const todo = (index = 0) => {
+      Promise.resolve().then(() => {
+        const newImageData = changeSize(
+          dataList[index],
+          width,
+          height,
+          newWidth,
+          newHeight,
+          maxWidthHeight
+        );
+        if (newImageData) {
+          result.push(newImageData);
+        }
+        if (index < l) {
+          todo(index + 1);
+        } else {
+          callback(result);
+        }
+      });
+    };
+    todo();
+  } else {
+    callback(result);
+  }
 };

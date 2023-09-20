@@ -1,6 +1,6 @@
 import React from "react";
 import { useIntl } from "react-intl";
-import { sizeTostr } from "utils/fileUtil";
+import { sizeTostr, secondsToDuration } from "utils/fileUtil";
 import type { VideoInfo } from "../../index";
 import styles from "../../index.module.scss";
 
@@ -47,6 +47,10 @@ const FileBox = (props: FileBoxProps) => {
           <div className={styles.item}>
             {intl.formatMessage({ id: "common.size" })}：
             {sizeTostr(videoInfo.size)}
+          </div>
+          <div className={styles.item}>
+            {intl.formatMessage({ id: "common.duration" })}：
+            {secondsToDuration(videoInfo.duration)}
           </div>
         </div>
       </div>

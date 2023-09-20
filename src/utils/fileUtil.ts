@@ -8,6 +8,22 @@ export const sizeTostr = (size: number, decimals = 2) => {
   return parseFloat((size / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
 };
 
+// 将秒数转成时长
+export const secondsToDuration = (seconds: number) => {
+  if ((!seconds && seconds !== 0) || isNaN(seconds) || !isFinite(seconds))
+    return "未知";
+  const h = Math.floor(seconds / 3600)
+    .toString()
+    .padStart(2, "00"); // 小时
+  const m = Math.floor((seconds % 3600) / 60)
+    .toString()
+    .padStart(2, "00"); // 分钟
+  const s = Math.floor((seconds % 3600) % 60)
+    .toString()
+    .padStart(2, "00"); // 秒
+  return `${h}:${m}:${s}`;
+};
+
 interface GetImageWidthHeightFn {
   (url: string): Promise<{ width: number; height: number }>;
 }
