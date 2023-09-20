@@ -1,3 +1,4 @@
+import { imageDataToDataURL } from "./fileUtil";
 import UPNG from "./UPNG";
 
 // 左右翻转
@@ -675,7 +676,7 @@ export const radiusClip = (
 
 // 修改尺寸
 export const changeSize = (
-  imgUrl: string,
+  imgUrl: string | ImageData,
   width: number,
   height: number,
   newWidth: number,
@@ -684,19 +685,27 @@ export const changeSize = (
 ) => {
   if (imgUrl) {
     const img = new Image();
-    img.src = imgUrl;
-    const canvas = document.createElement("canvas") as HTMLCanvasElement;
-    const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-    canvas.width = maxWidthHeight;
-    canvas.height = maxWidthHeight;
-    ctx.drawImage(img, 0, 0, width, height, 0, 0, newWidth, newHeight);
-    const newImageData = ctx.getImageData(
-      0,
-      0,
-      newWidth,
-      newHeight
-    ) as ImageData;
-    return newImageData;
+    let src = null;
+    if (typeof imgUrl === "string") {
+      src = imgUrl;
+    } else {
+      src = imageDataToDataURL(imgUrl);
+    }
+    if (src) {
+      img.src = src;
+      const canvas = document.createElement("canvas") as HTMLCanvasElement;
+      const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+      canvas.width = maxWidthHeight;
+      canvas.height = maxWidthHeight;
+      ctx.drawImage(img, 0, 0, width, height, 0, 0, newWidth, newHeight);
+      const newImageData = ctx.getImageData(
+        0,
+        0,
+        newWidth,
+        newHeight
+      ) as ImageData;
+      return newImageData;
+    }
   }
   return null;
 };

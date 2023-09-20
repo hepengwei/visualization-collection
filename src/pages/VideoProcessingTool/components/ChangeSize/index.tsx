@@ -1,11 +1,12 @@
 /**
- * 图片处理工具-修改尺寸Tab页
+ * 视频处理工具-修改尺寸Tab页
  */
 import React, { useRef, useEffect, useState } from "react";
 import { Checkbox, InputNumber, Button, message } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useIntl } from "react-intl";
-import { changeSize } from "utils/imageUtil";
+import { changeSizeVideo } from "utils/videoUtil";
+import { exportVideo } from "utils/fileUtil";
 import FileBox from "../FileBox";
 import { TabPageProps } from "../../index";
 import styles from "../../index.module.scss";
@@ -14,9 +15,11 @@ const maxWidthHeight = 10000;
 
 const ChangeSize = (props: TabPageProps) => {
   const {
-    imgInfo,
-    exportImage,
-    imgDragOver,
+    videoInfo,
+    startgeneratingVideo,
+    imgDataListToChunks,
+    videoDragOver,
+    generatingVideoRef,
     onDragOver,
     onDragLeave,
     onDrop,
@@ -25,14 +28,14 @@ const ChangeSize = (props: TabPageProps) => {
   const intl = useIntl();
   const [keepOriginalProportion, setKeepOriginalProportion] =
     useState<boolean>(true);
-  const [toWidth, setToWidth] = useState<number | null>(imgInfo.width);
-  const [toHeight, setToHeight] = useState<number | null>(imgInfo.height);
+  const [toWidth, setToWidth] = useState<number | null>(videoInfo.width);
+  const [toHeight, setToHeight] = useState<number | null>(videoInfo.height);
   const doing = useRef<boolean>(false);
 
   // 修改是否保持原比例
   const onKeepProportionChange = (e: CheckboxChangeEvent) => {
     setKeepOriginalProportion(e.target.checked);
-    const { width, height } = imgInfo;
+    const { width, height } = videoInfo;
     if (e.target.checked) {
       if (toWidth && toHeight) {
         setToWidth(null);
@@ -54,7 +57,7 @@ const ChangeSize = (props: TabPageProps) => {
   const onWidthChange = (value: number | null) => {
     setToWidth(value);
     if (keepOriginalProportion && value) {
-      const { width, height } = imgInfo;
+      const { width, height } = videoInfo;
       const newHeight = Math.floor((value * height) / width);
       setToHeight(newHeight);
     }
@@ -64,7 +67,7 @@ const ChangeSize = (props: TabPageProps) => {
   const onHeightChange = (value: number | null) => {
     setToHeight(value);
     if (keepOriginalProportion && value) {
-      const { width, height } = imgInfo;
+      const { width, height } = videoInfo;
       const newWidth = Math.floor((value * width) / height);
       setToWidth(newWidth);
     }
@@ -72,11 +75,6 @@ const ChangeSize = (props: TabPageProps) => {
 
   // 点击确定
   const onOk = () => {
-    if (doing.current) {
-      message.warning(intl.formatMessage({ id: "common.workHard" }));
-      return;
-    }
-    const { imgUrl, width, height } = imgInfo;
     if (!toWidth || !toHeight) {
       message.warning(
         intl.formatMessage({
@@ -85,33 +83,37 @@ const ChangeSize = (props: TabPageProps) => {
       );
       return;
     }
-    doing.current = true;
-    const newImageData = changeSize(
-      imgUrl,
-      width,
-      height,
-      toWidth,
-      toHeight,
-      maxWidthHeight
-    );
-    if (newImageData) {
-      exportImage(newImageData);
-    } else {
-      message.error(intl.formatMessage({ id: "common.operationFailure" }));
-    }
-    doing.current = false;
+    startgeneratingVideo(() => {
+      setTimeout(() => {
+        changeSizeVideo(
+          videoInfo.imageDataList,
+          videoInfo.width,
+          videoInfo.height,
+          toWidth,
+          toHeight,
+          maxWidthHeight,
+          (newImageDataList: ImageData[]) => {
+            if (generatingVideoRef.current) {
+              imgDataListToChunks(newImageDataList, (videoChunks: Blob[]) => {
+                exportVideo(videoChunks, videoInfo.name);
+              });
+            }
+          }
+        );
+      }, 100);
+    });
   };
 
   useEffect(() => {
-    setToWidth(imgInfo.width);
-    setToHeight(imgInfo.height);
-  }, [imgInfo]);
+    setToWidth(videoInfo.width);
+    setToHeight(videoInfo.height);
+  }, [videoInfo]);
 
   return (
     <div>
       <FileBox
-        imgInfo={imgInfo}
-        imgDragOver={imgDragOver}
+        videoInfo={videoInfo}
+        videoDragOver={videoDragOver}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}

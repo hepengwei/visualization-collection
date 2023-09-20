@@ -7,7 +7,7 @@ import { FolderAddOutlined } from "@ant-design/icons";
 import { useIntl } from "react-intl";
 import Tabs from "components/Tabs";
 import BasicOperation from "./components/BasicOperation";
-import ModifyTheSize from "./components/ModifyTheSize";
+import ChangeSize from "./components/ChangeSize";
 import Clipping from "./components/Clipping";
 import Combine from "./components/Combine";
 import VaryingVelocity from "./components/VaryingVelocity";
@@ -48,7 +48,7 @@ export interface TabPageProps {
 
 enum TabId {
   "basicOperation",
-  "modifyTheSize",
+  "changeSize",
   "clipping",
   "combine",
   "varyingVelocity",
@@ -90,7 +90,11 @@ const VideoProcessingTool = () => {
 
   // 根据播放的视频绘制每一帧到Canvas，并得到每一帧的ImageData
   const drawVideoFrame = () => {
-    if (parsingDataRef.current && videoRef.current && ctxRef.current) {
+    if (
+      parsingDataRef.current &&
+      videoRef.current &&
+      ctxRef.current
+    ) {
       const { videoWidth, videoHeight } = videoRef.current;
       ctxRef.current.drawImage(videoRef.current, 0, 0, videoWidth, videoHeight);
       const imageData = ctxRef.current.getImageData(
@@ -208,6 +212,7 @@ const VideoProcessingTool = () => {
       videoInfoRef.current = newVideoInfo;
       setVideoInfo(newVideoInfo);
       // 将视频的每一帧绘制到画布上
+      imageDataListRef.current.splice(0, imageDataListRef.current.length);
       drawVideoFrame();
     };
     // 视频播放到达结束点
@@ -311,11 +316,11 @@ const VideoProcessingTool = () => {
       element: <BasicOperation {...tabPageProps} />,
     },
     {
-      id: TabId.modifyTheSize,
+      id: TabId.changeSize,
       label: intl.formatMessage({
         id: "menu.videoProcessingTool.modifyTheSize",
       }),
-      element: <ModifyTheSize {...tabPageProps} />,
+      element: <ChangeSize {...tabPageProps} />,
     },
     {
       id: TabId.clipping,
@@ -379,39 +384,46 @@ const VideoProcessingTool = () => {
           onChange={onTabsChange}
         />
         {!videoInfo && (
-          <div
-            className={styles.videoBox}
-            style={{
-              borderColor: videoDragOver ? primaryColor : primaryShallowColor,
-            }}
-            onDragOver={onDragOver}
-            onDragLeave={onDragLeave}
-            onDrop={onDrop}
-          >
-            <div className={styles.emptyBox}>
-              <Button type="primary" className={styles.uploadBtn}>
-                <FolderAddOutlined />
-                {intl.formatMessage({
-                  id: "common.uploadFile",
-                })}
-                <input
-                  type="file"
-                  accept="image/jpg, image/jpeg, image/png"
-                  onChange={onUploadChange}
-                />
-              </Button>
-              <p className={styles.text}>
-                {intl.formatMessage({
-                  id: "common.dragTheFileHere",
-                })}
-              </p>
-              <p className={styles.tips}>
-                {intl.formatMessage({
-                  id: "common.supportedVideoType",
-                })}
-              </p>
+          <>
+            <div
+              className={styles.videoBox}
+              style={{
+                borderColor: videoDragOver ? primaryColor : primaryShallowColor,
+              }}
+              onDragOver={onDragOver}
+              onDragLeave={onDragLeave}
+              onDrop={onDrop}
+            >
+              <div className={styles.emptyBox}>
+                <Button type="primary" className={styles.uploadBtn}>
+                  <FolderAddOutlined />
+                  {intl.formatMessage({
+                    id: "common.uploadFile",
+                  })}
+                  <input
+                    type="file"
+                    accept="image/jpg, image/jpeg, image/png"
+                    onChange={onUploadChange}
+                  />
+                </Button>
+                <p className={styles.text}>
+                  {intl.formatMessage({
+                    id: "common.dragTheFileHere",
+                  })}
+                </p>
+                <p className={styles.tips}>
+                  {intl.formatMessage({
+                    id: "common.supportedVideoType",
+                  })}
+                </p>
+              </div>
             </div>
-          </div>
+            <div className={styles.tip}>
+              {intl.formatMessage({
+                id: "page.videoProcessingTool.tip",
+              })}
+            </div>
+          </>
         )}
         {videoInfo &&
           tabsList.filter((item) => item.id === selectedTabId)[0].element}
