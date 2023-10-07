@@ -1,8 +1,9 @@
-import React, { useRef } from "react";
+import React, { useRef, useLayoutEffect } from "react";
 import { useIntl } from "react-intl";
 import * as THREE from "three";
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { useGlobalContext } from "hooks/useGlobalContext";
 import useInitialize from "hooks/threejs/useInitialize";
 import { loadGlb } from "utils/threejsUtil";
 import styles from "./index.module.scss";
@@ -59,6 +60,7 @@ const glassMeterial = new THREE.MeshPhysicalMaterial({
 
 const CarShow = () => {
   const intl = useIntl();
+  const { menuWidth } = useGlobalContext();
   const containerRef = useRef<HTMLDivElement>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
   const carComponent = useRef<CarComponent>({ carWheels: [] });
@@ -181,7 +183,12 @@ const CarShow = () => {
     }
   };
 
-  useInitialize(containerRef, initializeHandle, null, renderHandle);
+  const { resize } = useInitialize(
+    containerRef,
+    initializeHandle,
+    null,
+    renderHandle
+  );
 
   const selectBodyColor = (color: any) => {
     bodyMeterial.color.set(color);
@@ -214,6 +221,10 @@ const CarShow = () => {
   const selectGlassMaterial = (transmission: number) => {
     glassMeterial.transmission = transmission;
   };
+
+  useLayoutEffect(() => {
+    resize();
+  }, [menuWidth]);
 
   return (
     <div className={styles.container} ref={containerRef}>
