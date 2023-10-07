@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import * as THREE from "three";
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 import { gsap } from "gsap";
 import { useDebounceFn } from "ahooks";
+import { useGlobalContext } from "hooks/useGlobalContext";
 import useInitialize from "hooks/threejs/useInitialize";
 import { loadGlb } from "utils/threejsUtil";
 import moonImg from "images/threejs/moon.jpg";
@@ -12,6 +13,7 @@ import styles from "./index.module.scss";
 const initRotateY = [0, -1.5, 0];
 
 const AppPageFrame = () => {
+  const { menuWidth } = useGlobalContext();
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [containerHeight, setContainerHeight] = useState<number>(0);
@@ -116,7 +118,7 @@ const AppPageFrame = () => {
     }
   };
 
-  const { camera } = useInitialize(
+  const { camera, resize } = useInitialize(
     containerRef,
     initializeHandle,
     resizeHandle
@@ -181,6 +183,10 @@ const AppPageFrame = () => {
     },
     { wait: 100 }
   );
+
+  useLayoutEffect(() => {
+    resize();
+  }, [menuWidth]);
 
   useEffect(() => {
     window.addEventListener("mousewheel", onMouseWheel.run);

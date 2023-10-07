@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useLayoutEffect } from "react";
 import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { useGlobalContext } from "hooks/useGlobalContext";
 import useInitialize from "hooks/threejs/useInitialize";
 import { gsap } from "gsap";
 import { initPositionList, position2RubiksCubeList } from "./rubiksCubeInfo";
@@ -30,6 +31,7 @@ const lightInitPositionList = [
 ];
 
 const RubiksCube = () => {
+  const { menuWidth } = useGlobalContext();
   const containerRef = useRef<HTMLDivElement>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
   const lightList = useRef<THREE.DirectionalLight[]>([]); // 存放所有平行光源
@@ -270,7 +272,16 @@ const RubiksCube = () => {
     }
   };
 
-  useInitialize(containerRef, initializeHandle, null, renderHandle);
+  const { resize } = useInitialize(
+    containerRef,
+    initializeHandle,
+    null,
+    renderHandle
+  );
+
+  useLayoutEffect(() => {
+    resize();
+  }, [menuWidth]);
 
   useEffect(() => {
     return () => {

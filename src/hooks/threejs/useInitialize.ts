@@ -100,6 +100,7 @@ const useInitialize = (
     scene: sceneRef.current,
     camera: cameraRef.current,
     renderer: rendererRef.current,
+    resize: onResize,
   };
 };
 
