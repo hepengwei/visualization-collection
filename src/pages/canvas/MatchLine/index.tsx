@@ -86,6 +86,12 @@ const MatchLine = () => {
     // 阻止时间冒泡/默认行为
     e.stopPropagation();
     e.preventDefault();
+    if (hasCheckout.current) {
+      message.warning(
+        intl.formatMessage({ id: "page.canvasDynamicEffect.pleaseReset" })
+      );
+      return;
+    }
     // 高亮显示按下的元素
     (e.target as HTMLDivElement).classList.add(styles.active);
     // 记录每一次连线的开始元素
@@ -167,7 +173,7 @@ const MatchLine = () => {
     }
   }, []);
 
-  const onMouseUp = (e: React.MouseEvent) => {
+  const onMouseUp = useCallback((e: React.MouseEvent) => {
     // 阻止事件冒泡/默认行为
     e.stopPropagation();
     e.preventDefault();
@@ -257,7 +263,7 @@ const MatchLine = () => {
         canvasRef.current.height
       );
     }
-  };
+  }, []);
 
   const initOption = (options: HTMLDivElement | null) => {
     if (options) {
