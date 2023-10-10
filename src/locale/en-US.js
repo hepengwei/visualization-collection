@@ -78,6 +78,11 @@ const en_US = {
   "common.whetherMaintainOriginalProportion":
     "Whether to maintain the original proportion",
   "common.pleaseEnterWidthOrHeight": "Please enter width or height",
+  "common.reset": "Reset",
+  "common.backout": "Backout",
+  "common.delete": "Delete",
+  "common.inquire": "Inquire",
+  "common.checkout": "Checkout",
   "common.ad.btnText": "Experience right away",
 
   // 菜单
@@ -111,6 +116,7 @@ const en_US = {
   "menu.canvasDynamicEffect.codeBackgroundWall": "Code Background Wall",
   "menu.canvasDynamicEffect.wordDance": "Word Dance",
   "menu.canvasDynamicEffect.scratch": "Scratch",
+  "menu.canvasDynamicEffect.matchLine": "Match Line",
   "menu.echartsInteraction": "Echarts Interaction",
   "menu.echartsInteraction.barCharts": "Bar Charts",
   "menu.echartsInteraction.pieCharts": "Pie Charts",
@@ -258,6 +264,14 @@ const en_US = {
   "page.canvasDynamicEffect.score": "Score",
   "page.canvasDynamicEffect.videoIsSlowToLoad":
     "The video is slow to load, please wait patiently",
+  "page.canvasDynamicEffect.matchLineQuestion": "Match line question",
+  "page.canvasDynamicEffect.fruit": "Fruit",
+  "page.canvasDynamicEffect.animal": "Animal",
+  "page.canvasDynamicEffect.car": "Car",
+  "page.canvasDynamicEffect.vegetable": "Vegetable",
+  "page.canvasDynamicEffect.pleaseReset": "Currently verified, please reset",
+  "page.canvasDynamicEffect.noVerifiableAnswer":
+    "There is no verifiable answer",
 
   // Three.js3D
   "page.threeJs3D.abrazine": "Abrazine",

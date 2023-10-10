@@ -24,6 +24,7 @@ import FlowerBloom from "pages/canvas/FlowerBloom";
 import CodeBgWall from "pages/canvas/CodeBgWall";
 import WordDance from "pages/canvas/WordDance";
 import Scratch from "pages/canvas/Scratch";
+import MatchLine from 'pages/canvas/MatchLine';
 import AppPage3DFrame from "pages/threejs/AppPageFrame";
 import CarShow from "pages/threejs/CarShow";
 import RubiksCube from "pages/threejs/RubiksCube";
@@ -139,6 +140,10 @@ export const contentRoutes: RouteObject[] = [
       {
         path: "/canvas/scratch",
         element: <Scratch />,
+      },
+      {
+        path: "/canvas/matchLine",
+        element: <MatchLine />,
       },
     ],
   },
