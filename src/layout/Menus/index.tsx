@@ -188,6 +188,10 @@ const Menus: React.FC = () => {
           intl.formatMessage({ id: "menu.canvasDynamicEffect.scratch" }),
           "scratch"
         ),
+        getItem(
+          intl.formatMessage({ id: "menu.canvasDynamicEffect.matchLine" }),
+          "matchLine"
+        ),
       ]
     ),
     getItem(

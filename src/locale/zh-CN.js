@@ -71,6 +71,11 @@ const zh_CN = {
   "common.parsingData": "解析数据中",
   "common.whetherMaintainOriginalProportion": "是否保持原比例",
   "common.pleaseEnterWidthOrHeight": "请输入宽度或高度",
+  "common.reset": "重置",
+  "common.backout": "撤销",
+  "common.delete": "删除",
+  "common.inquire": "查询",
+  "common.checkout": "校验",
   "common.ad.btnText": "马上体验",
 
   // 菜单
@@ -100,6 +105,7 @@ const zh_CN = {
   "menu.canvasDynamicEffect.codeBackgroundWall": "代码背景墙",
   "menu.canvasDynamicEffect.wordDance": "文字跳舞",
   "menu.canvasDynamicEffect.scratch": "刮刮乐",
+  "menu.canvasDynamicEffect.matchLine": "连接线",
   "menu.echartsInteraction": "Echarts交互",
   "menu.echartsInteraction.barCharts": "柱状图",
   "menu.echartsInteraction.pieCharts": "饼图",
@@ -221,6 +227,13 @@ const zh_CN = {
   "page.canvasDynamicEffect.gameHasPaused": "游戏已暂停",
   "page.canvasDynamicEffect.score": "分数",
   "page.canvasDynamicEffect.videoIsSlowToLoad": "视频加载比较慢，请耐心等待",
+  "page.canvasDynamicEffect.matchLineQuestion": "连线题",
+  "page.canvasDynamicEffect.fruit": "水果",
+  "page.canvasDynamicEffect.animal": "动物",
+  "page.canvasDynamicEffect.car": "汽车",
+  "page.canvasDynamicEffect.vegetable": "蔬菜",
+  "page.canvasDynamicEffect.pleaseReset": "当前已校验，请重置",
+  "page.canvasDynamicEffect.noVerifiableAnswer": "没有可校验的答案",
 
   // Three.js3D
   "page.threeJs3D.abrazine": "磨砂",
