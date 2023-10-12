@@ -230,7 +230,7 @@ const ThrowDice = () => {
     }, 2000);
   };
 
-  // 初始化物理世界对象
+  // 创建物理世界
   const createPhysicsWorld = () => {
     physicsWorld.current = new CANNON.World({
       allowSleep: true,
@@ -321,6 +321,7 @@ const ThrowDice = () => {
         <InputNumber
           min={1}
           max={maxDiceNum}
+          precision={0}
           size="large"
           value={diceNum}
           onChange={(value: number | null) => {
