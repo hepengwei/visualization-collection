@@ -1,6 +1,6 @@
 <h1 align="center">visualization-collection</h1>
 <div align="center">
-一个专注于前端视觉效果的集合应用，包含CSS动效、Canvas动画、人工智能应用等上百个案例（持续更新）
+一个专注于前端视觉效果的集合应用，包含CSS动效、Canvas动画、Three.js3D、人工智能应用等上百个案例（持续更新）
 </div>
 
 ## 在线体验(PC端)
