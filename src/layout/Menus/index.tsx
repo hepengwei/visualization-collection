@@ -226,6 +226,10 @@ const Menus: React.FC = () => {
           intl.formatMessage({ id: "menu.threeJs3D.rubiksCube" }),
           "rubiksCube"
         ),
+        getItem(
+          intl.formatMessage({ id: "menu.threeJs3D.throwDice" }),
+          "throwDice"
+        ),
       ]
     ),
     getItem(

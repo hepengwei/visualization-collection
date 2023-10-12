@@ -28,6 +28,7 @@ import MatchLine from 'pages/canvas/MatchLine';
 import AppPage3DFrame from "pages/threejs/AppPageFrame";
 import CarShow from "pages/threejs/CarShow";
 import RubiksCube from "pages/threejs/RubiksCube";
+import ThrowDice from "pages/threejs/ThrowDice";
 import HumanPostureDetection from "pages/AIApplication/HumanPostureDetection";
 import NotBlockPeopleBarrage from "pages/AIApplication/NotBlockPeopleBarrage";
 import ImageProcessingTool from "pages/ImageProcessingTool";
@@ -174,6 +175,10 @@ export const contentRoutes: RouteObject[] = [
       {
         path: "/threejs/rubiksCube",
         element: <RubiksCube />,
+      },
+      {
+        path: "/threejs/throwDice",
+        element: <ThrowDice />,
       },
     ],
   },

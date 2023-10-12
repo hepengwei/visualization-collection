@@ -124,6 +124,7 @@ const en_US = {
   "menu.threeJs3D.appPageFrame": "Cool 3D Application page",
   "menu.threeJs3D.carShow": "Car Show",
   "menu.threeJs3D.rubiksCube": "Level 3 Rubik's Cube",
+  "menu.threeJs3D.throwDice": "Throw Dice",
   "menu.AIApplication": "AI Application",
   "menu.AIApplication.humanPostureDetection": "Human Posture Detection",
   "menu.AIApplication.notBlockPeopleBarrage":
@@ -285,6 +286,8 @@ const en_US = {
   "page.threeJs3D.hubColor": "Hub Color",
   "page.threeJs3D.filmMaterial": "Film Material",
   "page.threeJs3D.windshieldMaterial": "Windshield Material",
+  "page.threeJs3D.diceNum": "Number of dice",
+  "page.threeJs3D.enterDiceNum": "Please enter the number of dice first",
 
   // 人工智能应用
   "page.AIApplication.humanPostureDetection":

@@ -113,6 +113,7 @@ const zh_CN = {
   "menu.threeJs3D.appPageFrame": "炫酷3D应用页面",
   "menu.threeJs3D.carShow": "汽车展览",
   "menu.threeJs3D.rubiksCube": "3阶魔方",
+  "menu.threeJs3D.throwDice": "投骰子",
   "menu.AIApplication": "人工智能应用",
   "menu.AIApplication.humanPostureDetection": "人体姿态检测",
   "menu.AIApplication.notBlockPeopleBarrage": "不挡人像的弹幕",
@@ -247,6 +248,8 @@ const zh_CN = {
   "page.threeJs3D.hubColor": "轮毂颜色",
   "page.threeJs3D.filmMaterial": "贴膜材质",
   "page.threeJs3D.windshieldMaterial": "挡风玻璃材质",
+  "page.threeJs3D.diceNum": "骰子数量",
+  "page.threeJs3D.enterDiceNum": "请先输入骰子数量",
 
   // 人工智能应用
   "page.AIApplication.humanPostureDetection":

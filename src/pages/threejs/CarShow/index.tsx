@@ -1,3 +1,6 @@
+/**
+ * 汽车展览
+ */
 import React, { useRef, useLayoutEffect } from "react";
 import { useIntl } from "react-intl";
 import * as THREE from "three";
