@@ -1,3 +1,6 @@
+/**
+ * 炫酷3D应用页面
+ */
 import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import * as THREE from "three";
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
