@@ -76,6 +76,8 @@ const zh_CN = {
   "common.delete": "删除",
   "common.inquire": "查询",
   "common.checkout": "校验",
+  "common.moduleTitle": "模块标题",
+  "common.customizeContent": "自定义内容",
   "common.ad.btnText": "马上体验",
 
   // 菜单
@@ -251,6 +253,7 @@ const zh_CN = {
   "page.threeJs3D.windshieldMaterial": "挡风玻璃材质",
   "page.threeJs3D.diceNum": "骰子数量",
   "page.threeJs3D.enterDiceNum": "请先输入骰子数量",
+  "page.threeJs3D.visualizationPlatform": "大屏可视化平台",
 
   // 人工智能应用
   "page.AIApplication.humanPostureDetection":
