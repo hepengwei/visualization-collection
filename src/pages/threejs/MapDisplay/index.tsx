@@ -1,16 +1,23 @@
 /**
  * 地图展示
  */
-import React, { useRef, useLayoutEffect, useCallback } from "react";
+import React, { useRef, useLayoutEffect, useCallback, useState } from "react";
 import { useIntl } from "react-intl";
+import { AppstoreOutlined } from "@ant-design/icons";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { geoMercator } from "d3-geo";
 import { useGlobalContext } from "hooks/useGlobalContext";
 import useInitialize from "hooks/threejs/useInitialize";
+import useMoveTo from "hooks/useMoveTo";
+import Border1 from "components/LargeScreenBorder/Border1";
+import pageBg from "images/threejs/pageBg.png";
+import topBg from "images/threejs/topBg.png";
+import shine from "images/threejs/shine.png";
 import styles from "./index.module.scss";
 
 const cameraInitPosition = { x: 0, y: -20, z: 80 }; // 相机初始位置
+const mapInitPosition = { x: 0, y: 6, z: 0 }; // 地图初始位置
 const mapDepth = 6; // 地图板块深度
 const mapColor = "#008170"; // 地图表面颜色
 const mapSideColor = "#1AACAC"; // 地图侧面颜色
@@ -20,12 +27,49 @@ const MapDisplay = () => {
   const intl = useIntl();
   const { menuWidth, headHeight } = useGlobalContext();
   const containerRef = useRef<HTMLDivElement>(null);
+  const topBoxRef = useRef<HTMLDivElement>(null);
+  const leftBoxRef = useRef<HTMLDivElement>(null);
+  const rightBoxRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
   const mapRef = useRef<THREE.Object3D | null>(null);
   const raycaster = useRef<THREE.Raycaster>(new THREE.Raycaster());
   const mouse = useRef<THREE.Vector2 | null>(null);
   const lastPick = useRef<any>(null);
+  const [showMainPage, setShowMainPage] = useState<boolean>(true);
+
+  // 显示主面板
+  const { restart: topRestart, reverse: topReverse } = useMoveTo(
+    topBoxRef,
+    "toBottom",
+    0.6
+  );
+  const { restart: leftRestart, reverse: leftReverse } = useMoveTo(
+    leftBoxRef,
+    "toRight",
+    0.8,
+    0.5
+  );
+  const { restart: rightRestart, reverse: rightReverse } = useMoveTo(
+    rightBoxRef,
+    "toLeft",
+    0.8,
+    0.5
+  );
+
+  // 显示或隐藏主面板
+  const showOrHideMainPage = () => {
+    if (showMainPage) {
+      topReverse();
+      leftReverse();
+      rightReverse();
+    } else {
+      topRestart();
+      leftRestart();
+      rightRestart();
+    }
+    setShowMainPage(!showMainPage);
+  };
 
   // 创建地图对象并添加到场景中
   const createMap = (data: Record<string, any>, scene: THREE.Scene) => {
@@ -78,12 +122,12 @@ const MapDisplay = () => {
             const material1 = new THREE.MeshBasicMaterial({
               color: mapColor,
               transparent: true,
-              opacity: 1,
+              opacity: 0.92,
             });
             const material2 = new THREE.MeshBasicMaterial({
               color: mapSideColor,
               transparent: true,
-              opacity: 1,
+              opacity: 0.92,
             });
 
             const mesh = new THREE.Mesh(geometry, [material1, material2]);
@@ -101,7 +145,7 @@ const MapDisplay = () => {
         map.add(province);
       }
     );
-    map.position.set(0, 20, 0);
+    map.position.set(mapInitPosition.x, mapInitPosition.y, mapInitPosition.z);
 
     scene.add(map);
     mapRef.current = map;
@@ -142,13 +186,13 @@ const MapDisplay = () => {
     renderer: THREE.WebGLRenderer
   ) => {
     if (containerRef.current) {
-      scene.background = new THREE.Color("#111111");
+      // 添加背景图
+      scene.background = new THREE.TextureLoader().load(pageBg);
       camera.position.set(
         cameraInitPosition.x,
         cameraInitPosition.y,
         cameraInitPosition.z
       );
-      renderer.setClearColor("#111111");
       renderer.shadowMap.enabled = true;
 
       const controls = new OrbitControls(camera, renderer.domElement);
@@ -226,6 +270,48 @@ const MapDisplay = () => {
       onMouseMove={onMouseMove}
       ref={containerRef}
     >
+      <div className={styles.switch} onClick={showOrHideMainPage}>
+        <AppstoreOutlined />
+      </div>
+      <div className={styles.mainPage}>
+        <div className={styles.topBox} ref={topBoxRef}>
+          <img src={topBg} alt="" className={styles.topBg} />
+          <img src={shine} alt="" className={styles.shine} />
+          <div className={styles.leftLine} />
+          <div className={styles.rightLine} />
+          <div className={styles.title}>
+            <span>
+              {intl.formatMessage({
+                id: "page.threeJs3D.visualizationPlatform",
+              })}
+            </span>
+          </div>
+        </div>
+        <div className={styles.leftBox} ref={leftBoxRef}>
+          <div className={styles.item}>
+            <Border1 title={intl.formatMessage({ id: "common.moduleTitle" })}>
+              {intl.formatMessage({ id: "common.customizeContent" })}
+            </Border1>
+          </div>
+          <div className={styles.item}>
+            <Border1>
+              {intl.formatMessage({ id: "common.customizeContent" })}
+            </Border1>
+          </div>
+        </div>
+        <div className={styles.rightBox} ref={rightBoxRef}>
+          <div className={styles.item}>
+            <Border1 title={intl.formatMessage({ id: "common.moduleTitle" })}>
+              {intl.formatMessage({ id: "common.customizeContent" })}
+            </Border1>
+          </div>
+          <div className={styles.item}>
+            <Border1>
+              {intl.formatMessage({ id: "common.customizeContent" })}
+            </Border1>
+          </div>
+        </div>
+      </div>
       <div className={styles.tooltip} ref={tooltipRef}></div>
     </div>
   );

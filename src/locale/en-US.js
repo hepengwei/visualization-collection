@@ -83,6 +83,8 @@ const en_US = {
   "common.delete": "Delete",
   "common.inquire": "Inquire",
   "common.checkout": "Checkout",
+  "common.moduleTitle": "Module Title",
+  "common.customizeContent": "Customize content",
   "common.ad.btnText": "Experience right away",
 
   // 菜单
@@ -289,6 +291,7 @@ const en_US = {
   "page.threeJs3D.windshieldMaterial": "Windshield Material",
   "page.threeJs3D.diceNum": "Number of dice",
   "page.threeJs3D.enterDiceNum": "Please enter the number of dice first",
+  "page.threeJs3D.visualizationPlatform": "Large screen visualization platform",
 
   // 人工智能应用
   "page.AIApplication.humanPostureDetection":
