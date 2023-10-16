@@ -8,3 +8,5 @@ declare module "react-tilt" {
 }
 
 declare module "sphere-collision";
+
+declare module "d3-geo";

@@ -125,6 +125,7 @@ const en_US = {
   "menu.threeJs3D.carShow": "Car Show",
   "menu.threeJs3D.rubiksCube": "Level 3 Rubik's Cube",
   "menu.threeJs3D.throwDice": "Throw Dice",
+  "menu.threeJs3D.mapDisplay": "Map Display",
   "menu.AIApplication": "AI Application",
   "menu.AIApplication.humanPostureDetection": "Human Posture Detection",
   "menu.AIApplication.notBlockPeopleBarrage":
