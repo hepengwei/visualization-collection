@@ -273,43 +273,42 @@ const MapDisplay = () => {
       <div className={styles.switch} onClick={showOrHideMainPage}>
         <AppstoreOutlined />
       </div>
-      <div className={styles.mainPage}>
-        <div className={styles.topBox} ref={topBoxRef}>
-          <img src={topBg} alt="" className={styles.topBg} />
-          <img src={shine} alt="" className={styles.shine} />
-          <div className={styles.leftLine} />
-          <div className={styles.rightLine} />
-          <div className={styles.title}>
-            <span>
-              {intl.formatMessage({
-                id: "page.threeJs3D.visualizationPlatform",
-              })}
-            </span>
-          </div>
+
+      <div className={styles.topBox} ref={topBoxRef}>
+        <img src={topBg} alt="" className={styles.topBg} />
+        <img src={shine} alt="" className={styles.shine} />
+        <div className={styles.leftLine} />
+        <div className={styles.rightLine} />
+        <div className={styles.title}>
+          <span>
+            {intl.formatMessage({
+              id: "page.threeJs3D.visualizationPlatform",
+            })}
+          </span>
         </div>
-        <div className={styles.leftBox} ref={leftBoxRef}>
-          <div className={styles.item}>
-            <Border1 title={intl.formatMessage({ id: "common.moduleTitle" })}>
-              {intl.formatMessage({ id: "common.customizeContent" })}
-            </Border1>
-          </div>
-          <div className={styles.item}>
-            <Border1>
-              {intl.formatMessage({ id: "common.customizeContent" })}
-            </Border1>
-          </div>
+      </div>
+      <div className={styles.leftBox} ref={leftBoxRef}>
+        <div className={styles.item}>
+          <Border1 title={intl.formatMessage({ id: "common.moduleTitle" })}>
+            {intl.formatMessage({ id: "common.customizeContent" })}
+          </Border1>
         </div>
-        <div className={styles.rightBox} ref={rightBoxRef}>
-          <div className={styles.item}>
-            <Border1 title={intl.formatMessage({ id: "common.moduleTitle" })}>
-              {intl.formatMessage({ id: "common.customizeContent" })}
-            </Border1>
-          </div>
-          <div className={styles.item}>
-            <Border1>
-              {intl.formatMessage({ id: "common.customizeContent" })}
-            </Border1>
-          </div>
+        <div className={styles.item}>
+          <Border1>
+            {intl.formatMessage({ id: "common.customizeContent" })}
+          </Border1>
+        </div>
+      </div>
+      <div className={styles.rightBox} ref={rightBoxRef}>
+        <div className={styles.item}>
+          <Border1 title={intl.formatMessage({ id: "common.moduleTitle" })}>
+            {intl.formatMessage({ id: "common.customizeContent" })}
+          </Border1>
+        </div>
+        <div className={styles.item}>
+          <Border1>
+            {intl.formatMessage({ id: "common.customizeContent" })}
+          </Border1>
         </div>
       </div>
       <div className={styles.tooltip} ref={tooltipRef}></div>
