@@ -114,6 +114,7 @@ const zh_CN = {
   "menu.threeJs3D.carShow": "汽车展览",
   "menu.threeJs3D.rubiksCube": "3阶魔方",
   "menu.threeJs3D.throwDice": "投骰子",
+  "menu.threeJs3D.mapDisplay": "地图展示",
   "menu.AIApplication": "人工智能应用",
   "menu.AIApplication.humanPostureDetection": "人体姿态检测",
   "menu.AIApplication.notBlockPeopleBarrage": "不挡人像的弹幕",

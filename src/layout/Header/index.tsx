@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useIntl } from "react-intl";
 import { Tooltip, Modal } from "antd";
-import { CoffeeOutlined } from "@ant-design/icons";
+import { CoffeeOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import collectionCode from "images/collectionCode.jpeg";
 import English from "images/English.svg";
@@ -64,10 +64,15 @@ const Header: React.FC = () => {
         footer={null}
         maskClosable={false}
         width={320}
-        onCancel={() => {
-          setOpen(false);
-        }}
       >
+        <div
+          className={styles.closeBtn}
+          onClick={() => {
+            setOpen(false);
+          }}
+        >
+          <CloseCircleOutlined />
+        </div>
         <img src={collectionCode} alt="" />
         <p>{intl.formatMessage({ id: "common.reward.tip" })}</p>
       </Modal>

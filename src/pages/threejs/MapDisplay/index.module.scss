@@ -1,0 +1,17 @@
+.container {
+  width: 100%;
+  height: 100%;
+  background-color: #111111;
+  overflow: hidden;
+  position: relative;
+  .tooltip {
+    position: absolute;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #000;
+    background-color: #ffffff;
+    border-radius: 4px;
+    visibility: hidden;
+  }
+}
