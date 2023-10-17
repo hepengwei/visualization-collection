@@ -33,7 +33,8 @@
     transform: translate(0px, -$topBoxHeight);
 
     img {
-      object-fit: cover;
+      width: 100%;
+      height: 61px;
     }
     $marginTop: 20px;
     $lineWidth: 120px;
@@ -114,6 +115,9 @@
       width: 100%;
       height: 40%;
       padding: 20px;
+      &:last-child {
+        height: 60%;
+      }
     }
   }
   .rightBox {
@@ -128,7 +132,10 @@
     .item {
       width: 100%;
       height: 40%;
-      padding: 20px;
+      padding: 14px;
+      &:last-child {
+        height: 60%;
+      }
     }
   }
   .tooltip {
