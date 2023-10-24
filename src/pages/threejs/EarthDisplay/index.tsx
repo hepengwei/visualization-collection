@@ -32,7 +32,7 @@ import earthFragment from "./earthShaders/fragment.fs";
 import { useGlobalContext } from "hooks/useGlobalContext";
 import useInitialize from "hooks/threejs/useInitialize";
 import useMoveTo from "hooks/useMoveTo";
-import Border1 from "components/LargeScreenBorder/Border1";
+import Border2 from "components/LargeScreenBorder/Border2";
 import luminousPointData from "./luminousPointData";
 import { getTextWidth } from "utils/util";
 import { lon2xyz } from "utils/threejsUtil";
@@ -460,26 +460,26 @@ const EarthDisplay = () => {
       </div>
       <div className={styles.leftBox} ref={leftBoxRef}>
         <div className={styles.item}>
-          <Border1 title={intl.formatMessage({ id: "common.moduleTitle" })}>
+          <Border2 title={intl.formatMessage({ id: "common.moduleTitle" })}>
             {intl.formatMessage({ id: "common.customizeContent" })}
-          </Border1>
+          </Border2>
         </div>
         <div className={styles.item}>
-          <Border1>
+          <Border2>
             {intl.formatMessage({ id: "common.customizeContent" })}
-          </Border1>
+          </Border2>
         </div>
       </div>
       <div className={styles.rightBox} ref={rightBoxRef}>
         <div className={styles.item}>
-          <Border1 title={intl.formatMessage({ id: "common.moduleTitle" })}>
+          <Border2 title={intl.formatMessage({ id: "common.moduleTitle" })}>
             {intl.formatMessage({ id: "common.customizeContent" })}
-          </Border1>
+          </Border2>
         </div>
         <div className={styles.item}>
-          <Border1>
+          <Border2>
             {intl.formatMessage({ id: "common.customizeContent" })}
-          </Border1>
+          </Border2>
         </div>
       </div>
     </div>

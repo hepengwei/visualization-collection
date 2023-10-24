@@ -1,6 +1,5 @@
 import React, { ReactNode, useEffect, useMemo, useRef } from "react";
 import { useIntl } from "react-intl";
-import { getTextWidth } from "utils/util";
 import { useGlobalContext } from "hooks/useGlobalContext";
 import styles from "./index.module.scss";
 
@@ -13,20 +12,18 @@ interface BorderPorps {
   children?: ReactNode;
 }
 
-const leftTopHeight = 8; // 左上角突起的高度
-const leftToplineWidth = 8; // 左上角三个横线各自的宽度
-const leftToplineMargin = 4; // 左上角三个横线中间的间距
+const leftTopWidth = 180; // 左上角突起的宽度
+const leftTopHeight = 12; // 左上角突起的高度
+const rightTopWidth = 54; // 右上角突起的宽度
+const rightTopMarginRight = 54; // 右上角突起距离右边的距离
+const rightBottomWidth = 10; // 右下角斜角的宽度
 const titleMarginTop = 6; // 标题距离上边边框的距离
 const titleMarginBottom = 20; // 标题距离上边边框的距离
 const bgItemWidth = 10; // 背景图案每个小格的宽度
 const bgColor1 = "#3D5454"; // 背景图案的小格的颜色1
 const bgColor2 = "#445A5A"; // 背景图案的小格的颜色2
-const arrowWidth = 10; // 标题左右各箭头的宽度
-const arrowLineWidth = 4; // 标题左右各箭头线的粗细
-const arrowMargin = 6; // 标题左右各箭头的间距
-const arrowMarginTitle = 16; // 标题左右箭头与标题的间距
 
-const Border1 = (props: BorderPorps) => {
+const Border2 = (props: BorderPorps) => {
   const {
     title = "",
     lineWidth = 1,
@@ -57,22 +54,26 @@ const Border1 = (props: BorderPorps) => {
       const { width, height } = canvasRef.current;
       let x = 1;
       ctx.beginPath();
-      ctx.moveTo(x, leftTopHeight);
-      x = leftTopHeight;
-      ctx.lineTo(x, 1);
-      x += 4 * leftToplineMargin + 3 * leftToplineWidth;
+      ctx.moveTo(x, 1);
+      x = leftTopWidth;
       ctx.lineTo(x, 1);
       x += leftTopHeight;
       ctx.lineTo(x, leftTopHeight);
-      x = width - 2 * leftTopHeight;
+      x = width - rightTopMarginRight - rightTopWidth - leftTopHeight;
+      ctx.lineTo(x, leftTopHeight);
+      x += leftTopHeight / 2;
+      ctx.lineTo(x, leftTopHeight / 2);
+      x += rightTopWidth;
+      ctx.lineTo(x, leftTopHeight / 2);
+      x += leftTopHeight / 2;
       ctx.lineTo(x, leftTopHeight);
       x = width - drawLineWidth;
-      ctx.lineTo(x, 3 * leftTopHeight);
-      ctx.lineTo(x, height - drawLineWidth);
-      x = 2 * leftTopHeight;
+      ctx.lineTo(x, leftTopHeight);
+      ctx.lineTo(x, height - rightBottomWidth);
+      x -= rightBottomWidth;
       ctx.lineTo(x, height - drawLineWidth);
       x = 1;
-      ctx.lineTo(x, height - 2 * leftTopHeight);
+      ctx.lineTo(x, height - drawLineWidth);
       ctx.closePath();
       ctx.lineWidth = drawLineWidth;
     }
@@ -125,127 +126,53 @@ const Border1 = (props: BorderPorps) => {
       ctx.strokeStyle = isHover.current ? highlightColor : lineColor;
       ctx.stroke();
       // 修改画笔粗细和颜色
-      ctx.lineWidth = drawLineWidth + 1;
+      drawLineWidth = lineWidth + 1;
+      ctx.lineWidth = drawLineWidth;
       ctx.strokeStyle = highlightColor;
-      // 画左上角三个横线
+      // 画左上角粗线
       ctx.beginPath();
-      x = leftTopHeight + leftToplineMargin;
-      ctx.moveTo(x, leftTopHeight);
-      x += leftToplineWidth;
-      ctx.lineTo(x, leftTopHeight);
-      ctx.closePath();
+      x = 1;
+      ctx.moveTo(x, leftTopHeight * 2);
+      ctx.lineTo(x, 1);
+      x += leftTopWidth * 0.6;
+      ctx.lineTo(x, 1);
       ctx.stroke();
 
+      // 画右上角粗线
       ctx.beginPath();
-      x += leftToplineMargin;
+      x = width - rightTopMarginRight - rightTopWidth;
       ctx.moveTo(x, leftTopHeight);
-      x += leftToplineWidth;
+      x = width - rightTopMarginRight - leftTopHeight;
       ctx.lineTo(x, leftTopHeight);
-      ctx.closePath();
       ctx.stroke();
 
-      ctx.beginPath();
-      x += leftToplineMargin;
-      ctx.moveTo(x, leftTopHeight);
-      x += leftToplineWidth;
-      ctx.lineTo(x, leftTopHeight);
-      ctx.closePath();
-      ctx.stroke();
-      // 画右下角直角
+      // 画右下角粗线
       ctx.beginPath();
       x = width - drawLineWidth;
-      ctx.moveTo(x, height - 2 * leftTopHeight);
-      ctx.lineTo(x, height);
-      ctx.closePath();
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(x, height - drawLineWidth);
-      x -= 2 * leftTopHeight;
+      ctx.moveTo(x, height - rightBottomWidth - drawLineWidth - 4);
+      ctx.lineTo(x, height - rightBottomWidth - drawLineWidth);
+      x -= rightBottomWidth;
       ctx.lineTo(x, height - drawLineWidth);
-      ctx.closePath();
+      x -= 4;
+      ctx.lineTo(x, height - drawLineWidth);
+      ctx.stroke();
+
+      ctx.beginPath();
+      x = width - drawLineWidth;
+      ctx.moveTo(x, height - 6);
+      x = width - 6;
+      ctx.lineTo(x, height - drawLineWidth);
       ctx.stroke();
 
       if (title) {
         // 绘制标题
-        const titleWidth = getTextWidth(
-          title,
-          Number.parseInt(finalStyle.fontSize),
-          finalStyle.fontWeight
-        );
         ctx.font = `${finalStyle.fontWeight} ${finalStyle.fontSize} SourceHanSansCN-Bold`;
         ctx.fillStyle = finalStyle.color;
         ctx.fillText(
           title,
-          (width - titleWidth) / 2,
+          leftTopHeight * 1.5,
           leftTopHeight + titleMarginTop + Number.parseInt(finalStyle.fontSize)
         );
-        let x =
-          (width - titleWidth) / 2 -
-          (arrowMarginTitle + 2 * arrowWidth + arrowMargin);
-        const y =
-          leftTopHeight +
-          titleMarginTop +
-          Number.parseInt(finalStyle.fontSize) / 2 +
-          2;
-        // 绘制标题左边箭头图案
-        ctx.lineWidth = arrowLineWidth;
-        ctx.lineJoin = "miter";
-        ctx.beginPath();
-        ctx.moveTo(x, leftTopHeight + titleMarginTop + 4);
-        ctx.lineTo(x + arrowWidth, y);
-        ctx.lineTo(
-          x,
-          leftTopHeight + titleMarginTop + Number.parseInt(finalStyle.fontSize)
-        );
-        ctx.strokeStyle = isHover.current ? finalStyle.color : lineColor;
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(
-          x + arrowWidth + arrowMargin,
-          leftTopHeight + titleMarginTop + 4
-        );
-        ctx.lineTo(x + 2 * arrowWidth + arrowMargin, y);
-        ctx.lineTo(
-          x + arrowWidth + arrowMargin,
-          leftTopHeight + titleMarginTop + Number.parseInt(finalStyle.fontSize)
-        );
-        ctx.strokeStyle = finalStyle.color;
-        ctx.stroke();
-        // 绘制标题右边箭头图案
-        x = (width + titleWidth) / 2 + arrowMarginTitle;
-        ctx.beginPath();
-        ctx.moveTo(x + arrowWidth, leftTopHeight + titleMarginTop + 4);
-        ctx.lineTo(
-          x,
-          leftTopHeight +
-            titleMarginTop +
-            Number.parseInt(finalStyle.fontSize) / 2 +
-            2
-        );
-        ctx.lineTo(
-          x + arrowWidth,
-          leftTopHeight + titleMarginTop + Number.parseInt(finalStyle.fontSize)
-        );
-        ctx.strokeStyle = finalStyle.color;
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(
-          x + 2 * arrowWidth + arrowMargin,
-          leftTopHeight + titleMarginTop + 4
-        );
-        ctx.lineTo(
-          x + arrowWidth + arrowMargin,
-          leftTopHeight +
-            titleMarginTop +
-            Number.parseInt(finalStyle.fontSize) / 2 +
-            2
-        );
-        ctx.lineTo(
-          x + 2 * arrowWidth + arrowMargin,
-          leftTopHeight + titleMarginTop + Number.parseInt(finalStyle.fontSize)
-        );
-        ctx.strokeStyle = isHover.current ? finalStyle.color : lineColor;
-        ctx.stroke();
       }
     }
   };
@@ -284,7 +211,7 @@ const Border1 = (props: BorderPorps) => {
       <div
         className={styles.content}
         style={{
-          left: `${leftTopHeight * 2}px`,
+          left: `${leftTopHeight * 1.5}px`,
           right: `${leftTopHeight}px`,
           top: title
             ? `${
@@ -303,4 +230,4 @@ const Border1 = (props: BorderPorps) => {
   );
 };
 
-export default Border1;
+export default Border2;
