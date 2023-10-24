@@ -2,7 +2,15 @@
  * 炫酷3D应用页面
  */
 import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
-import * as THREE from "three";
+import {
+  Scene,
+  SphereGeometry,
+  MeshStandardMaterial,
+  DirectionalLight,
+  TextureLoader,
+  InstancedMesh,
+  Matrix4,
+} from "three";
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 import { gsap } from "gsap";
 import { useDebounceFn } from "ahooks";
@@ -25,23 +33,19 @@ const AppPageFrame = () => {
   const scrollCameraTimeline = useRef<any>(gsap.timeline());
   const contentTween = useRef<gsap.core.Tween | null>(null);
 
-  const initializeHandle = (
-    scene: THREE.Scene,
-    camera: THREE.PerspectiveCamera,
-    renderer: THREE.WebGLRenderer
-  ) => {
+  const initializeHandle = (scene: Scene) => {
     if (containerRef.current) {
       const { clientHeight } = containerRef.current;
       setContainerHeight(clientHeight);
 
       // 创建并添加3个平行光
-      const light = new THREE.DirectionalLight(0xffffff, 1);
+      const light = new DirectionalLight(0xffffff, 1);
       light.position.set(0, 0, 1);
       scene.add(light);
-      const light2 = new THREE.DirectionalLight(0xffffff, 0.5);
+      const light2 = new DirectionalLight(0xffffff, 0.5);
       light2.position.set(0, 0, -1);
       scene.add(light2);
-      const light3 = new THREE.DirectionalLight(0xffffff, 0.5);
+      const light3 = new DirectionalLight(0xffffff, 0.5);
       light3.position.set(-1, 1, 1);
       scene.add(light3);
 
@@ -69,30 +73,26 @@ const AppPageFrame = () => {
       // 创建并添加行星，创建10组moonInstance
       for (let i = 0; i < 10; i++) {
         // 每组创建100个小行星
-        const moonGeometry = new THREE.SphereGeometry(1.5, 10, 10);
-        // const moonMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-        const moonTexture = new THREE.TextureLoader().load(moonImg);
-        const moonDisplacemenTexture = new THREE.TextureLoader().load(
+        const moonGeometry = new SphereGeometry(1.5, 10, 10);
+        // const moonMaterial = new MeshBasicMaterial({ color: 0xffffff });
+        const moonTexture = new TextureLoader().load(moonImg);
+        const moonDisplacemenTexture = new TextureLoader().load(
           moonDisplacemenImg
         );
-        const moonMaterial = new THREE.MeshStandardMaterial({
+        const moonMaterial = new MeshStandardMaterial({
           map: moonTexture,
           displacementMap: moonDisplacemenTexture, // 位移贴图，制造凹凸
           displacementScale: 0.5, // 凹凸比例
         });
 
-        const moonInstance = new THREE.InstancedMesh(
-          moonGeometry,
-          moonMaterial,
-          100
-        );
+        const moonInstance = new InstancedMesh(moonGeometry, moonMaterial, 100);
 
         for (let i = 0; i < 1000; i++) {
           const x = Math.random() * 1000 - 500;
           const y = Math.random() * 1000 - 500;
           const z = Math.random() * 1000 - 500;
 
-          const matrix = new THREE.Matrix4();
+          const matrix = new Matrix4();
           matrix.makeTranslation(x, y, z);
           moonInstance.setMatrixAt(i, matrix);
           const size = Math.random() * 20 - 8;

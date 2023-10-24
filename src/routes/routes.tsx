@@ -30,6 +30,7 @@ import CarShow from "pages/threejs/CarShow";
 import RubiksCube from "pages/threejs/RubiksCube";
 import ThrowDice from "pages/threejs/ThrowDice";
 import MapDisplay from "pages/threejs/MapDisplay";
+import EarthDisplay from "pages/threejs/EarthDisplay";
 import HumanPostureDetection from "pages/AIApplication/HumanPostureDetection";
 import NotBlockPeopleBarrage from "pages/AIApplication/NotBlockPeopleBarrage";
 import ImageProcessingTool from "pages/ImageProcessingTool";
@@ -184,6 +185,10 @@ export const contentRoutes: RouteObject[] = [
       {
         path: "/threejs/mapDisplay",
         element: <MapDisplay />,
+      },
+      {
+        path: "/threejs/earthDisplay",
+        element: <EarthDisplay />,
       },
     ],
   },

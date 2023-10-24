@@ -206,6 +206,10 @@ module.exports = function () {
             filename: "assets/[name][ext][query]",
           },
         },
+        {
+          test: /\.(glsl|vs|fs)$/,
+          loader: "ts-shader-loader",
+        },
       ],
     },
     plugins: [

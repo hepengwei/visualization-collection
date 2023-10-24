@@ -4,7 +4,24 @@
 import React, { useRef, useLayoutEffect, useCallback, useState } from "react";
 import { useIntl } from "react-intl";
 import { AppstoreOutlined } from "@ant-design/icons";
-import * as THREE from "three";
+import {
+  Scene,
+  PerspectiveCamera,
+  WebGLRenderer,
+  Object3D,
+  Vector2,
+  Vector3,
+  Shape,
+  BufferGeometry,
+  ExtrudeGeometry,
+  MeshBasicMaterial,
+  LineBasicMaterial,
+  Mesh,
+  Line,
+  TextureLoader,
+  FileLoader,
+  Raycaster,
+} from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { geoMercator } from "d3-geo";
 import { useGlobalContext } from "hooks/useGlobalContext";
@@ -32,9 +49,9 @@ const MapDisplay = () => {
   const rightBoxRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
-  const mapRef = useRef<THREE.Object3D | null>(null);
-  const raycaster = useRef<THREE.Raycaster>(new THREE.Raycaster());
-  const mouse = useRef<THREE.Vector2 | null>(null);
+  const mapRef = useRef<Object3D | null>(null);
+  const raycaster = useRef<Raycaster>(new Raycaster());
+  const mouse = useRef<Vector2 | null>(null);
   const lastPick = useRef<any>(null);
   const [showMainPage, setShowMainPage] = useState<boolean>(true);
 
@@ -72,9 +89,9 @@ const MapDisplay = () => {
   };
 
   // 创建地图对象并添加到场景中
-  const createMap = (data: Record<string, any>, scene: THREE.Scene) => {
+  const createMap = (data: Record<string, any>, scene: Scene) => {
     // 初始化一个地图对象
-    const map = new THREE.Object3D();
+    const map = new Object3D();
     // 墨卡托投影转换
     const projection = geoMercator()
       .center([104.0, 37.5])
@@ -88,16 +105,16 @@ const MapDisplay = () => {
         geometry: { type: string; coordinates: any[] };
       }) => {
         // 创建一个省份3D对象
-        const province = new THREE.Object3D();
+        const province = new Object3D();
         // 每个的 坐标 数组
         const { coordinates } = elem.geometry;
         // 循环坐标数组
         coordinates.forEach((multiPolygon: any[]) => {
           multiPolygon.forEach((polygon) => {
-            const shape = new THREE.Shape();
+            const shape = new Shape();
 
             // 给每个省的边界画线
-            const lineGeometry = new THREE.BufferGeometry();
+            const lineGeometry = new BufferGeometry();
             const pointsArray = [];
             for (let i = 0; i < polygon.length; i++) {
               const [x, y] = projection(polygon[i]);
@@ -106,7 +123,7 @@ const MapDisplay = () => {
               } else {
                 shape.lineTo(x, -y);
               }
-              pointsArray.push(new THREE.Vector3(x, -y, mapDepth));
+              pointsArray.push(new Vector3(x, -y, mapDepth));
             }
             lineGeometry.setFromPoints(pointsArray);
 
@@ -118,23 +135,23 @@ const MapDisplay = () => {
               bevelOffset: 0,
               bevelSegments: 1,
             };
-            const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
-            const material1 = new THREE.MeshBasicMaterial({
+            const geometry = new ExtrudeGeometry(shape, extrudeSettings);
+            const material1 = new MeshBasicMaterial({
               color: mapColor,
               transparent: true,
               opacity: 0.92,
             });
-            const material2 = new THREE.MeshBasicMaterial({
+            const material2 = new MeshBasicMaterial({
               color: mapSideColor,
               transparent: true,
               opacity: 0.92,
             });
 
-            const mesh = new THREE.Mesh(geometry, [material1, material2]);
-            const lineMaterial = new THREE.LineBasicMaterial({
+            const mesh = new Mesh(geometry, [material1, material2]);
+            const lineMaterial = new LineBasicMaterial({
               color: "white",
             });
-            const line = new THREE.Line(lineGeometry, lineMaterial);
+            const line = new Line(lineGeometry, lineMaterial);
             // 将省份的属性 加进来
             // @ts-ignore
             province.properties = elem.properties;
@@ -152,8 +169,8 @@ const MapDisplay = () => {
   };
 
   // 加载地图数据
-  const loadMapData = (scene: THREE.Scene) => {
-    const loader = new THREE.FileLoader();
+  const loadMapData = (scene: Scene) => {
+    const loader = new FileLoader();
     loader.load("./public/json/ChinaMap.json", (data: string | ArrayBuffer) => {
       const jsondata = JSON.parse(data as string);
       createMap(jsondata, scene);
@@ -164,10 +181,10 @@ const MapDisplay = () => {
     (e: any) => {
       if (tooltipRef.current) {
         if (!mouse.current) {
-          mouse.current = new THREE.Vector2();
+          mouse.current = new Vector2();
         }
         const { clientX, clientY } = e;
-        if (new THREE.Vector2())
+        if (new Vector2())
           mouse.current.x =
             ((clientX - menuWidth) / (window.innerWidth - menuWidth)) * 2 - 1;
         mouse.current.y =
@@ -181,22 +198,23 @@ const MapDisplay = () => {
   );
 
   const initializeHandle = (
-    scene: THREE.Scene,
-    camera: THREE.PerspectiveCamera,
-    renderer: THREE.WebGLRenderer
+    scene: Scene,
+    camera: PerspectiveCamera,
+    renderer: WebGLRenderer
   ) => {
     if (containerRef.current) {
       // 添加背景图
-      scene.background = new THREE.TextureLoader().load(pageBg);
+      scene.background = new TextureLoader().load(pageBg);
       camera.position.set(
         cameraInitPosition.x,
         cameraInitPosition.y,
         cameraInitPosition.z
       );
-      renderer.shadowMap.enabled = true;
 
       const controls = new OrbitControls(camera, renderer.domElement);
       controlsRef.current = controls;
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05; // 动态阻尼系数
 
       loadMapData(scene);
     }
@@ -216,8 +234,8 @@ const MapDisplay = () => {
   };
 
   const renderHandle = (
-    scene: THREE.Scene,
-    camera: THREE.PerspectiveCamera
+    scene: Scene,
+    camera: PerspectiveCamera
   ) => {
     if (mapRef.current && mouse.current) {
       // 恢复上一次清空的
@@ -230,7 +248,7 @@ const MapDisplay = () => {
       }
       lastPick.current = null;
       // 通过摄像机和鼠标位置更新射线
-      raycaster.current.setFromCamera(mouse.current as THREE.Vector2, camera);
+      raycaster.current.setFromCamera(mouse.current as Vector2, camera);
       // 算出射线 与当场景相交的对象有那些
       const intersects = raycaster.current.intersectObjects(
         scene.children,

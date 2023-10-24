@@ -3,7 +3,13 @@
  */
 import React, { useRef, useLayoutEffect } from "react";
 import { useIntl } from "react-intl";
-import * as THREE from "three";
+import {
+  MeshPhysicalMaterial,
+  Mesh,
+  Color,
+  DirectionalLight,
+  GridHelper,
+} from "three";
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { useGlobalContext } from "hooks/useGlobalContext";
@@ -12,24 +18,24 @@ import { loadGlb } from "utils/threejsUtil";
 import styles from "./index.module.scss";
 
 interface CarComponent {
-  carWheels: THREE.Mesh[];
-  carFront?: THREE.Mesh;
-  carBody?: THREE.Mesh;
-  carHood?: THREE.Mesh;
-  carGlass?: THREE.Mesh;
+  carWheels: Mesh[];
+  carFront?: Mesh;
+  carBody?: Mesh;
+  carHood?: Mesh;
+  carGlass?: Mesh;
 }
 
 const colorList = ["red", "blue", "green", "gray", "orange", "purple"];
 
 // 创建车子各零件的材质
 // 轮毂材质
-const wheelMeterial = new THREE.MeshPhysicalMaterial({
+const wheelMeterial = new MeshPhysicalMaterial({
   color: 0xff0000,
   metalness: 1, // 金属度
   roughness: 0.1, // 粗糙度
 });
 // 前脸材质
-const frontMeterial = new THREE.MeshPhysicalMaterial({
+const frontMeterial = new MeshPhysicalMaterial({
   color: 0xff0000,
   metalness: 1, // 金属度
   roughness: 0.5, // 粗糙度
@@ -37,7 +43,7 @@ const frontMeterial = new THREE.MeshPhysicalMaterial({
   clearcoatRoughness: 0.1, // 轻漆粗糙度
 });
 // 车身材质
-const bodyMeterial = new THREE.MeshPhysicalMaterial({
+const bodyMeterial = new MeshPhysicalMaterial({
   color: 0xff0000,
   metalness: 1, // 金属度
   roughness: 0.5, // 粗糙度
@@ -45,7 +51,7 @@ const bodyMeterial = new THREE.MeshPhysicalMaterial({
   clearcoatRoughness: 0.1, // 轻漆粗糙度
 });
 // 引擎盖材质
-const hoodMeterial = new THREE.MeshPhysicalMaterial({
+const hoodMeterial = new MeshPhysicalMaterial({
   color: 0xff0000,
   metalness: 1, // 金属度
   roughness: 0.5, // 粗糙度
@@ -53,7 +59,7 @@ const hoodMeterial = new THREE.MeshPhysicalMaterial({
   clearcoatRoughness: 0.1, // 轻漆粗糙度
 });
 // 挡风玻璃材质
-const glassMeterial = new THREE.MeshPhysicalMaterial({
+const glassMeterial = new MeshPhysicalMaterial({
   color: 0xffffff,
   metalness: 0, // 金属度
   roughness: 0, // 粗糙度
@@ -101,7 +107,7 @@ const CarShow = () => {
     renderer: THREE.WebGLRenderer
   ) => {
     if (containerRef.current) {
-      scene.background = new THREE.Color("#ddd");
+      scene.background = new Color("#ddd");
       camera.position.set(0, 2, 4);
       renderer.setClearColor("#000");
 
@@ -110,7 +116,7 @@ const CarShow = () => {
       controls.autoRotate = true;
 
       // 添加网格地面
-      const gridHelper = new THREE.GridHelper(15, 15);
+      const gridHelper = new GridHelper(15, 15);
       (gridHelper.material as THREE.Material).opacity = 0.2;
       (gridHelper.material as THREE.Material).transparent = true;
       scene.add(gridHelper);
@@ -150,31 +156,31 @@ const CarShow = () => {
       });
 
       // 添加灯光
-      const light1 = new THREE.DirectionalLight(0xffffff, 1);
+      const light1 = new DirectionalLight(0xffffff, 1);
       light1.position.set(0, 0, 10);
       scene.add(light1);
-      const light2 = new THREE.DirectionalLight(0xffffff, 1);
+      const light2 = new DirectionalLight(0xffffff, 1);
       light2.position.set(0, 0, -10);
       scene.add(light2);
-      const light3 = new THREE.DirectionalLight(0xffffff, 1);
+      const light3 = new DirectionalLight(0xffffff, 1);
       light3.position.set(10, 0, 0);
       scene.add(light3);
-      const light4 = new THREE.DirectionalLight(0xffffff, 1);
+      const light4 = new DirectionalLight(0xffffff, 1);
       light4.position.set(-10, 0, 0);
       scene.add(light4);
-      const light5 = new THREE.DirectionalLight(0xffffff, 1);
+      const light5 = new DirectionalLight(0xffffff, 1);
       light5.position.set(0, 10, 0);
       scene.add(light5);
-      const light6 = new THREE.DirectionalLight(0xffffff, 0.3);
+      const light6 = new DirectionalLight(0xffffff, 0.3);
       light6.position.set(5, 10, 0);
       scene.add(light6);
-      const light7 = new THREE.DirectionalLight(0xffffff, 0.3);
+      const light7 = new DirectionalLight(0xffffff, 0.3);
       light7.position.set(0, 10, 5);
       scene.add(light7);
-      const light8 = new THREE.DirectionalLight(0xffffff, 0.3);
+      const light8 = new DirectionalLight(0xffffff, 0.3);
       light7.position.set(0, 10, -5);
       scene.add(light8);
-      const light9 = new THREE.DirectionalLight(0xffffff, 0.3);
+      const light9 = new DirectionalLight(0xffffff, 0.3);
       light9.position.set(-5, 10, 0);
       scene.add(light9);
     }

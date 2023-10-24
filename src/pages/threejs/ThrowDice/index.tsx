@@ -4,7 +4,20 @@
 import React, { useRef, useLayoutEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { InputNumber, message } from "antd";
-import * as THREE from "three";
+import {
+  Scene,
+  PerspectiveCamera,
+  WebGLRenderer,
+  Vector3,
+  PlaneGeometry,
+  MeshStandardMaterial,
+  ShadowMaterial,
+  Mesh,
+  CanvasTexture,
+  Color,
+  AmbientLight,
+  PointLight,
+} from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import * as CANNON from "cannon-es";
@@ -25,26 +38,23 @@ const ThrowDice = () => {
   const { menuWidth } = useGlobalContext();
   const containerRef = useRef<HTMLDivElement>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
-  const diceList = useRef<{ mesh: THREE.Mesh; body: CANNON.Body }[]>([]); // 存放所有骰子对象
+  const diceList = useRef<{ mesh: Mesh; body: CANNON.Body }[]>([]); // 存放所有骰子对象
   const physicsWorld = useRef<CANNON.World | null>(null);
   const [diceNum, setDiceNum] = useState<number | null>(1); // 投骰子的个数
   const diceNumRef = useRef<number | null>(1);
   const isStillMoving = useRef<boolean>(false); // 所有骰子是否还在动
 
   // 创建并添加地板
-  const createFloor = (scene: THREE.Scene) => {
-    const floor: THREE.Mesh = new THREE.Mesh(
-      new THREE.PlaneGeometry(300, 300),
-      new THREE.ShadowMaterial({
+  const createFloor = (scene: Scene) => {
+    const floor: Mesh = new Mesh(
+      new PlaneGeometry(300, 300),
+      new ShadowMaterial({
         opacity: 0.1,
       })
     );
     floor.receiveShadow = true;
     floor.position.y = floorY;
-    floor.quaternion.setFromAxisAngle(
-      new THREE.Vector3(-1, 0, 0),
-      Math.PI * 0.5
-    );
+    floor.quaternion.setFromAxisAngle(new Vector3(-1, 0, 0), Math.PI * 0.5);
     scene.add(floor);
 
     const floorBody = new CANNON.Body({
@@ -136,38 +146,38 @@ const ThrowDice = () => {
   );
 
   // 骰子材质
-  const materialList = useRef<THREE.MeshStandardMaterial[]>([
-    new THREE.MeshStandardMaterial({
-      map: new THREE.CanvasTexture(getDiceDotNumCanvas(1)),
+  const materialList = useRef<MeshStandardMaterial[]>([
+    new MeshStandardMaterial({
+      map: new CanvasTexture(getDiceDotNumCanvas(1)),
       color: "#ffffff",
     }), // 右面
-    new THREE.MeshStandardMaterial({
-      map: new THREE.CanvasTexture(getDiceDotNumCanvas(6)),
+    new MeshStandardMaterial({
+      map: new CanvasTexture(getDiceDotNumCanvas(6)),
       color: "#ffffff",
     }), // 左面
-    new THREE.MeshStandardMaterial({
-      map: new THREE.CanvasTexture(getDiceDotNumCanvas(3)),
+    new MeshStandardMaterial({
+      map: new CanvasTexture(getDiceDotNumCanvas(3)),
       color: "#ffffff",
     }), // 上面
-    new THREE.MeshStandardMaterial({
-      map: new THREE.CanvasTexture(getDiceDotNumCanvas(4)),
+    new MeshStandardMaterial({
+      map: new CanvasTexture(getDiceDotNumCanvas(4)),
       color: "#ffffff",
     }), // 下面
-    new THREE.MeshStandardMaterial({
-      map: new THREE.CanvasTexture(getDiceDotNumCanvas(5)),
+    new MeshStandardMaterial({
+      map: new CanvasTexture(getDiceDotNumCanvas(5)),
       color: "#ffffff",
     }), // 后面
-    new THREE.MeshStandardMaterial({
-      map: new THREE.CanvasTexture(getDiceDotNumCanvas(2)),
+    new MeshStandardMaterial({
+      map: new CanvasTexture(getDiceDotNumCanvas(2)),
       color: "#ffffff",
     }), // 前面
   ]);
 
   // 创建并添加所有骰子
-  const createDice = (scene: THREE.Scene) => {
+  const createDice = (scene: Scene) => {
     for (let i = 0; i < maxDiceNum; i++) {
       // 创建骰子
-      const dice = new THREE.Mesh(diceGeometry.current, materialList.current);
+      const dice = new Mesh(diceGeometry.current, materialList.current);
       dice.castShadow = true;
       // 添加到场景中
       scene.add(dice);
@@ -194,7 +204,7 @@ const ThrowDice = () => {
     }
     isStillMoving.current = true;
     diceList.current.forEach(
-      (item: { mesh: THREE.Mesh; body: CANNON.Body }, index: number) => {
+      (item: { mesh: Mesh; body: CANNON.Body }, index: number) => {
         if (index <= (diceNumRef.current as number) - 1) {
           let x = 10;
           let y = 24;
@@ -240,12 +250,12 @@ const ThrowDice = () => {
   };
 
   const initializeHandle = (
-    scene: THREE.Scene,
-    camera: THREE.PerspectiveCamera,
-    renderer: THREE.WebGLRenderer
+    scene: Scene,
+    camera: PerspectiveCamera,
+    renderer: WebGLRenderer
   ) => {
     if (containerRef.current) {
-      scene.background = new THREE.Color("#224141");
+      scene.background = new Color("#224141");
       camera.position.set(
         cameraInitPosition.x,
         cameraInitPosition.y,
@@ -253,14 +263,13 @@ const ThrowDice = () => {
       );
       camera.lookAt(0, 0, 0);
       renderer.setClearColor("#224141");
-      renderer.shadowMap.enabled = true;
 
       // 添加环境光
-      const light = new THREE.AmbientLight(0xffffff, 0.5);
+      const light = new AmbientLight(0xffffff, 0.5);
       scene.add(light);
 
       // 添加右上角灯光
-      const rightTopLight = new THREE.PointLight(0xffffff, 1);
+      const rightTopLight = new PointLight(0xffffff, 1);
       rightTopLight.position.set(100, 200, -10);
       rightTopLight.castShadow = true;
       rightTopLight.shadow.camera.near = 5;
