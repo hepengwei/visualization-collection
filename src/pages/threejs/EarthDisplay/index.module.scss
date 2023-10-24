@@ -1,0 +1,153 @@
+.container {
+    width: 100%;
+    height: 100%;
+    background-color: #000808;
+    overflow: hidden;
+    position: relative;
+  
+    .switch {
+      position: absolute;
+      top: 40px;
+      right: 20px;
+      z-index: 2;
+      cursor: pointer;
+      svg {
+        width: 32px;
+        height: 32px;
+        path {
+          fill: #00c6c6;
+        }
+      }
+    }
+  
+    $topBoxHeight: 80px;
+    $leftBoxWidth: 30%;
+    $rightBoxWidth: 30%;
+  
+    .topBox {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: $topBoxHeight;
+      z-index: 1;
+      transform: translate(0px, -$topBoxHeight);
+  
+      img {
+        width: 100%;
+        height: 61px;
+      }
+      $marginTop: 20px;
+      $lineWidth: 120px;
+      $lineHeight: 4px;
+      .topBg {
+        position: absolute;
+        top: $marginTop;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 61px;
+      }
+      .shine {
+        position: absolute;
+        top: $marginTop + 31px;
+        left: 0;
+        right: 0;
+        width: 808px;
+        height: 55px;
+        margin: 0 auto;
+      }
+      .leftLine {
+        position: absolute;
+        top: calc($marginTop - calc($lineHeight / 2));
+        left: 4%;
+        width: $lineWidth;
+        height: $lineHeight;
+        border-radius: calc($lineHeight / 2);
+        background-image: linear-gradient(to left, #b5eff6, #008f8f, #003d3d);
+      }
+      .rightLine {
+        position: absolute;
+        top: calc($marginTop - calc($lineHeight / 2) + 1px);
+        right: 4%;
+        width: $lineWidth;
+        height: $lineHeight;
+        border-radius: calc($lineHeight / 2);
+        background-image: linear-gradient(to right, #b5eff6, #008f8f, #003d3d);
+      }
+      .title {
+        position: absolute;
+        top: 16px;
+        left: 0;
+        right: 0;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        span {
+          text-align: center;
+          font-size: 32px;
+          font-weight: 600;
+          font-family: "SourceHanSansCN-Bold" !important;
+          background-image: linear-gradient(
+            to right,
+            #003d3d,
+            #008f8f,
+            #00cfcf,
+            #008f8f,
+            #003d3d
+          );
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+        }
+      }
+    }
+    .leftBox {
+      position: absolute;
+      left: 0;
+      top: $topBoxHeight;
+      width: $leftBoxWidth;
+      height: calc(100% - $topBoxHeight);
+      z-index: 1;
+      transform: translate(-$leftBoxWidth, 0px);
+  
+      .item {
+        width: 100%;
+        height: 40%;
+        padding: 20px;
+        &:last-child {
+          height: 60%;
+        }
+      }
+    }
+    .rightBox {
+      position: absolute;
+      right: 0;
+      top: $topBoxHeight;
+      width: $rightBoxWidth;
+      height: calc(100% - $topBoxHeight);
+      z-index: 1;
+      transform: translate($leftBoxWidth, 0px);
+  
+      .item {
+        width: 100%;
+        height: 40%;
+        padding: 14px;
+        &:last-child {
+          height: 60%;
+        }
+      }
+    }
+    .tooltip {
+      position: absolute;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #000;
+      background-color: #ffffff;
+      border-radius: 4px;
+      visibility: hidden;
+      z-index: 10;
+    }
+  }
+  

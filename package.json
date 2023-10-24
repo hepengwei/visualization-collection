@@ -64,6 +64,7 @@
     "sass-loader": "^13.2.0",
     "style-loader": "^3.3.1",
     "style-resources-loader": "^1.5.0",
+    "ts-shader-loader": "^2.0.2",
     "typescript": "*",
     "webpack": "^5.74.0",
     "webpack-bundle-analyzer": "^4.8.0",

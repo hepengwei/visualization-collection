@@ -2,7 +2,17 @@
  * 3阶魔方
  */
 import React, { useEffect, useRef, useLayoutEffect } from "react";
-import * as THREE from "three";
+import {
+  Scene,
+  PerspectiveCamera,
+  WebGLRenderer,
+  Matrix4,
+  MeshPhysicalMaterial,
+  Mesh,
+  Color,
+  DirectionalLight,
+  Group,
+} from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { useGlobalContext } from "hooks/useGlobalContext";
@@ -37,10 +47,10 @@ const RubiksCube = () => {
   const { menuWidth } = useGlobalContext();
   const containerRef = useRef<HTMLDivElement>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
-  const lightList = useRef<THREE.DirectionalLight[]>([]); // 存放所有平行光源
-  const cubeList = useRef<THREE.Mesh[]>([]); // 存放魔方的27个小块对象
-  const rubiksCubeGroupRef = useRef<THREE.Group | null>(null);
-  const planeGroupRef = useRef<THREE.Group | null>(null);
+  const lightList = useRef<DirectionalLight[]>([]); // 存放所有平行光源
+  const cubeList = useRef<Mesh[]>([]); // 存放魔方的27个小块对象
+  const rubiksCubeGroupRef = useRef<Group | null>(null);
+  const planeGroupRef = useRef<Group | null>(null);
   const gsapAnimationRef = useRef<gsap.core.Tween | null>(null);
   const timerRef = useRef<number>(0);
 
@@ -57,8 +67,8 @@ const RubiksCube = () => {
     const position2RubiksCube = position2RubiksCubeList[whichPlane];
     if (!position2RubiksCube || !angle || !rubiksCubeGroupRef.current) return;
     // 找到这一个面中所有的小块对象
-    const planeOldCubeList: THREE.Mesh[] = [];
-    const planeCubeList: THREE.Mesh[] = [];
+    const planeOldCubeList: Mesh[] = [];
+    const planeCubeList: Mesh[] = [];
     const planeCubeOldPositionList: { x: number; y: number; z: number }[] = [];
     for (let i = 0, l = position2RubiksCube.length; i < l; i++) {
       const { x, y, z } = position2RubiksCube[i];
@@ -99,7 +109,7 @@ const RubiksCube = () => {
 
     const centerCube = planeCubeList[4];
     // 创建一个planeGroup，用于添加这一面的9个小块
-    const planeGroup = new THREE.Group();
+    const planeGroup = new Group();
     planeGroup.position.set(
       centerCube.position.x,
       centerCube.position.y,
@@ -107,7 +117,7 @@ const RubiksCube = () => {
     );
     planeGroupRef.current = planeGroup;
     // 根据该面之前的小块进行克隆，并添加到planeGroup中
-    planeCubeList.forEach((cube: THREE.Mesh) => {
+    planeCubeList.forEach((cube: Mesh) => {
       const newCube = cube.clone();
       const { x, y, z } = newCube.position;
       newCube.position.set(
@@ -120,10 +130,10 @@ const RubiksCube = () => {
     // 将planeGroup添加到rubiksCubeGroup中
     rubiksCubeGroupRef.current.add(planeGroup);
     // 将rubiksCubeGroup中原来的该面的9个小块删除
-    planeCubeList.forEach((cube: THREE.Mesh) => {
+    planeCubeList.forEach((cube: Mesh) => {
       rubiksCubeGroupRef.current?.remove(cube);
       cubeList.current = cubeList.current.filter(
-        (item: THREE.Mesh) => item.id !== cube.id
+        (item: Mesh) => item.id !== cube.id
       );
     });
 
@@ -138,11 +148,11 @@ const RubiksCube = () => {
           const toAngle = options.angle;
           if (planeGroupRef.current) {
             // @ts-ignore
-            const newMatrix = new THREE.Matrix4()[
+            const newMatrix = new Matrix4()[
               `makeRotation${rotationAxis.toUpperCase()}`
             ](toAngle);
             const { x, y, z } = planeGroupRef.current.position;
-            newMatrix.multiply(new THREE.Matrix4().makeTranslation(x, y, z));
+            newMatrix.multiply(new Matrix4().makeTranslation(x, y, z));
             planeGroupRef.current.matrix = newMatrix;
             // 使用矩阵更新模型的信息
             planeGroupRef.current.matrix.decompose(
@@ -189,12 +199,12 @@ const RubiksCube = () => {
   };
 
   const initializeHandle = (
-    scene: THREE.Scene,
-    camera: THREE.PerspectiveCamera,
-    renderer: THREE.WebGLRenderer
+    scene: Scene,
+    camera: PerspectiveCamera,
+    renderer: WebGLRenderer
   ) => {
     if (containerRef.current) {
-      scene.background = new THREE.Color("#121212");
+      scene.background = new Color("#121212");
       camera.position.set(
         cameraInitPosition.x,
         cameraInitPosition.y,
@@ -202,12 +212,11 @@ const RubiksCube = () => {
       );
       camera.lookAt(0, 0, 0);
       renderer.setClearColor("#121212");
-      renderer.shadowMap.enabled = true;
 
       // 添加所有灯光
       lightInitPositionList.forEach((item) => {
         const { x, y, z, intensity } = item;
-        const light = new THREE.DirectionalLight(0xebf5ee, intensity);
+        const light = new DirectionalLight(0xebf5ee, intensity);
         light.position.set(x, y, z);
         light.lookAt(0, 0, 0);
         light.shadow.camera.near = 10;
@@ -225,7 +234,7 @@ const RubiksCube = () => {
 
     // 创建魔方
     // 创建一个group放魔方的27个小块
-    const rubiksCubeGroup = new THREE.Group();
+    const rubiksCubeGroup = new Group();
     rubiksCubeGroup.position.set(0, 0, 0);
     rubiksCubeGroupRef.current = rubiksCubeGroup;
 
@@ -238,7 +247,7 @@ const RubiksCube = () => {
       cubeBevelRadius
     );
     // 创建材质
-    const cubeMaterial = new THREE.MeshPhysicalMaterial({
+    const cubeMaterial = new MeshPhysicalMaterial({
       color: 0x010101,
       metalness: 0.4, // 金属度
       roughness: 0.2, // 粗糙度
@@ -250,7 +259,7 @@ const RubiksCube = () => {
     // 循环创建出27个小块，并添加到group中
     for (let i = 0, l = initPositionList.length; i < l; i++) {
       const { x, y, z } = initPositionList[i];
-      const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+      const cube = new Mesh(cubeGeometry, cubeMaterial);
       cube.position.set(
         x * (cubeSize + cubeMargin),
         y * (cubeSize + cubeMargin),
