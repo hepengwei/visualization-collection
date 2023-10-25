@@ -1,7 +1,13 @@
 /**
  * 地图展示
  */
-import React, { useRef, useLayoutEffect, useCallback, useState } from "react";
+import React, {
+  useRef,
+  useLayoutEffect,
+  useCallback,
+  useState,
+  useEffect,
+} from "react";
 import { useIntl } from "react-intl";
 import { AppstoreOutlined } from "@ant-design/icons";
 import {
@@ -28,6 +34,8 @@ import { useGlobalContext } from "hooks/useGlobalContext";
 import useInitialize from "hooks/threejs/useInitialize";
 import useMoveTo from "hooks/useMoveTo";
 import Border1 from "components/LargeScreenBorder/Border1";
+import useDynamicBg1 from "@/hooks/threejs/useDynamicBg1";
+import { distoryObject } from "utils/threejsUtil";
 import pageBg from "images/threejs/pageBg.png";
 import topBg from "images/threejs/topBg.png";
 import shine from "images/threejs/shine.png";
@@ -50,6 +58,7 @@ const MapDisplay = () => {
   const tooltipRef = useRef<HTMLDivElement>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
   const mapRef = useRef<Object3D | null>(null);
+  const dynamicBgRef = useRef<Object3D | null>(null);
   const raycaster = useRef<Raycaster>(new Raycaster());
   const mouse = useRef<Vector2 | null>(null);
   const lastPick = useRef<any>(null);
@@ -73,6 +82,8 @@ const MapDisplay = () => {
     0.8,
     0.5
   );
+
+  const dynamicBg = useDynamicBg1();
 
   // 显示或隐藏主面板
   const showOrHideMainPage = () => {
@@ -139,12 +150,12 @@ const MapDisplay = () => {
             const material1 = new MeshBasicMaterial({
               color: mapColor,
               transparent: true,
-              opacity: 0.92,
+              opacity: 0.95,
             });
             const material2 = new MeshBasicMaterial({
               color: mapSideColor,
               transparent: true,
-              opacity: 0.92,
+              opacity: 0.95,
             });
 
             const mesh = new Mesh(geometry, [material1, material2]);
@@ -174,6 +185,10 @@ const MapDisplay = () => {
     loader.load("./public/json/ChinaMap.json", (data: string | ArrayBuffer) => {
       const jsondata = JSON.parse(data as string);
       createMap(jsondata, scene);
+      dynamicBg.scale.set(0.32, 0.32, 1);
+      dynamicBg.position.set(0, 0, -8);
+      scene.add(dynamicBg);
+      dynamicBgRef.current = dynamicBg;
     });
   };
 
@@ -233,10 +248,7 @@ const MapDisplay = () => {
     }
   };
 
-  const renderHandle = (
-    scene: Scene,
-    camera: PerspectiveCamera
-  ) => {
+  const renderHandle = (scene: Scene, camera: PerspectiveCamera) => {
     if (mapRef.current && mouse.current) {
       // 恢复上一次清空的
       if (lastPick.current) {
@@ -271,7 +283,7 @@ const MapDisplay = () => {
     }
   };
 
-  const { resize } = useInitialize(
+  const { scene, resize } = useInitialize(
     containerRef,
     initializeHandle,
     null,
@@ -281,6 +293,13 @@ const MapDisplay = () => {
   useLayoutEffect(() => {
     resize();
   }, [menuWidth]);
+
+  useEffect(() => {
+    return () => {
+      distoryObject(mapRef.current, scene);
+      distoryObject(dynamicBgRef.current, scene);
+    };
+  }, []);
 
   return (
     <div

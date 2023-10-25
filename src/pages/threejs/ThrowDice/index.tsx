@@ -1,7 +1,7 @@
 /**
  * 投骰子
  */
-import React, { useRef, useLayoutEffect, useState } from "react";
+import React, { useRef, useLayoutEffect, useState, useEffect } from "react";
 import { useIntl } from "react-intl";
 import { InputNumber, message } from "antd";
 import {
@@ -317,6 +317,15 @@ const ThrowDice = () => {
   useLayoutEffect(() => {
     resize();
   }, [menuWidth]);
+
+  useEffect(() => {
+    return () => {
+      diceGeometry.current?.dispose();
+      materialList.current?.forEach((material) => {
+        material.dispose();
+      });
+    };
+  }, []);
 
   return (
     <div className={styles.container} ref={containerRef}>
