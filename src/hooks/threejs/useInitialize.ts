@@ -1,10 +1,10 @@
 import { useRef, useEffect, RefObject } from "react";
-import * as THREE from "three";
+import { Scene, PerspectiveCamera, WebGLRenderer } from "three";
 
 type Handle = (
-  scene: THREE.Scene,
-  camera: THREE.PerspectiveCamera,
-  renderer: THREE.WebGLRenderer
+  scene: Scene,
+  camera: PerspectiveCamera,
+  renderer: WebGLRenderer
 ) => void;
 
 const useInitialize = (
@@ -13,9 +13,9 @@ const useInitialize = (
   resizeHandle?: Handle | null,
   renderHandle?: Handle | null
 ) => {
-  const sceneRef = useRef<THREE.Scene | null>(null);
-  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const sceneRef = useRef<Scene | null>(null);
+  const cameraRef = useRef<PerspectiveCamera | null>(null);
+  const rendererRef = useRef<WebGLRenderer | null>(null);
   const frameId = useRef<number>(0);
 
   const render = () => {
@@ -32,11 +32,11 @@ const useInitialize = (
       const { clientWidth, clientHeight } = conatinerRef.current;
 
       // 创建场景
-      const scene = new THREE.Scene();
+      const scene = new Scene();
       sceneRef.current = scene;
 
       // 创建相机
-      const camera = new THREE.PerspectiveCamera(
+      const camera = new PerspectiveCamera(
         75,
         clientWidth / clientHeight,
         0.1,
@@ -46,7 +46,7 @@ const useInitialize = (
       cameraRef.current = camera;
 
       // 创建渲染器
-      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      const renderer = new WebGLRenderer({ antialias: true });
       rendererRef.current = renderer;
       renderer.setSize(clientWidth, clientHeight);
       renderer.setPixelRatio(window.devicePixelRatio);

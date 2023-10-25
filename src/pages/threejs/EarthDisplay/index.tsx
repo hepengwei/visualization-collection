@@ -1,7 +1,7 @@
 /**
  * 地球展示
  */
-import React, { useRef, useLayoutEffect, useState } from "react";
+import React, { useRef, useLayoutEffect, useState, useEffect } from "react";
 import { useIntl } from "react-intl";
 import { AppstoreOutlined } from "@ant-design/icons";
 import {
@@ -35,7 +35,7 @@ import useMoveTo from "hooks/useMoveTo";
 import Border2 from "components/LargeScreenBorder/Border2";
 import luminousPointData from "./luminousPointData";
 import { getTextWidth } from "utils/util";
-import { lon2xyz } from "utils/threejsUtil";
+import { lon2xyz, distoryObject } from "utils/threejsUtil";
 import { flyArc } from "./flyLine";
 import pageBg from "images/threejs/pageBg.png";
 import topBg from "images/threejs/topBg.png";
@@ -203,7 +203,6 @@ const EarthDisplay = () => {
     // 创建地球辉光
     const glowMaterial = new SpriteMaterial({
       map: resourcesRef.current?.textures.glow,
-      color: 0xffffff,
     });
     const glow = new Sprite(glowMaterial);
     glow.scale.set(earthRadius * 3, earthRadius * 3, 1);
@@ -428,7 +427,7 @@ const EarthDisplay = () => {
     }
   };
 
-  const { resize } = useInitialize(
+  const { scene, resize } = useInitialize(
     containerRef,
     initializeHandle,
     null,
@@ -438,6 +437,12 @@ const EarthDisplay = () => {
   useLayoutEffect(() => {
     resize();
   }, [menuWidth]);
+
+  useEffect(() => {
+    return () => {
+      distoryObject(earthObjRef.current, scene);
+    };
+  }, []);
 
   return (
     <div className={styles.container} ref={containerRef}>
