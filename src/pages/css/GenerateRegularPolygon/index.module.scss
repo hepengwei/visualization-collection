@@ -2,15 +2,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 40px;
+  padding-top: 30px;
   padding-bottom: 20px;
   overflow-y: auto;
   .content {
     display: flex;
     flex-direction: column;
 
-    $boxWidth: 500px;
-    $boxPadding: 20px;
+    $boxWidth: 472px;
+    $boxPadding: 16px;
     .box {
       box-sizing: border-box;
       width: $boxWidth;
