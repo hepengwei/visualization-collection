@@ -1,0 +1,40 @@
+.container {
+  width: 100%;
+  height: 420px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .ribbon {
+    --fontSize: 24px;
+    --background: #d81a14;
+
+    font-size: var(--fontSize);
+    text-align: center;
+    line-height: 2;
+    color: #fff;
+    background-image: linear-gradient(var(--background) 70%, #0000 0),
+      linear-gradient(
+        to bottom left,
+        #0000 50%,
+        color-mix(in srgb, var(--background), #000 40%) 51% 84%,
+        #0000 85%
+      );
+    background-position: 0 0.15lh;
+    background-size: 100% 1lh;
+    clip-path: polygon(
+      0 0.15lh,
+      100% 0.15lh,
+      calc(100% - var(--fontSize) / 2) 0.5lh,
+      100% 0.85lh,
+      100% calc(100% - 0.15lh),
+      0 calc(100% - 0.15lh),
+      calc(var(--fontSize) / 2) calc(100% - 0.5lh),
+      0 calc(100% - 0.85lh)
+    );
+    padding: 0 var(--fontSize);
+    margin: 10px 0;
+  }
+}
