@@ -63,9 +63,9 @@ export const distoryObject = (
     const children = object.children as THREE.Mesh[];
     if (!children) return;
     children.forEach(({ geometry, material, children }) => {
-      geometry.dispose();
+      geometry?.dispose();
       if (Array.isArray(material)) {
-        material.forEach((m) => m.dispose());
+        material.forEach((m) => m?.dispose());
       } else {
         material?.dispose();
       }

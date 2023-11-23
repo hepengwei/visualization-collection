@@ -61,7 +61,7 @@ const flyLineOptions = {
 const timeValue = 100;
 const uniforms = {
   glowColor: {
-    value: new Color(0x0cd1eb),
+    value: new Color(0x41b1b4),
   },
   scale: {
     type: "f",
@@ -230,7 +230,8 @@ const EarthDisplay = () => {
     // 创建光柱底座矩形平面
     const baseGeometry = new PlaneGeometry(1, 1);
     const baseMaterial = new MeshBasicMaterial({
-      color: 0x41b1b4,
+      // color: 0x41b1b4,
+      color: 0xff0000,
       map: resourceManagerRef.current?.textures.aperture,
       transparent: true, // 使用背景透明的png贴图，注意开启透明计算
       opacity: 1,
@@ -278,7 +279,8 @@ const EarthDisplay = () => {
     const material = new MeshBasicMaterial({
       map: resourceManagerRef.current?.textures.lightColumn,
       color: isStartCity ? lightColumnStartColor : lightColumnEndColor,
-      transparent: true,
+      // transparent: true,
+      // opacity: 1,
       side: DoubleSide,
       depthWrite: false, // 禁止写入深度缓冲区数据
     });
