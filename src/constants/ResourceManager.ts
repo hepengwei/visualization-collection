@@ -1,29 +1,23 @@
 /**
- * 图片资源管理和加载
+ * 图片资源管理器
  */
 import { LoadingManager, Texture, TextureLoader } from "three";
-import radialGradient from "images/threejs/radialGradient.png";
-import earth from "images/threejs/earth.jpeg";
-import glow from "images/threejs/glow.png";
-import aperture from "images/threejs/aperture.png";
-import lightColumn from "images/threejs/lightColumn.png";
 
-// 图片资源列表
-const texturesList = [
-  { name: "radialGradient", url: radialGradient },
-  { name: "earth", url: earth },
-  { name: "glow", url: glow },
-  { name: "aperture", url: aperture },
-  { name: "lightColumn", url: lightColumn },
-];
+export interface ResourceItem {
+  name: string;
+  url: string;
+}
 
-export default class Resources {
+class ResourceManager {
   // @ts-ignore
   private manager: LoadingManager;
+  private resourceList: ResourceItem[];
   private callback: () => void;
   private textureLoader?: InstanceType<typeof TextureLoader>;
   public textures: Record<string, Texture>;
-  constructor(callback: () => void) {
+  
+  constructor(resourceList: ResourceItem[], callback: () => void) {
+    this.resourceList = resourceList;
     this.callback = callback; // 资源加载完成的回调
 
     this.textures = {}; // 贴图对象
@@ -48,10 +42,14 @@ export default class Resources {
    */
   private loadResources(): void {
     this.textureLoader = new TextureLoader(this.manager);
-    texturesList.forEach((item) => {
-      this.textureLoader?.load(item.url, (t) => {
+    this.resourceList.forEach((item) => {
+      this.textureLoader?.load(item.url, (t: Texture) => {
+        // @ts-ignore
+        t.colorSpace = "srgb"; // 设置标准色
         this.textures[item.name] = t;
       });
     });
   }
 }
+
+export default ResourceManager;
