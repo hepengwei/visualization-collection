@@ -26,7 +26,7 @@ import {
   CanvasTexture,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import Resources from "./Resources";
+import ResourceManager from "constants/ResourceManager";
 import earthVertex from "./earthShaders/vertex.vs";
 import earthFragment from "./earthShaders/fragment.fs";
 import { useGlobalContext } from "hooks/useGlobalContext";
@@ -40,6 +40,11 @@ import { flyArc } from "./flyLine";
 import pageBg from "images/threejs/pageBg.png";
 import topBg from "images/threejs/topBg.png";
 import shine from "images/threejs/shine.png";
+import radialGradient from "images/threejs/radialGradient.png";
+import earth from "images/threejs/earth.jpeg";
+import glow from "images/threejs/glow.png";
+import aperture from "images/threejs/aperture.png";
+import lightColumn from "images/threejs/lightColumn.png";
 import styles from "./index.module.scss";
 
 const cameraInitPosition = { x: 0, y: 20, z: 110 }; // 相机初始位置
@@ -81,6 +86,14 @@ const uniforms = {
     value: null,
   },
 };
+// 图片资源列表
+const resourceList = [
+  { name: "radialGradient", url: radialGradient },
+  { name: "earth", url: earth },
+  { name: "glow", url: glow },
+  { name: "aperture", url: aperture },
+  { name: "lightColumn", url: lightColumn },
+];
 
 const EarthDisplay = () => {
   const intl = useIntl();
@@ -90,7 +103,7 @@ const EarthDisplay = () => {
   const leftBoxRef = useRef<HTMLDivElement>(null);
   const rightBoxRef = useRef<HTMLDivElement>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
-  const resourcesRef = useRef<Resources | null>(null);
+  const resourceManagerRef = useRef<ResourceManager | null>(null);
   const earthObjRef = useRef<THREE.Object3D | null>(null); // 大地球对象(包含大气层)
   const fluctuatingApertureListRef = useRef<Mesh[]>([]); // 所有标注点的波动光圈对象
   const flyLineListRef = useRef<Points[]>([]); // 所有航线对象
@@ -131,33 +144,31 @@ const EarthDisplay = () => {
 
   // 创建星空并添加到场景中
   const createStarrySky = (scene: Scene) => {
-    if (resourcesRef.current) {
-      const vertices = [];
-      for (let i = 0; i < 500; i++) {
-        const x = 800 * Math.random() - 300;
-        const y = 800 * Math.random() - 300;
-        const z = 800 * Math.random() - 300;
-        vertices.push(x, y, z);
-      }
-
-      const starrySkyGeometry = new BufferGeometry();
-      starrySkyGeometry.setAttribute(
-        "position",
-        new BufferAttribute(new Float32Array(vertices), 3)
-      );
-
-      const starrySkyMaterial = new PointsMaterial({
-        size: 2,
-        sizeAttenuation: true, // 尺寸衰减
-        color: 0x41b1b4,
-        transparent: true,
-        opacity: 1,
-        map: resourcesRef.current.textures.radialGradient,
-      });
-
-      const starrySky = new Points(starrySkyGeometry, starrySkyMaterial);
-      scene.add(starrySky);
+    const vertices = [];
+    for (let i = 0; i < 500; i++) {
+      const x = 800 * Math.random() - 300;
+      const y = 800 * Math.random() - 300;
+      const z = 800 * Math.random() - 300;
+      vertices.push(x, y, z);
     }
+
+    const starrySkyGeometry = new BufferGeometry();
+    starrySkyGeometry.setAttribute(
+      "position",
+      new BufferAttribute(new Float32Array(vertices), 3)
+    );
+
+    const starrySkyMaterial = new PointsMaterial({
+      size: 2,
+      sizeAttenuation: true, // 尺寸衰减
+      color: 0x41b1b4,
+      transparent: true,
+      opacity: 1,
+      map: resourceManagerRef.current?.textures.radialGradient,
+    });
+
+    const starrySky = new Points(starrySkyGeometry, starrySkyMaterial);
+    scene.add(starrySky);
   };
 
   // 创建大地球对象并添加到场景中
@@ -167,9 +178,9 @@ const EarthDisplay = () => {
     // 创建地球几何体
     const earthGeometry = new SphereGeometry(earthRadius, 50, 50);
     // 创建地球材质
-    if (resourcesRef.current?.textures?.earth) {
+    if (resourceManagerRef.current?.textures?.earth) {
       // @ts-ignore
-      uniforms.map.value = resourcesRef.current.textures.earth as Texture;
+      uniforms.map.value = resourceManagerRef.current.textures.earth as Texture;
     }
     const earthMaterial = new ShaderMaterial({
       uniforms,
@@ -202,7 +213,7 @@ const EarthDisplay = () => {
 
     // 创建地球辉光
     const glowMaterial = new SpriteMaterial({
-      map: resourcesRef.current?.textures.glow,
+      map: resourceManagerRef.current?.textures.glow,
     });
     const glow = new Sprite(glowMaterial);
     glow.scale.set(earthRadius * 3, earthRadius * 3, 1);
@@ -220,7 +231,7 @@ const EarthDisplay = () => {
     const baseGeometry = new PlaneGeometry(1, 1);
     const baseMaterial = new MeshBasicMaterial({
       color: 0x41b1b4,
-      map: resourcesRef.current?.textures.aperture,
+      map: resourceManagerRef.current?.textures.aperture,
       transparent: true, // 使用背景透明的png贴图，注意开启透明计算
       opacity: 1,
       depthWrite: false, // 禁止写入深度缓冲区数据
@@ -265,7 +276,7 @@ const EarthDisplay = () => {
     geometry.rotateX(Math.PI / 2);
     geometry.translate(0, 0, height / 2);
     const material = new MeshBasicMaterial({
-      map: resourcesRef.current?.textures.lightColumn,
+      map: resourceManagerRef.current?.textures.lightColumn,
       color: isStartCity ? lightColumnStartColor : lightColumnEndColor,
       transparent: true,
       side: DoubleSide,
@@ -359,28 +370,27 @@ const EarthDisplay = () => {
     renderer: THREE.WebGLRenderer
   ) => {
     if (containerRef.current) {
-      // 添加背景图
-      scene.background = new TextureLoader().load(pageBg);
-      camera.position.set(
-        cameraInitPosition.x,
-        cameraInitPosition.y,
-        cameraInitPosition.z
-      );
+      resourceManagerRef.current = new ResourceManager(resourceList, () => {
+        // 添加背景图
+        scene.background = new TextureLoader().load(pageBg);
+        camera.position.set(
+          cameraInitPosition.x,
+          cameraInitPosition.y,
+          cameraInitPosition.z
+        );
 
-      // 加载图片资源
-      resourcesRef.current = new Resources(async () => {
         createStarrySky(scene);
         createEarthObj(scene);
         addMarkupPoint();
         addFlyLine();
-      });
 
-      const controls = new OrbitControls(camera, renderer.domElement);
-      controlsRef.current = controls;
-      controls.autoRotate = true;
-      controls.autoRotateSpeed = 1;
-      controls.enableDamping = true;
-      controls.dampingFactor = 0.1; // 动态阻尼系数
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controlsRef.current = controls;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 1;
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.1; // 动态阻尼系数
+      });
     }
   };
 
