@@ -151,25 +151,26 @@ const useQuantumEntanglement = (
 
   useLayoutEffect(() => {
     window.addEventListener("message", onMessage, false);
-    if (iframeId && elementRef?.current) {
-      const aIframe: HTMLIFrameElement = document.createElement("iframe");
-      aIframe.id = iframeId;
-      aIframe.style.visibility = "hidden";
-      console.log(222);
-      aIframe.onload = () => {
-        console.log("iframe ready");
-        isThatPageReady.current = true;
-        resendMessage();
-        if (window.self === window.top) {
+    if (window.self === window.top) {
+      if (iframeId && elementRef?.current) {
+        const aIframe: HTMLIFrameElement = document.createElement("iframe");
+        aIframe.id = iframeId;
+        aIframe.style.visibility = "hidden";
+        console.log(222);
+        aIframe.onload = () => {
+          console.log("iframe ready");
+          isThatPageReady.current = true;
+          resendMessage();
+
           window.addEventListener("storage", onStorage);
           window.addEventListener("resize", resendMessage);
           sendTimer.current = window.setInterval(() => {
             postKeepAliveInfo();
           }, 600);
-        }
-      };
-      aIframe.src = thatPageUrl;
-      elementRef.current.appendChild(aIframe);
+        };
+        aIframe.src = thatPageUrl;
+        elementRef.current.appendChild(aIframe);
+      }
     }
 
     return () => {
