@@ -10,3 +10,7 @@ export const ECHART_COMMON_COLOR = [
   "#3ba272",
   "#9a60b4",
 ];
+
+export const IFRAME_ID = "bIframe";
+export const THAT_PAGE_URL = "https://michellez.cn";
+export const THAT_PAGE_PASSWORD = '123456';

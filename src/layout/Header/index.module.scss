@@ -8,15 +8,21 @@
   box-sizing: border-box;
   border-bottom: 1px solid #222222;
 
-  .title {
-    margin-left: 16px;
-    font-size: 24px;
-    font-family: "Poppins", "Poppins-Medium";
-    font-weight: 600;
-    background-image: linear-gradient(to right, #d628fe, #35a2fd);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+  .left {
+    display: flex;
+    align-items: center;
+    .title {
+      margin-left: 16px;
+      font-size: 24px;
+      font-family: "Poppins", "Poppins-Medium";
+      font-weight: 600;
+      background-image: linear-gradient(to right, #d628fe, #35a2fd);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-right: 20px;
+      cursor: pointer;
+    }
   }
 
   .right {

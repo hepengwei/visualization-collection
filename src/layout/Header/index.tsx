@@ -3,6 +3,8 @@ import { useIntl } from "react-intl";
 import { Tooltip, Modal } from "antd";
 import { CoffeeOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
+import InteractionEyes from "components/InteractionEyes";
+import { IFRAME_ID, THAT_PAGE_URL, THAT_PAGE_PASSWORD } from "constants/common";
 import collectionCode from "images/collectionCode.jpeg";
 import English from "images/English.svg";
 import Chinese from "images/Chinese.svg";
@@ -31,8 +33,27 @@ const Header: React.FC = () => {
 
   return (
     <div className={styles.container} ref={containerRef}>
-      <div className={styles.title}>
-        {intl.formatMessage({ id: "common.logoName" })}
+      <div className={styles.left}>
+        <div
+          className={styles.title}
+          onClick={() => {
+            const aIframe = document.getElementById(IFRAME_ID);
+            if (aIframe) {
+              (aIframe as HTMLIFrameElement).contentWindow?.postMessage(
+                "autoSavePassword",
+                THAT_PAGE_URL
+              );
+            }
+            window.open(
+              `${THAT_PAGE_URL}/#/main?password=${THAT_PAGE_PASSWORD}`,
+              "_blank",
+              "top=200,left=100"
+            );
+          }}
+        >
+          {intl.formatMessage({ id: "common.logoName" })}
+        </div>
+        <InteractionEyes />
       </div>
       <div className={styles.right}>
         <Tooltip
