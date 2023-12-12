@@ -78,7 +78,6 @@ const InteractionEyes = () => {
           </div>
         </>
       )}
-      <iframe id={IFRAME_ID} src={THAT_PAGE_URL} style={{ display: "none" }} />
     </div>
   );
 };
