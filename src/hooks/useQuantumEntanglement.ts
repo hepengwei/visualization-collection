@@ -56,7 +56,7 @@ const useQuantumEntanglement = (
 
   // 发送保活信息，维持通信状态
   const postKeepAliveInfo = useCallback(() => {
-    if (iframeId && thatPageId.current && isThatPageReady.current) {
+    if (iframeId  && isThatPageReady.current) {
       const aIframe = document.getElementById(iframeId);
       if (aIframe) {
         sendTimer.current = 0;
