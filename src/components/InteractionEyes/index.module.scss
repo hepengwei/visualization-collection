@@ -1,0 +1,82 @@
+.container {
+  $eyeSize: 28px;
+  $eyeMargin: 4px;
+  $heartSize: $eyeSize - 20px;
+  $eyeballSize: 10px;
+  $color: #ffffff;
+
+  box-sizing: border-box;
+  width: 2 * $eyeSize + $eyeMargin;
+  height: $eyeSize;
+  display: flex;
+  justify-content: space-between;
+
+  .eye {
+    box-sizing: border-box;
+    width: $eyeSize;
+    height: $eyeSize;
+    border-radius: 50%;
+    border: 1px solid $color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .heart {
+      width: $heartSize;
+      height: $heartSize;
+      transform: translateY(1px) rotate(-45deg) scale(1);
+      background-color: red;
+      position: relative;
+      transition: all;
+      animation: beat 0.5s infinite;
+
+      &::before {
+        content: "";
+        position: absolute;
+        width: $heartSize;
+        height: $heartSize;
+        border-radius: 50%;
+        top: calc($heartSize / -2);
+        left: 0;
+        background-color: red;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        width: $heartSize;
+        height: $heartSize;
+        border-radius: 50%;
+        top: 0;
+        right: calc($heartSize / -2);
+        background-color: red;
+      }
+    }
+
+    .eyeball {
+      box-sizing: border-box;
+      width: $eyeballSize;
+      height: $eyeballSize;
+      border-radius: 50%;
+      background-color: $color;
+    }
+  }
+
+  @keyframes beat {
+    0% {
+      transform: translateY(1px) rotate(-45deg) scale(1);
+    }
+    20% {
+      transform: translateY(1px) rotate(-45deg) scale(1.22);
+    }
+    50% {
+      transform: translateY(1px) rotate(-45deg) scale(0.84);
+    }
+    80% {
+      transform: translateY(1px) rotate(-45deg) scale(1);
+    }
+    100% {
+      transform: translateY(1px) rotate(-45deg) scale(1);
+    }
+  }
+}

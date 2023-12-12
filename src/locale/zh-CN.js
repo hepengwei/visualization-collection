@@ -148,6 +148,7 @@ const zh_CN = {
   "page.htmlVision.visualDesign.displaysCustomRows2":
     "该组件为可显示自定义行数，超出时显示省略号的文本组件，还支持在最后面出现省略号时显示自定义的文字按钮。",
   "page.htmlVision.visualDesign.thisIsText": "这是文字。",
+  "page.htmlVision.visualDesign.quantumEntanglementTip": '该站中有隐藏款量子纠缠效果等待你发现哦。',
   "page.htmlVision.visualDesign.brighten": "变亮",
   "page.htmlVision.visualDesign.grayed": "变灰",
   "page.htmlVision.visualDesign.textShadow": "文字阴影",

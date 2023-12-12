@@ -160,6 +160,8 @@ const en_US = {
   "page.htmlVision.visualDesign.displaysCustomRows2":
     "This component is a text component that displays the number of user-defined lines, and displays ellipses when the number exceeds. It also supports the display of user-defined text buttons when ellipses appear at the end.",
   "page.htmlVision.visualDesign.thisIsText": "This is the text.",
+  "page.htmlVision.visualDesign.quantumEntanglementTip":
+    "There are hidden quantum entanglement effects in this station waiting for you to discover oh.",
   "page.htmlVision.visualDesign.brighten": "Brighten",
   "page.htmlVision.visualDesign.grayed": "Grayed",
   "page.htmlVision.visualDesign.textShadow": "Text Shadow",

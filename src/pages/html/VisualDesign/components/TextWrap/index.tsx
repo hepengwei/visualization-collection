@@ -5,7 +5,7 @@ import styles from "./index.module.scss";
 const TextWrap = () => {
   const intl = useIntl();
   const text = intl.formatMessage({
-    id: "page.htmlVision.visualDesign.thisIsText",
+    id: "page.htmlVision.visualDesign.quantumEntanglementTip",
   });
   return (
     <div className={styles.container}>
