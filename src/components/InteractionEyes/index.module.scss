@@ -10,6 +10,7 @@
   height: $eyeSize;
   display: flex;
   justify-content: space-between;
+  position: relative;
 
   .eye {
     box-sizing: border-box;
@@ -60,6 +61,14 @@
       border-radius: 50%;
       background-color: $color;
     }
+  }
+
+  iframe {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
   }
 
   @keyframes beat {

@@ -1,7 +1,13 @@
 /**
  * 跨域页面实现量子纠缠实时通信
  */
-import { useState, useRef, useEffect, useCallback, RefObject } from "react";
+import {
+  useState,
+  useRef,
+  useLayoutEffect,
+  useCallback,
+  RefObject,
+} from "react";
 import useScreenPosition from "hooks/useScreenPosition";
 
 interface ThatPageInfo {
@@ -75,6 +81,7 @@ const useQuantumEntanglement = (
   }, []);
 
   const onMessage = useCallback((e: any) => {
+    console.log(777, e);
     if (e.origin !== thatPageUrl) return;
     if (e.data) {
       if (e.data.includes("keepAlive")) {
@@ -142,23 +149,27 @@ const useQuantumEntanglement = (
 
   useScreenPosition(resendMessage);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     window.addEventListener("message", onMessage, false);
-    if (iframeId) {
-      const aIframe = document.getElementById(iframeId);
-      if (aIframe) {
-        (aIframe as HTMLIFrameElement).onload = () => {
-          isThatPageReady.current = true;
-          resendMessage();
-          if (window.self === window.top) {
-            window.addEventListener("storage", onStorage);
-            window.addEventListener("resize", resendMessage);
-            sendTimer.current = window.setInterval(() => {
-              postKeepAliveInfo();
-            }, 600);
-          }
-        };
-      }
+    if (iframeId && elementRef?.current) {
+      const aIframe: HTMLIFrameElement = document.createElement("iframe");
+      aIframe.id = iframeId;
+      aIframe.style.visibility = "hidden";
+      console.log(222);
+      aIframe.onload = () => {
+        console.log("iframe ready");
+        isThatPageReady.current = true;
+        resendMessage();
+        if (window.self === window.top) {
+          window.addEventListener("storage", onStorage);
+          window.addEventListener("resize", resendMessage);
+          sendTimer.current = window.setInterval(() => {
+            postKeepAliveInfo();
+          }, 600);
+        }
+      };
+      aIframe.src = thatPageUrl;
+      elementRef.current.appendChild(aIframe);
     }
 
     return () => {
