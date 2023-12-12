@@ -45,6 +45,7 @@ const useQuantumEntanglement = (
           y = window.innerHeight / 2 + window.screenTop;
         }
         const data = { pageId: pageId.current, x, y };
+        console.log(333);
         (aIframe as HTMLIFrameElement).contentWindow?.postMessage(
           JSON.stringify(data),
           "*"
@@ -143,8 +144,10 @@ const useQuantumEntanglement = (
   };
 
   const resendMessage = useCallback(() => {
-    postInfo();
-    getLocalThatPageInfo();
+    if (window.self === window.top) {
+      postInfo();
+      getLocalThatPageInfo();
+    }
   }, []);
 
   useScreenPosition(resendMessage);
