@@ -23,6 +23,7 @@ const prodConfig = {
           },
         },
         resolveApp("CNAME"),
+        resolveApp("service-worker.js"),
       ],
     }),
   ],
