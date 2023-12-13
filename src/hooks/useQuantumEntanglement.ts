@@ -48,7 +48,7 @@ const useQuantumEntanglement = (
         console.log(333);
         (aIframe as HTMLIFrameElement).contentWindow?.postMessage(
           JSON.stringify(data),
-          "*"
+          thatPageUrl
         );
       }
     }
@@ -56,7 +56,7 @@ const useQuantumEntanglement = (
 
   // 发送保活信息，维持通信状态
   const postKeepAliveInfo = useCallback(() => {
-    if (iframeId  && isThatPageReady.current) {
+    if (iframeId && isThatPageReady.current) {
       const aIframe = document.getElementById(iframeId);
       if (aIframe) {
         sendTimer.current = 0;
@@ -67,7 +67,7 @@ const useQuantumEntanglement = (
         };
         (aIframe as HTMLIFrameElement).contentWindow?.postMessage(
           JSON.stringify(data),
-          "*"
+          thatPageUrl
         );
         if (!receiveTimer.current) {
           receiveTimer.current = window.setTimeout(() => {
