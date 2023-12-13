@@ -4,7 +4,7 @@
 import React, { useRef, useMemo, useEffect } from "react";
 import { useGlobalContext } from "hooks/useGlobalContext";
 import useQuantumEntanglement from "hooks/useQuantumEntanglement";
-import { IFRAME_ID, THAT_PAGE_URL } from "constants/common";
+import { IFRAME_ID, THAT_PAGE_URL, SERVICE_WORKER_FILE } from "constants/common";
 import styles from "./index.module.scss";
 
 const receiveKey = "bPageInfo";
@@ -19,6 +19,7 @@ const InteractionEyes = () => {
     IFRAME_ID,
     THAT_PAGE_URL,
     receiveKey,
+    SERVICE_WORKER_FILE,
     containerRef
   );
 

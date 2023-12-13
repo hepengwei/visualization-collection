@@ -1,1 +1,0 @@
-self.addEventListener("message",(function(e){const n=e.data;console.log("SW接收到客户端的消息：",n),self.clients.matchAll().then((function(e){e.forEach((function(e){e.postMessage(n)}))}))}));

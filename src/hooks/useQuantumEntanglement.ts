@@ -20,6 +20,7 @@ const useQuantumEntanglement = (
   iframeId: string,
   thatPageUrl: string,
   receiveKey: string,
+  serviceWorkerFile: string,
   elementRef?: RefObject<HTMLDivElement | null>
 ) => {
   const pageId = useRef<string>(Math.random().toString(36).substring(2));
@@ -197,7 +198,7 @@ const useQuantumEntanglement = (
       } else {
         // 注册Service Worker
         navigator.serviceWorker
-          .register("service-worker.js")
+          .register(serviceWorkerFile)
           .then(() => {
             console.log("注册Service Worker成功");
           })

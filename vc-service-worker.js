@@ -7,6 +7,7 @@ self.addEventListener("message", function (event) {
   // 向所有客户端页面发送消息
   self.clients.matchAll().then(function (clients) {
     clients.forEach(function (client) {
+      console.log("SW给客户端发送消息：", client);
       client.postMessage(message);
     });
   });
