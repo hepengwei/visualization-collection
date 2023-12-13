@@ -24,7 +24,7 @@ const useQuantumEntanglement = (
 ) => {
   const pageId = useRef<string>(Math.random().toString(36).substring(2));
   const [thatPageInfo, setThatPageInfo] = useState<ThatPageInfo | null>(null);
-  const thatPageId = useRef<string>("");
+  const thatPageInfoRef = useRef<ThatPageInfo | null>(null);
   const isThatPageReady = useRef<boolean>(false);
   const sendTimer = useRef<number>(0);
   const receiveTimer = useRef<number>(0);
@@ -73,7 +73,7 @@ const useQuantumEntanglement = (
           receiveTimer.current = window.setTimeout(() => {
             receiveTimer.current = 0;
             window.localStorage.removeItem(receiveKey);
-            thatPageId.current = "";
+            thatPageInfoRef.current = null;
             setThatPageInfo(null);
           }, 1500);
         }
@@ -84,105 +84,140 @@ const useQuantumEntanglement = (
   const onMessage = useCallback((e: any) => {
     console.log(777, e);
     if (e.origin !== thatPageUrl) return;
-    if (e.data) {
-      if (e.data.includes("keepAlive")) {
-        window.localStorage.setItem("keepAliveInfo", e.data);
-      } else {
-        window.localStorage.setItem(receiveKey, e.data);
-      }
-    } else {
-      window.localStorage.setItem("keepAliveInfo", "");
-      window.localStorage.setItem(receiveKey, "");
-    }
-  }, []);
-
-  const onStorage = useCallback((e: any) => {
-    if (e.key === "keepAliveInfo") {
-      if (e.newValue) {
-        const keepAliveInfo = JSON.parse(e.newValue);
-        if (keepAliveInfo && keepAliveInfo.pageId === thatPageId.current) {
-          // 如果收到了保活信息,则清除receiveTimer
-          if (receiveTimer.current) {
-            window.clearTimeout(receiveTimer.current);
-            receiveTimer.current = 0;
-          }
-        }
-      }
-    } else if (e.key === receiveKey) {
-      if (e.newValue) {
-        const thatPageInfo = JSON.parse(e.newValue);
-        if (thatPageInfo) {
-          thatPageId.current = thatPageInfo.pageId;
-          setThatPageInfo(thatPageInfo);
+    if ("serviceWorker" in navigator) {
+      if (e.data) {
+        if (e.data.includes("keepAlive")) {
+          navigator.serviceWorker?.controller?.postMessage({
+            type: "keepAliveInfo",
+            value: e.data,
+          });
         } else {
-          thatPageId.current = "";
-          setThatPageInfo(null);
+          navigator.serviceWorker?.controller?.postMessage({
+            type: receiveKey,
+            value: e.data,
+          });
         }
       } else {
-        thatPageId.current = "";
-        setThatPageInfo(null);
+        navigator.serviceWorker?.controller?.postMessage({
+          type: receiveKey,
+          value: "",
+        });
       }
     }
   }, []);
-
-  // 获取localStorage中的另一页面的信息，并setThatPageInfo
-  const getLocalThatPageInfo = () => {
-    const thatPageInfoStr = window.localStorage.getItem(receiveKey);
-    if (thatPageInfoStr) {
-      const thatPageInfo = JSON.parse(thatPageInfoStr);
-      if (thatPageInfo) {
-        thatPageId.current = thatPageInfo.pageId;
-        setThatPageInfo(thatPageInfo);
-      } else {
-        thatPageId.current = "";
-        setThatPageInfo(null);
-      }
-    } else {
-      thatPageId.current = "";
-      setThatPageInfo(null);
-    }
-  };
 
   const resendMessage = useCallback(() => {
     if (window.self === window.top) {
       postInfo();
-      getLocalThatPageInfo();
+      // 自己页面移动后需要重新setThatPageInfo，使页面重新刷新
+      if (thatPageInfoRef.current) {
+        const newThatPageInfo = { ...thatPageInfoRef.current };
+        thatPageInfoRef.current = newThatPageInfo;
+        setThatPageInfo(newThatPageInfo);
+      }
+      // getLocalThatPageInfo();
     }
   }, []);
 
   useScreenPosition(resendMessage);
 
-  useLayoutEffect(() => {
-    window.addEventListener("message", onMessage, false);
-    if (window.self === window.top) {
-      if (iframeId && elementRef?.current) {
-        const aIframe: HTMLIFrameElement = document.createElement("iframe");
-        aIframe.id = iframeId;
-        aIframe.style.visibility = "hidden";
-        console.log(222);
-        aIframe.onload = () => {
-          console.log("iframe ready");
-          isThatPageReady.current = true;
-          resendMessage();
+  // 从Service Worker发过来message时的回调
+  const onReceiveSWMessage = useCallback((event: any) => {
+    const message = event.data;
+    console.log("接收到SW的消息：", message);
+    if (message.type === "keepAliveInfo") {
+      if (message.value) {
+        const keepAliveInfo = JSON.parse(message.value);
+        if (thatPageInfoRef.current) {
+          if (
+            keepAliveInfo &&
+            keepAliveInfo.pageId === thatPageInfoRef.current?.pageId
+          ) {
+            // 如果收到了保活信息,则清除receiveTimer
+            if (receiveTimer.current) {
+              window.clearTimeout(receiveTimer.current);
+              receiveTimer.current = 0;
+            }
+          }
+        } else {
+          // 如果收到了保活信息,则清除receiveTimer
+          if (receiveTimer.current) {
+            window.clearTimeout(receiveTimer.current);
+            receiveTimer.current = 0;
+          }
+          const newThatPageInfo = { pageId: keepAliveInfo.pageId, x: 0, y: 0 };
+          thatPageInfoRef.current = newThatPageInfo;
+          setThatPageInfo(newThatPageInfo);
+        }
+      }
+    } else if (message.type === receiveKey) {
+      if (message.value) {
+        const thatPageInfo = JSON.parse(message.value);
+        if (thatPageInfo) {
+          thatPageInfoRef.current = thatPageInfo;
+          setThatPageInfo(thatPageInfo);
+        } else {
+          thatPageInfoRef.current = null;
+          setThatPageInfo(null);
+        }
+      } else {
+        thatPageInfoRef.current = null;
+        setThatPageInfo(null);
+      }
+    }
+  }, []);
 
-          window.addEventListener("storage", onStorage);
-          window.addEventListener("resize", resendMessage);
-          sendTimer.current = window.setInterval(() => {
-            postKeepAliveInfo();
-          }, 600);
-        };
-        aIframe.src = thatPageUrl;
-        elementRef.current.appendChild(aIframe);
+  useLayoutEffect(() => {
+    if ("serviceWorker" in navigator) {
+      if (window.self === window.top) {
+        if (iframeId && elementRef?.current) {
+          const aIframe: HTMLIFrameElement = document.createElement("iframe");
+          aIframe.id = iframeId;
+          aIframe.style.visibility = "hidden";
+          console.log(222);
+          aIframe.onload = () => {
+            console.log("iframe ready");
+            isThatPageReady.current = true;
+            resendMessage();
+
+            window.addEventListener("resize", resendMessage);
+            sendTimer.current = window.setInterval(() => {
+              postKeepAliveInfo();
+            }, 600);
+          };
+          aIframe.src = thatPageUrl;
+          elementRef.current.appendChild(aIframe);
+
+          // 监听从serviceWorker发过来的message
+          navigator.serviceWorker.addEventListener(
+            "message",
+            onReceiveSWMessage
+          );
+        }
+      } else {
+        // 注册Service Worker
+        navigator.serviceWorker
+          .register("service-worker.js")
+          .then(() => {
+            console.log("注册Service Worker成功");
+          })
+          .catch(() => {
+            console.log("注册Service Worker失败");
+          });
+
+        window.addEventListener("message", onMessage, false);
       }
     }
 
     return () => {
-      window.removeEventListener("message", onMessage);
-      if (window.self === window.top) {
-        window.removeEventListener("storage", onStorage);
-        window.removeEventListener("resize", resendMessage);
-        sendTimer.current && window.clearInterval(sendTimer.current);
-        receiveTimer.current && window.clearTimeout(receiveTimer.current);
+      if ("serviceWorker" in navigator) {
+        if (window.self === window.top) {
+          window.removeEventListener("resize", resendMessage);
+          sendTimer.current && window.clearInterval(sendTimer.current);
+          receiveTimer.current && window.clearTimeout(receiveTimer.current);
+        } else {
+          window.removeEventListener("message", onMessage, false);
+        }
       }
     };
   }, []);
