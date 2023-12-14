@@ -4,7 +4,7 @@
 import {
   useState,
   useRef,
-  useLayoutEffect,
+  useEffect,
   useCallback,
   RefObject,
 } from "react";
@@ -55,18 +55,10 @@ const useQuantumEntanglement = (
       if (selfPageInfoList && selfPageInfoList.length > 0) {
         const selfPageInfoList: InteractPageInfo[] =
           JSON.parse(selfPageInfoStr);
-        let exist = false;
-        const newSelfPageInfoList = selfPageInfoList.map((item) => {
-          if (item.pageId === pageId.current) {
-            item.x = x;
-            item.y = y;
-            exist = true;
-          }
-          return item;
-        });
-        if (!exist) {
-          newSelfPageInfoList.unshift(data);
-        }
+        const newSelfPageInfoList = selfPageInfoList.filter(
+          (item) => item.pageId !== pageId.current
+        );
+        newSelfPageInfoList.unshift(data);
         window.localStorage.setItem(
           receiveSelfKey,
           JSON.stringify(newSelfPageInfoList)
@@ -306,7 +298,7 @@ const useQuantumEntanglement = (
 
   useScreenPosition(resendMessage);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (window.self === window.top) {
       if (isDev) {
         if (iframeId && elementRef?.current) {
@@ -346,6 +338,7 @@ const useQuantumEntanglement = (
         sendTimer.current && window.clearInterval(sendTimer.current);
         receiveTimer.current && window.clearTimeout(receiveTimer.current);
         if (!isDev) {
+          console.log("remove");
           removeInfo();
         }
       } else {
