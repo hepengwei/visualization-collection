@@ -1,13 +1,7 @@
 /**
  * 同域/跨域页面实现量子纠缠实时通信(跨域仅在本地运行时可行)
  */
-import {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  RefObject,
-} from "react";
+import { useState, useRef, useEffect, useCallback, RefObject } from "react";
 import useScreenPosition from "hooks/useScreenPosition";
 
 interface InteractPageInfo {
@@ -73,6 +67,7 @@ const useQuantumEntanglement = (
 
   // 将当前页面位置信息从localStorage中清除
   const removeInfo = useCallback(() => {
+    console.log("remove");
     const selfPageInfoStr = window.localStorage.getItem(receiveSelfKey);
     if (selfPageInfoStr) {
       const selfPageInfoList: InteractPageInfo[] = JSON.parse(selfPageInfoStr);
@@ -324,6 +319,7 @@ const useQuantumEntanglement = (
         resendMessage();
         window.addEventListener("storage", onStorage);
         window.addEventListener("resize", resendMessage);
+        window.addEventListener("beforeunload", removeInfo);
       }
     } else {
       if (isDev) {
@@ -338,7 +334,6 @@ const useQuantumEntanglement = (
         sendTimer.current && window.clearInterval(sendTimer.current);
         receiveTimer.current && window.clearTimeout(receiveTimer.current);
         if (!isDev) {
-          console.log("remove");
           removeInfo();
         }
       } else {
