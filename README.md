@@ -21,7 +21,7 @@
 <img src="./src/images/readme/interactiveDesign3.gif" alt="" width={1200}/>
 
 * Canvas动效
-<img src="./src/images/readme/canvas1.gif" alt="" width={1200}/>
+<img src="  canvas1.gif" alt="" width={1200}/>
 
 <img src="./src/images/readme/canvas2.gif" alt="" width={1200}/>
 
@@ -30,5 +30,8 @@
 <img src="./src/images/readme/canvas4.gif" alt="" width={1200}/>
 
 <img src="./src/images/readme/canvas5.gif" alt="" width={1200}/>
+
+* 量子纠缠效果(隐藏款)
+<img src="./src/images/readme/quantumEntanglement.gif" alt="" width={1200}/>
 
 ## 持续更新，敬请关注
