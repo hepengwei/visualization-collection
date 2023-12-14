@@ -88,7 +88,7 @@ const useQuantumEntanglement = (
         const selfPageInfoList: InteractPageInfo[] =
           JSON.parse(selfPageInfoStr);
         const newSelfPageInfoList = selfPageInfoList.filter(
-          (item) => item.pageId !== pageId.current
+          (item) => item.pageId === interactPageId.current
         );
         window.localStorage.setItem(
           receiveSelfKey,
@@ -150,6 +150,52 @@ const useQuantumEntanglement = (
     }
   }, []);
 
+  // 根据传入的同域页面的信息setInteractPageInfo
+  const setSelfPageInfo = (selfPageInfoStr: string | null) => {
+    if (selfPageInfoStr) {
+      const selfPageInfoList = JSON.parse(selfPageInfoStr);
+      if (selfPageInfoList && selfPageInfoList.length > 0) {
+        let exist = false;
+        for (let i = 0, l = selfPageInfoList.length; i < l; i++) {
+          const item = selfPageInfoList[i];
+          if (item.pageId !== pageId.current) {
+            interactPageId.current = item.pageId;
+            setInteractPageInfo(item);
+            exist = true;
+            break;
+          }
+        }
+        if (!exist) {
+          interactPageId.current = "";
+          setInteractPageInfo(null);
+        }
+      } else {
+        interactPageId.current = "";
+        setInteractPageInfo(null);
+      }
+    } else {
+      interactPageId.current = "";
+      setInteractPageInfo(null);
+    }
+  };
+
+  // 根据传入的跨域页面的信息setInteractPageInfo
+  const setThatPageInfo = (thatPageInfoStr: string | null) => {
+    if (thatPageInfoStr) {
+      const thatPageInfo = JSON.parse(thatPageInfoStr);
+      if (thatPageInfo) {
+        interactPageId.current = thatPageInfo.pageId;
+        setInteractPageInfo(thatPageInfo);
+      } else {
+        interactPageId.current = "";
+        setInteractPageInfo(null);
+      }
+    } else {
+      interactPageId.current = "";
+      setInteractPageInfo(null);
+    }
+  };
+
   // 监听跨域页面post过来的消息
   const onMessage = useCallback((e: any) => {
     console.log(777, e);
@@ -169,31 +215,32 @@ const useQuantumEntanglement = (
   // localStorage改变的回调
   const onStorage = useCallback((e: any) => {
     if (e.key === receiveSelfKey) {
-      if (e.newValue) {
-        const selfPageInfoList = JSON.parse(e.newValue);
-        if (selfPageInfoList && selfPageInfoList.length > 0) {
-          let exist = false;
-          for (let i = 0, l = selfPageInfoList.length; i < l; i++) {
-            const item = selfPageInfoList[i];
-            if (item.pageId !== pageId.current) {
-              interactPageId.current = item.pageId;
-              setInteractPageInfo(item);
-              exist = true;
-              break;
-            }
-          }
-          if (!exist) {
-            interactPageId.current = "";
-            setInteractPageInfo(null);
-          }
-        } else {
-          interactPageId.current = "";
-          setInteractPageInfo(null);
-        }
-      } else {
-        interactPageId.current = "";
-        setInteractPageInfo(null);
-      }
+      setSelfPageInfo(e.newValue);
+      // if (e.newValue) {
+      //   const selfPageInfoList = JSON.parse(e.newValue);
+      //   if (selfPageInfoList && selfPageInfoList.length > 0) {
+      //     let exist = false;
+      //     for (let i = 0, l = selfPageInfoList.length; i < l; i++) {
+      //       const item = selfPageInfoList[i];
+      //       if (item.pageId !== pageId.current) {
+      //         interactPageId.current = item.pageId;
+      //         setInteractPageInfo(item);
+      //         exist = true;
+      //         break;
+      //       }
+      //     }
+      //     if (!exist) {
+      //       interactPageId.current = "";
+      //       setInteractPageInfo(null);
+      //     }
+      //   } else {
+      //     interactPageId.current = "";
+      //     setInteractPageInfo(null);
+      //   }
+      // } else {
+      //   interactPageId.current = "";
+      //   setInteractPageInfo(null);
+      // }
     } else if (e.key === "keepAliveInfo") {
       if (e.newValue) {
         const keepAliveInfo = JSON.parse(e.newValue);
@@ -224,49 +271,35 @@ const useQuantumEntanglement = (
         }
       }
     } else if (e.key === receiveThatKey) {
-      if (e.newValue) {
-        const thatPageInfo = JSON.parse(e.newValue);
-        if (thatPageInfo) {
-          interactPageId.current = thatPageInfo.pageId;
-          setInteractPageInfo(thatPageInfo);
-        } else {
-          interactPageId.current = "";
-          setInteractPageInfo(null);
-        }
-      } else {
-        interactPageId.current = "";
-        setInteractPageInfo(null);
-      }
+      setThatPageInfo(e.newValue);
+      // if (e.newValue) {
+      //   const thatPageInfo = JSON.parse(e.newValue);
+      //   if (thatPageInfo) {
+      //     interactPageId.current = thatPageInfo.pageId;
+      //     setInteractPageInfo(thatPageInfo);
+      //   } else {
+      //     interactPageId.current = "";
+      //     setInteractPageInfo(null);
+      //   }
+      // } else {
+      //   interactPageId.current = "";
+      //   setInteractPageInfo(null);
+      // }
     }
   }, []);
-
-  // 获取localStorage中的跨域页面的信息，并setThatPageInfo
-  const getLocalThatPageInfo = () => {
-    const thatPageInfoStr = window.localStorage.getItem(receiveThatKey);
-    if (thatPageInfoStr) {
-      const thatPageInfo = JSON.parse(thatPageInfoStr);
-      if (thatPageInfo) {
-        interactPageId.current = thatPageInfo.pageId;
-        setInteractPageInfo(thatPageInfo);
-      } else {
-        interactPageId.current = "";
-        setInteractPageInfo(null);
-      }
-    } else {
-      interactPageId.current = "";
-      setInteractPageInfo(null);
-    }
-  };
 
   const resendMessage = useCallback(() => {
     if (window.self === window.top) {
       if (isDev) {
         // 与跨域页面进行交互的逻辑
         postInfo();
-        getLocalThatPageInfo();
+        const thatPageInfoStr = window.localStorage.getItem(receiveThatKey);
+        setThatPageInfo(thatPageInfoStr);
       } else {
         // 与同域页面进行交互的逻辑
         saveInfo();
+        const selfPageInfoStr = window.localStorage.getItem(receiveSelfKey);
+        setSelfPageInfo(selfPageInfoStr);
       }
     }
   }, []);
