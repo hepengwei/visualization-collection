@@ -12,7 +12,7 @@ export const ECHART_COMMON_COLOR = [
 ];
 
 export const IFRAME_ID = "bIframe";
-// export const THAT_PAGE_URL = "http://localhost:3003";
-export const THAT_PAGE_URL = "https://michellez.cn";
-export const THAT_PAGE_PASSWORD = '123456';
-export const SERVICE_WORKER_FILE = "vc-service-worker.js";
+export const THAT_PAGE_URL = "http://localhost:3003";
+export const RECEIVE_SELF_KEY = "selfPageInfoList";
+export const RECEIVE_THAT_KEY = "bPageInfo";
+
