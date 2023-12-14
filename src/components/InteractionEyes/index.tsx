@@ -4,10 +4,10 @@
 import React, { useRef, useMemo, useEffect } from "react";
 import { useGlobalContext } from "hooks/useGlobalContext";
 import useQuantumEntanglement from "hooks/useQuantumEntanglement";
-import { IFRAME_ID, THAT_PAGE_URL, SERVICE_WORKER_FILE } from "constants/common";
+import { IFRAME_ID, THAT_PAGE_URL, RECEIVE_SELF_KEY, RECEIVE_THAT_KEY } from "constants/common";
 import styles from "./index.module.scss";
 
-const receiveKey = "bPageInfo";
+
 const eyeSize = 28;
 const eyeballSize = 10;
 
@@ -15,11 +15,11 @@ const InteractionEyes = () => {
   const { locale } = useGlobalContext();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { thatPageInfo, resendMessage } = useQuantumEntanglement(
+  const { interactPageInfo, resendMessage } = useQuantumEntanglement(
     IFRAME_ID,
     THAT_PAGE_URL,
-    receiveKey,
-    SERVICE_WORKER_FILE,
+    RECEIVE_SELF_KEY,
+    RECEIVE_THAT_KEY,
     containerRef
   );
 
@@ -30,8 +30,8 @@ const InteractionEyes = () => {
 
   const eyebalInfo: { eyeballLeft: number; eyeballTop: number } | null =
     useMemo(() => {
-      if (containerRef.current && thatPageInfo) {
-        const { x, y } = thatPageInfo;
+      if (containerRef.current && interactPageInfo) {
+        const { x, y } = interactPageInfo;
         const { top, left, width, height } =
           containerRef.current.getBoundingClientRect();
         const selfX = left + window.screenLeft + width / 2;
@@ -47,7 +47,7 @@ const InteractionEyes = () => {
         return { eyeballLeft: 0, eyeballTop: 0 };
       }
       return null;
-    }, [thatPageInfo]);
+    }, [interactPageInfo]);
 
   return (
     <div className={styles.container} ref={containerRef}>
