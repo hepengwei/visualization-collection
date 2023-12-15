@@ -29,8 +29,8 @@ const useQuantumEntanglement = (
   const sendTimer = useRef<number>(0);
   const receiveTimer = useRef<number>(0);
 
-  // 将当前页面位置信息保存到localStorage中
-  const saveInfo = useCallback(() => {
+  // 获取将要发送的信息数据
+  const getPostData = () => {
     let x = 0;
     let y = 0;
     if (elementRef?.current) {
@@ -43,6 +43,12 @@ const useQuantumEntanglement = (
       y = window.innerHeight / 2 + window.screenTop;
     }
     const data = { pageId: pageId.current, x, y };
+    return data;
+  };
+
+  // 将当前页面位置信息保存到localStorage中
+  const saveInfo = useCallback(() => {
+    const data = getPostData();
     const selfPageInfoStr = window.localStorage.getItem(receiveSelfKey);
     if (selfPageInfoStr) {
       const selfPageInfoList: InteractPageInfo[] = JSON.parse(selfPageInfoStr);
@@ -89,18 +95,7 @@ const useQuantumEntanglement = (
     if (iframeId && isThatPageReady.current) {
       const aIframe = document.getElementById(iframeId);
       if (aIframe) {
-        let x = 0;
-        let y = 0;
-        if (elementRef?.current) {
-          const { top, left, width, height } =
-            elementRef.current.getBoundingClientRect();
-          x = left + window.screenLeft + width / 2;
-          y = top + window.screenTop + height / 2;
-        } else {
-          x = window.innerWidth / 2 + window.screenLeft;
-          y = window.innerHeight / 2 + window.screenTop;
-        }
-        const data = { pageId: pageId.current, x, y };
+        const data = getPostData();
         (aIframe as HTMLIFrameElement).contentWindow?.postMessage(
           JSON.stringify(data),
           thatPageUrl
@@ -256,6 +251,7 @@ const useQuantumEntanglement = (
   useEffect(() => {
     if (window.self === window.top) {
       if (isDev) {
+        // 本地环境下，支持跨域页面进行交互，通过嵌入跨域页面的iframe，向iframe通过postMessage发送信息，然后iframe将信息保存到localStorage，另一页面通过监听storage变化来获取信息(storage回调函数仅在本地运行时才会被触发)
         if (iframeId && elementRef?.current) {
           const aIframe: HTMLIFrameElement = document.createElement("iframe");
           aIframe.id = iframeId;
@@ -273,6 +269,7 @@ const useQuantumEntanglement = (
           elementRef.current.appendChild(aIframe);
         }
       } else {
+        // 线上环境下，支持同域页面进行交互，一个页面将信息保存到localStorage，另一个同域页面进行监听即可获取
         resendMessage();
         window.addEventListener("storage", onStorage);
         window.addEventListener("resize", resendMessage);
