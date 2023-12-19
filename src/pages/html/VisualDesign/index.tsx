@@ -33,6 +33,8 @@ import HexagonalMesh from "./components/HexagonalMesh";
 import HexagonalRadar from "./components/HexagonalRadar";
 import HoverEnlargement from "./components/HoverEnlargement";
 import ActivityCountDown from "./components/ActivityCountDown";
+import GlassDesign1 from "./components/GlassDesign1";
+import GlassDesign2 from "./components/GlassDesign2";
 import Ribbon from "./components/Ribbon";
 import styles from "./index.module.scss";
 
@@ -67,6 +69,8 @@ const gridboxList = [
   { element: <HexagonalRadar /> },
   { element: <HoverEnlargement /> },
   { element: <ActivityCountDown /> },
+  { element: <GlassDesign1 /> },
+  { element: <GlassDesign2 /> },
   { element: <Ribbon /> },
 ];
 
