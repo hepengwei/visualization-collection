@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Pie2 from "components/Echarts/Pie2";
-import styles from "../../index.module.scss";
+import Pie from "components/Echarts/Pie2";
+import styles from "../index.module.scss";
 
-const Pie1 = () => {
+const Pie2 = () => {
   const [echartData, setEchartData] = useState<(string | number)[][]>([]);
 
   const getData = () => {
@@ -23,9 +23,9 @@ const Pie1 = () => {
 
   return (
     <div className={styles.echart}>
-      <Pie2 data={{ dataSource: echartData }} />
+      <Pie data={{ dataSource: echartData }} />
     </div>
   );
 };
 
-export default Pie1;
+export default Pie2;

@@ -207,6 +207,10 @@ const Menus: React.FC = () => {
           intl.formatMessage({ id: "menu.echartsInteraction.pieCharts" }),
           "pie"
         ),
+        getItem(
+          intl.formatMessage({ id: "menu.echartsInteraction.treeCharts" }),
+          "tree"
+        ),
       ]
     ),
     getItem(

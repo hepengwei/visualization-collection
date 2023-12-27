@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Pie from "components/Echarts/Pie";
-import styles from "../../index.module.scss";
+import styles from "../index.module.scss";
 
 const Pie1 = () => {
   const [echartData, setEchartData] = useState<(string | number)[][]>([]);
