@@ -37,6 +37,7 @@ import ImageProcessingTool from "pages/ImageProcessingTool";
 import VideoProcessingTool from "pages/VideoProcessingTool";
 import Bar from "pages/echarts/Bar";
 import Pie from "pages/echarts/Pie";
+import Tree from "pages/echarts/Tree";
 
 export const contentRoutes: RouteObject[] = [
   {
@@ -160,6 +161,10 @@ export const contentRoutes: RouteObject[] = [
       {
         path: "/echarts/pie",
         element: <Pie />,
+      },
+      {
+        path: "/echarts/tree",
+        element: <Tree />,
       },
     ],
   },

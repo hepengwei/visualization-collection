@@ -74,6 +74,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
+    "@antv/g6": "^4.8.24",
     "@mediapipe/pose": "^0.5.1675469404",
     "@mediapipe/selfie_segmentation": "^0.1.1675465747",
     "@tensorflow-models/body-segmentation": "^1.0.1",

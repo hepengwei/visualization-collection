@@ -122,6 +122,7 @@ const en_US = {
   "menu.echartsInteraction": "Echarts Interaction",
   "menu.echartsInteraction.barCharts": "Bar Charts",
   "menu.echartsInteraction.pieCharts": "Pie Charts",
+  "menu.echartsInteraction.treeCharts": "Tree Charts",
   "menu.threeJs3D": "Three.js3D",
   "menu.threeJs3D.appPageFrame": "Cool 3D Application page",
   "menu.threeJs3D.carShow": "Car Show",

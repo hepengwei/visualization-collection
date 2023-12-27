@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ColumnLineBar from "components/Echarts/ColumnLineBar";
-import styles from "../../index.module.scss";
+import styles from "../index.module.scss";
 
 const xAxisName = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
