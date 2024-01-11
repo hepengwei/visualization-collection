@@ -4,9 +4,10 @@
 import React, { useEffect } from "react";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import LineCombination from "./components/LineCombination";
+import FileView from "./components/FileView";
 import styles from "./index.module.scss";
 
-const boxList = [{ element: <LineCombination /> }];
+const boxList = [{ element: <LineCombination /> }, { element: <FileView /> }];
 
 const ComplexLayout = () => {
   const { setScrollTop } = useGlobalContext();
