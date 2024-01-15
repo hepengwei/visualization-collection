@@ -200,6 +200,8 @@ const en_US = {
   "page.htmlVision.interactiveDesign.personalArticle": "Personal Article",
   "page.htmlVision.interactiveDesign.autoCompletePunctuation":
     "Automatically complete the punctuation input box",
+  "page.htmlVision.interactiveDesign.stackedImages":
+    "Hover effect for stacked images",
 
   // Html视觉-实用功能页
   "page.htmlVision.utilitarianFunction.operatingShears": "Operating Shears",
