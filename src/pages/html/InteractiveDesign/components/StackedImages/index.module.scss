@@ -1,0 +1,61 @@
+.container {
+  width: 100%;
+  height: 440px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  place-content: center;
+  display: grid;
+
+  .content {
+    --img-width: 150px; // 图片的宽高
+    --border-width: 1px; // 图片的边框宽度
+    $borderColor: #fff; // 图片的边框颜色
+    $imgGap: 12px; // 每个图片的边缘间隔
+    width: calc(100% + 4 * var(--border-width));
+    height: calc(var(--img-width) * 1.7 + 4 * var(--border-width));
+    padding: calc(2 * var(--border-width));
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    gap: $imgGap;
+    filter: drop-shadow(0 0 var(--border-width) $borderColor)
+      drop-shadow(0 0 var(--border-width) $borderColor)
+      drop-shadow(0 0 $borderColor) drop-shadow(0 0 $borderColor);
+
+    $imgOverlap: 30px; // 每个图片重叠部分的宽
+    img {
+      --h: 0px;
+      --t: 0px;
+      height: var(--img-width);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border-block: calc(var(--img-width)) solid $borderColor;
+      margin-block: calc(-1 * var(--img-width));
+      cursor: pointer;
+      -webkit-mask: radial-gradient(0 0 at 0 0, #0000 0, #000 0) padding-box;
+      translate: 0 var(--t);
+      // transition: --h 1s, --t 1s;
+
+      &:not(:last-child) {
+        margin-right: calc(-1 * $imgOverlap);
+        -webkit-mask: radial-gradient(
+            50% 50% at calc(150% + $imgGap - $imgOverlap) calc(50% - var(--h)),
+            #0000 calc(100% + $imgGap),
+            #000 calc(101% + $imgGap)
+          )
+          padding-box;
+      }
+
+      &:hover {
+        --h: calc(-0.7 * var(--img-width));
+        --t: calc(-0.7 * var(--img-width));
+      }
+
+      &:has(+ img:hover) {
+        --h: calc(0.7 * var(--img-width));
+      }
+    }
+  }
+}
