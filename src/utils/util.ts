@@ -72,3 +72,27 @@ export const getFixedWidthText = (
   document.body.removeChild(span);
   return returnText;
 };
+
+/**
+ * 为一个字符串每rowStrLength个字后添加换行符（最后的换行符不要，兼容由多个Unicode码组合成的汉字）
+ * @text   原字符串
+ * @rowStrLength 每多少个字后加换行符
+ */
+export const textAddLineBreak = (text: string, rowStrLength: number) => {
+  let num = 0;
+  let result = "";
+  if (!text || rowStrLength <= 0) return text;
+  for (const char of text) {
+    if (num >= rowStrLength) {
+      result += `${char}\n`;
+      num = 0;
+    } else {
+      result += char;
+      num++;
+    }
+  }
+  if (result.endsWith("\n")) {
+    result = result.substring(0, result.length - 1);
+  }
+  return result;
+};
