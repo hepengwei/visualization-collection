@@ -34,8 +34,11 @@ const MatchLine = () => {
   const startPoint = useRef<Point>({ x: 0, y: 0 }); // 记录每一次连线开始点
   const endPoint = useRef<Point>({ x: 0, y: 0 }); // 记录每一次连线结束点
   const trigger = useRef<boolean>(false); // 标识是否触发连线
-  const backLines = useRef<any[]>([]); // 记录已经连接好的线·数据结构
+  const backLines = useRef<any[]>([]); // 记录已经连接好的线的数据结构
   const anwsers = useRef<Partial<typeof standardAnwsers>>({}); // 记录答案
+  const question = useRef<string[]>(
+    Object.values(standardAnwsers).sort(() => Math.random() - 0.5)
+  ); // 当前题目右边的顺序
   const hasCheckout = useRef<boolean>(false); // 当前是否已校验
 
   // 判断是否已有连接
@@ -451,17 +454,15 @@ const MatchLine = () => {
               ))}
             </div>
             <div className={styles.options} ref={rightOptionsRef}>
-              {Object.values(standardAnwsers)
-                .sort(() => Math.random() - 0.5)
-                .map((value: string) => (
-                  <div
-                    className={styles.option}
-                    data-value={value}
-                    data-ownership="R"
-                  >
-                    {value}
-                  </div>
-                ))}
+              {question.current.map((value: string) => (
+                <div
+                  className={styles.option}
+                  data-value={value}
+                  data-ownership="R"
+                >
+                  {value}
+                </div>
+              ))}
             </div>
             {/* 实际连线 */}
             <canvas ref={canvasRef}></canvas>
