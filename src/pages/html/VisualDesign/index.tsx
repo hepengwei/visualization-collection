@@ -32,10 +32,11 @@ import RotateAndBgFixed from "./components/RotateAndBgFixed";
 import HexagonalMesh from "./components/HexagonalMesh";
 import HexagonalRadar from "./components/HexagonalRadar";
 import HoverEnlargement from "./components/HoverEnlargement";
-import ActivityCountDown from "./components/ActivityCountDown";
+import ConicGradientRing from "./components/ConicGradientRing";
 import GlassDesign1 from "./components/GlassDesign1";
 import GlassDesign2 from "./components/GlassDesign2";
 import Ribbon from "./components/Ribbon";
+import ActivityCountDown from "./components/ActivityCountDown";
 import styles from "./index.module.scss";
 
 const { GridBox } = GridContent;
@@ -68,10 +69,11 @@ const gridboxList = [
   { element: <HexagonalMesh /> },
   { element: <HexagonalRadar /> },
   { element: <HoverEnlargement /> },
-  { element: <ActivityCountDown /> },
+  { element: <ConicGradientRing /> },
   { element: <GlassDesign1 /> },
   { element: <GlassDesign2 /> },
   { element: <Ribbon /> },
+  { element: <ActivityCountDown /> },
 ];
 
 const VisualDesign = () => {
