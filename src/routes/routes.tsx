@@ -10,6 +10,7 @@ import UtilitarianFunction from "pages/html/UtilitarianFunction";
 import DynamicButtons from "pages/css/DynamicButtons";
 import RichDynamicEffect from "pages/css/RichDynamicEffect";
 import GenerateRegularPolygon from "pages/css/GenerateRegularPolygon";
+import GenerateShadow from "pages/css/GenerateShadow";
 // import MusicVisualization from "pages/css/MusicVisualization";
 import SphereCollisionExample from "pages/canvas/SphereCollisionExample";
 import DynamicClock from "pages/canvas/DynamicClock";
@@ -83,6 +84,10 @@ export const contentRoutes: RouteObject[] = [
       {
         path: "/css/generateRegularPolygon",
         element: <GenerateRegularPolygon />,
+      },
+      {
+        path: "/css/generateShadow",
+        element: <GenerateShadow />,
       },
       // {
       //   path: "/css/musicVisualization",

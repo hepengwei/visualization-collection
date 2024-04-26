@@ -99,6 +99,7 @@ const en_US = {
   "menu.cssDynamicEffect.dynamicEffectButton": "Dynamic Effect Button",
   "menu.cssDynamicEffect.richDynamicEffect": "Rich Dynamic Effect",
   "menu.cssDynamicEffect.generateRegularPolygon": "Generate Regular Polygon",
+  "menu.cssDynamicEffect.generateShadow": "Generate Shadow",
   "menu.cssDynamicEffect.musicVisualization": "Music Visualization",
   "menu.canvasDynamicEffect": "Canvas Dynamic Effect",
   "menu.canvasDynamicEffect.sphereCollisionExample": "sphere-collision Example",
@@ -261,6 +262,11 @@ const en_US = {
   "page.cssDynamicEffect.generateRegularPolygon.numberOfSides":
     "Number of sides",
   "page.cssDynamicEffect.generateRegularPolygon.rotation": "Rotation",
+  "page.cssDynamicEffect.generateShadow.horizontalOffset": "Horizontal Offset",
+  "page.cssDynamicEffect.generateShadow.verticalOffset": "Vertical Offset",
+  "page.cssDynamicEffect.generateShadow.blurLength": "Blur Length",
+  "page.cssDynamicEffect.generateShadow.shadowSize": "Shadow Size",
+  "page.cssDynamicEffect.generateShadow.borderRadius": "Border Radius",
 
   // Canvas动效
   "page.canvasDynamicEffect.sphereCollisionExample": "sphere-collision example",

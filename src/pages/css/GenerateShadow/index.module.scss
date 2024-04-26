@@ -9,18 +9,22 @@
     display: flex;
     flex-direction: column;
 
-    $boxWidth: 472px;
-    $boxPadding: 16px;
+    $boxWidth: 800px;
+    $boxHeight: 380px;
+    $boxPadding: 60px;
     .box {
       box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       width: $boxWidth;
-      height: $boxWidth;
+      height: $boxHeight;
       border: 2px dashed #73828c;
       padding: $boxPadding;
       .graph {
         box-sizing: border-box;
-        width: $boxWidth - 2 * $boxPadding;
-        height: $boxWidth - 2 * $boxPadding;
+        width: $boxHeight - 2 * $boxPadding;
+        height: $boxHeight - 2 * $boxPadding;
         background: linear-gradient(
             135deg,
             #112437,
@@ -31,7 +35,7 @@
             #47a992
           )
           fixed;
-        clip-path: polygon(var(--points));
+        box-shadow: var(--boxShadow);
       }
     }
     .bottom {
@@ -42,13 +46,19 @@
       .row {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         width: 100%;
         margin-bottom: 20px;
-        .label {
-          color: #333 !important;
-          margin-right: 6px;
-          font-size: 15px;
-          color: #666;
+        .rowItem {
+          display: flex;
+          align-items: center;
+          width: 47%;
+          .label {
+            color: #333 !important;
+            margin-right: 6px;
+            font-size: 15px;
+            color: #666;
+          }
         }
       }
       .codeBox {
