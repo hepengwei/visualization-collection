@@ -92,6 +92,7 @@ const zh_CN = {
   "menu.cssDynamicEffect.dynamicEffectButton": "动效按钮",
   "menu.cssDynamicEffect.richDynamicEffect": "丰富动效",
   "menu.cssDynamicEffect.generateRegularPolygon": "生成正多边形",
+  "menu.cssDynamicEffect.generateShadow": "生成阴影",
   "menu.cssDynamicEffect.musicVisualization": "音乐可视化",
   "menu.canvasDynamicEffect": "Canvas动效",
   "menu.canvasDynamicEffect.sphereCollisionExample": "sphere-collision库示例",
@@ -224,6 +225,11 @@ const zh_CN = {
   "page.cssDynamicEffect.richDynamicEffect.tankShaking": "水罐摇晃动效",
   "page.cssDynamicEffect.generateRegularPolygon.numberOfSides": "边数",
   "page.cssDynamicEffect.generateRegularPolygon.rotation": "旋转",
+  "page.cssDynamicEffect.generateShadow.horizontalOffset": "水平偏移",
+  "page.cssDynamicEffect.generateShadow.verticalOffset": "垂直偏移",
+  "page.cssDynamicEffect.generateShadow.blurLength": "模糊程度",
+  "page.cssDynamicEffect.generateShadow.shadowSize": "阴影大小",
+  "page.cssDynamicEffect.generateShadow.borderRadius": "边框半径",
 
   // Canvas动效
   "page.canvasDynamicEffect.sphereCollisionExample": "sphere-collision库示例",

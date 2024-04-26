@@ -107,14 +107,6 @@ const GenerateRegularPolygon = () => {
           <div className={styles.codeBox}>
             <span>{".box {"}</span>
             <span>
-              &nbsp;&nbsp;&nbsp;&nbsp;width:{" "}
-              {graphRef.current ? graphRef.current.clientWidth : 0}px;
-            </span>
-            <span>
-              &nbsp;&nbsp;&nbsp;&nbsp;height:{" "}
-              {graphRef.current ? graphRef.current.clientWidth : 0}px;
-            </span>
-            <span>
               &nbsp;&nbsp;&nbsp;&nbsp;background: linear-gradient(135deg,
               #112437, #1d3450, #29588a, #116d6e, #5c8984, #47a992) fixed;
             </span>

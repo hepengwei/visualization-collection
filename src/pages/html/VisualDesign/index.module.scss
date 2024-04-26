@@ -11,7 +11,7 @@
 
   .box {
     background-image: linear-gradient(to right, #04182c, #000c17, #04182c);
-    border: 3px solid #35a2fd44;
+    border: 3px solid $buttonColor2;
     border-radius: 10px;
     overflow: hidden;
     margin: 4px 2px;

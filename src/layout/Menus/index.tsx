@@ -105,6 +105,12 @@ const Menus: React.FC = () => {
           }),
           "generateRegularPolygon"
         ),
+        getItem(
+          intl.formatMessage({
+            id: "menu.cssDynamicEffect.generateShadow",
+          }),
+          "generateShadow"
+        ),
         // getItem(
         //   intl.formatMessage({
         //     id: "menu.cssDynamicEffect.musicVisualization",
