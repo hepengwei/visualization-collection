@@ -1,0 +1,56 @@
+.container {
+  width: 100%;
+  height: 450px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  $boxSize: 300px;
+  $ringHeight: 46px;
+  .box {
+    width: $boxSize;
+    height: $boxSize;
+    position: relative;
+    animation: rotate 4s linear infinite;
+
+    .item {
+      box-sizing: border-box;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      mask: radial-gradient(
+        transparent,
+        transparent calc($boxSize / 2 - $ringHeight),
+        #000c17 calc($boxSize / 2 - $ringHeight + 1px),
+        #000c17 100%
+      );
+
+      .semicircle {
+        box-sizing: border-box;
+        position: absolute;
+        width: calc($ringHeight / 2);
+        height: $ringHeight;
+        top: 0;
+        left: calc(50% - $ringHeight / 2 + 1px);
+        border-top-left-radius: calc($ringHeight / 2);
+        border-bottom-left-radius: calc($ringHeight / 2);
+      }
+    }
+
+    &:hover {
+      animation-play-state: paused;
+    }
+  }
+
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(-360deg);
+    }
+  }
+}
