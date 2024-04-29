@@ -40,12 +40,14 @@
 yarn
 npm run dev
 ```
-<br/>
 
 ## 最新运行环境
 node：v20.12.2
+<br/>
 npm：v10.5.0
+<br/>
 yarn：v1.22.22
+<br/>
 node-gyp：v10.1.0
 <br/>
 
