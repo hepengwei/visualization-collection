@@ -33,5 +33,20 @@
 
 * 量子纠缠效果(隐藏款)
 <img src="./src/images/readme/quantumEntanglement.gif" alt="" width={1200}/>
+<br/>
+
+## 本地启动
+```
+yarn
+npm run dev
+```
+<br/>
+
+## 最新运行环境
+node：v20.12.2
+npm：v10.5.0
+yarn：v1.22.22
+node-gyp：v10.1.0
+<br/>
 
 ## 持续更新，敬请关注
