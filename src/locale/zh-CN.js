@@ -230,6 +230,7 @@ const zh_CN = {
   "page.cssDynamicEffect.generateShadow.blurLength": "模糊程度",
   "page.cssDynamicEffect.generateShadow.shadowSize": "阴影大小",
   "page.cssDynamicEffect.generateShadow.borderRadius": "边框半径",
+  "page.cssDynamicEffect.generateShadow.shadowColor": "阴影颜色",
 
   // Canvas动效
   "page.canvasDynamicEffect.sphereCollisionExample": "sphere-collision库示例",
