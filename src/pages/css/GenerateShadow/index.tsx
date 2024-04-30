@@ -2,7 +2,7 @@
  * 生成阴影
  */
 import React, { useEffect, useRef, useState } from "react";
-import { Slider, InputNumber, message } from "antd";
+import { Slider, InputNumber, ColorPicker } from "antd";
 import { useIntl } from "react-intl";
 import styles from "./index.module.scss";
 
@@ -13,6 +13,7 @@ const defaultVerticalValue = 20;
 const defaultBlurLength = 10;
 const defaultSpreadSize = 0;
 const defaultBorderRadius = 20;
+const defaultShadowColor = "#224141";
 
 const GenerateShadow = () => {
   const intl = useIntl();
@@ -25,6 +26,7 @@ const GenerateShadow = () => {
   const [blurLength, setBlurLength] = useState<number>(defaultBlurLength); // 模糊程度
   const [shadowSize, setShadowSize] = useState<number>(defaultSpreadSize); // 阴影大小
   const [borderRadius, setBorderRadius] = useState<number>(defaultBorderRadius); // 边框半价
+  const [shadowColor, setShadowColor] = useState<string>(defaultShadowColor); // 阴影颜色
 
   const [boxShadowStr, setBoxShadowStr] = useState<string>("");
 
@@ -48,13 +50,17 @@ const GenerateShadow = () => {
     setBorderRadius(value || value === 0 ? value : defaultBorderRadius);
   };
 
+  const onShadowColorChange = (_: any, hex: string) => {
+    setShadowColor(hex || defaultShadowColor);
+  };
+
   useEffect(() => {
     if (graphRef.current) {
-      const boxShadowStr = `${horizontalValue}px ${verticalValue}px ${blurLength}px ${shadowSize}px #224141`;
+      const boxShadowStr = `${horizontalValue}px ${verticalValue}px ${blurLength}px ${shadowSize}px ${shadowColor}`;
       graphRef.current.style.setProperty("--boxShadow", boxShadowStr);
       setBoxShadowStr(boxShadowStr);
     }
-  }, [horizontalValue, verticalValue, blurLength, shadowSize]);
+  }, [horizontalValue, verticalValue, blurLength, shadowSize, shadowColor]);
 
   return (
     <div className={styles.container}>
@@ -215,6 +221,19 @@ const GenerateShadow = () => {
                 precision={0}
                 value={borderRadius}
                 onChange={onBorderRadiusChange}
+              />
+            </div>
+            <div className={styles.rowItem}>
+              <span className={styles.label}>
+                {intl.formatMessage({
+                  id: "page.cssDynamicEffect.generateShadow.shadowColor",
+                })}
+                :
+              </span>
+              <ColorPicker
+                value={shadowColor}
+                showText
+                onChange={onShadowColorChange}
               />
             </div>
           </div>

@@ -267,6 +267,7 @@ const en_US = {
   "page.cssDynamicEffect.generateShadow.blurLength": "Blur Length",
   "page.cssDynamicEffect.generateShadow.shadowSize": "Shadow Size",
   "page.cssDynamicEffect.generateShadow.borderRadius": "Border Radius",
+  "page.cssDynamicEffect.generateShadow.shadowColor": "Shadow Color",
 
   // Canvas动效
   "page.canvasDynamicEffect.sphereCollisionExample": "sphere-collision example",
