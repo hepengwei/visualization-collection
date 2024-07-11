@@ -17,7 +17,7 @@ import {
   RocketOutlined,
   FireOutlined,
   FileImageOutlined,
-  VideoCameraAddOutlined,
+  // VideoCameraAddOutlined,
 } from "@ant-design/icons";
 import { useDebounceFn } from "ahooks";
 import { Button, Menu } from "antd";
@@ -274,11 +274,11 @@ const Menus: React.FC = () => {
       "imageProcessingTool",
       <FileImageOutlined />
     ),
-    getItem(
-      intl.formatMessage({ id: "menu.videoProcessingTool" }),
-      "videoProcessingTool",
-      <VideoCameraAddOutlined />
-    ),
+    // getItem(
+    //   intl.formatMessage({ id: "menu.videoProcessingTool" }),
+    //   "videoProcessingTool",
+    //   <VideoCameraAddOutlined />
+    // ),
   ];
 
   const updateMenuWidth = useCallback(

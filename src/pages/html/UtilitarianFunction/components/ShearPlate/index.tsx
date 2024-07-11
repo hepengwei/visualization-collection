@@ -104,7 +104,7 @@ const ShearPlate = () => {
       ]);
       message.success(intl.formatMessage({ id: "common.saveSuccessfully" }));
     } else {
-      console.error(intl.formatMessage({ id: "common.saveFailed" }));
+      message.error(intl.formatMessage({ id: "common.saveFailed" }));
     }
   };
 

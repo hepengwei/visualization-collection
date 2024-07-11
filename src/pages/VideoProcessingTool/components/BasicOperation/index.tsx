@@ -70,12 +70,9 @@ const BasicOperation = (props: TabPageProps) => {
     } else if (videoInfo.imageDataList && videoInfo.imageDataList.length > 0) {
       startgeneratingVideo(() => {
         setTimeout(() => {
-          // console.log(new Date().valueOf());
           method(videoInfo.imageDataList, (newImageDataList: ImageData[]) => {
-            // console.log(new Date().valueOf());
             if (generatingVideoRef.current) {
               imgDataListToChunks(newImageDataList, (videoChunks: Blob[]) => {
-                // console.log(new Date().valueOf());
                 exportVideo(videoChunks, videoInfo.name);
                 status.videoChunks = videoChunks;
               });
