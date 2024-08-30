@@ -1,9 +1,9 @@
 /**
  * 投骰子
  */
-import React, { useRef, useLayoutEffect, useState, useEffect } from "react";
-import { useIntl } from "react-intl";
-import { InputNumber, message } from "antd";
+import React, { useRef, useLayoutEffect, useState, useEffect } from 'react';
+import { useIntl } from 'react-intl';
+import { InputNumber, message } from 'antd';
 import {
   Scene,
   PerspectiveCamera,
@@ -17,18 +17,18 @@ import {
   Color,
   AmbientLight,
   PointLight,
-} from "three";
-import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import * as CANNON from "cannon-es";
-import { useGlobalContext } from "hooks/useGlobalContext";
-import useInitialize from "hooks/threejs/useInitialize";
-import styles from "./index.module.scss";
+} from 'three';
+import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import * as CANNON from 'cannon-es';
+import { useGlobalContext } from 'hooks/useGlobalContext';
+import useInitialize from 'hooks/threejs/useInitialize';
+import styles from './index.module.scss';
 
 const diceSize = 10; // 骰子的长宽高
 const diceBevelRadius = 1.4; // 骰子的棱的曲面半径
 const maxDiceNum = 10; // 最多骰子数量
-const g = 300; // 重力加速度
+const g = 420; // 重力加速度
 const restitution = 0.36; // 物理世界的反弹系数
 const cameraInitPosition = { x: 0, y: 40, z: 120 }; // 相机位置
 const floorY = -60; // 地板的y位置
@@ -71,34 +71,34 @@ const ThrowDice = () => {
 
   // 创建骰子各点数对应的Canvas
   const getDiceDotNumCanvas = (dotNum: number) => {
-    const canvas = document.createElement("canvas");
+    const canvas = document.createElement('canvas');
     const size = 500;
     canvas.width = size;
     canvas.height = size;
-    const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-    ctx.fillStyle = "#eeeeee";
+    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+    ctx.fillStyle = '#eeeeee';
     ctx.fillRect(0, 0, size, size);
     switch (dotNum) {
       case 1:
-        ctx.fillStyle = "#d30704";
+        ctx.fillStyle = '#d30704';
         ctx.arc(size / 2, size / 2, size * 0.2, 0, 2 * Math.PI);
         ctx.fill();
         break;
       case 2:
-        ctx.fillStyle = "#153f87";
+        ctx.fillStyle = '#153f87';
         ctx.arc(size / 2, (size * 3) / 11, size * 0.12, 0, 2 * Math.PI);
         ctx.arc(size / 2, (size * 8) / 11, size * 0.12, 0, 2 * Math.PI);
         ctx.fill();
         break;
       case 3:
-        ctx.fillStyle = "#153f87";
+        ctx.fillStyle = '#153f87';
         ctx.arc((size * 8) / 11, (size * 3) / 11, size * 0.12, 0, 2 * Math.PI);
         ctx.arc(size / 2, size / 2, size * 0.12, 0, 2 * Math.PI);
         ctx.arc((size * 3) / 11, (size * 8) / 11, size * 0.12, 0, 2 * Math.PI);
         ctx.fill();
         break;
       case 4:
-        ctx.fillStyle = "#d30704";
+        ctx.fillStyle = '#d30704';
         ctx.beginPath();
         ctx.arc((size * 3) / 11, (size * 3) / 11, size * 0.12, 0, 2 * Math.PI);
         ctx.arc((size * 8) / 11, (size * 3) / 11, size * 0.12, 0, 2 * Math.PI);
@@ -109,7 +109,7 @@ const ThrowDice = () => {
         ctx.fill();
         break;
       case 5:
-        ctx.fillStyle = "#153f87";
+        ctx.fillStyle = '#153f87';
         ctx.beginPath();
         ctx.arc((size * 3) / 11, (size * 3) / 11, size * 0.12, 0, 2 * Math.PI);
         ctx.arc((size * 8) / 11, (size * 3) / 11, size * 0.12, 0, 2 * Math.PI);
@@ -123,7 +123,7 @@ const ThrowDice = () => {
         ctx.fill();
         break;
       case 6:
-        ctx.fillStyle = "#153f87";
+        ctx.fillStyle = '#153f87';
         ctx.beginPath();
         ctx.arc((size * 3) / 10, (size * 3) / 11, size * 0.1, 0, 2 * Math.PI);
         ctx.arc((size * 7) / 10, (size * 3) / 11, size * 0.1, 0, 2 * Math.PI);
@@ -150,27 +150,27 @@ const ThrowDice = () => {
   const materialList = useRef<MeshStandardMaterial[]>([
     new MeshStandardMaterial({
       map: new CanvasTexture(getDiceDotNumCanvas(1)),
-      color: "#ffffff",
+      color: '#ffffff',
     }), // 右面
     new MeshStandardMaterial({
       map: new CanvasTexture(getDiceDotNumCanvas(6)),
-      color: "#ffffff",
+      color: '#ffffff',
     }), // 左面
     new MeshStandardMaterial({
       map: new CanvasTexture(getDiceDotNumCanvas(3)),
-      color: "#ffffff",
+      color: '#ffffff',
     }), // 上面
     new MeshStandardMaterial({
       map: new CanvasTexture(getDiceDotNumCanvas(4)),
-      color: "#ffffff",
+      color: '#ffffff',
     }), // 下面
     new MeshStandardMaterial({
       map: new CanvasTexture(getDiceDotNumCanvas(5)),
-      color: "#ffffff",
+      color: '#ffffff',
     }), // 后面
     new MeshStandardMaterial({
       map: new CanvasTexture(getDiceDotNumCanvas(2)),
-      color: "#ffffff",
+      color: '#ffffff',
     }), // 前面
   ]);
 
@@ -199,7 +199,7 @@ const ThrowDice = () => {
     if (isStillMoving.current) return;
     if (!diceNumRef.current) {
       message.warning(
-        intl.formatMessage({ id: "page.threeJs3D.enterDiceNum" })
+        intl.formatMessage({ id: 'page.threeJs3D.enterDiceNum' })
       );
       return;
     }
@@ -223,8 +223,8 @@ const ThrowDice = () => {
           );
           // @ts-ignore
           item.body.quaternion.copy(item.mesh.quaternion);
-          const force = 1 + 5 * Math.random();
-          item.body.applyImpulse(new CANNON.Vec3(-16, force, -5));
+          const force = 2 + 5 * Math.random();
+          item.body.applyImpulse(new CANNON.Vec3(-16, force, -5)); // 设置初速度
         } else {
           // 隐藏其他不需要的骰子
           item.body.position = new CANNON.Vec3(
@@ -260,14 +260,14 @@ const ThrowDice = () => {
     renderer: WebGLRenderer
   ) => {
     if (containerRef.current) {
-      scene.background = new Color("#224141");
+      scene.background = new Color('#224141');
       camera.position.set(
         cameraInitPosition.x,
         cameraInitPosition.y,
         cameraInitPosition.z
       );
       camera.lookAt(0, 0, 0);
-      renderer.setClearColor("#224141");
+      renderer.setClearColor('#224141');
 
       // 添加环境光
       const light = new AmbientLight(0xffffff, 0.5);
@@ -341,12 +341,12 @@ const ThrowDice = () => {
         </div>
       </div>
       <div className={styles.numBox}>
-        <span>{intl.formatMessage({ id: "page.threeJs3D.diceNum" })}：</span>
+        <span>{intl.formatMessage({ id: 'page.threeJs3D.diceNum' })}：</span>
         <InputNumber
           min={1}
           max={maxDiceNum}
           precision={0}
-          size="large"
+          size='large'
           value={diceNum}
           onChange={(value: number | null) => {
             diceNumRef.current = value;
