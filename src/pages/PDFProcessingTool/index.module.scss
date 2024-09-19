@@ -1,0 +1,186 @@
+.container {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #eff5f5;
+  padding: 40px 20px;
+
+  $primaryColor: #0e5e6f;
+  $primaryShallowColor: #3a8891;
+
+  .content {
+    min-width: 1160px;
+    max-width: 1350px;
+    display: flex;
+    flex-direction: column;
+
+    .tabs {
+      :global {
+        .tabs-tabItem {
+          background-color: $primaryShallowColor !important;
+        }
+        .active {
+          background-color: $primaryColor !important;
+        }
+      }
+    }
+
+    .pdfBox {
+      width: 100%;
+      height: 70vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border: 2px dashed;
+      border-radius: 4px;
+
+      .fileBox {
+        width: 500px;
+        height: 240px;
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        margin: auto;
+        border: 1px solid $primaryShallowColor;
+        img {
+          width: 200px;
+          height: 200px;
+          text-align: center;
+          object-fit: cover;
+        }
+        .fileInfo {
+          display: flex;
+          height: 160px;
+          flex-direction: column;
+          justify-content: space-around;
+          margin-left: 16px;
+          .item {
+            font-size: 14px;
+            color: #333;
+          }
+        }
+      }
+
+      .emptyBox {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: auto;
+
+        .uploadBtn {
+          width: 200px;
+          height: 52px;
+          line-height: 52px;
+          background-color: $primaryColor !important;
+          font-size: 14px;
+          font-family: SourceHanSansCN-Medium !important;
+          cursor: pointer;
+          position: relative;
+
+          :global {
+            svg {
+              width: 16px;
+              height: 16px;
+            }
+            input {
+              position: absolute;
+              width: 100%;
+              height: 100%;
+              top: 0;
+              left: 0;
+              cursor: pointer;
+              opacity: 0;
+            }
+          }
+        }
+
+        :global {
+          .ant-btn {
+            padding: 0;
+          }
+        }
+
+        .text {
+          font-size: 14px;
+          font-weight: 500;
+          font-family: SourceHanSansCN-Medium !important;
+          color: #333;
+          margin: 8px 0;
+        }
+
+        .tips {
+          font-size: 12px;
+          color: #777;
+        }
+      }
+    }
+
+    //   .operationBtns {
+    //     display: flex;
+    //     justify-content: space-between;
+    //     margin-top: 10px;
+    //     .left {
+    //       display: flex;
+    //       align-items: center;
+    //       flex-wrap: wrap;
+    //       width: 1160px;
+    //       .operationBtn {
+    //         display: flex;
+    //         align-items: center;
+    //         margin-right: 12px;
+    //         font-family: SourceHanSansCN-Medium !important;
+    //         font-weight: 500;
+    //         border-radius: 4px;
+    //         margin-top: 10px;
+    //       }
+    //       :global {
+    //         .ant-checkbox {
+    //           top: 0;
+    //         }
+    //         .ant-btn {
+    //           background-color: $primaryShallowColor !important;
+    //         }
+    //         .ant-input-number-wrapper {
+    //           height: 36px !important;
+    //           .ant-input-number {
+    //             margin-top: 0 !important;
+    //             height: 100% !important;
+    //             .ant-input-number-input-wrap {
+    //               height: 100% !important;
+    //               input {
+    //                 height: 100% !important;
+    //               }
+    //             }
+    //           }
+    //         }
+    //         .ant-slider {
+    //           width: 400px;
+    //           margin-bottom: 12px;
+    //         }
+    //         .ant-input-number {
+    //           height: 36px !important;
+    //           .ant-input-number-input-wrap {
+    //             height: 100% !important;
+    //             input {
+    //               height: 100% !important;
+    //             }
+    //           }
+    //         }
+    //       }
+    //     }
+    //     .right {
+    //       width: 64px;
+    //       margin-top: 10px;
+    //       border: 1px solid $primaryShallowColor !important;
+    //       span {
+    //         color: $primaryShallowColor !important;
+    //       }
+    //     }
+    //   }
+  }
+}

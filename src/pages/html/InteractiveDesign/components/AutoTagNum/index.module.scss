@@ -1,0 +1,92 @@
+.container {
+  width: 100%;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  place-content: center;
+  display: grid;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .box {
+      padding: 15px;
+      border: 2px solid $globalPrimaryColor;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      &::after {
+        content: '+' counter(num);
+        padding: 0.2em 0.5em;
+        background-color: #ffe8a3;
+        color: #191919;
+        border-radius: 4px;
+      }
+
+      .tags {
+        position: relative;
+        display: flex;
+        gap: 8px;
+        padding: 6px;
+        overflow: hidden;
+        counter-reset: num;
+        // 区域有滚动内容时通过修改margin-right显示出box的after伪元素
+        animation: check;
+        animation-timeline: scroll(x self);
+        margin-right: -48px;
+
+        .tag {
+          padding: 0.2em 0.5em;
+          background-color: $globalPrimaryColor;
+          color: #fff;
+          border-radius: 4px;
+          // 默认CSS计数器加1
+          counter-increment: num 1;
+          // 元素显示时，CSS计数器加0
+          animation: appear;
+          animation-timeline: view(inline);
+          animation-range: contain;
+        }
+      }
+    }
+
+    .slider {
+      width: 200px;
+      margin-top: 60px;
+    }
+
+    :global {
+      .ant-slider {
+        .ant-slider-rail {
+          background-color: rgba(255, 255, 255, 0.3);
+        }
+        .ant-slider-mark-text {
+          color: rgba(255, 255, 255, 0.7);
+        }
+      }
+    }
+  }
+
+  @keyframes check {
+    from,
+    to {
+      margin-right: 0px;
+      -webkit-mask: linear-gradient(
+        to right,
+        #000 calc(100% - 30px),
+        transparent
+      );
+    }
+  }
+
+  @keyframes appear {
+    from,
+    to {
+      counter-increment: num 0;
+    }
+  }
+}

@@ -24,6 +24,7 @@ import IconScroll from "./components/IconScroll";
 import WipeSwitchover from "./components/WipeSwitchover";
 import AutoCompletePunctuation from "./components/AutoCompletePunctuation";
 import StackedImages from "./components/StackedImages";
+import AutoTagNum from './components/AutoTagNum';
 import styles from "./index.module.scss";
 
 const boxList = [
@@ -52,6 +53,7 @@ const boxList = [
   { element: <WipeSwitchover /> },
   { element: <AutoCompletePunctuation /> },
   { element: <StackedImages /> },
+  { element: <AutoTagNum /> },
 ];
 
 const InteractiveDesign = () => {

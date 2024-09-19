@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { Button, message } from "antd";
 import { FolderAddOutlined } from "@ant-design/icons";
 import { useIntl } from "react-intl";
-import Tabs from "components/Tabs";
+import Tabs from "@/components/Tabs";
 import {
   getImgInfo,
   imageDataToBlob,
