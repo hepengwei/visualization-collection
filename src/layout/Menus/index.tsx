@@ -4,9 +4,9 @@ import React, {
   useState,
   useRef,
   useCallback,
-} from "react";
-import ReactDOM from "react-dom";
-import { useNavigate, useLocation } from "react-router-dom";
+} from 'react';
+import ReactDOM from 'react-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -18,22 +18,22 @@ import {
   FireOutlined,
   FileImageOutlined,
   // VideoCameraAddOutlined,
-} from "@ant-design/icons";
-import { useDebounceFn } from "ahooks";
-import { Button, Menu } from "antd";
-import type { MenuProps } from "antd";
-import { useIntl } from "react-intl";
-import { useGlobalContext } from "@/hooks/useGlobalContext";
-import styles from "./index.module.scss";
+} from '@ant-design/icons';
+import { useDebounceFn } from 'ahooks';
+import { Button, Menu } from 'antd';
+import type { MenuProps } from 'antd';
+import { useIntl } from 'react-intl';
+import { useGlobalContext } from '@/hooks/useGlobalContext';
+import styles from './index.module.scss';
 
-type MenuItem = Required<MenuProps>["items"][number];
+type MenuItem = Required<MenuProps>['items'][number];
 
 function getItem(
   label: React.ReactNode,
   key: React.Key,
   icon?: React.ReactNode,
   children?: MenuItem[],
-  type?: "group"
+  type?: 'group'
 ): MenuItem {
   return {
     key,
@@ -54,62 +54,62 @@ const Menus: React.FC = () => {
 
   const items: MenuItem[] = [
     getItem(
-      intl.formatMessage({ id: "menu.htmlVision" }),
-      "html",
+      intl.formatMessage({ id: 'menu.htmlVision' }),
+      'html',
       <BuildOutlined />,
       [
         getItem(
-          intl.formatMessage({ id: "menu.htmlVision.visualDesign" }),
-          "visualDesign"
+          intl.formatMessage({ id: 'menu.htmlVision.visualDesign' }),
+          'visualDesign'
         ),
         getItem(
-          intl.formatMessage({ id: "menu.htmlVision.interactiveDesign" }),
-          "interactiveDesign"
+          intl.formatMessage({ id: 'menu.htmlVision.interactiveDesign' }),
+          'interactiveDesign'
         ),
         getItem(
-          intl.formatMessage({ id: "menu.htmlVision.backgroundPattern" }),
-          "backgroundEffect"
+          intl.formatMessage({ id: 'menu.htmlVision.backgroundPattern' }),
+          'backgroundEffect'
         ),
         getItem(
-          intl.formatMessage({ id: "menu.htmlVision.complexLayout" }),
-          "complexLayout"
+          intl.formatMessage({ id: 'menu.htmlVision.complexLayout' }),
+          'complexLayout'
         ),
         getItem(
-          intl.formatMessage({ id: "menu.htmlVision.applicationPageFrame" }),
-          "appPageFrame"
+          intl.formatMessage({ id: 'menu.htmlVision.applicationPageFrame' }),
+          'appPageFrame'
         ),
         getItem(
-          intl.formatMessage({ id: "menu.htmlVision.utilitarianFunction" }),
-          "utilitarianFunction"
+          intl.formatMessage({ id: 'menu.htmlVision.utilitarianFunction' }),
+          'utilitarianFunction'
         ),
       ]
     ),
     getItem(
-      intl.formatMessage({ id: "menu.cssDynamicEffect" }),
-      "css",
+      intl.formatMessage({ id: 'menu.cssDynamicEffect' }),
+      'css',
       <FormatPainterOutlined />,
       [
         getItem(
           intl.formatMessage({
-            id: "menu.cssDynamicEffect.dynamicEffectButton",
+            id: 'menu.cssDynamicEffect.dynamicEffectButton',
           }),
-          "dynamicButtons"
+          'dynamicButtons'
         ),
         getItem(
-          intl.formatMessage({ id: "menu.cssDynamicEffect.richDynamicEffect" }),
-          "richDynamicEffect"
-        ),
-        getItem(
-          intl.formatMessage({
-            id: "menu.cssDynamicEffect.generateRegularPolygon",
-          }),
-          "generateRegularPolygon"
+          intl.formatMessage({ id: 'menu.cssDynamicEffect.richDynamicEffect' }),
+          'richDynamicEffect'
         ),
         getItem(
           intl.formatMessage({
-            id: "menu.cssDynamicEffect.generateShadow",
+            id: 'menu.cssDynamicEffect.generateRegularPolygon',
           }),
-          "generateShadow"
+          'generateRegularPolygon'
+        ),
+        getItem(
+          intl.formatMessage({
+            id: 'menu.cssDynamicEffect.generateShadow',
+          }),
+          'generateShadow'
         ),
         // getItem(
         //   intl.formatMessage({
@@ -120,160 +120,165 @@ const Menus: React.FC = () => {
       ]
     ),
     getItem(
-      intl.formatMessage({ id: "menu.canvasDynamicEffect" }),
-      "canvas",
+      intl.formatMessage({ id: 'menu.canvasDynamicEffect' }),
+      'canvas',
       <PlayCircleOutlined />,
       [
         getItem(
           intl.formatMessage({
-            id: "menu.canvasDynamicEffect.sphereCollisionExample",
+            id: 'menu.canvasDynamicEffect.sphereCollisionExample',
           }),
-          "sphereCollisionExample"
+          'sphereCollisionExample'
         ),
         getItem(
-          intl.formatMessage({ id: "menu.canvasDynamicEffect.dynamicClock" }),
-          "dynamicClock"
+          intl.formatMessage({ id: 'menu.canvasDynamicEffect.dynamicClock' }),
+          'dynamicClock'
         ),
         getItem(
           intl.formatMessage({
-            id: "menu.canvasDynamicEffect.searchlightEffect",
+            id: 'menu.canvasDynamicEffect.searchlightEffect',
           }),
-          "searchlight"
+          'searchlight'
         ),
         getItem(
           intl.formatMessage({
-            id: "menu.canvasDynamicEffect.sphereCollisionInteraction",
+            id: 'menu.canvasDynamicEffect.sphereCollisionInteraction',
           }),
-          "globuleInteraction"
+          'globuleInteraction'
         ),
         getItem(
           intl.formatMessage({
-            id: "menu.canvasDynamicEffect.destroyThePlanetGame",
+            id: 'menu.canvasDynamicEffect.destroyThePlanetGame',
           }),
-          "killPlanetGame"
+          'killPlanetGame'
         ),
         getItem(
           intl.formatMessage({
-            id: "menu.canvasDynamicEffect.sphereFreeFallInteraction",
+            id: 'menu.canvasDynamicEffect.sphereFreeFallInteraction',
           }),
-          "freeFallingBody"
+          'freeFallingBody'
         ),
         getItem(
           intl.formatMessage({
-            id: "menu.canvasDynamicEffect.coolCountdownAnimation",
+            id: 'menu.canvasDynamicEffect.coolCountdownAnimation',
           }),
-          "countDown"
+          'countDown'
         ),
         getItem(
           intl.formatMessage({
-            id: "menu.canvasDynamicEffect.dynamicParticleBackground",
+            id: 'menu.canvasDynamicEffect.dynamicParticleBackground',
           }),
-          "particlesBg"
+          'particlesBg'
         ),
         getItem(
-          intl.formatMessage({ id: "menu.canvasDynamicEffect.rippleEffect" }),
-          "rippleFloatOnTheWater"
+          intl.formatMessage({ id: 'menu.canvasDynamicEffect.rippleEffect' }),
+          'rippleFloatOnTheWater'
         ),
         getItem(
           intl.formatMessage({
-            id: "menu.canvasDynamicEffect.flowerBloomingAnimation",
+            id: 'menu.canvasDynamicEffect.flowerBloomingAnimation',
           }),
-          "flowerBloom"
+          'flowerBloom'
         ),
         getItem(
           intl.formatMessage({
-            id: "menu.canvasDynamicEffect.codeBackgroundWall",
+            id: 'menu.canvasDynamicEffect.codeBackgroundWall',
           }),
-          "codeBgWall"
+          'codeBgWall'
         ),
         getItem(
-          intl.formatMessage({ id: "menu.canvasDynamicEffect.wordDance" }),
-          "wordDance"
+          intl.formatMessage({ id: 'menu.canvasDynamicEffect.wordDance' }),
+          'wordDance'
         ),
         getItem(
-          intl.formatMessage({ id: "menu.canvasDynamicEffect.scratch" }),
-          "scratch"
+          intl.formatMessage({ id: 'menu.canvasDynamicEffect.scratch' }),
+          'scratch'
         ),
         getItem(
-          intl.formatMessage({ id: "menu.canvasDynamicEffect.matchLine" }),
-          "matchLine"
+          intl.formatMessage({ id: 'menu.canvasDynamicEffect.matchLine' }),
+          'matchLine'
         ),
       ]
     ),
     getItem(
-      intl.formatMessage({ id: "menu.echartsInteraction" }),
-      "echarts",
+      intl.formatMessage({ id: 'menu.echartsInteraction' }),
+      'echarts',
       <LineChartOutlined />,
       [
         getItem(
-          intl.formatMessage({ id: "menu.echartsInteraction.barCharts" }),
-          "bar"
+          intl.formatMessage({ id: 'menu.echartsInteraction.barCharts' }),
+          'bar'
         ),
         getItem(
-          intl.formatMessage({ id: "menu.echartsInteraction.pieCharts" }),
-          "pie"
+          intl.formatMessage({ id: 'menu.echartsInteraction.pieCharts' }),
+          'pie'
         ),
         getItem(
-          intl.formatMessage({ id: "menu.echartsInteraction.treeCharts" }),
-          "tree"
+          intl.formatMessage({ id: 'menu.echartsInteraction.treeCharts' }),
+          'tree'
         ),
       ]
     ),
     getItem(
-      intl.formatMessage({ id: "menu.threeJs3D" }),
-      "threejs",
+      intl.formatMessage({ id: 'menu.threeJs3D' }),
+      'threejs',
       <RocketOutlined />,
       [
         getItem(
-          intl.formatMessage({ id: "menu.threeJs3D.appPageFrame" }),
-          "threejsAppPageFrame"
+          intl.formatMessage({ id: 'menu.threeJs3D.appPageFrame' }),
+          'threejsAppPageFrame'
         ),
         getItem(
-          intl.formatMessage({ id: "menu.threeJs3D.carShow" }),
-          "carShow"
+          intl.formatMessage({ id: 'menu.threeJs3D.carShow' }),
+          'carShow'
         ),
         getItem(
-          intl.formatMessage({ id: "menu.threeJs3D.rubiksCube" }),
-          "rubiksCube"
+          intl.formatMessage({ id: 'menu.threeJs3D.rubiksCube' }),
+          'rubiksCube'
         ),
         getItem(
-          intl.formatMessage({ id: "menu.threeJs3D.throwDice" }),
-          "throwDice"
+          intl.formatMessage({ id: 'menu.threeJs3D.throwDice' }),
+          'throwDice'
         ),
         getItem(
-          intl.formatMessage({ id: "menu.threeJs3D.mapDisplay" }),
-          "mapDisplay"
+          intl.formatMessage({ id: 'menu.threeJs3D.mapDisplay' }),
+          'mapDisplay'
         ),
         getItem(
-          intl.formatMessage({ id: "menu.threeJs3D.earthDisplay" }),
-          "earthDisplay"
+          intl.formatMessage({ id: 'menu.threeJs3D.earthDisplay' }),
+          'earthDisplay'
         ),
       ]
     ),
     getItem(
-      intl.formatMessage({ id: "menu.AIApplication" }),
-      "AIApplication",
+      intl.formatMessage({ id: 'menu.AIApplication' }),
+      'AIApplication',
       <FireOutlined />,
       [
         getItem(
           intl.formatMessage({
-            id: "menu.AIApplication.humanPostureDetection",
+            id: 'menu.AIApplication.humanPostureDetection',
           }),
-          "humanPostureDetection"
+          'humanPostureDetection'
         ),
         getItem(
           intl.formatMessage({
-            id: "menu.AIApplication.notBlockPeopleBarrage",
+            id: 'menu.AIApplication.notBlockPeopleBarrage',
           }),
-          "notBlockPeopleBarrage"
+          'notBlockPeopleBarrage'
         ),
       ]
     ),
     getItem(
-      intl.formatMessage({ id: "menu.imageProcessingTool" }),
-      "imageProcessingTool",
+      intl.formatMessage({ id: 'menu.imageProcessingTool' }),
+      'imageProcessingTool',
       <FileImageOutlined />
     ),
+    // getItem(
+    //   intl.formatMessage({ id: 'menu.pdfProcessingTool' }),
+    //   'pdfProcessingTool',
+    //   <FileImageOutlined />
+    // ),
     // getItem(
     //   intl.formatMessage({ id: "menu.videoProcessingTool" }),
     //   "videoProcessingTool",
@@ -305,7 +310,7 @@ const Menus: React.FC = () => {
     const routePath = keyPath.reduce((result, item) => {
       result = `/${item}${result}`;
       return result;
-    }, "");
+    }, '');
     navigate(routePath);
   };
 
@@ -313,7 +318,7 @@ const Menus: React.FC = () => {
     const { pathname } = location;
     const result = [];
     if (pathname) {
-      const arr = pathname.split("/");
+      const arr = pathname.split('/');
       const key = arr[arr.length - 1];
       if (key) {
         result.push(key);
@@ -325,12 +330,12 @@ const Menus: React.FC = () => {
   const defaultOpenKeys = useMemo(() => {
     const { pathname } = location;
     if (pathname) {
-      const arr = pathname.split("/");
+      const arr = pathname.split('/');
       if (arr.length >= 2 && arr[1]) {
         return [arr[1]];
       }
     }
-    return ["html"];
+    return ['html'];
   }, [location]);
 
   useEffect(() => {
@@ -338,10 +343,10 @@ const Menus: React.FC = () => {
   }, [collapsed]);
 
   useEffect(() => {
-    window.addEventListener("resize", updateMenuWidth);
+    window.addEventListener('resize', updateMenuWidth);
 
     return () => {
-      window.removeEventListener("resize", updateMenuWidth);
+      window.removeEventListener('resize', updateMenuWidth);
     };
   }, []);
 
@@ -350,7 +355,7 @@ const Menus: React.FC = () => {
       <div className={styles.topBox}>
         <div className={styles.top}>
           <Button
-            type="primary"
+            type='primary'
             onClick={toggleCollapsed}
             style={{ marginBottom: 16 }}
           >
@@ -361,8 +366,8 @@ const Menus: React.FC = () => {
         <Menu
           defaultOpenKeys={defaultOpenKeys}
           selectedKeys={selectedKeys}
-          mode="inline"
-          theme="dark"
+          mode='inline'
+          theme='dark'
           inlineCollapsed={collapsed}
           items={items}
           onClick={onMenu}
@@ -371,7 +376,7 @@ const Menus: React.FC = () => {
 
       <div className={styles.bottom}>
         {!collapsed && (
-          <span>{intl.formatMessage({ id: "common.keepUpdating" })}</span>
+          <span>{intl.formatMessage({ id: 'common.keepUpdating' })}</span>
         )}
       </div>
     </div>

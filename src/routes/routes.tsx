@@ -35,6 +35,7 @@ import EarthDisplay from 'pages/threejs/EarthDisplay';
 import HumanPostureDetection from 'pages/AIApplication/HumanPostureDetection';
 import NotBlockPeopleBarrage from 'pages/AIApplication/NotBlockPeopleBarrage';
 import ImageProcessingTool from 'pages/ImageProcessingTool';
+import PDFProcessingTool from 'pages/PDFProcessingTool';
 // import VideoProcessingTool from "pages/VideoProcessingTool";
 import Bar from 'pages/echarts/Bar';
 import Pie from 'pages/echarts/Pie';
@@ -218,6 +219,10 @@ export const contentRoutes: RouteObject[] = [
   {
     path: '/imageProcessingTool',
     element: <ImageProcessingTool />,
+  },
+  {
+    path: '/pdfProcessingTool',
+    element: <PDFProcessingTool />,
   },
   // {
   //   path: "/videoProcessingTool",
