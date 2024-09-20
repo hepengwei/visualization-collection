@@ -238,7 +238,7 @@ const en_US = {
   'page.htmlVision.utilitarianFunction.oneInch': '1 inch',
   'page.htmlVision.utilitarianFunction.twoInch': '2 inch',
 
-  // Css动效-丰富动效页
+  // Css动效
   'page.cssDynamicEffect.richDynamicEffect.SVGCircularClock':
     'SVG Circular clock dynamic effect',
   'page.cssDynamicEffect.richDynamicEffect.upAndDownCard':
@@ -264,9 +264,13 @@ const en_US = {
     'Mobius loop circle dots dynamic effect',
   'page.cssDynamicEffect.richDynamicEffect.tankShaking':
     'Tank shaking dynamic effect',
+
+  // Css动效-生成正多边形页
   'page.cssDynamicEffect.generateRegularPolygon.numberOfSides':
     'Number of sides',
   'page.cssDynamicEffect.generateRegularPolygon.rotation': 'Rotation',
+
+  // Css动效-生成阴影页
   'page.cssDynamicEffect.generateShadow.horizontalOffset': 'Horizontal Offset',
   'page.cssDynamicEffect.generateShadow.verticalOffset': 'Vertical Offset',
   'page.cssDynamicEffect.generateShadow.blurLength': 'Blur Length',

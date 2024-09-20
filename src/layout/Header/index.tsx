@@ -86,6 +86,7 @@ const Header: React.FC = () => {
         wrapClassName={styles.rewardModal}
         title={intl.formatMessage({ id: "common.reward" })}
         open={open}
+        closeIcon={null}
         footer={null}
         maskClosable={false}
         width={320}
