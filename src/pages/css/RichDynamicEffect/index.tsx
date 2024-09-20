@@ -2,8 +2,6 @@
  * 丰富动效
  */
 import React, { useEffect } from "react";
-import adData from "utils/adData";
-import AdBox from "@/components/AdBox";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import DynamicTime from "./components/DynamicTime";
 import FlopTime from "./components/FlopTime";

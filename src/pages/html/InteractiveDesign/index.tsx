@@ -3,8 +3,6 @@
  */
 import React, { useEffect } from "react";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
-import adData from "utils/adData";
-import AdBox from "@/components/AdBox";
 import MagnifyingGlass from "./components/MagnifyingGlass";
 import CropImage from "./components/CropImage";
 import DragShopping from "./components/DragShopping";
@@ -24,7 +22,7 @@ import IconScroll from "./components/IconScroll";
 import WipeSwitchover from "./components/WipeSwitchover";
 import AutoCompletePunctuation from "./components/AutoCompletePunctuation";
 import StackedImages from "./components/StackedImages";
-import AutoTagNum from './components/AutoTagNum';
+// import AutoTagNum from './components/AutoTagNum';
 import styles from "./index.module.scss";
 
 const boxList = [
@@ -47,7 +45,7 @@ const boxList = [
   { element: <WipeSwitchover /> },
   { element: <AutoCompletePunctuation /> },
   { element: <StackedImages /> },
-  { element: <AutoTagNum /> },
+  // { element: <AutoTagNum /> },
 ];
 
 const InteractiveDesign = () => {

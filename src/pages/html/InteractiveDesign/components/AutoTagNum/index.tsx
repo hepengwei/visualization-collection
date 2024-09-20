@@ -1,3 +1,6 @@
+/**
+ * 该组件因使用了animation-timeline: scroll(self x)和 animation-timeline: view(inline)两个实验性CSS已被隐藏，本地可以正常运行
+ */
 import React, { useState } from 'react';
 import { Slider } from 'antd';
 import ModuleTitle from '@/components/ModuleTitle';

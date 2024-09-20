@@ -6,16 +6,16 @@
   align-items: center;
   position: relative;
 
-    // .scroll {
-    //   width: 700px;
-    //   height: 120vh;
-    //   background-color: #aaa;
-    // }
+  // .scroll {
+  //   width: 700px;
+  //   height: 120vh;
+  //   background-color: #aaa;
+  // }
 
-    // @scroll-timeline box-move {
-    //   source: selector("#g-scroll");
-    //   orientation: "vertical";
-    // }
+  // @scroll-timeline box-move {
+  //   source: selector('#g-scroll');
+  //   orientation: 'vertical';
+  // }
 
   .content {
     width: 700px;
@@ -48,7 +48,7 @@
       //   animation-name: move;
       //   animation-duration: 1s;
       //   animation-timeline: box-move;
-        animation: move 10s infinite linear;
+      animation: move 10s infinite linear;
 
       .item {
         width: 400px;
@@ -57,21 +57,21 @@
         transform: rotateX(-90deg);
       }
 
-    //   @keyframes move {
-    //     0% {
-    //       --phase: 0;
-    //     }
-    //     100% {
-    //       --phase: calc(100vh + 100px);
-    //     }
-    //   }
+      //   @keyframes move {
+      //     0% {
+      //       --phase: 0;
+      //     }
+      //     100% {
+      //       --phase: calc(100vh + 100px);
+      //     }
+      //   }
 
-        @keyframes move {
-          100% {
-            transform: translateY(calc(-60% + 100px))
-              translateZ(calc(100vh + 120px)) rotateX(90deg);
-          }
+      @keyframes move {
+        100% {
+          transform: translateY(calc(-60% + 100px))
+            translateZ(calc(100vh + 120px)) rotateX(90deg);
         }
+      }
     }
   }
 }
