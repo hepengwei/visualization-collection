@@ -20,7 +20,7 @@
       gap: 8px;
 
       &::after {
-        content: '+' counter(num);
+        content: '+' counter(tagNum);
         padding: 0.2em 0.5em;
         background-color: #ffe8a3;
         color: #191919;
@@ -33,10 +33,10 @@
         gap: 8px;
         padding: 6px;
         overflow: hidden;
-        counter-reset: num;
+        counter-reset: tagNum;
         // 区域有滚动内容时通过修改margin-right显示出box的after伪元素
         animation: check;
-        animation-timeline: scroll(x self);
+        animation-timeline: scroll(self x);
         margin-right: -48px;
 
         .tag {
@@ -45,7 +45,7 @@
           color: #fff;
           border-radius: 4px;
           // 默认CSS计数器加1
-          counter-increment: num 1;
+          counter-increment: tagNum 1;
           // 元素显示时，CSS计数器加0
           animation: appear;
           animation-timeline: view(inline);
@@ -86,7 +86,7 @@
   @keyframes appear {
     from,
     to {
-      counter-increment: num 0;
+      counter-increment: tagNum 0;
     }
   }
 }

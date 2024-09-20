@@ -79,7 +79,6 @@ const zh_CN = {
   'common.checkout': '校验',
   'common.moduleTitle': '模块标题',
   'common.customizeContent': '自定义内容',
-  'common.ad.btnText': '马上体验',
 
   // 菜单
   'menu.htmlVision': 'Html视觉',

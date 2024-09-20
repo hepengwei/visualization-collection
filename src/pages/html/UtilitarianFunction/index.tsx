@@ -31,9 +31,6 @@ const UtilitarianFunction = () => {
         <RecordedVideo />
       </div>
       <div className={styles.box}>
-        <AdBox data={adData[2]} />
-      </div>
-      <div className={styles.box}>
         <RecordedScreen />
       </div>
       <div className={styles.box}>
