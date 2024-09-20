@@ -31,9 +31,6 @@ const boxList = [
   { element: <MagnifyingGlass /> },
   { element: <CropImage /> },
   { element: <DragShopping /> },
-  {
-    element: <AdBox data={adData[0]} />,
-  },
   { element: <MouseHover /> },
   { element: <SlideButtonTab /> },
   { element: <FlipBook /> },
@@ -47,9 +44,6 @@ const boxList = [
   { element: <HexagonalMesh2 /> },
   { element: <HexagonalMesh3 /> },
   { element: <IconScroll /> },
-  {
-    element: <AdBox data={adData[1]} />,
-  },
   { element: <WipeSwitchover /> },
   { element: <AutoCompletePunctuation /> },
   { element: <StackedImages /> },

@@ -86,7 +86,6 @@ const en_US = {
   'common.checkout': 'Checkout',
   'common.moduleTitle': 'Module Title',
   'common.customizeContent': 'Customize content',
-  'common.ad.btnText': 'Experience right away',
 
   // 菜单
   'menu.htmlVision': 'Html Vision',

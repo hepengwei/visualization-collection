@@ -60,9 +60,6 @@ const RichDynamicEffect = () => {
         <DisplayTextInSmoke />
       </div>
       <div className={styles.box}>
-        <AdBox data={adData[3]} />
-      </div>
-      <div className={styles.box}>
         <PlayVideoInText />
       </div>
       <div className={styles.box}>
@@ -75,9 +72,6 @@ const RichDynamicEffect = () => {
         <div className={styles.box}>
           <TextOutlineAnimation2 />
         </div>
-      </div>
-      <div className={styles.box}>
-        <AdBox data={adData[4]} />
       </div>
       <div className={styles.multipleColumnsBox}>
         <div className={styles.box}>
