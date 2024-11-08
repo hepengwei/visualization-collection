@@ -7,6 +7,8 @@
 #### 体验地址：[http://hepengwei.cn](http://hepengwei.cn)
 
 #### Vue版本：[https://github.com/hepengwei/visualization-collection-vue](https://github.com/hepengwei/visualization-collection-vue)
+
+#### 复合组件示例库项目：[https://github.com/hepengwei/composite-component-library](https://github.com/hepengwei/composite-component-library)
 <br/>
 
 ## 应用展示(部分效果)
