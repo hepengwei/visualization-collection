@@ -11,10 +11,6 @@ interface MousePos {
 }
 type CursorSize = 'default' | 'big';
 
-// let cursorDefaultRadius = 5;
-// let cursorBigRadius = 40;
-// const cursorMoveVCoefficient = 0.12;
-
 const useCursorMove = (
   containerRef: RefObject<HTMLDivElement>,
   cursorRef: RefObject<HTMLDivElement>,
