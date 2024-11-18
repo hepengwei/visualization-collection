@@ -160,7 +160,7 @@ const ShearPlate = () => {
             />
             <div className={styles.btns}>
               <Button
-                type="primary"
+                type='primary'
                 onClick={onSaveTextToClip}
                 style={{ marginTop: 10 }}
               >
@@ -193,7 +193,7 @@ const ShearPlate = () => {
             />
             <div className={styles.btns}>
               <Button
-                type="primary"
+                type='primary'
                 onClick={onGetTextFromClip}
                 style={{ marginTop: 10 }}
               >
@@ -220,16 +220,16 @@ const ShearPlate = () => {
             >
               {imgInfo ? (
                 <div className={styles.imgBox}>
-                  <img src={imgInfo.imgUrl} alt="" />
+                  <img src={imgInfo.imgUrl} alt='' />
                 </div>
               ) : (
                 <div className={styles.emptyBox}>
-                  <Button type="primary" className={styles.uploadBtn}>
+                  <Button type='primary' className={styles.uploadBtn}>
                     <FolderAddOutlined />
                     {intl.formatMessage({ id: "common.uploadFile" })}
                     <input
-                      type="file"
-                      accept="image/jpg, image/jpeg, image/png"
+                      type='file'
+                      accept='image/jpg, image/jpeg, image/png'
                       onChange={onUploadChange}
                     />
                   </Button>
@@ -248,7 +248,7 @@ const ShearPlate = () => {
             </div>
             <div className={styles.btns}>
               <Button
-                type="primary"
+                type='primary'
                 onClick={onSaveImageToClip}
                 style={{ marginTop: 10 }}
               >
@@ -290,7 +290,7 @@ const ShearPlate = () => {
               />
               {clipImgUrl && (
                 <div className={styles.imgBox}>
-                  <img src={clipImgUrl} alt="" />
+                  <img src={clipImgUrl} alt='' />
                 </div>
               )}
             </div>
