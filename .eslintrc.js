@@ -16,7 +16,7 @@ module.exports = {
   rules: {
     "comma-dangle": 0,
     semi: [1, "always"],
-    quotes: 0,
+    quotes: [1, "double"],
     "space-before-function-paren": 0,
     camelcase: 0,
     eqeqeq: 1,
