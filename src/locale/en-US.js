@@ -100,6 +100,7 @@ const en_US = {
   "menu.cssDynamicEffect.richDynamicEffect": "Rich Dynamic Effect",
   "menu.cssDynamicEffect.generateRegularPolygon": "Generate Regular Polygon",
   "menu.cssDynamicEffect.generateShadow": "Generate Shadow",
+  "menu.cssDynamicEffect.generateScrollBar": "Generate Scroll Bar",
   "menu.cssDynamicEffect.musicVisualization": "Music Visualization",
   "menu.canvasDynamicEffect": "Canvas Dynamic Effect",
   "menu.canvasDynamicEffect.sphereCollisionExample": "sphere-collision Example",
@@ -277,6 +278,21 @@ const en_US = {
   "page.cssDynamicEffect.generateShadow.shadowSize": "Shadow Size",
   "page.cssDynamicEffect.generateShadow.borderRadius": "Border Radius",
   "page.cssDynamicEffect.generateShadow.shadowColor": "Shadow Color",
+
+  // Css动效-生成滚动条页
+  "page.cssDynamicEffect.generateScrollBar.scrollBarWidth": "Vertical Width",
+  "page.cssDynamicEffect.generateScrollBar.scrollBarHeight":
+    "Horizontal Height",
+  "page.cssDynamicEffect.generateScrollBar.scrollBarBgColor":
+    "Background Color",
+  "page.cssDynamicEffect.generateScrollBar.slidingBlockBgColor":
+    "Sliding Block Background Color",
+  "page.cssDynamicEffect.generateScrollBar.slidingBlockRadius":
+    "Sliding Block Radius",
+  "page.cssDynamicEffect.generateScrollBar.slidingBlockHoverBgColor":
+    "Sliding Block Hover Background Color",
+  "page.cssDynamicEffect.generateScrollBar.rightBottomBgColor":
+    "Right Bottom Background Color",
 
   // Canvas动效
   "page.canvasDynamicEffect.sphereCollisionExample": "sphere-collision example",

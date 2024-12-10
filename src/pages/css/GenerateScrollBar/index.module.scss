@@ -1,0 +1,96 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  overflow-y: auto;
+  .content {
+    display: flex;
+    flex-direction: column;
+
+    $boxWidth: 800px;
+    $boxHeight: 380px;
+    $boxPadding: 20px;
+    .box {
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: $boxWidth;
+      height: $boxHeight;
+      border: 2px dashed #73828c;
+      .graph {
+        box-sizing: border-box;
+        width: $boxWidth - 2 * $boxPadding;
+        height: $boxHeight - 2 * $boxPadding;
+
+        overflow: auto;
+
+        &::-webkit-scrollbar {
+          width: var(--scrollBarWidth);
+          height: var(--scrollBarHeight);
+          background-color: var(--scrollBarBgColor);
+        }
+        &::-webkit-scrollbar-thumb {
+          background-color: var(--slidingBlockBgColor);
+          border-radius: var(--slidingBlockRadius);
+        }
+        &::-webkit-scrollbar-thumb:hover {
+          background-color: var(--slidingBlockHoverBgColor);
+        }
+        &::-webkit-scrollbar-corner {
+          background-color: var(--rightBottomBgColor);
+        }
+
+        .graphBg {
+          box-sizing: border-box;
+          width: 200%;
+          height: 200%;
+          background: linear-gradient(
+            135deg,
+            #1d3450,
+            #29588a,
+            #116d6e,
+            #5c8984,
+            #47a992
+          );
+        }
+      }
+    }
+    .bottom {
+      width: $boxWidth;
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
+      .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 20px;
+        .rowItem {
+          display: flex;
+          align-items: center;
+          width: 47%;
+          .label {
+            color: #333 !important;
+            margin-right: 6px;
+            font-size: 15px;
+            color: #666;
+          }
+        }
+      }
+      .codeBox {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        background-color: #8bacaa;
+        padding: 10px;
+        color: #222;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+}

@@ -93,6 +93,7 @@ const zh_CN = {
   "menu.cssDynamicEffect.richDynamicEffect": "丰富动效",
   "menu.cssDynamicEffect.generateRegularPolygon": "生成正多边形",
   "menu.cssDynamicEffect.generateShadow": "生成阴影",
+  "menu.cssDynamicEffect.generateScrollBar": "生成滚动条",
   "menu.cssDynamicEffect.musicVisualization": "音乐可视化",
   "menu.canvasDynamicEffect": "Canvas动效",
   "menu.canvasDynamicEffect.sphereCollisionExample": "sphere-collision库示例",
@@ -239,6 +240,16 @@ const zh_CN = {
   "page.cssDynamicEffect.generateShadow.shadowSize": "阴影大小",
   "page.cssDynamicEffect.generateShadow.borderRadius": "边框半径",
   "page.cssDynamicEffect.generateShadow.shadowColor": "阴影颜色",
+
+  // Css动效-生成滚动条页
+  "page.cssDynamicEffect.generateScrollBar.scrollBarWidth": "纵向滚动条宽度",
+  "page.cssDynamicEffect.generateScrollBar.scrollBarHeight": "横向滚动条高度",
+  "page.cssDynamicEffect.generateScrollBar.scrollBarBgColor": "滚动条背景色",
+  "page.cssDynamicEffect.generateScrollBar.slidingBlockBgColor": "滑块背景色",
+  "page.cssDynamicEffect.generateScrollBar.slidingBlockRadius": "滑块圆角",
+  "page.cssDynamicEffect.generateScrollBar.slidingBlockHoverBgColor":
+    "滑块Hover背景色",
+  "page.cssDynamicEffect.generateScrollBar.rightBottomBgColor": "右下角背景色",
 
   // Canvas动效
   "page.canvasDynamicEffect.sphereCollisionExample": "sphere-collision库示例",
