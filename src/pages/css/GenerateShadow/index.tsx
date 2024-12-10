@@ -1,10 +1,10 @@
 /**
  * 生成阴影
  */
-import React, { useEffect, useRef, useState } from 'react';
-import { Slider, InputNumber, ColorPicker } from 'antd';
-import { useIntl } from 'react-intl';
-import styles from './index.module.scss';
+import React, { useEffect, useRef, useState } from "react";
+import { Slider, InputNumber, ColorPicker } from "antd";
+import { useIntl } from "react-intl";
+import styles from "./index.module.scss";
 
 const minSideNum = -50;
 const maxSideNum = 50;
@@ -13,7 +13,7 @@ const defaultVerticalValue = 20;
 const defaultBlurLength = 10;
 const defaultSpreadSize = 0;
 const defaultBorderRadius = 20;
-const defaultShadowColor = '#224141';
+const defaultShadowColor = "#224141";
 
 const GenerateShadow = () => {
   const intl = useIntl();
@@ -28,7 +28,7 @@ const GenerateShadow = () => {
   const [borderRadius, setBorderRadius] = useState<number>(defaultBorderRadius); // 边框半价
   const [shadowColor, setShadowColor] = useState<string>(defaultShadowColor); // 阴影颜色
 
-  const [boxShadowStr, setBoxShadowStr] = useState<string>('');
+  const [boxShadowStr, setBoxShadowStr] = useState<string>("");
 
   const onHorizontalValueChange = (value: number | null) => {
     setHorizontalValue(value ?? defaultHorizontalValue);
@@ -57,7 +57,7 @@ const GenerateShadow = () => {
   useEffect(() => {
     if (graphRef.current) {
       const boxShadowStr = `${horizontalValue}px ${verticalValue}px ${blurLength}px ${shadowSize}px ${shadowColor}`;
-      graphRef.current.style.setProperty('--boxShadow', boxShadowStr);
+      graphRef.current.style.setProperty("--boxShadow", boxShadowStr);
       setBoxShadowStr(boxShadowStr);
     }
   }, [horizontalValue, verticalValue, blurLength, shadowSize, shadowColor]);
@@ -77,16 +77,16 @@ const GenerateShadow = () => {
             <div className={styles.rowItem}>
               <span className={styles.label}>
                 {intl.formatMessage({
-                  id: 'page.cssDynamicEffect.generateShadow.horizontalOffset',
+                  id: "page.cssDynamicEffect.generateShadow.horizontalOffset",
                 })}
                 :
               </span>
               <Slider
                 style={{
-                  display: 'flex',
+                  display: "flex",
                   flex: 1,
-                  marginLeft: '10px',
-                  marginRight: '16px',
+                  marginLeft: "10px",
+                  marginRight: "16px",
                 }}
                 min={minSideNum}
                 max={maxSideNum}
@@ -95,7 +95,7 @@ const GenerateShadow = () => {
                 onChange={onHorizontalValueChange}
               />
               <InputNumber
-                style={{ width: '80px' }}
+                style={{ width: "80px" }}
                 min={minSideNum}
                 max={maxSideNum}
                 precision={0}
@@ -106,16 +106,16 @@ const GenerateShadow = () => {
             <div className={styles.rowItem}>
               <span className={styles.label}>
                 {intl.formatMessage({
-                  id: 'page.cssDynamicEffect.generateShadow.verticalOffset',
+                  id: "page.cssDynamicEffect.generateShadow.verticalOffset",
                 })}
                 :
               </span>
               <Slider
                 style={{
-                  display: 'flex',
+                  display: "flex",
                   flex: 1,
-                  marginLeft: '10px',
-                  marginRight: '16px',
+                  marginLeft: "10px",
+                  marginRight: "16px",
                 }}
                 min={minSideNum}
                 max={maxSideNum}
@@ -124,7 +124,7 @@ const GenerateShadow = () => {
                 onChange={onVerticalValueChange}
               />
               <InputNumber
-                style={{ width: '80px' }}
+                style={{ width: "80px" }}
                 min={minSideNum}
                 max={maxSideNum}
                 precision={0}
@@ -137,16 +137,16 @@ const GenerateShadow = () => {
             <div className={styles.rowItem}>
               <span className={styles.label}>
                 {intl.formatMessage({
-                  id: 'page.cssDynamicEffect.generateShadow.blurLength',
+                  id: "page.cssDynamicEffect.generateShadow.blurLength",
                 })}
                 :
               </span>
               <Slider
                 style={{
-                  display: 'flex',
+                  display: "flex",
                   flex: 1,
-                  marginLeft: '10px',
-                  marginRight: '16px',
+                  marginLeft: "10px",
+                  marginRight: "16px",
                 }}
                 min={0}
                 max={maxSideNum}
@@ -155,7 +155,7 @@ const GenerateShadow = () => {
                 onChange={onBlurLengthChange}
               />
               <InputNumber
-                style={{ width: '80px' }}
+                style={{ width: "80px" }}
                 min={0}
                 max={maxSideNum}
                 precision={0}
@@ -166,16 +166,16 @@ const GenerateShadow = () => {
             <div className={styles.rowItem}>
               <span className={styles.label}>
                 {intl.formatMessage({
-                  id: 'page.cssDynamicEffect.generateShadow.shadowSize',
+                  id: "page.cssDynamicEffect.generateShadow.shadowSize",
                 })}
                 :
               </span>
               <Slider
                 style={{
-                  display: 'flex',
+                  display: "flex",
                   flex: 1,
-                  marginLeft: '10px',
-                  marginRight: '16px',
+                  marginLeft: "10px",
+                  marginRight: "16px",
                 }}
                 min={minSideNum}
                 max={maxSideNum}
@@ -184,7 +184,7 @@ const GenerateShadow = () => {
                 onChange={onShadowSizeChange}
               />
               <InputNumber
-                style={{ width: '80px' }}
+                style={{ width: "80px" }}
                 min={minSideNum}
                 max={maxSideNum}
                 precision={0}
@@ -197,16 +197,16 @@ const GenerateShadow = () => {
             <div className={styles.rowItem}>
               <span className={styles.label}>
                 {intl.formatMessage({
-                  id: 'page.cssDynamicEffect.generateShadow.borderRadius',
+                  id: "page.cssDynamicEffect.generateShadow.borderRadius",
                 })}
                 :
               </span>
               <Slider
                 style={{
-                  display: 'flex',
+                  display: "flex",
                   flex: 1,
-                  marginLeft: '10px',
-                  marginRight: '16px',
+                  marginLeft: "10px",
+                  marginRight: "16px",
                 }}
                 min={0}
                 max={maxSideNum}
@@ -215,7 +215,7 @@ const GenerateShadow = () => {
                 onChange={onBorderRadiusChange}
               />
               <InputNumber
-                style={{ width: '80px' }}
+                style={{ width: "80px" }}
                 min={0}
                 max={maxSideNum}
                 precision={0}
@@ -226,7 +226,7 @@ const GenerateShadow = () => {
             <div className={styles.rowItem}>
               <span className={styles.label}>
                 {intl.formatMessage({
-                  id: 'page.cssDynamicEffect.generateShadow.shadowColor',
+                  id: "page.cssDynamicEffect.generateShadow.shadowColor",
                 })}
                 :
               </span>
@@ -238,7 +238,7 @@ const GenerateShadow = () => {
             </div>
           </div>
           <div className={styles.codeBox}>
-            <span>{'.box {'}</span>
+            <span>{".box {"}</span>
             <span>
               &nbsp;&nbsp;&nbsp;&nbsp;background: linear-gradient(135deg,
               #112437, #1d3450, #29588a, #116d6e, #5c8984, #47a992) fixed;
@@ -247,7 +247,7 @@ const GenerateShadow = () => {
             <span>
               &nbsp;&nbsp;&nbsp;&nbsp;border-radius: {borderRadius}px;
             </span>
-            <span>{'}'}</span>
+            <span>{"}"}</span>
           </div>
         </div>
       </div>
