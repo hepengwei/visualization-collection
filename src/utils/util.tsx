@@ -1,3 +1,6 @@
+import React, { Suspense } from "react";
+import SuspenseLoading from "components/SuspenseLoading";
+
 /**
  * 获取字符串的宽度
  * @text   将要被提取的原字符串
@@ -95,4 +98,33 @@ export const textAddLineBreak = (text: string, rowStrLength: number) => {
     result = result.substring(0, result.length - 1);
   }
   return result;
+};
+
+const LazyElement = (props: {
+  importFunc: () => Promise<{
+    default: React.ComponentType<any>;
+  }>;
+  path: string;
+}) => {
+  const { importFunc, path } = props;
+  const LazyComponent = React.lazy(importFunc);
+  return (
+    <Suspense fallback={<SuspenseLoading />}>
+      <LazyComponent />
+    </Suspense>
+  );
+};
+
+export const supportLazyElement = (routes: Record<string, any>[]) => {
+  if (!routes || routes.length === 0) return;
+  routes.forEach((route) => {
+    if (typeof route.element === "function") {
+      route.element = (
+        <LazyElement importFunc={route.element as any} path={route.path} />
+      );
+    }
+    if (route.children) {
+      supportLazyElement(route.children);
+    }
+  });
 };

@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useEffect, useRef } from "react";
 import G6, { IGroup, IShape, ModelConfig } from "@antv/g6";
-import { textAddLineBreak } from "utils/util";
+import { textAddLineBreak } from "@/utils/util";
 import styles from "../index.module.scss";
 
 const padding = 6;

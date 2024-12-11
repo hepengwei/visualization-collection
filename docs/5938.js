@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkvisualization_collection=self.webpackChunkvisualization_collection||[]).push([[5938],{35938:(e,t,a)=>{a.d(t,{A:()=>c});var n=a(94188),i=a(10123),u=a(70551);function c(e,t){return(0,u.A)(2,arguments),function(e,t){(0,u.A)(2,arguments);var a=(0,i.A)(e),c=(0,n.A)(t);return isNaN(c)?new Date(NaN):c?(a.setDate(a.getDate()+c),a):a}(e,-(0,n.A)(t))}}}]);

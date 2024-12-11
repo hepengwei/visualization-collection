@@ -9,7 +9,7 @@ import React, {
   useMemo,
 } from "react";
 import ReactDOM from "react-dom";
-import { getTextWidth, getFixedWidthText } from "utils/util";
+import { getTextWidth, getFixedWidthText } from "@/utils/util";
 
 interface EllipsisTextProps {
   text: string;

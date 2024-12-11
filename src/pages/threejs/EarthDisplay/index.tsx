@@ -34,7 +34,7 @@ import useInitialize from "hooks/threejs/useInitialize";
 import useMoveTo from "hooks/useMoveTo";
 import Border2 from "components/LargeScreenBorder/Border2";
 import luminousPointData from "./luminousPointData";
-import { getTextWidth } from "utils/util";
+import { getTextWidth } from "@/utils/util";
 import { lon2xyz, distoryObject } from "utils/threejsUtil";
 import { flyArc } from "./flyLine";
 import pageBg from "images/threejs/pageBg.png";
