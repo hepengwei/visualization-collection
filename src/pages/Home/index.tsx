@@ -7,6 +7,7 @@ import useGoogleAnalytics from "@/hooks/useGoogleAnalytics";
 import Header from "@/layout/Header";
 import Menus from "@/layout/Menus";
 import styles from "./index.module.scss";
+import SuspenseLoading from "@/components/SuspenseLoading";
 
 const defaultPageUrl = "/html/visualDesign"; // 默认首页
 

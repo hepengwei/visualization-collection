@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useMemo, useRef } from "react";
 import { useIntl } from "react-intl";
-import { getTextWidth } from "utils/util";
+import { getTextWidth } from "@/utils/util";
 import { useGlobalContext } from "hooks/useGlobalContext";
 import styles from "./index.module.scss";
 
