@@ -1,0 +1,62 @@
+.container {
+  $borderRadius: 24px;
+  width: 300px;
+  height: 424px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: $borderRadius;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+
+  &::before {
+    content: "";
+    opacity: 0;
+    transition: opacity 0.6s;
+    position: absolute;
+    inset: 0;
+    border-radius: $borderRadius;
+    background: conic-gradient(#03a9f4, #e91e63, #9c27b0, #ff5722, #03a9f4);
+    mask: radial-gradient(
+      circle at var(--x) var(--y),
+      #000,
+      #000,
+      transparent,
+      transparent,
+      transparent
+    );
+  }
+
+  &:hover {
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  .content {
+    border-radius: $borderRadius;
+    overflow: hidden;
+    position: absolute;
+    inset: 3px;
+    
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      background: var(--url);
+      background-size: cover;
+      background-position: center;
+      border-radius: $borderRadius;
+    }
+
+    &::before {
+      inset: 0;
+      filter: blur(20px);
+    }
+
+    &::after {
+      inset: 40px;
+    }
+  }
+}
