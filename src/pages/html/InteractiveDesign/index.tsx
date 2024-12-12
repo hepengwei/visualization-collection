@@ -6,7 +6,8 @@ import { useGlobalContext } from "@/hooks/useGlobalContext";
 import MagnifyingGlass from "./components/MagnifyingGlass";
 import CropImage from "./components/CropImage";
 import DragShopping from "./components/DragShopping";
-import MouseHover from "./components/MouseHover";
+import MouseHover1 from "./components/MouseHover1";
+import MouseHover2 from "./components/MouseHover2";
 import SlideButtonTab from "./components/SlideButtonTab";
 import FlipBook from "./components/FlipBook";
 import Switchs from "./components/Switchs";
@@ -29,7 +30,8 @@ const boxList = [
   { element: <MagnifyingGlass /> },
   { element: <CropImage /> },
   { element: <DragShopping /> },
-  { element: <MouseHover /> },
+  { element: <MouseHover1 /> },
+  { element: <MouseHover2 /> },
   { element: <SlideButtonTab /> },
   { element: <FlipBook /> },
   { element: <Switchs /> },
