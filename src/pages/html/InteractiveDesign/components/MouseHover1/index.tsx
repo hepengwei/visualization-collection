@@ -28,7 +28,7 @@ const articles = [
   },
 ];
 
-const MouseHover = () => {
+const MouseHover1 = () => {
   const intl = useIntl();
   const containerRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
@@ -108,4 +108,4 @@ const MouseHover = () => {
   );
 };
 
-export default MouseHover;
+export default MouseHover1;
