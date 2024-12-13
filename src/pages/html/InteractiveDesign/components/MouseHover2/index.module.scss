@@ -26,6 +26,10 @@
       a {
         margin-top: 20px;
         color: #ffffff;
+
+        &:hover {
+          color: $globalPrimaryColor;
+        }
       }
 
       &::before {
