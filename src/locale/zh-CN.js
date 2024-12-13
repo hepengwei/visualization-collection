@@ -329,9 +329,9 @@ const zh_CN = {
   "page.imageProcessingTool.WhetherRetainOriginalDimension": "是否保留原尺寸",
 
   // 视频处理工具页
-  "page.videoProcessingTool.tip":
-    "该工具处理视频会非常慢，因为是纯前端实现的，正确做法还是将文件上传到后台进行处理，这里只是提供一种纯前端实现视频处理的解决方案。",
-  "page.videoProcessingTool.generatingVideo": "努力生成视频中",
+  // "page.videoProcessingTool.tip":
+  //   "该工具处理视频会非常慢，因为是纯前端实现的，正确做法还是将文件上传到后台进行处理，这里只是提供一种纯前端实现视频处理的解决方案。",
+  // "page.videoProcessingTool.generatingVideo": "努力生成视频中",
 
   // Html视觉-应用页面框架页
   "page.htmlVision.applicationPageFrame.secondPage": "第二页",
