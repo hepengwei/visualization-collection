@@ -7,7 +7,7 @@ import styles from "./index.module.scss";
 
 const cardList = [car1, car2, car3];
 
-const MouseHover3 = () => {
+const MouseHover4 = () => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -19,4 +19,4 @@ const MouseHover3 = () => {
   );
 };
 
-export default MouseHover3;
+export default MouseHover4;
