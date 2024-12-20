@@ -7,7 +7,7 @@ import GridContent from "components/GridContent";
 import styles from "./index.module.scss";
 
 const { GridBox } = GridContent;
-const gridboxList = new Array(29).fill("1");
+const gridboxList = new Array(34).fill("1");
 
 const BackgroundEffect = () => {
   const { setScrollTop } = useGlobalContext();
