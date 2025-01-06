@@ -86,6 +86,8 @@ const en_US = {
   "common.checkout": "Checkout",
   "common.moduleTitle": "Module Title",
   "common.customizeContent": "Customize content",
+  "common.copyCode": "Copy code",
+  "common.copySuccess": "Copy successfully",
 
   // 菜单
   "menu.htmlVision": "Html Vision",

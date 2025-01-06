@@ -4,6 +4,7 @@ import { FolderAddOutlined } from "@ant-design/icons";
 import { useIntl } from "react-intl";
 import { getImgInfo, fileOrBlobToDataURL } from "utils/fileUtil";
 import type { ImgInfo } from "utils/fileUtil";
+import { saveTextToClip } from "utils/util";
 import styles from "./index.module.scss";
 
 const { TextArea } = Input;
@@ -26,16 +27,7 @@ const ShearPlate = () => {
       );
       return;
     }
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(inputText);
-    } else {
-      const input = document.createElement("input");
-      input.setAttribute("value", inputText);
-      document.body.appendChild(input);
-      input.select();
-      document.execCommand("copy");
-      document.body.removeChild(input);
-    }
+    saveTextToClip(inputText);
     message.success(intl.formatMessage({ id: "common.saveSuccessfully" }));
   };
 
