@@ -1,64 +1,5 @@
-.container {
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 100%;
-  display: flex;
-  background-image: linear-gradient(135deg, #224141, #162a2a);
-  padding: 2px 6px 4px;
-
-  .box {
-    height: 420px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 3px solid #35a2fd44;
-    overflow: hidden;
-    position: relative;
-
-    .hoverBg {
-      visibility: hidden;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: absolute;
-      inset: 0;
-      background-color: #11111190;
-
-      .copyBtn {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background-color: $globalPrimaryColor2;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-
-        :global {
-          svg {
-            width: 26px;
-            height: 26px;
-          }
-        }
-      }
-    }
-
-    &:hover {
-      .hoverBg {
-        visibility: visible;
-      }
-    }
-  }
-
-  @mixin bg {
-    width: 100%;
-    height: 100%;
-  }
-
-  .bg1 {
-    @include bg;
+const textCodeList = [
+  `.box {
     background-image: repeating-linear-gradient(
         107deg,
         hsla(82, 0%, 5%, 0.15) 0px,
@@ -112,62 +53,50 @@
         hsla(82, 0%, 5%, 0.15) 7px
       ),
       linear-gradient(90deg, rgb(45, 45, 45), rgb(45, 45, 45));
-  }
-
-  .bg2 {
-    @include bg;
+  }`,
+  `.box {
     background-color: #fff;
     background-image: linear-gradient(
-      90deg,
-      rgba(66, 66, 66, 0.5) 50%,
-      transparent 0
-    );
+        90deg,
+        rgba(66, 66, 66, 0.5) 50%,
+        transparent 0
+      );
     background-size: 50px 100%;
-  }
-
-  .bg3 {
-    @include bg;
+  }`,
+  `.box {
     background-color: #fff;
     background-image: linear-gradient(rgba(66, 66, 66, 0.5) 50%, transparent 0),
-      linear-gradient(to right, rgba(66, 66, 66, 0.5) 50%, transparent 0);
+        linear-gradient(to right, rgba(66, 66, 66, 0.5) 50%, transparent 0);
     background-size: 50px 50px;
-  }
-
-  .bg4 {
-    @include bg;
+  }`,
+  `.box {
     background-color: #fff;
     background-image: repeating-linear-gradient(
-      60deg,
-      rgba(66, 66, 66, 0.5) 5%,
-      transparent 0 10%,
-      rgba(66, 66, 66, 0.5) 0 15%
-    );
-  }
-
-  .bg5 {
-    @include bg;
+        60deg,
+        rgba(66, 66, 66, 0.5) 5%,
+        transparent 0 10%,
+        rgba(66, 66, 66, 0.5) 0 15%
+      );
+  }`,
+  `.box {
     background-color: #fff;
     background-image: repeating-linear-gradient(
-      60deg,
-      rgba(66, 66, 66, 0.5) 5%,
-      transparent 10%,
-      rgba(66, 66, 66, 0.5) 15%
-    );
+        60deg,
+        rgba(66, 66, 66, 0.5) 5%,
+        transparent 10%,
+        rgba(66, 66, 66, 0.5) 15%
+      );
     background-size: 50px 50px;
-  }
-
-  .bg6 {
-    @include bg;
+  }`,
+  `.box {
     background-color: #55f;
     background-image: linear-gradient(#fff 2px, transparent 0),
-      linear-gradient(to right, #fff 2px, transparent 0),
-      linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 0),
-      linear-gradient(to right, rgba(255, 255, 255, 0.3) 1px, transparent 0);
+        linear-gradient(to right, #fff 2px, transparent 0),
+        linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 0),
+        linear-gradient(to right, rgba(255, 255, 255, 0.3) 1px, transparent 0);
     background-size: 60px 60px, 60px 60px, 20px 20px, 20px 20px;
-  }
-
-  .bg7 {
-    @include bg;
+  }`,
+  `.box {
     background: repeating-linear-gradient(
         -45deg,
         transparent,
@@ -185,144 +114,113 @@
       #efb;
     background-size: 200px 200px;
     background-blend-mode: multiply;
-  }
-
-  .bg8 {
-    @include bg;
+  }`,
+  `.box {
     background-image: repeating-conic-gradient(#000 0 5%, #fff 5% 10%);
-  }
-
-  .bg9 {
-    @include bg;
+  }`,
+  `.box {
     background-color: #fff;
     background-image: repeating-conic-gradient(#000 0 1%, #0000 0 2%);
-  }
-
-  .bg10 {
-    @include bg;
+  }`,
+  `.box {
     background-image: repeating-conic-gradient(
       red 0deg 30deg,
       yellow 30deg 60deg,
       blue 60deg 90deg
     );
-  }
-
-  .bg11 {
-    @include bg;
+  }`,
+  `.box {
     background: repeating-radial-gradient(#000 0 0.0001%, #fff 0 0.0002%) 60%
         60%/1000px 1000px,
       repeating-conic-gradient(#000 0 0.0001%, #fff 0 0.0002%) 40% 40%/1000px
         1000px;
     background-blend-mode: difference;
-  }
-
-  .bg12 {
-    @include bg;
+  }`,
+  `.box {
     background: repeating-conic-gradient(#bf4d28 0 0.00005%, #e1f5c4 0 0.00017%)
       0 0/5000px 4000px;
-  }
-
-  .bg13 {
-    @include bg;
-    $itemWidth: 60px;
-    $signWidth: 5px;
+  }`,
+  `.box {
     background: linear-gradient(
         90deg,
-        transparent $itemWidth - 1px,
+        transparent 60px - 1px,
         #aec8ee 1px
       ),
-      linear-gradient(180deg, transparent $itemWidth - 1px, #aec8ee 1px),
+      linear-gradient(180deg, transparent 60px - 1px, #aec8ee 1px),
       conic-gradient(
-        from 270deg at $signWidth $signWidth * 4,
+        from 270deg at 5px 5px * 4,
         #31c2ec 90deg,
         transparent 0deg
       ),
       conic-gradient(
-        from 270deg at $signWidth * 4 $signWidth,
+        from 270deg at 5px * 4 5px,
         #31c2ec 90deg,
         transparent 0deg
       ),
       #0e284d;
-    background-size: $itemWidth 100%, 100% $itemWidth, $itemWidth $itemWidth,
-      $itemWidth $itemWidth;
-    background-position: 0 0, 0 0, calc($signWidth / -2) calc($signWidth * -2),
-      calc($signWidth * -2) calc($signWidth / -2);
-  }
-
-  .bg14 {
-    @include bg;
-    $itemWidth: 60px;
-    $signWidth: 7px;
+    background-size: 60px 100%, 100% 60px, 60px 60px,
+      60px 60px;
+    background-position: 0 0, 0 0, calc(5px / -2) calc(5px * -2),
+      calc(5px * -2) calc(5px / -2);
+  }`,
+  `.box {
     background: linear-gradient(
         90deg,
-        transparent $itemWidth - 1px,
+        transparent 60px - 1px,
         #aec8ee 1px
       ),
-      linear-gradient(180deg, transparent $itemWidth - 1px, #aec8ee 1px),
+      linear-gradient(180deg, transparent 60px - 1px, #aec8ee 1px),
       radial-gradient(
-        closest-side at $signWidth $signWidth,
+        closest-side at 7px 7px,
         #31c2ec 0,
-        #31c2ec $signWidth,
-        transparent $signWidth,
+        #31c2ec 7px,
+        transparent 7px,
         transparent 100%
       ),
       #0e284d;
-    background-size: $itemWidth 100%, 100% $itemWidth, $itemWidth $itemWidth;
+    background-size: 60px 100%, 100% 60px, 60px 60px;
     background-position: 0 0, 0 0,
-      calc($signWidth * -1 - 1px) calc($signWidth * -1 - 1px);
-  }
-
-  .bg15 {
-    @include bg;
-    $itemWidth: 84px;
-    $color: #fff;
-    $from: from -30deg at;
+      calc(7px * -1 - 1px) calc(7px * -1 - 1px);
+  }`,
+  `.box {
     background: linear-gradient(#0000 50%, #0004 0),
-      conic-gradient($from 90%, $color 240deg, #0000 0),
-      conic-gradient($from 75%, #71e9a0 240deg, #0000 0),
-      conic-gradient($from 25%, #0000 240deg, $color 0),
-      conic-gradient($from 40%, $color 240deg, #2a6a9b 0);
-    background-size: calc(1.5 * $itemWidth) $itemWidth;
-  }
-
-  .bg16 {
-    @include bg;
-    $itemWidth: 70px;
+      conic-gradient(from -30deg at 90%, #fff 240deg, #0000 0),
+      conic-gradient(from -30deg at 75%, #71e9a0 240deg, #0000 0),
+      conic-gradient(from -30deg at 25%, #0000 240deg, #fff 0),
+      conic-gradient(from -30deg at 40%, #fff 240deg, #2a6a9b 0);
+    background-size: calc(1.5 * 84px) 84px;
+  }`,
+  `.box {
     background: linear-gradient(-45deg, #0000 75%, #f67280 0),
-      linear-gradient(45deg, #0000 75%, #f67280 0) 0 calc($itemWidth/2) #355c7d;
-    background-size: $itemWidth $itemWidth;
-  }
-
-  .bg17 {
-    @include bg;
-    $itemWidth: 12px;
-    $color1: #fdf1cc;
-    $color2: #987f69;
-    $g: $color1 3.125%, $color2 0 9.375%, $color1 0 15.625%, $color2 0 21.875%,
-      $color1 0 28.125%, #0000 0;
+      linear-gradient(45deg, #0000 75%, #f67280 0) 0 calc(70px / 2) #355c7d;
+    background-size: 70px 70px;
+  }`,
+  `.box {
     background: linear-gradient(
           225deg,
           #0000 3.125%,
-          $color2 0 9.375%,
+          #987f69 0 9.375%,
           #0000 0 78.125%,
-          $color2 0 84.375%,
+          #987f69 0 84.375%,
           #0000 0
         )
-        0 calc($itemWidth / 2),
-      linear-gradient(45deg, $g) 0 $itemWidth,
-      linear-gradient(45deg, $g) calc($itemWidth / -2) calc($itemWidth / -2),
-      linear-gradient(225deg, $g) $itemWidth 0,
-      linear-gradient(225deg, $g) calc($itemWidth / 2) $itemWidth,
+        0 calc(12px / 2),
+      linear-gradient(45deg, #fdf1cc 3.125%, #987f69 0 9.375%, #fdf1cc 0 15.625%, #987f69 0 21.875%,
+      #fdf1cc 0 28.125%, #0000 0) 0 12px,
+      linear-gradient(45deg, #fdf1cc 3.125%, #987f69 0 9.375%, #fdf1cc 0 15.625%, #987f69 0 21.875%,
+      #fdf1cc 0 28.125%, #0000 0) calc(12px / -2) calc(12px / -2),
+      linear-gradient(225deg, #fdf1cc 3.125%, #987f69 0 9.375%, #fdf1cc 0 15.625%, #987f69 0 21.875%,
+      #fdf1cc 0 28.125%, #0000 0) 12px 0,
+      linear-gradient(225deg, #fdf1cc 3.125%, #987f69 0 9.375%, #fdf1cc 0 15.625%, #987f69 0 21.875%,
+      #fdf1cc 0 28.125%, #0000 0) calc(12px / 2) 12px,
       repeating-linear-gradient(
         -45deg,
-        $color1 -3.125% 3.125%,
-        $color2 0 9.375%
+        #fdf1cc -3.125% 3.125%,
+        #987f69 0 9.375%
       );
-    background-size: calc(2 * $itemWidth) calc(2 * $itemWidth);
-  }
-
-  .bg18 {
-    @include bg;
+    background-size: calc(2 * 12px) calc(2 * 12px);
+  }`,
+  `.box {
     background: repeating-linear-gradient(
         60deg,
         rgba(255, 255, 255, 0.2) 0,
@@ -357,10 +255,8 @@
         hsl(235, 45%, 15%) 65%,
         hsl(210, 50%, 5%) 100%
       );
-  }
-
-  .bg19 {
-    @include bg;
+  }`,
+  `.box {
     background: repeating-linear-gradient(
         0deg,
         rgba(255, 255, 255, 0.5) 0,
@@ -397,10 +293,8 @@
         hsl(235, 45%, 20%) 65%,
         hsl(210, 50%, 10%) 100%
       );
-  }
-
-  .bg20 {
-    @include bg;
+  }`,
+  `.box {
     background: repeating-linear-gradient(
         -1deg,
         rgba(0, 0, 0, 0.1) 0,
@@ -447,10 +341,8 @@
         hsl(245, 15%, 20%) 65%,
         hsl(220, 20%, 10%) 100%
       );
-  }
-
-  .bg21 {
-    @include bg;
+  }`,
+  `.box {
     background: repeating-linear-gradient(
         -1deg,
         rgba(0, 0, 0, 0.1) 0,
@@ -490,10 +382,8 @@
         hsl(205, 60%, 35%) 75%,
         hsl(210, 45%, 30%) 100%
       );
-  }
-
-  .bg22 {
-    @include bg;
+  }`,
+  `.box {
     background: radial-gradient(
         circle farthest-side at 50% 50%,
         hsl(60, 15%, 15%) 0,
@@ -545,10 +435,8 @@
     background-size: 40px 40px, 40px 40px, 40px 40px, 40px 40px, 100% 100%,
       100% 100%;
     background-position: 0 0, 20px 20px, 0 -2px, 20px 22px, 0 0, 0 0;
-  }
-
-  .bg23 {
-    @include bg;
+  }`,
+  `.box {
     background: linear-gradient(
         120deg,
         hsla(0, 80%, 20%, 0.5) 0%,
@@ -580,10 +468,8 @@
         hsl(235, 5%, 5%) 65%,
         hsl(0, 0%, 0%) 100%
       );
-  }
-
-  .bg24 {
-    @include bg;
+  }`,
+  `.box {
     background: radial-gradient(
         ellipse 150% 150% at 80% 80%,
         transparent 40%,
@@ -631,98 +517,62 @@
         hsl(195, 100%, 35%) 75%,
         hsl(200, 85%, 25%) 100%
       );
-  }
-
-  .bg25 {
-    @include bg;
-    $size: 100px;
-    $g: #0000 52%, #170409 54% 57%, #0000 59%;
-    background: radial-gradient(farthest-side at -33.33% 50%, $g) 0
-        calc($size/2),
-      radial-gradient(farthest-side at 50% 133.33%, $g) calc($size/2) 0,
-      radial-gradient(farthest-side at 133.33% 50%, $g),
-      radial-gradient(farthest-side at 50% -33.33%, $g), #67917a;
-    background-size: calc($size/4.667) $size, $size calc($size/4.667);
-  }
-
-  .bg26 {
-    @include bg;
-    $size: 20px;
-    $g: 15px;
-    $color1: #c02942;
-    $color2: #53777a;
+  }`,
+  `.box {
+    background: radial-gradient(farthest-side at -33.33% 50%, #0000 52%, #170409 54% 57%, #0000 59%) 0
+        calc(100px / 2),
+      radial-gradient(farthest-side at 50% 133.33%, #0000 52%, #170409 54% 57%, #0000 59%) calc(100px / 2) 0,
+      radial-gradient(farthest-side at 133.33% 50%, #0000 52%, #170409 54% 57%, #0000 59%),
+      radial-gradient(farthest-side at 50% -33.33%, #0000 52%, #170409 54% 57%, #0000 59%), #67917a;
+    background-size: calc(100px / 4.667) 100px, 100px calc(100px / 4.667);
+  }`,
+  `.box {
     background: conic-gradient(
-          at $size calc(100% - $size),
+          at 20px calc(100% - 20px),
           #0000 270deg,
-          $color1 0
+          #c02942 0
         )
-        calc($size + $g) 0,
-      linear-gradient($color2 $size, #0000 0) 0 $g,
+        calc(20px + 15px) 0,
+      linear-gradient(#53777a 20px, #0000 0) 0 15px,
       conic-gradient(
-        at $size calc(100% - $size),
+        at 20px calc(100% - 20px),
         #0000 90deg,
-        $color2 0 180deg,
-        $color1 0
+        #53777a 0 180deg,
+        #c02942 0
       ),
       #ecd078;
-    background-size: calc(2 * ($size + $g)) calc(2 * ($size + $g));
-  }
-
-  .bg27 {
-    @include bg;
-    $size: 40px;
-    $color1: #72e21f 25%, #0000 0;
-    $color2: #044012;
-    $g1: conic-gradient(at 62.5% 12.5%, $color1);
-    $g2: conic-gradient(at 87.5% 62.5%, $color1);
-    $g3: conic-gradient(at 25% 12.5%, $color1);
-    background: $g1 calc($size/-8) calc($size/2),
-      $g1 calc(-3 * $size/8) calc($size/4), $g2 calc(3 * $size/8) calc($size/4),
-      $g2 calc($size/-8) 0, $g3 0 calc($size/-4), $g3 calc($size/-4) 0,
-      conic-gradient(at 87.5% 87.5%, $color1) calc($size/8) 0 $color2;
-    background-size: $size $size;
-  }
-
-  .bg28 {
-    @include bg;
-    $size: 20px;
-    $g: #0000 83%, #b09f79 85% 99%, #0000 101%;
-    background: radial-gradient(27% 29% at right, $g) calc($size / 2) $size,
-      radial-gradient(27% 29% at left, $g) calc($size / -2) $size,
-      radial-gradient(29% 27% at top, $g) 0 calc($size / 2),
-      radial-gradient(29% 27% at bottom, $g) 0 calc($size / -2) #476074;
-    background-size: calc(2 * $size) calc(2 * $size);
-  }
-
-  .bg29 {
-    @include bg;
-    $size: 12px;
-    $b: 3;
-    $color1: #615375;
-    $color2: #8eb2c5;
-    $g: #0000 calc(100% - $size / $b - 1px),
-      $color1 calc(100% - $size / $b) calc(100% - 1px), #0000;
-    $r: calc(2.414 * $size);
-    $p: calc(1.414 * $size);
-    background: radial-gradient($r at 0 0, $g) $r $r,
-      radial-gradient($size at 0 0, $g) $p $p,
-      radial-gradient($r at 0 100%, $g) 0 $p,
-      radial-gradient($size at 0 100%, $g) calc(-1 * $size) $r,
-      radial-gradient($r at 100% 0, $g) $p 0,
-      radial-gradient($size at 100% 0, $g) $r calc(-1 * $size),
-      radial-gradient($r at 100% 100%, $g) calc(-1 * $size) calc(-1 * $size),
-      radial-gradient($size at 100% 100%, $g) $color2;
-    background-size: calc(2 * $r) calc(2 * $r);
-  }
-
-  .bg30 {
-    @include bg;
+    background-size: calc(2 * (20px + 15px)) calc(2 * (20px + 15px));
+  }`,
+  `.box {
+    background: conic-gradient(at 62.5% 12.5%, #72e21f 25%, #0000 0) calc(40px / -8) calc(40px / 2),
+      conic-gradient(at 62.5% 12.5%, #72e21f 25%, #0000 0) calc(-3 * 40px/8) calc(40px / 4), conic-gradient(at 87.5% 62.5%, #72e21f 25%, #0000 0) calc(3 * 40px/8) calc(40px / 4),
+      conic-gradient(at 87.5% 62.5%, #72e21f 25%, #0000 0) calc(40px / -8) 0, conic-gradient(at 25% 12.5%, #72e21f 25%, #0000 0) 0 calc(40px / -4), conic-gradient(at 25% 12.5%, #72e21f 25%, #0000 0) calc(40px / -4) 0,
+      conic-gradient(at 87.5% 87.5%, #72e21f 25%, #0000 0) calc(40px / 8) 0 #044012;
+    background-size: 40px 40px;
+  }`,
+  `.box {
+    background: radial-gradient(27% 29% at right, #0000 83%, #b09f79 85% 99%, #0000 101%) calc(20px / 2) 20px,
+      radial-gradient(27% 29% at left, #0000 83%, #b09f79 85% 99%, #0000 101%) calc(20px / -2) 20px,
+      radial-gradient(29% 27% at top, #0000 83%, #b09f79 85% 99%, #0000 101%) 0 calc(20px / 2),
+      radial-gradient(29% 27% at bottom, #0000 83%, #b09f79 85% 99%, #0000 101%) 0 calc(20px / -2) #476074;
+    background-size: calc(2 * 20px) calc(2 * 20px);
+  }`,
+  `.box {
+    background: radial-gradient(calc(2.414 * 12px) at 0 0, #0000 calc(100% - 12px / 3 - 1px), #615375 calc(100% - 12px / 3) calc(100% - 1px), #0000) calc(2.414 * 12px) calc(2.414 * 12px),
+      radial-gradient(12px at 0 0, #0000 calc(100% - 12px / 3 - 1px), #615375 calc(100% - 12px / 3) calc(100% - 1px), #0000) calc(1.414 * 12px) calc(1.414 * 12px),
+      radial-gradient(calc(2.414 * 12px) at 0 100%, #0000 calc(100% - 12px / 3 - 1px), #615375 calc(100% - 12px / 3) calc(100% - 1px), #0000) 0 calc(1.414 * 12px),
+      radial-gradient(12px at 0 100%, #0000 calc(100% - 12px / 3 - 1px), #615375 calc(100% - 12px / 3) calc(100% - 1px), #0000) calc(-1 * 12px) calc(2.414 * 12px),
+      radial-gradient(calc(2.414 * 12px) at 100% 0, #0000 calc(100% - 12px / 3 - 1px), #615375 calc(100% - 12px / 3) calc(100% - 1px), #0000) calc(1.414 * 12px) 0,
+      radial-gradient(12px at 100% 0, #0000 calc(100% - 12px / 3 - 1px), #615375 calc(100% - 12px / 3) calc(100% - 1px), #0000) calc(2.414 * 12px) calc(-1 * 12px),
+      radial-gradient(calc(2.414 * 12px) at 100% 100%, #0000 calc(100% - 12px / 3 - 1px), #615375 calc(100% - 12px / 3) calc(100% - 1px), #0000) calc(-1 * 12px) calc(-1 * 12px),
+      radial-gradient(12px at 100% 100%, #0000 calc(100% - 12px / 3 - 1px), #615375 calc(100% - 12px / 3) calc(100% - 1px), #0000) #8eb2c5;
+    background-size: calc(2 * calc(2.414 * 12px)) calc(2 * calc(2.414 * 12px));
+  }`,
+  `.box {
     background-image: repeating-radial-gradient(#f8f1f1ee 88%, #963fdd 90%);
     background-size: 50px 50px;
-  }
-
-  .bg31 {
-    @include bg;
+  }`,
+  `.box {
     background: linear-gradient(
         45deg,
         transparent 33.33%,
@@ -732,26 +582,22 @@
       ),
       lightblue;
     background-size: 20px 20px;
-  }
-
-  .bg32 {
-    @include bg;
+  }`,
+  `.box {
     background-image: repeating-radial-gradient(#f8f1f1ee 87%, #3fa7b4 90%);
     background-size: 50px 50px;
-  }
-
-  .bg33 {
-    @include bg;
+  }`,
+  `.box {
     background: repeating-radial-gradient(red 55%, white 56%);
-  }
-
-  .bg34 {
-    @include bg;
+  }`,
+  `.box {
     background-image: repeating-radial-gradient(
       #e2d1d1 50%,
       #e7d2d2ee 70%,
       #f5c7a1 95%
     );
     background-size: 50px 50px;
-  }
-}
+  }`,
+];
+
+export default textCodeList;

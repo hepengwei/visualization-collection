@@ -2,14 +2,20 @@
  * 背景图案
  */
 import React, { useEffect } from "react";
+import { Tooltip, message } from "antd";
+import { CopyOutlined } from "@ant-design/icons";
+import { useIntl } from "react-intl";
 import { useGlobalContext } from "@/hooks/useGlobalContext";
 import GridContent from "components/GridContent";
+import { saveTextToClip } from "utils/util";
+import textCodeList from "./code";
 import styles from "./index.module.scss";
 
 const { GridBox } = GridContent;
 const gridboxList = new Array(34).fill("1");
 
 const BackgroundEffect = () => {
+  const intl = useIntl();
   const { setScrollTop } = useGlobalContext();
 
   useEffect(() => {
@@ -28,6 +34,25 @@ const BackgroundEffect = () => {
             <GridBox key={index}>
               <div className={styles.box}>
                 <div className={styles[`bg${index + 1}`]} />
+                <div className={styles.hoverBg}>
+                  <Tooltip
+                    title={intl.formatMessage({ id: "common.copyCode" })}
+                  >
+                    <div
+                      className={styles.copyBtn}
+                      onClick={() => {
+                        if (textCodeList[index]) {
+                          saveTextToClip(textCodeList[index]);
+                          message.success(
+                            intl.formatMessage({ id: "common.copySuccess" })
+                          );
+                        }
+                      }}
+                    >
+                      <CopyOutlined />
+                    </div>
+                  </Tooltip>
+                </div>
               </div>
             </GridBox>
           )
