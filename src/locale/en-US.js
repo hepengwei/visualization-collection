@@ -103,6 +103,7 @@ const en_US = {
   "menu.cssDynamicEffect.generateRegularPolygon": "Generate Regular Polygon",
   "menu.cssDynamicEffect.generateShadow": "Generate Shadow",
   "menu.cssDynamicEffect.generateScrollBar": "Generate Scroll Bar",
+  "menu.cssDynamicEffect.elevatorNavigation": "Elevator Navigation",
   "menu.cssDynamicEffect.musicVisualization": "Music Visualization",
   "menu.canvasDynamicEffect": "Canvas Dynamic Effect",
   "menu.canvasDynamicEffect.sphereCollisionExample": "sphere-collision Example",

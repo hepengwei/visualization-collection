@@ -3,7 +3,7 @@
   width: 100%;
   min-height: 100%;
   display: flex;
-  background-image: linear-gradient(135deg, #224141, #162a2a);
+  background-image: $globalBackgroundImage;
   padding: 2px 4px 4px;
 
   .box {

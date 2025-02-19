@@ -47,14 +47,7 @@
           box-sizing: border-box;
           width: 200%;
           height: 200%;
-          background: linear-gradient(
-            135deg,
-            #1d3450,
-            #29588a,
-            #116d6e,
-            #5c8984,
-            #47a992
-          );
+          background: $globalBackground;
         }
       }
     }
