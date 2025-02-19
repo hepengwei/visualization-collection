@@ -2,46 +2,6 @@ import React from "react";
 import { RouteObject } from "react-router-dom";
 import Home from "pages/Home";
 import { supportLazyElement } from "utils/util";
-// import VisualDesign from "pages/html/VisualDesign";
-// import InteractiveDesign from "pages/html/InteractiveDesign";
-// import BackgroundEffect from "pages/html/BackgroundEffect";
-// import ComplexLayout from "pages/html/ComplexLayout";
-// import AppPageFrame from "pages/html/AppPageFrame";
-// import UtilitarianFunction from "pages/html/UtilitarianFunction";
-// import DynamicButtons from "pages/css/DynamicButtons";
-// import RichDynamicEffect from "pages/css/RichDynamicEffect";
-// import GenerateRegularPolygon from "pages/css/GenerateRegularPolygon";
-// import GenerateShadow from "pages/css/GenerateShadow";
-// import GenerateScrollBar from "pages/css/GenerateScrollBar";
-// import MusicVisualization from "pages/css/MusicVisualization";
-// import SphereCollisionExample from "pages/canvas/SphereCollisionExample";
-// import DynamicClock from "pages/canvas/DynamicClock";
-// import Searchlight from "pages/canvas/Searchlight";
-// import GlobuleInteraction from "pages/canvas/GlobuleInteraction";
-// import KillPlanetGame from "pages/canvas/KillPlanetGame";
-// import FreeFallingBody from "pages/canvas/FreeFallingBody";
-// import CountDown from "pages/canvas/CountDown";
-// import ParticlesBg from "pages/canvas/ParticlesBg";
-// import RippleFloatOnTheWater from "pages/canvas/RippleFloatOnTheWater";
-// import FlowerBloom from "pages/canvas/FlowerBloom";
-// import CodeBgWall from "pages/canvas/CodeBgWall";
-// import WordDance from "pages/canvas/WordDance";
-// import Scratch from "pages/canvas/Scratch";
-// import MatchLine from "pages/canvas/MatchLine";
-// import Bar from "pages/echarts/Bar";
-// import Pie from "pages/echarts/Pie";
-// import Tree from "pages/echarts/Tree";
-// import AppPage3DFrame from "pages/threejs/AppPageFrame";
-// import CarShow from "pages/threejs/CarShow";
-// import RubiksCube from "pages/threejs/RubiksCube";
-// import ThrowDice from "pages/threejs/ThrowDice";
-// import MapDisplay from "pages/threejs/MapDisplay";
-// import EarthDisplay from "pages/threejs/EarthDisplay";
-// import HumanPostureDetection from "pages/AIApplication/HumanPostureDetection";
-// import NotBlockPeopleBarrage from "pages/AIApplication/NotBlockPeopleBarrage";
-// import ImageProcessingTool from "pages/ImageProcessingTool";
-// import PDFProcessingTool from "pages/PDFProcessingTool";
-// import VideoProcessingTool from "pages/VideoProcessingTool";
 
 const VisualDesign = () => import("pages/html/VisualDesign");
 const InteractiveDesign = () => import("pages/html/InteractiveDesign");
@@ -54,6 +14,7 @@ const RichDynamicEffect = () => import("pages/css/RichDynamicEffect");
 const GenerateRegularPolygon = () => import("pages/css/GenerateRegularPolygon");
 const GenerateShadow = () => import("pages/css/GenerateShadow");
 const GenerateScrollBar = () => import("pages/css/GenerateScrollBar");
+const ElevatorNavigation = () => import("pages/css/ElevatorNavigation");
 const SphereCollisionExample = () =>
   import("pages/canvas/SphereCollisionExample");
 const DynamicClock = () => import("pages/canvas/DynamicClock");
@@ -138,6 +99,10 @@ const contentRoutes: Record<string, any>[] = [
       {
         path: "/css/generateScrollBar",
         element: GenerateScrollBar,
+      },
+      {
+        path: "/css/elevatorNavigation",
+        element: ElevatorNavigation,
       },
       // {
       //   path: "/css/musicVisualization",

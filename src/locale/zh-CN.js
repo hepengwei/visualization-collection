@@ -96,6 +96,7 @@ const zh_CN = {
   "menu.cssDynamicEffect.generateRegularPolygon": "生成正多边形",
   "menu.cssDynamicEffect.generateShadow": "生成阴影",
   "menu.cssDynamicEffect.generateScrollBar": "生成滚动条",
+  "menu.cssDynamicEffect.elevatorNavigation": "电梯导航",
   "menu.cssDynamicEffect.musicVisualization": "音乐可视化",
   "menu.canvasDynamicEffect": "Canvas动效",
   "menu.canvasDynamicEffect.sphereCollisionExample": "sphere-collision库示例",

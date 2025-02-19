@@ -117,6 +117,12 @@ const Menus: React.FC = () => {
           }),
           "generateScrollBar"
         ),
+        getItem(
+          intl.formatMessage({
+            id: "menu.cssDynamicEffect.elevatorNavigation",
+          }),
+          "elevatorNavigation"
+        ),
         // getItem(
         //   intl.formatMessage({
         //     id: "menu.cssDynamicEffect.musicVisualization",
