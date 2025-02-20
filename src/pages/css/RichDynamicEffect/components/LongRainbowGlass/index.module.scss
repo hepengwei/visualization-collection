@@ -1,0 +1,33 @@
+.container {
+  width: 100%;
+  height: 530px;
+  display: flex;
+  justify-content: center;
+  padding-top: 100px;
+  position: relative;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    .box {
+      width: 280px;
+      height: 396px;
+      min-height: 396px;
+      display: flex;
+      filter: url(#gradationBarFilter);
+      background-size: 40px auto;
+      background-repeat: repeat-x;
+      animation: moveBackground 10s linear infinite;
+    }
+  }
+
+  @keyframes moveBackground {
+    0% {
+      background-position: 0% 0;
+    }
+    100% {
+      background-position: 100% 0;
+    }
+  }
+}

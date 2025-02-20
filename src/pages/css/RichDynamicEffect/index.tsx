@@ -18,6 +18,7 @@ import TextOutlineAnimation2 from "./components/TextOutlineAnimation2";
 import MobiusBand1 from "./components/MobiusBand1";
 import MobiusBand2 from "./components/MobiusBand2";
 import TankShaking from "./components/TankShaking";
+import LongRainbowGlass from "./components/LongRainbowGlass";
 import styles from "./index.module.scss";
 
 const RichDynamicEffect = () => {
@@ -82,6 +83,9 @@ const RichDynamicEffect = () => {
       <div className={styles.multipleColumnsBox}>
         <div className={styles.box}>
           <TankShaking />
+        </div>
+        <div className={styles.box}>
+          <LongRainbowGlass />
         </div>
       </div>
     </div>

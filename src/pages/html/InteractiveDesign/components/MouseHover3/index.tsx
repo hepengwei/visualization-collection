@@ -1,11 +1,11 @@
 import React from "react";
 import Card from "./Card";
-import car1 from "images/html/car1.png";
-import car2 from "images/html/car2.png";
-import car3 from "images/html/car3.png";
+import card1 from "images/card1.png";
+import card2 from "images/card2.png";
+import card3 from "images/card3.png";
 import styles from "./index.module.scss";
 
-const cardList = [car1, car2, car3];
+const cardList = [card1, card2, card3];
 
 const MouseHover3 = () => {
   return (

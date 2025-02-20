@@ -1,0 +1,22 @@
+<svg version="1.1" width="40" height="396" xmlns="http://www.w3.org/2000/svg" color-interpolation-filters="sRGB">
+    <g>
+        <rect width='40' height='396' fill='black' />
+        <rect width='40' height='396' fill='url(#red)' style='mix-blend-mode:screen' />
+        <rect width='40' height='396' fill='url(#green)' style='mix-blend-mode:screen' />
+        <rect width='40' height='396' fill='url(#yellow)' style='mix-blend-mode:screen' />
+    </g>
+    <defs>
+        <radialGradient id='yellow' cx='0' cy='0' r='1' >
+            <stop stop-color='yellow' />
+            <stop stop-color='yellow' offset='1' stop-opacity='0' />
+        </radialGradient>
+        <radialGradient id='green' cx='1' cy='0' r='1' >
+            <stop stop-color='green' />
+            <stop stop-color='green' offset='1' stop-opacity='0' />
+        </radialGradient>
+        <radialGradient id='red' cx='0' cy='1' r='1' >
+            <stop stop-color='red' />
+            <stop stop-color='red' offset='1' stop-opacity='0' />
+        </radialGradient>
+    </defs>
+</svg>

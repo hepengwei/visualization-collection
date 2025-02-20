@@ -268,6 +268,8 @@ const en_US = {
     "Mobius loop circle dots dynamic effect",
   "page.cssDynamicEffect.richDynamicEffect.tankShaking":
     "Tank shaking dynamic effect",
+  "page.cssDynamicEffect.richDynamicEffect.longRainbowGlass":
+    "Long rainbow glass effect",
 
   // Css动效-生成正多边形页
   "page.cssDynamicEffect.generateRegularPolygon.numberOfSides":
