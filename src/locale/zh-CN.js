@@ -231,6 +231,7 @@ const zh_CN = {
   "page.cssDynamicEffect.richDynamicEffect.mobiusRingsCircleDots":
     "莫比乌斯环循环圆点动效",
   "page.cssDynamicEffect.richDynamicEffect.tankShaking": "水罐摇晃动效",
+  "page.cssDynamicEffect.richDynamicEffect.longRainbowGlass": "长虹玻璃动效",
 
   // Css动效-生成正多边形页
   "page.cssDynamicEffect.generateRegularPolygon.numberOfSides": "边数",
