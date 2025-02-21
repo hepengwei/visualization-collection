@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  height: 530px;
+  height: 500px;
   display: flex;
   justify-content: center;
   padding-top: 200px;
@@ -58,7 +58,7 @@
     }
     .bottleBottom {
       position: absolute;
-      top: calc(100% - 136px);
+      top: calc(100% - 106px);
       left: 50%;
       width: $bottleWidth;
       height: 30px;

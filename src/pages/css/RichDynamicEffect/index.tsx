@@ -17,8 +17,9 @@ import TextOutlineAnimation1 from "./components/TextOutlineAnimation1";
 import TextOutlineAnimation2 from "./components/TextOutlineAnimation2";
 import MobiusBand1 from "./components/MobiusBand1";
 import MobiusBand2 from "./components/MobiusBand2";
-import TankShaking from "./components/TankShaking";
 import LongRainbowGlass from "./components/LongRainbowGlass";
+import RadarScan from "./components/RadarScan";
+import TankShaking from "./components/TankShaking";
 import styles from "./index.module.scss";
 
 const RichDynamicEffect = () => {
@@ -82,10 +83,15 @@ const RichDynamicEffect = () => {
       </div>
       <div className={styles.multipleColumnsBox}>
         <div className={styles.box}>
-          <TankShaking />
+          <LongRainbowGlass />
         </div>
         <div className={styles.box}>
-          <LongRainbowGlass />
+          <RadarScan />
+        </div>
+      </div>
+      <div className={styles.multipleColumnsBox}>
+        <div className={styles.box}>
+          <TankShaking />
         </div>
       </div>
     </div>
