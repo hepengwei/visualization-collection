@@ -230,8 +230,9 @@ const zh_CN = {
     "莫比乌斯环循环条动效",
   "page.cssDynamicEffect.richDynamicEffect.mobiusRingsCircleDots":
     "莫比乌斯环循环圆点动效",
-  "page.cssDynamicEffect.richDynamicEffect.tankShaking": "水罐摇晃动效",
   "page.cssDynamicEffect.richDynamicEffect.longRainbowGlass": "长虹玻璃动效",
+  "page.cssDynamicEffect.richDynamicEffect.radarScan": "雷达扫描动效",
+  "page.cssDynamicEffect.richDynamicEffect.tankShaking": "水罐摇晃动效",
 
   // Css动效-生成正多边形页
   "page.cssDynamicEffect.generateRegularPolygon.numberOfSides": "边数",
