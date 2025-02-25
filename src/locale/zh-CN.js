@@ -224,6 +224,7 @@ const zh_CN = {
   "page.cssDynamicEffect.richDynamicEffect.luminousText": "发光文字动效",
   "page.cssDynamicEffect.richDynamicEffect.searchlightText": "探照灯文字动效",
   "page.cssDynamicEffect.richDynamicEffect.wavyText": "波浪文字动效",
+  "page.cssDynamicEffect.richDynamicEffect.rippleText": "涟漪文字动效",
   "page.cssDynamicEffect.richDynamicEffect.textLineDisplay": "文字线条显示动效",
   "page.cssDynamicEffect.richDynamicEffect.textLineLoop": "文字线条循环动效",
   "page.cssDynamicEffect.richDynamicEffect.mobiusLoopBar":
