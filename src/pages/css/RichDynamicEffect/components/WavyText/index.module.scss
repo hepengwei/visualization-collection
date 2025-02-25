@@ -1,5 +1,5 @@
 .container {
-  height: 500px;
+  height: 400px;
   display: flex;
   flex: 1;
   position: relative;
@@ -8,8 +8,9 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    font-size: 22vw;
+    font-size: 160px;
     font-weight: 600;
+    font-family: "SourceHanSansCN-Bold";
     transform: translate(-50%, -50%);
   }
 

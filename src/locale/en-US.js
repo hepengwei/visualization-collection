@@ -258,6 +258,8 @@ const en_US = {
     "Searchlight text dynamic effect",
   "page.cssDynamicEffect.richDynamicEffect.wavyText":
     "Wavy text dynamic effect",
+  "page.cssDynamicEffect.richDynamicEffect.rippleText":
+    "Ripple text dynamic effect",
   "page.cssDynamicEffect.richDynamicEffect.textLineDisplay":
     "Text line display dynamic effect",
   "page.cssDynamicEffect.richDynamicEffect.textLineLoop":

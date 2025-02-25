@@ -2,7 +2,7 @@ import React from "react";
 import ModuleTitle from "@/components/ModuleTitle";
 import styles from "./index.module.scss";
 
-const WaveFont = () => {
+const WavyText = () => {
   return (
     <div className={styles.container}>
       <ModuleTitle intlTitle="page.cssDynamicEffect.richDynamicEffect.wavyText" />
@@ -12,4 +12,4 @@ const WaveFont = () => {
   );
 };
 
-export default WaveFont;
+export default WavyText;

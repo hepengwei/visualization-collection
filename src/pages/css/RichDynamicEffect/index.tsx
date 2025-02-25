@@ -12,7 +12,8 @@ import TextAnimation from "./components/TextAnimation";
 import TextSearchlight from "./components/TextSearchlight";
 import DisplayTextInSmoke from "./components/DisplayTextInSmoke";
 import PlayVideoInText from "./components/PlayVideoInText";
-import WaveFont from "./components/WaveFont";
+import WavyText from "./components/WavyText";
+import RippleText from "./components/RippleText";
 import TextOutlineAnimation1 from "./components/TextOutlineAnimation1";
 import TextOutlineAnimation2 from "./components/TextOutlineAnimation2";
 import MobiusBand1 from "./components/MobiusBand1";
@@ -62,8 +63,13 @@ const RichDynamicEffect = () => {
       <div className={styles.box}>
         <PlayVideoInText />
       </div>
-      <div className={styles.box}>
-        <WaveFont />
+      <div className={styles.multipleColumnsBox}>
+        <div className={styles.box}>
+          <WavyText />
+        </div>
+        <div className={styles.box}>
+          <RippleText />
+        </div>
       </div>
       <div className={styles.multipleColumnsBox}>
         <div className={styles.box}>
