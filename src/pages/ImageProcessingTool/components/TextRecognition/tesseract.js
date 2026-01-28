@@ -2004,6 +2004,10 @@ var Tesseract$1 = {
   * @type {Languages}
   */
 var languages$1 = {
+  CHI_SIM: 'chi_sim',
+  CHI_TRA: 'chi_tra',
+  ENG: 'eng',
+  ENM: 'enm',
   AFR: 'afr',
   AMH: 'amh',
   ARA: 'ara',
@@ -2018,16 +2022,12 @@ var languages$1 = {
   CAT: 'cat',
   CEB: 'ceb',
   CES: 'ces',
-  CHI_SIM: 'chi_sim',
-  CHI_TRA: 'chi_tra',
   CHR: 'chr',
   CYM: 'cym',
   DAN: 'dan',
   DEU: 'deu',
   DZO: 'dzo',
   ELL: 'ell',
-  ENG: 'eng',
-  ENM: 'enm',
   EPO: 'epo',
   EST: 'est',
   EUS: 'eus',
