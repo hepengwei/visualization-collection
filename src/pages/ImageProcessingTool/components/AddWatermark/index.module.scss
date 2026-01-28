@@ -61,7 +61,6 @@
   .operationBtns {
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
     .left {
       display: flex;
       align-items: center;
@@ -74,6 +73,8 @@
           display: flex;
           align-items: center;
           color: #333;
+          margin-top: 10px;
+
           .uploadBtn {
             min-width: 140px;
             height: 44px !important;
@@ -86,6 +87,7 @@
             font-size: 14px;
             font-family: SourceHanSansCN-Medium !important;
             margin-right: 10px;
+            margin-top: 0 !important;
             cursor: pointer;
             position: relative;
 
@@ -95,6 +97,7 @@
                 height: 16px;
               }
               input {
+                margin-top: 0 !important;
                 position: absolute;
                 width: 100%;
                 height: 100%;
@@ -121,17 +124,24 @@
       }
       :global {
         .ant-btn {
+          margin-top: 10px;
           background-color: $primaryShallowColor !important;
         }
-        .ant-input-number-wrapper {
-          height: 34px !important;
-          .ant-input-number {
-            margin-top: 0 !important;
+        .ant-space-compact {
+          margin-top: 10px;
+          height: 36px !important;
+          margin-right: 10px;
+          .ant-space-addon {
             height: 100% !important;
-            .ant-input-number-input-wrap {
+            color: #333333;
+            .ant-input-number {
               height: 100% !important;
-              input {
+              margin-top: 0 !important;
+              .ant-input-number-input-wrap {
                 height: 100% !important;
+                input {
+                  height: 100% !important;
+                }
               }
             }
           }

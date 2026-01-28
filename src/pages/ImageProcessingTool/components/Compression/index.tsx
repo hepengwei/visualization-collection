@@ -103,7 +103,6 @@ const Compression = (props: TabPageProps) => {
       <div className={styles.operationBtns}>
         <div className={styles.left}>
           <InputNumber
-            className={styles.operationBtn}
             style={{ width: locale === "zh-cn" ? "200px" : "240px" }}
             min={10}
             max={90}

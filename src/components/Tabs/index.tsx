@@ -4,6 +4,7 @@ import styles from "./index.module.scss";
 interface TabItem {
   id: string | number;
   label: ReactNode;
+  isNew?: boolean;
 }
 
 interface TabsProps {
@@ -21,14 +22,13 @@ const Tabs = (props: TabsProps) => {
         return (
           <div
             key={tab.id}
-            className={`tabs-tabItem ${
-              selectedTabId === tab.id ? "active" : ""
-            }`}
+            className={`tabs-tabItem${selectedTabId === tab.id ? " active" : ""}`}
             onClick={() => {
               onChange && onChange(tab.id);
             }}
           >
-            {tab.label}
+            {tab.isNew && <div className="isNew"></div>}
+            <div className="tabText">{tab.label}</div>
           </div>
         );
       })}

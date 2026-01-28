@@ -306,7 +306,6 @@ const AddWatermark = (props: TabPageProps) => {
               {watermarkInfo && (
                 <div className={styles.bottom}>
                   <InputNumber
-                    className={styles.operationBtn}
                     style={{ width: "160px" }}
                     min={0}
                     max={imgInfo.width - watermarkMinWidthHeight}
@@ -324,7 +323,6 @@ const AddWatermark = (props: TabPageProps) => {
                     }}
                   />
                   <InputNumber
-                    className={styles.operationBtn}
                     style={{ width: "160px" }}
                     min={0}
                     max={imgInfo.height - watermarkMinWidthHeight}
