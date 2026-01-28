@@ -94,7 +94,6 @@ const ChangeDiaphaneity = (props: TabPageProps) => {
         <div className={styles.operationBtns}>
           <div className={styles.left}>
             <Checkbox
-              className={styles.operationBtn}
               checked={fixedDiaphaneity}
               onChange={onFixedDiaphaneityChange}
             >
@@ -126,16 +125,14 @@ const ChangeDiaphaneity = (props: TabPageProps) => {
                 </span>
               </div>
             )}
-            <div className={styles.operationBtn}>
-              <InputNumber
-                min={fixedDiaphaneity ? 0 : -1}
-                max={1}
-                step={0.1}
-                precision={1}
-                value={diaphaneity}
-                onChange={onChange}
-              />
-            </div>
+            <InputNumber
+              min={fixedDiaphaneity ? 0 : -1}
+              max={1}
+              step={0.1}
+              precision={1}
+              value={diaphaneity}
+              onChange={onChange}
+            />
             <Button
               type="primary"
               className={styles.operationBtn}

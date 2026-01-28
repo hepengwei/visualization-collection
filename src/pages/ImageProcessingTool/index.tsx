@@ -21,6 +21,7 @@ import ChangeDiaphaneity from "./components/ChangeDiaphaneity";
 import AddWatermark from "./components/AddWatermark";
 import CoverWithMosaic from "./components/CoverWithMosaic";
 import Compression from "./components/Compression";
+import TextRecognition from "./components/TextRecognition";
 import styles from "./index.module.scss";
 
 export interface TabPageProps {
@@ -43,6 +44,7 @@ enum TabId {
   "addWatermark",
   "coverWithMosaic",
   "photoCompression",
+  "textRecognition",
 }
 
 const primaryColor = "#0E5E6F";
@@ -198,6 +200,14 @@ const GameImage = () => {
         id: "menu.imageProcessingTool.imageCompression",
       }),
       element: <Compression {...tabPageProps} />,
+    },
+    {
+      id: TabId.textRecognition,
+      label: intl.formatMessage({
+        id: "menu.imageProcessingTool.textRecognition",
+      }),
+      isNew: true,
+      element: <TextRecognition {...tabPageProps} />,
     },
   ];
   const [selectedTabId, setSelectedTabId] = useState<TabId>(tabsList[0].id);

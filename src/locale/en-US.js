@@ -149,6 +149,7 @@ const en_US = {
   "menu.imageProcessingTool.addWatermark": "Add Watermark",
   "menu.imageProcessingTool.coverWithMosaics": "Cover With Mosaics",
   "menu.imageProcessingTool.imageCompression": "Image Compression",
+  "menu.imageProcessingTool.textRecognition": "Text Recognition",
   "menu.pdfProcessingTool": "PDF Processing Tool",
   "menu.pdfProcessingTool.overview": "Overview",
   "menu.pdfProcessingTool.edit": "Edit",
@@ -389,6 +390,8 @@ const en_US = {
     "Clipped and converted to PNG format",
   "page.imageProcessingTool.WhetherRetainOriginalDimension":
     "Whether to retain the original dimension",
+  "page.imageProcessingTool.possibleLanguages": "Possible languages",
+  "page.imageProcessingTool.pleaseSelectPossibleLanguages": "Please select the possible languages first",
 
   // 视频处理工具页
   // "page.videoProcessingTool.tip":

@@ -119,7 +119,6 @@ const ChangeSize = (props: TabPageProps) => {
       <div className={styles.operationBtns}>
         <div className={styles.left}>
           <Checkbox
-            className={styles.operationBtn}
             checked={keepOriginalProportion}
             onChange={onKeepProportionChange}
           >
@@ -128,7 +127,6 @@ const ChangeSize = (props: TabPageProps) => {
             })}
           </Checkbox>
           <InputNumber
-            className={styles.operationBtn}
             style={{ width: "160px" }}
             min={1}
             max={maxWidthHeight}
@@ -140,7 +138,6 @@ const ChangeSize = (props: TabPageProps) => {
             onChange={onWidthChange}
           />
           <InputNumber
-            className={styles.operationBtn}
             style={{ width: "160px" }}
             min={1}
             max={maxWidthHeight}

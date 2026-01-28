@@ -137,6 +137,7 @@ const zh_CN = {
   "menu.imageProcessingTool.addWatermark": "添加水印",
   "menu.imageProcessingTool.coverWithMosaics": "打马赛克",
   "menu.imageProcessingTool.imageCompression": "图片压缩",
+  "menu.imageProcessingTool.textRecognition": "文字识别",
   "menu.pdfProcessingTool": "PDF处理工具",
   "menu.pdfProcessingTool.overview": "查看",
   "menu.pdfProcessingTool.edit": "编辑",
@@ -333,6 +334,8 @@ const zh_CN = {
   "page.imageProcessingTool.filletRadius": "圆角半径",
   "page.imageProcessingTool.clippedAndConvertedToPng": "裁剪后转成PNG格式",
   "page.imageProcessingTool.WhetherRetainOriginalDimension": "是否保留原尺寸",
+  "page.imageProcessingTool.possibleLanguages": "可能的语言",
+  "page.imageProcessingTool.pleaseSelectPossibleLanguages": "请先选择可能的语言",
 
   // 视频处理工具页
   // "page.videoProcessingTool.tip":

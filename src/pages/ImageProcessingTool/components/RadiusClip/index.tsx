@@ -108,7 +108,6 @@ const RadiusClip = (props: TabPageProps) => {
           <div className={styles.left}>
             {imgInfo.fileType !== "PNG" && (
               <Checkbox
-                className={styles.operationBtn}
                 checked={jpgToPNG}
                 onChange={(e) => {
                   setJpgToPNG(e.target.checked);
@@ -120,7 +119,6 @@ const RadiusClip = (props: TabPageProps) => {
               </Checkbox>
             )}
             <InputNumber
-              className={styles.operationBtn}
               style={{ width: "180px" }}
               min={0}
               max={Math.min(

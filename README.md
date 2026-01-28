@@ -44,9 +44,9 @@ npm run dev
 ```
 
 ## 最新运行环境
-node：v20.12.2
+node：v22.16.0
 <br/>
-npm：v10.5.0
+npm：v10.9.0
 <br/>
 yarn：v1.22.22
 <br/>

@@ -475,7 +475,6 @@ const RectClip = (props: RectSelectProps) => {
           <div className={styles.left}>
             {type === "clip" && (
               <Checkbox
-                className={styles.operationBtn}
                 checked={retainOriginalSize}
                 onChange={(e) => {
                   setRetainOriginalSize(e.target.checked);
@@ -487,7 +486,6 @@ const RectClip = (props: RectSelectProps) => {
               </Checkbox>
             )}
             <InputNumber
-              className={styles.operationBtn}
               style={{ width: locale === "zh-cn" ? "160px" : "200px" }}
               min={clipBoxMinWidthHeight}
               max={imgInfo.width}
@@ -505,7 +503,6 @@ const RectClip = (props: RectSelectProps) => {
               }}
             />
             <InputNumber
-              className={styles.operationBtn}
               style={{ width: locale === "zh-cn" ? "160px" : "200px" }}
               min={clipBoxMinWidthHeight}
               max={imgInfo.height}
@@ -523,7 +520,6 @@ const RectClip = (props: RectSelectProps) => {
               }}
             />
             <InputNumber
-              className={styles.operationBtn}
               style={{ width: locale === "zh-cn" ? "160px" : "190px" }}
               min={0}
               max={imgInfo.width - clipBoxMinWidthHeight}
@@ -541,7 +537,6 @@ const RectClip = (props: RectSelectProps) => {
               }}
             />
             <InputNumber
-              className={styles.operationBtn}
               style={{ width: locale === "zh-cn" ? "160px" : "190px" }}
               min={0}
               max={imgInfo.height - clipBoxMinWidthHeight}
@@ -560,7 +555,6 @@ const RectClip = (props: RectSelectProps) => {
             />
             {type === "mosaic" && (
               <InputNumber
-                className={styles.operationBtn}
                 style={{ width: locale === "zh-cn" ? "200px" : "220px" }}
                 min={2}
                 max={40}

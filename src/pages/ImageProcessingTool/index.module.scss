@@ -135,7 +135,6 @@
     .operationBtns {
       display: flex;
       justify-content: space-between;
-      margin-top: 10px;
       .left {
         display: flex;
         align-items: center;
@@ -151,17 +150,36 @@
           margin-top: 10px;
         }
         :global {
-          .ant-checkbox {
-            top: 0;
+          .ant-checkbox-wrapper {
+            margin-top: 10px;
           }
           .ant-btn {
+            margin-top: 10px;
             background-color: $primaryShallowColor !important;
           }
-          .ant-input-number-wrapper {
+          .ant-input-number {
             height: 36px !important;
-            .ant-input-number {
-              margin-top: 0 !important;
+            margin-top: 10px;
+            margin-right: 10px;
+            .ant-input-number-input-wrap {
               height: 100% !important;
+              input {
+                height: 100% !important;
+              }
+            }
+          }
+          .ant-space-compact {
+            margin-top: 10px;
+            height: 36px !important;
+            margin-right: 10px;
+            .ant-space-addon {
+              height: 100% !important;
+              color: #333333;
+            }
+            .ant-input-number {
+              height: 100% !important;
+              margin-top: 0 !important;
+              margin-right: 0 !important;
               .ant-input-number-input-wrap {
                 height: 100% !important;
                 input {
@@ -174,13 +192,11 @@
             width: 400px;
             margin-bottom: 12px;
           }
-          .ant-input-number {
-            height: 36px !important;
-            .ant-input-number-input-wrap {
-              height: 100% !important;
-              input {
-                height: 100% !important;
-              }
+          .ant-select {
+            margin-top: 10px;
+            margin-right: 10px;
+            .ant-select-selector {
+              width: 100%;
             }
           }
         }
