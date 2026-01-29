@@ -2,8 +2,9 @@
  * 图片处理工具-文字识别Tab页
  */
 import React, { useRef, useEffect, useMemo, useState } from "react";
-import { Button, Select, Input, message } from "antd";
+import { Button, Select, Input, Spin, message } from "antd";
 import { useIntl } from "react-intl";
+import { useGlobalContext } from "hooks/useGlobalContext";
 import { useTesseract, languages } from './tesseract';
 import FileBox from "../FileBox";
 import { TabPageProps } from "../../index";
@@ -15,7 +16,7 @@ const TextRecognition = (props: TabPageProps) => {
   const { imgInfo, imgDragOver, onDragOver, onDragLeave, onDrop, onClear } =
     props;
   const intl = useIntl();
-
+  const { locale } = useGlobalContext();
   const doing = useRef<boolean>(false);
   const { recognize, isRecognizing } = useTesseract();
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([])
@@ -39,7 +40,12 @@ const TextRecognition = (props: TabPageProps) => {
       tessedit_ocr_engine_mode: 1,  // Use neural net LSTM engine only
       tessedit_pageseg_mode: 1,  // Assume a single uniform block of text
     });
-    setText(ret.text);
+    if (ret?.text) {
+      setText(ret.text);
+    } else {
+      message.warning(intl.formatMessage({ id: "page.imageProcessingTool.noTextWasRecognized" }));
+      setText('')
+    }
     doing.current = false;
   };
 
@@ -55,11 +61,19 @@ const TextRecognition = (props: TabPageProps) => {
   const languagesOptions = useMemo(
     () =>
       Object.keys(languages).map((key) => ({
-        label: key,
+        label: intl.formatMessage({ id: `languages.${key}` }),
         value: (languages as Record<string, string>)[key],
       })),
-    []
+    [locale]
   );
+
+  const stylesFn = () => {
+    return {
+      indicator: {
+        color: '#ffffff',
+      },
+    };
+  };
 
   return (
     <div>
@@ -76,14 +90,16 @@ const TextRecognition = (props: TabPageProps) => {
           <Select
             mode="multiple"
             allowClear
+            showSearch={{ optionFilterProp: 'label' }}
             maxTagTextLength={8}
             maxTagCount={2}
-            style={{ width: '300px' }}
+            style={{ width: '400px' }}
             value={selectedLanguages}
             onChange={onSelectChange}
             options={languagesOptions}
           />
-          <Button type="primary" className={styles.operationBtn} onClick={onOk}>
+          <Button type="primary" className={styles.operationBtn} disabled={isRecognizing} onClick={onOk}>
+            {isRecognizing && <Spin style={{ marginRight: '4px' }} styles={stylesFn} size="small" />}
             {intl.formatMessage({
               id: "common.confirm",
             })}
