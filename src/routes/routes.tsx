@@ -40,6 +40,7 @@ const RubiksCube = () => import("pages/threejs/RubiksCube");
 const ThrowDice = () => import("pages/threejs/ThrowDice");
 const MapDisplay = () => import("pages/threejs/MapDisplay");
 const EarthDisplay = () => import("pages/threejs/EarthDisplay");
+const HouseDisplay = () => import("pages/threejs/HouseDisplay");
 const HumanPostureDetection = () =>
   import("pages/AIApplication/HumanPostureDetection");
 const NotBlockPeopleBarrage = () =>
@@ -214,6 +215,10 @@ const contentRoutes: Record<string, any>[] = [
       {
         path: "/threejs/earthDisplay",
         element: EarthDisplay,
+      },
+      {
+        path: "/threejs/houseDisplay",
+        element: HouseDisplay,
       },
     ],
   },

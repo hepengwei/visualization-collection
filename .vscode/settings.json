@@ -1,5 +1,5 @@
 {
-  "workbench.colorTheme": "Default Dark+",
+  "workbench.colorTheme": "Dark+",
   "[scss]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },

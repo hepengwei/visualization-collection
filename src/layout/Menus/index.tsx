@@ -260,6 +260,10 @@ const Menus: React.FC = () => {
           intl.formatMessage({ id: "menu.threeJs3D.earthDisplay" }),
           "earthDisplay"
         ),
+        getItem(
+          intl.formatMessage({ id: "menu.threeJs3D.houseDisplay" }),
+          "houseDisplay"
+        ),
       ]
     ),
     getItem(
