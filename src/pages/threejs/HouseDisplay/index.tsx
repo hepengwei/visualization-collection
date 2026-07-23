@@ -53,7 +53,7 @@ const HouseDisplay = () => {
       scene.background = new Color(0x87CEEB);
 
       // 设置相机初始位置为俯视角度(从天花板上方向下看)
-      camera.position.set(0, 34, 0); // 在房屋正上方34米高处
+      camera.position.set(0, 30, 0); // 在房屋正上方30米高处
       camera.lookAt(0, 0, 0); // 看向房屋中心
 
       // ===== 轨道控制器设置(用于俯视观察) =====
@@ -132,14 +132,14 @@ const HouseDisplay = () => {
 
       // 主太阳光 - 从左上方（南面）斜照下来，模拟自然阳光
       const sunLight = new DirectionalLight(0xFFFAE3, 0.7); // 暖色调阳光，降低强度
-      sunLight.position.set(-30, 25, 15); // 从左上方照射（左边为南面）
+      sunLight.position.set(-24, 25, 12); // 从左上方照射（左边为南面）（0.8倍缩放）
       sunLight.castShadow = true;
       sunLight.shadow.mapSize.width = 2048;
       sunLight.shadow.mapSize.height = 2048;
-      sunLight.shadow.camera.left = -30;
-      sunLight.shadow.camera.right = 30;
-      sunLight.shadow.camera.top = 30;
-      sunLight.shadow.camera.bottom = -30;
+      sunLight.shadow.camera.left = -24;
+      sunLight.shadow.camera.right = 24;
+      sunLight.shadow.camera.top = 24;
+      sunLight.shadow.camera.bottom = -24;
       sunLight.shadow.camera.near = 0.5;
       sunLight.shadow.camera.far = 100;
       sunLight.shadow.bias = -0.0001;
@@ -147,7 +147,7 @@ const HouseDisplay = () => {
 
       // 辅助光 - 从右侧补光，模拟天空散射光
       const skyLight = new DirectionalLight(0xB0D4F1, 0.3); // 天空蓝色调，降低强度
-      skyLight.position.set(20, 15, -10);
+      skyLight.position.set(16, 15, -8); // （0.8倍缩放）
       scene.add(skyLight);
 
       // ===== 创建房屋结构 =====
@@ -201,15 +201,15 @@ const HouseDisplay = () => {
     scene.add(wall);
 
     // 在墙体两侧添加序号标签
-    if (width > depth) {
-      // 横墙，标签在前后两侧
-      createWallLabel(number, x, y + 0.5, z + depth / 2 + 0.4, scene);
-      createWallLabel(number, x, y + 0.5, z - depth / 2 - 0.4, scene);
-    } else {
-      // 竖墙，标签在左右两侧
-      createWallLabel(number, x + width / 2 + 0.4, y + 0.5, z, scene);
-      createWallLabel(number, x - width / 2 - 0.4, y + 0.5, z, scene);
-    }
+    // if (width > depth) {
+    //   // 横墙，标签在前后两侧
+    //   createWallLabel(number, x, y + 0.5, z + depth / 2 + 0.4, scene);
+    //   createWallLabel(number, x, y + 0.5, z - depth / 2 - 0.4, scene);
+    // } else {
+    //   // 竖墙，标签在左右两侧
+    //   createWallLabel(number, x + width / 2 + 0.4, y + 0.5, z, scene);
+    //   createWallLabel(number, x - width / 2 - 0.4, y + 0.5, z, scene);
+    // }
   };
   const createWall = (width: number, height: number, depth: number, x: number, y: number, z: number, color: number = 0xF4F3EF) => {
     const geometry = new BoxGeometry(width, height, depth);
@@ -275,8 +275,8 @@ const HouseDisplay = () => {
     // 地板参数
     const tileSize = 1.5; // 1.5m的地砖
     const gapSize = 0.0025; // 2.5mm的缝隙
-    const floorWidth = 52; // 地板总宽度
-    const floorDepth = 40; // 地板总深度
+    const floorWidth = 41.6; // 地板总宽度（0.8倍缩放）
+    const floorDepth = 32; // 地板总深度（0.8倍缩放）
 
     // 计算需要多少块砖
     const tilesX = Math.ceil(floorWidth / (tileSize + gapSize));
@@ -346,29 +346,29 @@ const HouseDisplay = () => {
     gapFloor.receiveShadow = true;
     scene.add(gapFloor);
 
-    // ===== 外墙（所有尺寸和位置乘以4，墙厚不变） =====
+    // ===== 外墙（所有尺寸和位置乘以0.8，墙厚不变） =====
     // #1 - 顶部外墙左段（14号墙左侧）
-    createWallWithLabel(1, 18, wallHeight, w, -13, wallHeight / 2, -20, wallColor, scene);
+    createWallWithLabel(1, 14.4, wallHeight, w, -10.4, wallHeight / 2, -16, wallColor, scene);
 
     // #40 - 顶部外墙中左段（14号与15号之间，改为四周墙体+中间玻璃窗）
     // 上部墙体
-    createWallWithLabel(40, 6, 0.5, w, -1, 3.75, -20, wallColor, scene);
+    createWallWithLabel(40, 4.8, 0.5, w, -0.8, 3.75, -16, wallColor, scene);
 
     // 下部墙体（底部往上移1米，高度增加到1.5米）
-    const wall40Lower = createWall(6, 1.5, w, -1, 0.75, -20, wallColor);
+    const wall40Lower = createWall(4.8, 1.5, w, -0.8, 0.75, -16, wallColor);
     scene.add(wall40Lower);
 
     // 左部墙体（宽度增加到1.5米）
-    const wall40Left = createWall(1.5, wallHeight, w, -3.75, wallHeight / 2, -20, wallColor);
+    const wall40Left = createWall(1.2, wallHeight, w, -3, wallHeight / 2, -16, wallColor);
     scene.add(wall40Left);
 
     // 右部墙体（宽度增加到1.5米）
-    const wall40Right = createWall(1.5, wallHeight, w, 1.75, wallHeight / 2, -20, wallColor);
+    const wall40Right = createWall(1.2, wallHeight, w, 1.4, wallHeight / 2, -16, wallColor);
     scene.add(wall40Right);
 
     // 40号墙的玻璃窗（纯玻璃，宽度减少到5米）
     const window40 = new Mesh(
-      new BoxGeometry(5, 2.5, 0.1),
+      new BoxGeometry(4, 2.5, 0.1),
       new MeshStandardMaterial({
         color: 0x87CEEB,
         transparent: true,
@@ -377,45 +377,45 @@ const HouseDisplay = () => {
         metalness: 0.1
       })
     );
-    window40.position.set(-1, 2.5, -20);
+    window40.position.set(-0.8, 2.5, -16);
     scene.add(window40);
 
     // 40号窗框边框（白色）
     const frame40_1 = new Mesh(new BoxGeometry(0.08, 2.6, 0.12), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame40_1.position.set(-3.5, 2.5, -20);
+    frame40_1.position.set(-2.8, 2.5, -16);
     scene.add(frame40_1);
 
     const frame40_2 = new Mesh(new BoxGeometry(0.08, 2.6, 0.12), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame40_2.position.set(1.5, 2.5, -20);
+    frame40_2.position.set(1.2, 2.5, -16);
     scene.add(frame40_2);
 
-    const frame40_3 = new Mesh(new BoxGeometry(5, 0.08, 0.12), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame40_3.position.set(-1, 3.8, -20);
+    const frame40_3 = new Mesh(new BoxGeometry(4, 0.08, 0.12), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame40_3.position.set(-0.8, 3.8, -16);
     scene.add(frame40_3);
 
-    const frame40_4 = new Mesh(new BoxGeometry(5, 0.08, 0.12), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame40_4.position.set(-1, 1.2, -20);
+    const frame40_4 = new Mesh(new BoxGeometry(4, 0.08, 0.12), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame40_4.position.set(-0.8, 1.2, -16);
     scene.add(frame40_4);
 
     // #41 - 顶部外墙中右段（15号与16号之间，改为四周墙体+中间玻璃窗）
     // 上部墙体
-    createWallWithLabel(41, 5.5, 0.5, w, 4.75, 3.75, -20, wallColor, scene);
+    createWallWithLabel(41, 4.4, 0.5, w, 3.8, 3.75, -16, wallColor, scene);
 
     // 下部墙体（底部往上移1米，高度增加到1.5米）
-    const wall41Lower = createWall(5.5, 1.5, w, 4.75, 0.75, -20, wallColor);
+    const wall41Lower = createWall(4.4, 1.5, w, 3.8, 0.75, -16, wallColor);
     scene.add(wall41Lower);
 
     // 左部墙体（宽度增加到1.5米）
-    const wall41Left = createWall(1.5, wallHeight, w, 2.25, wallHeight / 2, -20, wallColor);
+    const wall41Left = createWall(1.2, wallHeight, w, 1.8, wallHeight / 2, -16, wallColor);
     scene.add(wall41Left);
 
     // 右部墙体（宽度增加到1.5米）
-    const wall41Right = createWall(1.5, wallHeight, w, 7.25, wallHeight / 2, -20, wallColor);
+    const wall41Right = createWall(1.2, wallHeight, w, 5.8, wallHeight / 2, -16, wallColor);
     scene.add(wall41Right);
 
     // 41号墙的玻璃窗（纯玻璃，宽度减少到4.5米）
     const window41 = new Mesh(
-      new BoxGeometry(4.5, 2.5, 0.1),
+      new BoxGeometry(3.6, 2.5, 0.1),
       new MeshStandardMaterial({
         color: 0x87CEEB,
         transparent: true,
@@ -424,48 +424,48 @@ const HouseDisplay = () => {
         metalness: 0.1
       })
     );
-    window41.position.set(4.75, 2.5, -20);
+    window41.position.set(3.8, 2.5, -16);
     scene.add(window41);
 
     // 41号窗框边框（白色）
     const frame41_1 = new Mesh(new BoxGeometry(0.08, 2.6, 0.12), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame41_1.position.set(2.5, 2.5, -20);
+    frame41_1.position.set(2, 2.5, -16);
     scene.add(frame41_1);
 
     const frame41_2 = new Mesh(new BoxGeometry(0.08, 2.6, 0.12), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame41_2.position.set(7, 2.5, -20);
+    frame41_2.position.set(5.6, 2.5, -16);
     scene.add(frame41_2);
 
-    const frame41_3 = new Mesh(new BoxGeometry(4.5, 0.08, 0.12), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame41_3.position.set(4.75, 3.8, -20);
+    const frame41_3 = new Mesh(new BoxGeometry(3.6, 0.08, 0.12), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame41_3.position.set(3.8, 3.8, -16);
     scene.add(frame41_3);
 
-    const frame41_4 = new Mesh(new BoxGeometry(4.5, 0.08, 0.12), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame41_4.position.set(4.75, 1.2, -20);
+    const frame41_4 = new Mesh(new BoxGeometry(3.6, 0.08, 0.12), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame41_4.position.set(3.8, 1.2, -16);
     scene.add(frame41_4);
 
     // #42 - 顶部外墙右段（16号墙右侧）
-    createWallWithLabel(42, 14.5, wallHeight, w, 14.75, wallHeight / 2, -20, wallColor, scene);
+    createWallWithLabel(42, 11.6, wallHeight, w, 11.8, wallHeight / 2, -16, wallColor, scene);
 
     // #2 - 右侧外墙上段（与33号墙上方，改为四周墙体+中间落地窗）
     // 上部墙体
-    createWallWithLabel(2, w, 0.5, 5, 22, 3.75, -16.5, wallColor, scene);
+    createWallWithLabel(2, w, 0.5, 4, 17.6, 3.75, -13.2, wallColor, scene);
 
     // 下部墙体（底部往上移1米，高度增加到1.5米）
-    const wall2Lower = createWall(w, 1.5, 5, 22, 0.75, -16.5, wallColor);
+    const wall2Lower = createWall(w, 1.5, 4, 17.6, 0.75, -13.2, wallColor);
     scene.add(wall2Lower);
 
     // 左部墙体
-    const wall2Left = createWall(w, wallHeight, 1, 22, wallHeight / 2, -19.5, wallColor);
+    const wall2Left = createWall(w, wallHeight, 0.8, 17.6, wallHeight / 2, -15.6, wallColor);
     scene.add(wall2Left);
 
     // 右部墙体
-    const wall2Right = createWall(w, wallHeight, 1, 22, wallHeight / 2, -13.5, wallColor);
+    const wall2Right = createWall(w, wallHeight, 0.8, 17.6, wallHeight / 2, -10.8, wallColor);
     scene.add(wall2Right);
 
     // 2号墙的大落地窗（纯玻璃，底部上移1米，高度减少到2.5米）
     const window2 = new Mesh(
-      new BoxGeometry(0.1, 2.5, 5),
+      new BoxGeometry(0.1, 2.5, 4),
       new MeshStandardMaterial({
         color: 0x87CEEB,
         transparent: true,
@@ -474,48 +474,48 @@ const HouseDisplay = () => {
         metalness: 0.1
       })
     );
-    window2.position.set(22, 2.5, -16.5);
+    window2.position.set(17.6, 2.5, -13.2);
     scene.add(window2);
 
     // 2号窗框边框（白色）
     const frame2_1 = new Mesh(new BoxGeometry(0.12, 2.6, 0.08), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame2_1.position.set(22, 2.5, -19);
+    frame2_1.position.set(17.6, 2.5, -15.2);
     scene.add(frame2_1);
 
     const frame2_2 = new Mesh(new BoxGeometry(0.12, 2.6, 0.08), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame2_2.position.set(22, 2.5, -14);
+    frame2_2.position.set(17.6, 2.5, -11.2);
     scene.add(frame2_2);
 
-    const frame2_3 = new Mesh(new BoxGeometry(0.12, 0.08, 5), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame2_3.position.set(22, 3.8, -16.5);
+    const frame2_3 = new Mesh(new BoxGeometry(0.12, 0.08, 4), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame2_3.position.set(17.6, 3.8, -13.2);
     scene.add(frame2_3);
 
-    const frame2_4 = new Mesh(new BoxGeometry(0.12, 0.08, 5), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame2_4.position.set(22, 1.2, -16.5);
+    const frame2_4 = new Mesh(new BoxGeometry(0.12, 0.08, 4), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame2_4.position.set(17.6, 1.2, -13.2);
     scene.add(frame2_4);
 
     // #3 - 右侧外墙中上段（33号与28号之间）
-    createWallWithLabel(3, w, wallHeight, 5, 22, wallHeight / 2, -10.5, wallColor, scene);
+    createWallWithLabel(3, w, wallHeight, 4, 17.6, wallHeight / 2, -8.4, wallColor, scene);
 
     // #4 - 右侧外墙中下段（28号与23号之间，改为四周墙体+中间落地窗）
     // 上部墙体
-    createWallWithLabel(4, w, 0.5, 7, 22, 3.75, -1.45, wallColor, scene);
+    createWallWithLabel(4, w, 0.5, 5.6, 17.6, 3.75, -1.16, wallColor, scene);
 
     // 下部墙体
-    const wall4Lower = createWall(w, 0.5, 7, 22, 0.25, -1.45, wallColor);
+    const wall4Lower = createWall(w, 0.5, 5.6, 17.6, 0.25, -1.16, wallColor);
     scene.add(wall4Lower);
 
     // 左部墙体（加宽到3米）
-    const wall4Left = createWall(w, wallHeight, 3, 22, wallHeight / 2, -6.45, wallColor);
+    const wall4Left = createWall(w, wallHeight, 2.4, 17.6, wallHeight / 2, -5.16, wallColor);
     scene.add(wall4Left);
 
     // 右部墙体（1.1米）
-    const wall4Right = createWall(w, wallHeight, 1.1, 22, wallHeight / 2, 2.6, wallColor);
+    const wall4Right = createWall(w, wallHeight, 0.88, 17.6, wallHeight / 2, 2.08, wallColor);
     scene.add(wall4Right);
 
     // 4号墙的大落地窗（纯玻璃）
     const window4 = new Mesh(
-      new BoxGeometry(0.1, 3.5, 7),
+      new BoxGeometry(0.1, 3.5, 5.6),
       new MeshStandardMaterial({
         color: 0x87CEEB,
         transparent: true,
@@ -524,45 +524,45 @@ const HouseDisplay = () => {
         metalness: 0.1
       })
     );
-    window4.position.set(22, 2, -1.45);
+    window4.position.set(17.6, 2, -1.16);
     scene.add(window4);
 
     // 4号窗框边框（白色）
     const frame4_1 = new Mesh(new BoxGeometry(0.12, 3.6, 0.08), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame4_1.position.set(22, 2, -4.95);
+    frame4_1.position.set(17.6, 2, -3.96);
     scene.add(frame4_1);
 
     const frame4_2 = new Mesh(new BoxGeometry(0.12, 3.6, 0.08), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame4_2.position.set(22, 2, 2.05);
+    frame4_2.position.set(17.6, 2, 1.64);
     scene.add(frame4_2);
 
-    const frame4_3 = new Mesh(new BoxGeometry(0.12, 0.08, 7), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame4_3.position.set(22, 3.8, -1.45);
+    const frame4_3 = new Mesh(new BoxGeometry(0.12, 0.08, 5.6), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame4_3.position.set(17.6, 3.8, -1.16);
     scene.add(frame4_3);
 
-    const frame4_4 = new Mesh(new BoxGeometry(0.12, 0.08, 7), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame4_4.position.set(22, 0.2, -1.45);
+    const frame4_4 = new Mesh(new BoxGeometry(0.12, 0.08, 5.6), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame4_4.position.set(17.6, 0.2, -1.16);
     scene.add(frame4_4);
 
     // #5 - 右侧外墙下段（与23号墙下方，改为四周墙体+中间玻璃窗）
     // 上部墙体
-    createWallWithLabel(5, w, 0.5, 7.8, 22, 3.75, 7, wallColor, scene);
+    createWallWithLabel(5, w, 0.5, 6.24, 17.6, 3.75, 5.6, wallColor, scene);
 
     // 下部墙体（底部往上移1米，高度增加到1.5米）
-    const wall5Lower = createWall(w, 1.5, 7.8, 22, 0.75, 7, wallColor);
+    const wall5Lower = createWall(w, 1.5, 6.24, 17.6, 0.75, 5.6, wallColor);
     scene.add(wall5Lower);
 
     // 左部墙体（深度3米）
-    const wall5Left = createWall(w, wallHeight, 3, 22, wallHeight / 2, 3.5, wallColor);
+    const wall5Left = createWall(w, wallHeight, 2.4, 17.6, wallHeight / 2, 2.8, wallColor);
     scene.add(wall5Left);
 
     // 右部墙体（深度调整为2米，不超出9号墙）
-    const wall5Right = createWall(w, wallHeight, 2, 22, wallHeight / 2, 9.9, wallColor);
+    const wall5Right = createWall(w, wallHeight, 1.6, 17.6, wallHeight / 2, 7.92, wallColor);
     scene.add(wall5Right);
 
     // 5号墙的玻璃窗（纯玻璃，深度3.8米）
     const window5 = new Mesh(
-      new BoxGeometry(0.1, 2.5, 3.8),
+      new BoxGeometry(0.1, 2.5, 3.04),
       new MeshStandardMaterial({
         color: 0x87CEEB,
         transparent: true,
@@ -571,57 +571,57 @@ const HouseDisplay = () => {
         metalness: 0.1
       })
     );
-    window5.position.set(22, 2.5, 7);
+    window5.position.set(17.6, 2.5, 5.6);
     scene.add(window5);
 
     // 5号窗框边框（白色）
     const frame5_1 = new Mesh(new BoxGeometry(0.12, 2.6, 0.08), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame5_1.position.set(22, 2.5, 5.1);
+    frame5_1.position.set(17.6, 2.5, 4.08);
     scene.add(frame5_1);
 
     const frame5_2 = new Mesh(new BoxGeometry(0.12, 2.6, 0.08), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame5_2.position.set(22, 2.5, 8.9);
+    frame5_2.position.set(17.6, 2.5, 7.12);
     scene.add(frame5_2);
 
-    const frame5_3 = new Mesh(new BoxGeometry(0.12, 0.08, 3.8), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame5_3.position.set(22, 3.8, 7);
+    const frame5_3 = new Mesh(new BoxGeometry(0.12, 0.08, 3.04), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame5_3.position.set(17.6, 3.8, 5.6);
     scene.add(frame5_3);
 
-    const frame5_4 = new Mesh(new BoxGeometry(0.12, 0.08, 3.8), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame5_4.position.set(22, 1.2, 7);
+    const frame5_4 = new Mesh(new BoxGeometry(0.12, 0.08, 3.04), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame5_4.position.set(17.6, 1.2, 5.6);
     scene.add(frame5_4);
 
     // #6 - 入户凹槽左侧
-    createWallWithLabel(6, w, wallHeight, 8, -8, wallHeight / 2, 16, wallColor, scene);
+    createWallWithLabel(6, w, wallHeight, 6.4, -6.4, wallHeight / 2, 12.8, wallColor, scene);
 
     // #7 - 入户凹槽底部
-    createWallWithLabel(7, 8, wallHeight, w, -4, wallHeight / 2, 19.9, wallColor, scene);
+    createWallWithLabel(7, 6.4, wallHeight, w, -3.2, wallHeight / 2, 15.92, wallColor, scene);
 
     // #8 - 入户凹槽右侧
-    createWallWithLabel(8, w, wallHeight, 6, -3.2, wallHeight / 2, 9, wallColor, scene);
+    createWallWithLabel(8, w, wallHeight, 5.2, -2.56, wallHeight / 2, 7, wallColor, scene);
 
     // #9 - 底部外墙右段
-    createWallWithLabel(9, 14, wallHeight, w, 15, wallHeight / 2, 11, wallColor, scene);
+    createWallWithLabel(9, 11.2, wallHeight, w, 12, wallHeight / 2, 8.8, wallColor, scene);
 
     // #10a - 左侧外墙上段（与29号墙上方，改为四周墙体+中间落地窗）
     // 上部墙体
-    createWallWithLabel(10, w, 0.5, 7, -22, 3.75, -15.5, wallColor, scene);
+    createWallWithLabel(10, w, 0.5, 5.6, -17.6, 3.75, -12.4, wallColor, scene);
 
     // 下部墙体（底部往上移1米，高度增加到1.5米）
-    const wall10Lower = createWall(w, 1.5, 7, -22, 0.75, -15.5, wallColor);
+    const wall10Lower = createWall(w, 1.5, 5.6, -17.6, 0.75, -12.4, wallColor);
     scene.add(wall10Lower);
 
     // 左部墙体
-    const wall10Left = createWall(w, wallHeight, 1, -22, wallHeight / 2, -19.5, wallColor);
+    const wall10Left = createWall(w, wallHeight, 0.8, -17.6, wallHeight / 2, -15.6, wallColor);
     scene.add(wall10Left);
 
     // 右部墙体
-    const wall10Right = createWall(w, wallHeight, 1, -22, wallHeight / 2, -11.5, wallColor);
+    const wall10Right = createWall(w, wallHeight, 0.8, -17.6, wallHeight / 2, -9.2, wallColor);
     scene.add(wall10Right);
 
     // 10号墙的大落地窗（纯玻璃，底部上移1米，高度减少到2.5米）
     const window10 = new Mesh(
-      new BoxGeometry(0.1, 2.5, 7),
+      new BoxGeometry(0.1, 2.5, 5.6),
       new MeshStandardMaterial({
         color: 0x87CEEB,
         transparent: true,
@@ -630,45 +630,45 @@ const HouseDisplay = () => {
         metalness: 0.1
       })
     );
-    window10.position.set(-22, 2.5, -15.5);
+    window10.position.set(-17.6, 2.5, -12.4);
     scene.add(window10);
 
     // 10号窗框边框（白色）
     const frame10_1 = new Mesh(new BoxGeometry(0.12, 2.6, 0.08), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame10_1.position.set(-22, 2.5, -19);
+    frame10_1.position.set(-17.6, 2.5, -15.2);
     scene.add(frame10_1);
 
     const frame10_2 = new Mesh(new BoxGeometry(0.12, 2.6, 0.08), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame10_2.position.set(-22, 2.5, -12);
+    frame10_2.position.set(-17.6, 2.5, -9.6);
     scene.add(frame10_2);
 
-    const frame10_3 = new Mesh(new BoxGeometry(0.12, 0.08, 7), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame10_3.position.set(-22, 3.8, -15.5);
+    const frame10_3 = new Mesh(new BoxGeometry(0.12, 0.08, 5.6), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame10_3.position.set(-17.6, 3.8, -12.4);
     scene.add(frame10_3);
 
-    const frame10_4 = new Mesh(new BoxGeometry(0.12, 0.08, 7), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame10_4.position.set(-22, 1.2, -15.5);
+    const frame10_4 = new Mesh(new BoxGeometry(0.12, 0.08, 5.6), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame10_4.position.set(-17.6, 1.2, -12.4);
     scene.add(frame10_4);
 
     // #10b - 左侧外墙中段（29号与30号之间）
-    createWallWithLabel(11, w, wallHeight, 5, -22, wallHeight / 2, -8.5, wallColor, scene);
+    createWallWithLabel(11, w, wallHeight, 4, -17.6, wallHeight / 2, -6.8, wallColor, scene);
 
     // #10c - 左侧外墙下段（改为四周墙体+中间落地窗）
     // 上部墙体
-    createWallWithLabel(12, w, 0.5, 16, -22, 3.75, 4, wallColor, scene);
+    createWallWithLabel(12, w, 0.5, 12.8, -17.6, 3.75, 3.2, wallColor, scene);
 
     // 下部墙体
-    createWallWithLabel(43, w, 0.5, 16, -22, 0.25, 4, wallColor, scene);
+    createWallWithLabel(43, w, 0.5, 12.8, -17.6, 0.25, 3.2, wallColor, scene);
 
     // 左部墙体
-    createWallWithLabel(44, w, wallHeight, 2, -22, wallHeight / 2, -5, wallColor, scene);
+    createWallWithLabel(44, w, wallHeight, 1.6, -17.6, wallHeight / 2, -4, wallColor, scene);
 
     // 右部墙体
-    createWallWithLabel(45, w, wallHeight, 2, -22, wallHeight / 2, 13, wallColor, scene);
+    createWallWithLabel(45, w, wallHeight, 1.6, -17.6, wallHeight / 2, 10.4, wallColor, scene);
 
     // 中间的大落地窗（纯玻璃）
     const floorWindow = new Mesh(
-      new BoxGeometry(0.1, 3.5, 16),
+      new BoxGeometry(0.1, 3.5, 12.8),
       new MeshStandardMaterial({
         color: 0x87CEEB,
         transparent: true,
@@ -677,7 +677,7 @@ const HouseDisplay = () => {
         metalness: 0.1
       })
     );
-    floorWindow.position.set(-22, 2, 4);
+    floorWindow.position.set(-17.6, 2, 3.2);
     floorWindow.castShadow = false; // 关闭阴影投射
     floorWindow.receiveShadow = false; // 关闭阴影接收
     scene.add(floorWindow);
@@ -687,126 +687,123 @@ const HouseDisplay = () => {
       new BoxGeometry(0.12, 3.6, 0.08),
       new MeshStandardMaterial({ color: 0xFFFFFF })
     );
-    windowFrame1.position.set(-22, 2, -4);
+    windowFrame1.position.set(-17.6, 2, -3.2);
     scene.add(windowFrame1);
 
     const windowFrame2 = new Mesh(
       new BoxGeometry(0.12, 3.6, 0.08),
       new MeshStandardMaterial({ color: 0xFFFFFF })
     );
-    windowFrame2.position.set(-22, 2, 12);
+    windowFrame2.position.set(-17.6, 2, 9.6);
     scene.add(windowFrame2);
 
     const windowFrame3 = new Mesh(
-      new BoxGeometry(0.12, 0.08, 16),
+      new BoxGeometry(0.12, 0.08, 12.8),
       new MeshStandardMaterial({ color: 0xFFFFFF })
     );
-    windowFrame3.position.set(-22, 3.8, 4);
+    windowFrame3.position.set(-17.6, 3.8, 3.2);
     scene.add(windowFrame3);
 
     const windowFrame4 = new Mesh(
-      new BoxGeometry(0.12, 0.08, 16),
+      new BoxGeometry(0.12, 0.08, 12.8),
       new MeshStandardMaterial({ color: 0xFFFFFF })
     );
-    windowFrame4.position.set(-22, 0.2, 4);
+    windowFrame4.position.set(-17.6, 0.2, 3.2);
     scene.add(windowFrame4);
 
-    // ===== 内墙（所有尺寸和位置乘以4，墙厚不变） =====
+    // ===== 内墙（所有尺寸和位置乘以0.8，墙厚不变） =====
     // #13 - 上区域横墙（主分隔）
-    createWallWithLabel(13, 18, wallHeight, w, -10.5, wallHeight / 2, -8, wallColor, scene);
+    createWallWithLabel(13, 14.4, wallHeight, w, -8.4, wallHeight / 2, -6.4, wallColor, scene);
 
     // #14 - 上区域左竖墙
-    createWallWithLabel(14, w, wallHeight, 4, -4, wallHeight / 2, -18, wallColor, scene);
+    createWallWithLabel(14, w, wallHeight, 3.2, -3.2, wallHeight / 2, -14.4, wallColor, scene);
 
     // #15 - 上区域中竖墙
-    createWallWithLabel(15, w, wallHeight, 8, 2, wallHeight / 2, -16, wallColor, scene);
+    createWallWithLabel(15, w, wallHeight, 6.4, 1.6, wallHeight / 2, -12.8, wallColor, scene);
 
     // #16 - 上区域右竖墙
-    createWallWithLabel(16, w, wallHeight, 8.5, 7.5, wallHeight / 2, -15.75, wallColor, scene);
+    createWallWithLabel(16, w, wallHeight, 6.8, 6, wallHeight / 2, -12.6, wallColor, scene);
 
     // #18 - 中间主横墙
-    createWallWithLabel(18, 10.5, wallHeight, w, -12.25, wallHeight / 2, 6, wallColor, scene);
+    createWallWithLabel(18, 8.4, wallHeight, w, -9.8, wallHeight / 2, 4.4, wallColor, scene);
 
     // #19 - 中左竖墙
-    createWallWithLabel(19, w, wallHeight, 2.5, -19.5, wallHeight / 2, 15.25, wallColor, scene);
+    createWallWithLabel(19, w, wallHeight, 2, -15.6, wallHeight / 2, 12.2, wallColor, scene);
 
     // #20 - 左下横墙
-    createWallWithLabel(20, 2.5, wallHeight, w, -20.75, wallHeight / 2, 14, wallColor, scene);
+    createWallWithLabel(20, 2, wallHeight, w, -16.6, wallHeight / 2, 11.2, wallColor, scene);
 
     // #21 - 中下横墙上
-    createWallWithLabel(21, 8, wallHeight, w, -4, wallHeight / 2, 12, wallColor, scene);
+    createWallWithLabel(21, 6.4, wallHeight, w, -3.2, wallHeight / 2, 9.6, wallColor, scene);
 
     // #22 - 中下竖墙
-    createWallWithLabel(22, w, wallHeight, 8, 0, wallHeight / 2, 16, wallColor, scene);
+    createWallWithLabel(22, w, wallHeight, 6.4, 0, wallHeight / 2, 12.8, wallColor, scene);
 
     // #23 - 右下顶部横墙
-    createWallWithLabel(23, 5, wallHeight, w, 19.5, wallHeight / 2, 3.1, wallColor, scene);
+    createWallWithLabel(23, 4, wallHeight, w, 15.6, wallHeight / 2, 2.48, wallColor, scene);
 
     // #24 - 右下左竖墙
-    createWallWithLabel(24, w, wallHeight, 5, 6, wallHeight / 2, 5.5, wallColor, scene);
+    createWallWithLabel(24, w, wallHeight, 4, 4.8, wallHeight / 2, 4.4, wallColor, scene);
 
     // #25 - 右下右竖墙
-    createWallWithLabel(25, w, wallHeight, 3, 8, wallHeight / 2, 9.5, wallColor, scene);
+    createWallWithLabel(25, w, wallHeight, 2.4, 6.4, wallHeight / 2, 7.6, wallColor, scene);
 
     // #26
-    createWallWithLabel(26, 3.5, wallHeight, w, 6.25, wallHeight / 2, 8, wallColor, scene);
+    createWallWithLabel(26, 2.8, wallHeight, w, 5, wallHeight / 2, 6.4, wallColor, scene);
 
     // #27
-    createWallWithLabel(27, 9, wallHeight, w, 0.25, wallHeight / 2, -12, wallColor, scene);
+    createWallWithLabel(27, 7.2, wallHeight, w, 0.2, wallHeight / 2, -9.6, wallColor, scene);
 
     // #28
-    createWallWithLabel(28, 15, wallHeight, w, 14.5, wallHeight / 2, -8, wallColor, scene);
+    createWallWithLabel(28, 12, wallHeight, w, 11.6, wallHeight / 2, -6.4, wallColor, scene);
 
     // #29
-    createWallWithLabel(29, 2.5, wallHeight, w, -20.75, wallHeight / 2, -11, wallColor, scene);
+    createWallWithLabel(29, 2, wallHeight, w, -16.6, wallHeight / 2, -8.8, wallColor, scene);
 
     // #30
-    createWallWithLabel(30, 2.5, wallHeight, w, -20.75, wallHeight / 2, -6, wallColor, scene);
+    createWallWithLabel(30, 2, wallHeight, w, -16.6, wallHeight / 2, -4.8, wallColor, scene);
 
     // #31
-    createWallWithLabel(31, w, wallHeight, 5, -19.5, wallHeight / 2, -8.5, wallColor, scene);
+    createWallWithLabel(31, w, wallHeight, 4, -15.6, wallHeight / 2, -6.8, wallColor, scene);
 
     // #32
-    createWallWithLabel(32, w, wallHeight, 5, 19.5, wallHeight / 2, -10.5, wallColor, scene);
+    createWallWithLabel(32, w, wallHeight, 4, 15.6, wallHeight / 2, -8.4, wallColor, scene);
 
     // #33
-    createWallWithLabel(33, 2.5, wallHeight, w, 20.75, wallHeight / 2, -13, wallColor, scene);
+    createWallWithLabel(33, 2, wallHeight, w, 16.6, wallHeight / 2, -10.4, wallColor, scene);
 
     // #34
-    createWallWithLabel(34, w, wallHeight, 2.5, -16.5, wallHeight / 2, -6.75, wallColor, scene);
-
-    // #35
-    // createWallWithLabel(35, w, wallHeight, 2.5, -16.5, wallHeight / 2, 4.75, wallColor, scene);
+    createWallWithLabel(34, w, wallHeight, 2, -13.2, wallHeight / 2, -5.4, wallColor, scene);
 
     // #36
-    createWallWithLabel(36, 2.5, wallHeight, w, 7.25, wallHeight / 2, 3.1, wallColor, scene);
+    createWallWithLabel(36, 2, wallHeight, w, 5.8, wallHeight / 2, 2.48, wallColor, scene);
 
     // #37
-    createWallWithLabel(37, 4.5, wallHeight, w, -1, wallHeight / 2, 6, wallColor, scene);
+    createWallWithLabel(37, 3.6, wallHeight, w, -0.8, wallHeight / 2, 4.4, wallColor, scene);
 
     // #38
-    createWallWithLabel(38, w, wallHeight, 2.5, -17.5, wallHeight / 2, 15.25, wallColor, scene);
+    createWallWithLabel(38, w, wallHeight, 2, -14, wallHeight / 2, 12.2, wallColor, scene);
 
     // #39
-    createWallWithLabel(39, w, wallHeight, 2, 1.25, wallHeight / 2, 7, wallColor, scene);
+    createWallWithLabel(39, w, wallHeight, 2.2, 1, wallHeight / 2, 5.4, wallColor, scene);
 
     // #40
-    createWallWithLabel(40, 11.5, wallHeight, w, -13.75, wallHeight / 2, 16.5, wallColor, scene);
+    createWallWithLabel(40, 9.2, wallHeight, w, -11, wallHeight / 2, 13.2, wallColor, scene);
 
     // #41
-    createWallWithLabel(41, w, wallHeight, 1.5, -17.5, wallHeight / 2, 6.75, wallColor, scene);
+    createWallWithLabel(41, w, wallHeight, 1.2, -14, wallHeight / 2, 5, wallColor, scene);
 
-    // 照明（位置乘以4）
+    // 照明（位置乘以0.8）
     const addLight = (x: number, z: number, intensity: number) => {
       const light = new PointLight(0xFFFAE3, intensity, 15);
       light.position.set(x, 2.8, z);
       scene.add(light);
     };
 
-    addLight(0, -14, 0.4);
-    addLight(0, 8, 0.6);
-    addLight(-16, 14, 0.4);
-    addLight(12, 14, 0.4);
+    addLight(0, -11.2, 0.4);
+    addLight(0, 6.4, 0.6);
+    addLight(-12.8, 11.2, 0.4);
+    addLight(9.6, 11.2, 0.4);
 
     // 加载电视墙模型
     const gltfLoader = new GLTFLoader();
@@ -815,14 +812,13 @@ const HouseDisplay = () => {
       (gltf) => {
         const tvWall = gltf.scene;
 
-        // 设置电视墙位置：靠近18号墙（z=6），在墙的中间位置
-        // 18号墙: x=-12.25, z=6, 宽度10.5米，高度4米
-        // 电视墙放在靠近18号墙内侧，正面朝向13号墙（z=-8方向，即朝北）
-        tvWall.position.set(-12.25, 1.3, 5.5); // x为18号墙中心，z略靠内侧
+        // 设置电视墙位置：靠近18号墙（z=4.8），在墙的中间位置
+        // 18号墙: x=-9.8, z=4.8, 宽度8.4米，高度4米
+        // 电视墙放在靠近18号墙内侧，正面朝向13号墙（z=-6.4方向，即朝北）
+        tvWall.position.set(-9.8, 1.3, 3.9); // x为18号墙中心，z略靠内侧
 
         // 放大模型，使其接近18号墙的尺寸（统一缩放保持比例）
-        // 根据18号墙宽度10.5米和高度4米，将模型放大
-        tvWall.scale.set(6, 6, 6); // 统一缩放8倍，保持长宽高比例
+        tvWall.scale.set(6, 6, 6);
 
         // 旋转电视墙，使正面朝向13号墙（朝北，即z负方向）
         tvWall.rotation.y = Math.PI;
@@ -898,13 +894,11 @@ const HouseDisplay = () => {
         console.log('沙发模型加载成功', sofa);
 
         // 设置沙发位置：贴着13号墙和34号墙
-        // 13号墙: x=-10.5, z=-8（横墙）
-        // 34号墙: x=-16.5, z=-6.75（竖墙）
         // 沙发放在两墙交角处，背靠34号墙，面向电视墙方向
-        sofa.position.set(-13, 0.5, -5.5); // 贴近34号墙和13号墙的交角
+        sofa.position.set(-10, 0.8, -4.2); // 贴近34号墙和13号墙的交角
 
         // 缩放沙发，调整到合适大小
-        sofa.scale.set(6, 6, 6); // 统一缩放6倍，保持比例
+        sofa.scale.set(6, 6, 6);
 
         // 旋转沙发，使其面向电视墙（朝向18号墙方向，即z正方向）
         sofa.rotation.y = 0; // 面向南方（z正方向）
@@ -939,6 +933,122 @@ const HouseDisplay = () => {
       },
       (error) => {
         console.error('沙发模型加载失败:', error);
+      }
+    );
+
+    // 加载床模型
+    gltfLoader.load(
+      './public/model/bed.glb',
+      (gltf) => {
+        const bed = gltf.scene;
+
+        console.log('床模型加载成功', bed);
+
+        // 设置床位置：放在左上角房间，床头靠着1号墙
+        // 1号墙: x=-10.4, z=-16 (顶部外墙左段，横墙)
+        // 左上角房间被1号墙、14号墙(-3.2, -14.4)、13号墙(-8.4, -6.4)和29号墙(-16.6, -8.8)围合
+        // 床头靠1号墙，床面向房间中心（朝南，z正方向）
+        bed.position.set(-10.4, 1.4, -12); // 床头贴近1号墙，略往房间内侧
+
+        // 缩放床，调整到合适大小
+        bed.scale.set(7.5, 7.5, 7.5); // 统一缩放7.5倍
+
+        // 旋转床，向左旋转90度
+        bed.rotation.y = -Math.PI / 2; // 向左旋转90度
+
+        // 遍历模型，设置阴影和被子颜色
+        bed.traverse((child) => {
+          if (child instanceof Mesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+          }
+        });
+
+        scene.add(bed);
+        console.log('床已添加到场景，位置:', bed.position);
+      },
+      (progress) => {
+        console.log('床加载进度:', (progress.loaded / progress.total * 100).toFixed(2) + '%');
+      },
+      (error) => {
+        console.error('床模型加载失败:', error);
+      }
+    );
+
+    // 加载第二张床模型（右上角房间）
+    gltfLoader.load(
+      './public/model/bed.glb',
+      (gltf) => {
+        const bed2 = gltf.scene;
+
+        console.log('第二张床模型加载成功', bed2);
+
+        // 设置床位置：放在右上角房间，床头靠着42号墙
+        // 42号墙: x=11.8, z=-16 (顶部外墙右段，横墙)
+        // 右上角房间被42号墙、16号墙(6, -12.6)、28号墙(11.6, -6.4)和32号墙(15.6, -8.4)围合
+        // 床头靠42号墙，床面向房间中心（朝南，z正方向）
+        bed2.position.set(11.8, 1.4, -12); // 床头贴近42号墙，略往房间内侧
+
+        // 缩放床，调整到合适大小
+        bed2.scale.set(7.5, 7.5, 7.5); // 统一缩放7.5倍
+
+        // 旋转床，旋转-90度
+        bed2.rotation.y = -Math.PI / 2; // 旋转-90度
+
+        // 遍历模型，设置阴影和被子颜色
+        bed2.traverse((child) => {
+          if (child instanceof Mesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+          }
+        });
+
+        scene.add(bed2);
+        console.log('第二张床已添加到场景，位置:', bed2.position);
+      },
+      (progress) => {
+        console.log('第二张床加载进度:', (progress.loaded / progress.total * 100).toFixed(2) + '%');
+      },
+      (error) => {
+        console.error('第二张床模型加载失败:', error);
+      }
+    );
+
+    // 加载第三张床模型（左下角房间）
+    gltfLoader.load(
+      './public/model/bed.glb',
+      (gltf) => {
+        const bed3 = gltf.scene;
+
+        console.log('第三张床模型加载成功', bed3);
+
+        // 设置床位置：放在左下角房间
+        // 左下角房间被20号墙(-16.6, 11.2)、19号墙(-15.6, 12.2)、40号墙(-11, 13.2)、38号墙(-14, 12.2)围合
+        // 床头靠40号墙（底部横墙）
+        bed3.position.set(-10.5, 1.4, 9.5); // 床头贴近40号墙，略往房间内侧
+
+        // 缩放床，调整到合适大小
+        bed3.scale.set(7.5, 7.5, 7.5); // 统一缩放7.5倍
+
+        // 旋转床，向右旋转90度
+        bed3.rotation.y = Math.PI / 2; // 向右旋转90度
+
+        // 遍历模型，设置阴影和被子颜色
+        bed3.traverse((child) => {
+          if (child instanceof Mesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+          }
+        });
+
+        scene.add(bed3);
+        console.log('第三张床已添加到场景，位置:', bed3.position);
+      },
+      (progress) => {
+        console.log('第三张床加载进度:', (progress.loaded / progress.total * 100).toFixed(2) + '%');
+      },
+      (error) => {
+        console.error('第三张床模型加载失败:', error);
       }
     );
   };
