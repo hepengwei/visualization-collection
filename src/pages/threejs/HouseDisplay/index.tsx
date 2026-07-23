@@ -17,12 +17,21 @@ import {
   CanvasTexture,
   SpriteMaterial,
   Sprite,
+  TextureLoader,
+  RepeatWrapping,
+  MeshPhysicalMaterial,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { useGlobalContext } from "hooks/useGlobalContext";
 import useInitialize from "hooks/threejs/useInitialize";
 import styles from "./index.module.scss";
+// 导入大理石贴图
+import marbleBaseColorImg from "images/threejs/marbleFloor/marble_basecolor.png";
+import marbleNormalImg from "images/threejs/marbleFloor/marble_normal.png";
+import marbleRoughnessImg from "images/threejs/marbleFloor/marble_roughness.png";
+import marbleHeightImg from "images/threejs/marbleFloor/marble_height.png";
 
 const HouseDisplay = () => {
   const { menuWidth } = useGlobalContext();
@@ -117,19 +126,29 @@ const HouseDisplay = () => {
       */
 
       // ===== 光照设置 =====
-      // 环境光 - 提供柔和的基础照明（降低强度）
-      const ambientLight = new AmbientLight(0xffffff, 0.4);
+      // 环境光 - 提供柔和的基础照明
+      const ambientLight = new AmbientLight(0xffffff, 0.5);
       scene.add(ambientLight);
 
-      // 主方向光 - 模拟太阳光（降低强度）
-      const directionalLight = new DirectionalLight(0xffffff, 0.5);
-      directionalLight.position.set(10, 20, 10);
-      directionalLight.castShadow = true;
-      directionalLight.shadow.camera.left = -20;
-      directionalLight.shadow.camera.right = 20;
-      directionalLight.shadow.camera.top = 20;
-      directionalLight.shadow.camera.bottom = -20;
-      scene.add(directionalLight);
+      // 主太阳光 - 从左上方（南面）斜照下来，模拟自然阳光
+      const sunLight = new DirectionalLight(0xFFFAE3, 0.7); // 暖色调阳光，降低强度
+      sunLight.position.set(-30, 25, 15); // 从左上方照射（左边为南面）
+      sunLight.castShadow = true;
+      sunLight.shadow.mapSize.width = 2048;
+      sunLight.shadow.mapSize.height = 2048;
+      sunLight.shadow.camera.left = -30;
+      sunLight.shadow.camera.right = 30;
+      sunLight.shadow.camera.top = 30;
+      sunLight.shadow.camera.bottom = -30;
+      sunLight.shadow.camera.near = 0.5;
+      sunLight.shadow.camera.far = 100;
+      sunLight.shadow.bias = -0.0001;
+      scene.add(sunLight);
+
+      // 辅助光 - 从右侧补光，模拟天空散射光
+      const skyLight = new DirectionalLight(0xB0D4F1, 0.3); // 天空蓝色调，降低强度
+      skyLight.position.set(20, 15, -10);
+      scene.add(skyLight);
 
       // ===== 创建房屋结构 =====
       createHouseStructure(scene);
@@ -192,12 +211,13 @@ const HouseDisplay = () => {
       createWallLabel(number, x - width / 2 - 0.4, y + 0.5, z, scene);
     }
   };
-  const createWall = (width: number, height: number, depth: number, x: number, y: number, z: number, color: number = 0xf5f5dc) => {
+  const createWall = (width: number, height: number, depth: number, x: number, y: number, z: number, color: number = 0xF4F3EF) => {
     const geometry = new BoxGeometry(width, height, depth);
     const material = new MeshStandardMaterial({
       color,
-      roughness: 0.95, // 增加粗糙度，减少反光
-      metalness: 0 // 完全不反射金属光泽
+      roughness: 0.85, // 乳胶漆的粗糙度，有轻微漫反射
+      metalness: 0, // 完全不反射金属光泽
+      envMapIntensity: 0.3 // 降低环境反射强度
     });
     const wall = new Mesh(geometry, material);
     wall.position.set(x, y, z);
@@ -236,26 +256,193 @@ const HouseDisplay = () => {
   const createHouseStructure = (scene: THREE.Scene) => {
     const wallHeight = 4;
     const w = 0.2; // 墙厚保持不变
-    const wallColor = 0xFFFEF5;
+    const wallColor = 0xF4F3EF; // 珍珠白乳胶漆颜色
 
-    // 地板（放大4倍）
-    const floor = new Mesh(
-      new PlaneGeometry(52, 40),
-      new MeshStandardMaterial({ color: 0xE5D4C1, side: DoubleSide, roughness: 0.95, metalness: 0 })
+    // 加载大理石地板贴图
+    const textureLoader = new TextureLoader();
+    const marbleBaseColor = textureLoader.load(marbleBaseColorImg);
+    const marbleNormal = textureLoader.load(marbleNormalImg);
+    const marbleRoughness = textureLoader.load(marbleRoughnessImg);
+    const marbleHeight = textureLoader.load(marbleHeightImg);
+
+    // 设置贴图重复（每块砖一次完整贴图）
+    [marbleBaseColor, marbleNormal, marbleRoughness, marbleHeight].forEach(texture => {
+      texture.wrapS = RepeatWrapping;
+      texture.wrapT = RepeatWrapping;
+      texture.repeat.set(1, 1);
+    });
+
+    // 地板参数
+    const tileSize = 1.5; // 1.5m的地砖
+    const gapSize = 0.0025; // 2.5mm的缝隙
+    const floorWidth = 52; // 地板总宽度
+    const floorDepth = 40; // 地板总深度
+
+    // 计算需要多少块砖
+    const tilesX = Math.ceil(floorWidth / (tileSize + gapSize));
+    const tilesZ = Math.ceil(floorDepth / (tileSize + gapSize));
+
+    // 创建地砖组
+    const floorGroup = new Group();
+
+    // 生成每块地砖
+    for (let x = 0; x < tilesX; x++) {
+      for (let z = 0; z < tilesZ; z++) {
+        // 克隆贴图以便每块砖可以独立设置
+        const baseColor = marbleBaseColor.clone();
+        const normal = marbleNormal.clone();
+        const roughness = marbleRoughness.clone();
+        const height = marbleHeight.clone();
+
+        baseColor.needsUpdate = true;
+        normal.needsUpdate = true;
+        roughness.needsUpdate = true;
+        height.needsUpdate = true;
+
+        // 创建单块地砖
+        const tile = new Mesh(
+          new PlaneGeometry(tileSize, tileSize),
+          new MeshPhysicalMaterial({
+            map: baseColor,
+            normalMap: normal,
+            roughnessMap: roughness,
+            displacementMap: height,
+            displacementScale: 0.05,
+            roughness: 0.15, // 亮光砖，低粗糙度
+            metalness: 0.1, // 轻微金属感
+            clearcoat: 0.5, // 清漆层，增加光泽
+            clearcoatRoughness: 0.1, // 清漆层粗糙度
+            reflectivity: 0.8, // 反射率
+            envMapIntensity: 1.2, // 环境映射强度
+            side: DoubleSide
+          })
+        );
+
+        // 计算地砖位置（从左上角开始）
+        const posX = -floorWidth / 2 + x * (tileSize + gapSize) + tileSize / 2;
+        const posZ = -floorDepth / 2 + z * (tileSize + gapSize) + tileSize / 2;
+
+        tile.position.set(posX, 0, posZ);
+        tile.rotation.x = -Math.PI / 2;
+        tile.receiveShadow = true;
+
+        floorGroup.add(tile);
+      }
+    }
+
+    scene.add(floorGroup);
+
+    // 创建白色缝隙底板
+    const gapFloor = new Mesh(
+      new PlaneGeometry(floorWidth, floorDepth),
+      new MeshStandardMaterial({
+        color: 0xFFFFFF, // 白色缝隙
+        roughness: 0.8,
+        metalness: 0
+      })
     );
-    floor.rotation.x = -Math.PI / 2;
-    floor.receiveShadow = true;
-    scene.add(floor);
+    gapFloor.rotation.x = -Math.PI / 2;
+    gapFloor.position.y = -0.001; // 略低于地砖，作为缝隙
+    gapFloor.receiveShadow = true;
+    scene.add(gapFloor);
 
     // ===== 外墙（所有尺寸和位置乘以4，墙厚不变） =====
     // #1 - 顶部外墙左段（14号墙左侧）
     createWallWithLabel(1, 18, wallHeight, w, -13, wallHeight / 2, -20, wallColor, scene);
 
-    // #40 - 顶部外墙中左段（14号与15号之间）
-    createWallWithLabel(40, 6, wallHeight, w, -1, wallHeight / 2, -20, wallColor, scene);
+    // #40 - 顶部外墙中左段（14号与15号之间，改为四周墙体+中间玻璃窗）
+    // 上部墙体
+    createWallWithLabel(40, 6, 0.5, w, -1, 3.75, -20, wallColor, scene);
 
-    // #41 - 顶部外墙中右段（15号与16号之间）
-    createWallWithLabel(41, 5.5, wallHeight, w, 4.75, wallHeight / 2, -20, wallColor, scene);
+    // 下部墙体（底部往上移1米，高度增加到1.5米）
+    const wall40Lower = createWall(6, 1.5, w, -1, 0.75, -20, wallColor);
+    scene.add(wall40Lower);
+
+    // 左部墙体（宽度增加到1.5米）
+    const wall40Left = createWall(1.5, wallHeight, w, -3.75, wallHeight / 2, -20, wallColor);
+    scene.add(wall40Left);
+
+    // 右部墙体（宽度增加到1.5米）
+    const wall40Right = createWall(1.5, wallHeight, w, 1.75, wallHeight / 2, -20, wallColor);
+    scene.add(wall40Right);
+
+    // 40号墙的玻璃窗（纯玻璃，宽度减少到5米）
+    const window40 = new Mesh(
+      new BoxGeometry(5, 2.5, 0.1),
+      new MeshStandardMaterial({
+        color: 0x87CEEB,
+        transparent: true,
+        opacity: 0.25,
+        roughness: 0.1,
+        metalness: 0.1
+      })
+    );
+    window40.position.set(-1, 2.5, -20);
+    scene.add(window40);
+
+    // 40号窗框边框（白色）
+    const frame40_1 = new Mesh(new BoxGeometry(0.08, 2.6, 0.12), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame40_1.position.set(-3.5, 2.5, -20);
+    scene.add(frame40_1);
+
+    const frame40_2 = new Mesh(new BoxGeometry(0.08, 2.6, 0.12), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame40_2.position.set(1.5, 2.5, -20);
+    scene.add(frame40_2);
+
+    const frame40_3 = new Mesh(new BoxGeometry(5, 0.08, 0.12), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame40_3.position.set(-1, 3.8, -20);
+    scene.add(frame40_3);
+
+    const frame40_4 = new Mesh(new BoxGeometry(5, 0.08, 0.12), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame40_4.position.set(-1, 1.2, -20);
+    scene.add(frame40_4);
+
+    // #41 - 顶部外墙中右段（15号与16号之间，改为四周墙体+中间玻璃窗）
+    // 上部墙体
+    createWallWithLabel(41, 5.5, 0.5, w, 4.75, 3.75, -20, wallColor, scene);
+
+    // 下部墙体（底部往上移1米，高度增加到1.5米）
+    const wall41Lower = createWall(5.5, 1.5, w, 4.75, 0.75, -20, wallColor);
+    scene.add(wall41Lower);
+
+    // 左部墙体（宽度增加到1.5米）
+    const wall41Left = createWall(1.5, wallHeight, w, 2.25, wallHeight / 2, -20, wallColor);
+    scene.add(wall41Left);
+
+    // 右部墙体（宽度增加到1.5米）
+    const wall41Right = createWall(1.5, wallHeight, w, 7.25, wallHeight / 2, -20, wallColor);
+    scene.add(wall41Right);
+
+    // 41号墙的玻璃窗（纯玻璃，宽度减少到4.5米）
+    const window41 = new Mesh(
+      new BoxGeometry(4.5, 2.5, 0.1),
+      new MeshStandardMaterial({
+        color: 0x87CEEB,
+        transparent: true,
+        opacity: 0.25,
+        roughness: 0.1,
+        metalness: 0.1
+      })
+    );
+    window41.position.set(4.75, 2.5, -20);
+    scene.add(window41);
+
+    // 41号窗框边框（白色）
+    const frame41_1 = new Mesh(new BoxGeometry(0.08, 2.6, 0.12), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame41_1.position.set(2.5, 2.5, -20);
+    scene.add(frame41_1);
+
+    const frame41_2 = new Mesh(new BoxGeometry(0.08, 2.6, 0.12), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame41_2.position.set(7, 2.5, -20);
+    scene.add(frame41_2);
+
+    const frame41_3 = new Mesh(new BoxGeometry(4.5, 0.08, 0.12), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame41_3.position.set(4.75, 3.8, -20);
+    scene.add(frame41_3);
+
+    const frame41_4 = new Mesh(new BoxGeometry(4.5, 0.08, 0.12), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame41_4.position.set(4.75, 1.2, -20);
+    scene.add(frame41_4);
 
     // #42 - 顶部外墙右段（16号墙右侧）
     createWallWithLabel(42, 14.5, wallHeight, w, 14.75, wallHeight / 2, -20, wallColor, scene);
@@ -264,8 +451,8 @@ const HouseDisplay = () => {
     // 上部墙体
     createWallWithLabel(2, w, 0.5, 5, 22, 3.75, -16.5, wallColor, scene);
 
-    // 下部墙体
-    const wall2Lower = createWall(w, 0.5, 5, 22, 0.25, -16.5, wallColor);
+    // 下部墙体（底部往上移1米，高度增加到1.5米）
+    const wall2Lower = createWall(w, 1.5, 5, 22, 0.75, -16.5, wallColor);
     scene.add(wall2Lower);
 
     // 左部墙体
@@ -276,9 +463,9 @@ const HouseDisplay = () => {
     const wall2Right = createWall(w, wallHeight, 1, 22, wallHeight / 2, -13.5, wallColor);
     scene.add(wall2Right);
 
-    // 2号墙的大落地窗（纯玻璃）
+    // 2号墙的大落地窗（纯玻璃，底部上移1米，高度减少到2.5米）
     const window2 = new Mesh(
-      new BoxGeometry(0.1, 3.5, 5),
+      new BoxGeometry(0.1, 2.5, 5),
       new MeshStandardMaterial({
         color: 0x87CEEB,
         transparent: true,
@@ -287,16 +474,16 @@ const HouseDisplay = () => {
         metalness: 0.1
       })
     );
-    window2.position.set(22, 2, -16.5);
+    window2.position.set(22, 2.5, -16.5);
     scene.add(window2);
 
     // 2号窗框边框（白色）
-    const frame2_1 = new Mesh(new BoxGeometry(0.12, 3.6, 0.08), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame2_1.position.set(22, 2, -19);
+    const frame2_1 = new Mesh(new BoxGeometry(0.12, 2.6, 0.08), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame2_1.position.set(22, 2.5, -19);
     scene.add(frame2_1);
 
-    const frame2_2 = new Mesh(new BoxGeometry(0.12, 3.6, 0.08), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame2_2.position.set(22, 2, -14);
+    const frame2_2 = new Mesh(new BoxGeometry(0.12, 2.6, 0.08), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame2_2.position.set(22, 2.5, -14);
     scene.add(frame2_2);
 
     const frame2_3 = new Mesh(new BoxGeometry(0.12, 0.08, 5), new MeshStandardMaterial({ color: 0xFFFFFF }));
@@ -304,7 +491,7 @@ const HouseDisplay = () => {
     scene.add(frame2_3);
 
     const frame2_4 = new Mesh(new BoxGeometry(0.12, 0.08, 5), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame2_4.position.set(22, 0.2, -16.5);
+    frame2_4.position.set(22, 1.2, -16.5);
     scene.add(frame2_4);
 
     // #3 - 右侧外墙中上段（33号与28号之间）
@@ -357,8 +544,52 @@ const HouseDisplay = () => {
     frame4_4.position.set(22, 0.2, -1.45);
     scene.add(frame4_4);
 
-    // #5 - 右侧外墙下段（与23号墙下方，原为底部外墙左段）
-    createWallWithLabel(5, w, wallHeight, 7.8, 22, wallHeight / 2, 7, wallColor, scene);
+    // #5 - 右侧外墙下段（与23号墙下方，改为四周墙体+中间玻璃窗）
+    // 上部墙体
+    createWallWithLabel(5, w, 0.5, 7.8, 22, 3.75, 7, wallColor, scene);
+
+    // 下部墙体（底部往上移1米，高度增加到1.5米）
+    const wall5Lower = createWall(w, 1.5, 7.8, 22, 0.75, 7, wallColor);
+    scene.add(wall5Lower);
+
+    // 左部墙体（深度3米）
+    const wall5Left = createWall(w, wallHeight, 3, 22, wallHeight / 2, 3.5, wallColor);
+    scene.add(wall5Left);
+
+    // 右部墙体（深度调整为2米，不超出9号墙）
+    const wall5Right = createWall(w, wallHeight, 2, 22, wallHeight / 2, 9.9, wallColor);
+    scene.add(wall5Right);
+
+    // 5号墙的玻璃窗（纯玻璃，深度3.8米）
+    const window5 = new Mesh(
+      new BoxGeometry(0.1, 2.5, 3.8),
+      new MeshStandardMaterial({
+        color: 0x87CEEB,
+        transparent: true,
+        opacity: 0.25,
+        roughness: 0.1,
+        metalness: 0.1
+      })
+    );
+    window5.position.set(22, 2.5, 7);
+    scene.add(window5);
+
+    // 5号窗框边框（白色）
+    const frame5_1 = new Mesh(new BoxGeometry(0.12, 2.6, 0.08), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame5_1.position.set(22, 2.5, 5.1);
+    scene.add(frame5_1);
+
+    const frame5_2 = new Mesh(new BoxGeometry(0.12, 2.6, 0.08), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame5_2.position.set(22, 2.5, 8.9);
+    scene.add(frame5_2);
+
+    const frame5_3 = new Mesh(new BoxGeometry(0.12, 0.08, 3.8), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame5_3.position.set(22, 3.8, 7);
+    scene.add(frame5_3);
+
+    const frame5_4 = new Mesh(new BoxGeometry(0.12, 0.08, 3.8), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame5_4.position.set(22, 1.2, 7);
+    scene.add(frame5_4);
 
     // #6 - 入户凹槽左侧
     createWallWithLabel(6, w, wallHeight, 8, -8, wallHeight / 2, 16, wallColor, scene);
@@ -376,8 +607,8 @@ const HouseDisplay = () => {
     // 上部墙体
     createWallWithLabel(10, w, 0.5, 7, -22, 3.75, -15.5, wallColor, scene);
 
-    // 下部墙体
-    const wall10Lower = createWall(w, 0.5, 7, -22, 0.25, -15.5, wallColor);
+    // 下部墙体（底部往上移1米，高度增加到1.5米）
+    const wall10Lower = createWall(w, 1.5, 7, -22, 0.75, -15.5, wallColor);
     scene.add(wall10Lower);
 
     // 左部墙体
@@ -388,9 +619,9 @@ const HouseDisplay = () => {
     const wall10Right = createWall(w, wallHeight, 1, -22, wallHeight / 2, -11.5, wallColor);
     scene.add(wall10Right);
 
-    // 10号墙的大落地窗（纯玻璃）
+    // 10号墙的大落地窗（纯玻璃，底部上移1米，高度减少到2.5米）
     const window10 = new Mesh(
-      new BoxGeometry(0.1, 3.5, 7),
+      new BoxGeometry(0.1, 2.5, 7),
       new MeshStandardMaterial({
         color: 0x87CEEB,
         transparent: true,
@@ -399,16 +630,16 @@ const HouseDisplay = () => {
         metalness: 0.1
       })
     );
-    window10.position.set(-22, 2, -15.5);
+    window10.position.set(-22, 2.5, -15.5);
     scene.add(window10);
 
     // 10号窗框边框（白色）
-    const frame10_1 = new Mesh(new BoxGeometry(0.12, 3.6, 0.08), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame10_1.position.set(-22, 2, -19);
+    const frame10_1 = new Mesh(new BoxGeometry(0.12, 2.6, 0.08), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame10_1.position.set(-22, 2.5, -19);
     scene.add(frame10_1);
 
-    const frame10_2 = new Mesh(new BoxGeometry(0.12, 3.6, 0.08), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame10_2.position.set(-22, 2, -12);
+    const frame10_2 = new Mesh(new BoxGeometry(0.12, 2.6, 0.08), new MeshStandardMaterial({ color: 0xFFFFFF }));
+    frame10_2.position.set(-22, 2.5, -12);
     scene.add(frame10_2);
 
     const frame10_3 = new Mesh(new BoxGeometry(0.12, 0.08, 7), new MeshStandardMaterial({ color: 0xFFFFFF }));
@@ -416,7 +647,7 @@ const HouseDisplay = () => {
     scene.add(frame10_3);
 
     const frame10_4 = new Mesh(new BoxGeometry(0.12, 0.08, 7), new MeshStandardMaterial({ color: 0xFFFFFF }));
-    frame10_4.position.set(-22, 0.2, -15.5);
+    frame10_4.position.set(-22, 1.2, -15.5);
     scene.add(frame10_4);
 
     // #10b - 左侧外墙中段（29号与30号之间）
@@ -447,8 +678,8 @@ const HouseDisplay = () => {
       })
     );
     floorWindow.position.set(-22, 2, 4);
-    floorWindow.castShadow = true;
-    floorWindow.receiveShadow = true;
+    floorWindow.castShadow = false; // 关闭阴影投射
+    floorWindow.receiveShadow = false; // 关闭阴影接收
     scene.add(floorWindow);
 
     // 窗框边框（白色）
@@ -494,7 +725,7 @@ const HouseDisplay = () => {
     createWallWithLabel(16, w, wallHeight, 8.5, 7.5, wallHeight / 2, -15.75, wallColor, scene);
 
     // #18 - 中间主横墙
-    createWallWithLabel(18, 11, wallHeight, w, -12.5, wallHeight / 2, 6, wallColor, scene);
+    createWallWithLabel(18, 10.5, wallHeight, w, -12.25, wallHeight / 2, 6, wallColor, scene);
 
     // #19 - 中左竖墙
     createWallWithLabel(19, w, wallHeight, 2.5, -19.5, wallHeight / 2, 15.25, wallColor, scene);
@@ -545,7 +776,7 @@ const HouseDisplay = () => {
     createWallWithLabel(34, w, wallHeight, 2.5, -16.5, wallHeight / 2, -6.75, wallColor, scene);
 
     // #35
-    createWallWithLabel(35, w, wallHeight, 2.5, -16.5, wallHeight / 2, 4.75, wallColor, scene);
+    // createWallWithLabel(35, w, wallHeight, 2.5, -16.5, wallHeight / 2, 4.75, wallColor, scene);
 
     // #36
     createWallWithLabel(36, 2.5, wallHeight, w, 7.25, wallHeight / 2, 3.1, wallColor, scene);
@@ -554,13 +785,16 @@ const HouseDisplay = () => {
     createWallWithLabel(37, 4.5, wallHeight, w, -1, wallHeight / 2, 6, wallColor, scene);
 
     // #38
-    createWallWithLabel(38, w, wallHeight, 2.5, -16.5, wallHeight / 2, 15.25, wallColor, scene);
+    createWallWithLabel(38, w, wallHeight, 2.5, -17.5, wallHeight / 2, 15.25, wallColor, scene);
 
     // #39
     createWallWithLabel(39, w, wallHeight, 2, 1.25, wallHeight / 2, 7, wallColor, scene);
 
     // #40
     createWallWithLabel(40, 11.5, wallHeight, w, -13.75, wallHeight / 2, 16.5, wallColor, scene);
+
+    // #41
+    createWallWithLabel(41, w, wallHeight, 1.5, -17.5, wallHeight / 2, 6.75, wallColor, scene);
 
     // 照明（位置乘以4）
     const addLight = (x: number, z: number, intensity: number) => {
@@ -573,6 +807,140 @@ const HouseDisplay = () => {
     addLight(0, 8, 0.6);
     addLight(-16, 14, 0.4);
     addLight(12, 14, 0.4);
+
+    // 加载电视墙模型
+    const gltfLoader = new GLTFLoader();
+    gltfLoader.load(
+      './public/model/televisionWalls.glb',
+      (gltf) => {
+        const tvWall = gltf.scene;
+
+        // 设置电视墙位置：靠近18号墙（z=6），在墙的中间位置
+        // 18号墙: x=-12.25, z=6, 宽度10.5米，高度4米
+        // 电视墙放在靠近18号墙内侧，正面朝向13号墙（z=-8方向，即朝北）
+        tvWall.position.set(-12.25, 1.3, 5.5); // x为18号墙中心，z略靠内侧
+
+        // 放大模型，使其接近18号墙的尺寸（统一缩放保持比例）
+        // 根据18号墙宽度10.5米和高度4米，将模型放大
+        tvWall.scale.set(6, 6, 6); // 统一缩放8倍，保持长宽高比例
+
+        // 旋转电视墙，使正面朝向13号墙（朝北，即z负方向）
+        tvWall.rotation.y = Math.PI;
+
+        // 遍历模型，设置阴影和发光效果
+        tvWall.traverse((child) => {
+          if (child instanceof Mesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+            console.log('电视墙子对象:', child.name, child.geometry);
+
+            // 检查材质名称或网格名称，为灯带和电视屏幕添加发光效果
+            const name = child.name.toLowerCase();
+            const materialName = (child.material as MeshStandardMaterial).name?.toLowerCase() || '';
+
+            // 如果是灯带，设置为发光材质
+            if (name.includes('light') || name.includes('led') || name.includes('灯') ||
+                name.includes('strip') || materialName.includes('light') ||
+                materialName.includes('led') || materialName.includes('emissive')) {
+
+              const material = child.material as MeshStandardMaterial;
+              // 设置自发光
+              material.emissive = new Color(0xFFFFCC); // 暖白色光
+              material.emissiveIntensity = 1.5; // 发光强度
+
+              console.log('找到灯带:', child.name, '设置为发光');
+
+              // 在灯带位置添加点光源
+              const lightSource = new PointLight(0xFFFFCC, 1, 3);
+              lightSource.position.copy(child.position);
+              tvWall.add(lightSource);
+            }
+
+            // 如果是电视屏幕，设置为发光材质
+            if (name.includes('screen') || name.includes('tv') || name.includes('display') ||
+                name.includes('电视') || name.includes('屏幕') || name.includes('显示') ||
+                materialName.includes('screen') || materialName.includes('tv') ||
+                materialName.includes('display')) {
+
+              const material = child.material as MeshStandardMaterial;
+              // 设置蓝白色自发光，模拟电视屏幕效果
+              material.emissive = new Color(0xCCEEFF); // 冷色调蓝白光
+              material.emissiveIntensity = 2; // 屏幕发光强度更高
+              material.metalness = 0.1;
+              material.roughness = 0.3;
+
+              console.log('找到电视屏幕:', child.name, '设置为发光');
+
+              // 在屏幕位置添加点光源，模拟屏幕光照
+              const screenLight = new PointLight(0xCCEEFF, 1.5, 5);
+              screenLight.position.copy(child.position);
+              tvWall.add(screenLight);
+            }
+          }
+        });
+
+        scene.add(tvWall);
+      },
+      (progress) => {
+        console.log('电视墙加载进度:', (progress.loaded / progress.total * 100).toFixed(2) + '%');
+      },
+      (error) => {
+        console.error('电视墙模型加载失败:', error);
+      }
+    );
+
+    // 加载沙发模型
+    gltfLoader.load(
+      './public/model/sofa.glb',
+      (gltf) => {
+        const sofa = gltf.scene;
+
+        console.log('沙发模型加载成功', sofa);
+
+        // 设置沙发位置：贴着13号墙和34号墙
+        // 13号墙: x=-10.5, z=-8（横墙）
+        // 34号墙: x=-16.5, z=-6.75（竖墙）
+        // 沙发放在两墙交角处，背靠34号墙，面向电视墙方向
+        sofa.position.set(-13, 0.5, -5.5); // 贴近34号墙和13号墙的交角
+
+        // 缩放沙发，调整到合适大小
+        sofa.scale.set(6, 6, 6); // 统一缩放6倍，保持比例
+
+        // 旋转沙发，使其面向电视墙（朝向18号墙方向，即z正方向）
+        sofa.rotation.y = 0; // 面向南方（z正方向）
+
+        // 遍历模型，调整材质和阴影
+        sofa.traverse((child) => {
+          if (child instanceof Mesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+
+            // 设置沙发材质颜色为 #ddd4cb
+            const material = child.material as MeshStandardMaterial;
+            if (material) {
+              // 设置固定颜色
+              material.color = new Color(0xddd4cb);
+
+              // 调整材质属性使其更真实
+              material.roughness = 0.7; // 沙发布料的粗糙度
+              material.metalness = 0; // 布料不反光
+              material.envMapIntensity = 0.5;
+
+              console.log('沙发子对象材质已更新:', child.name, '颜色:', material.color);
+            }
+          }
+        });
+
+        scene.add(sofa);
+        console.log('沙发已添加到场景，位置:', sofa.position);
+      },
+      (progress) => {
+        console.log('沙发加载进度:', (progress.loaded / progress.total * 100).toFixed(2) + '%');
+      },
+      (error) => {
+        console.error('沙发模型加载失败:', error);
+      }
+    );
   };
 
   /**
