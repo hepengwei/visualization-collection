@@ -4,6 +4,10 @@
 import React, { useRef, useLayoutEffect } from "react";
 import { useIntl } from "react-intl";
 import {
+  Scene,
+  PerspectiveCamera,
+  WebGLRenderer,
+  Material,
   MeshPhysicalMaterial,
   Mesh,
   Color,
@@ -102,9 +106,9 @@ const CarShow = () => {
   ];
 
   const initializeHandle = (
-    scene: THREE.Scene,
-    camera: THREE.PerspectiveCamera,
-    renderer: THREE.WebGLRenderer
+    scene: Scene,
+    camera: PerspectiveCamera,
+    renderer: WebGLRenderer
   ) => {
     if (containerRef.current) {
       scene.background = new Color("#ddd");
@@ -117,8 +121,8 @@ const CarShow = () => {
 
       // 添加网格地面
       const gridHelper = new GridHelper(15, 15);
-      (gridHelper.material as THREE.Material).opacity = 0.2;
-      (gridHelper.material as THREE.Material).transparent = true;
+      (gridHelper.material as Material).opacity = 0.2;
+      (gridHelper.material as Material).transparent = true;
       scene.add(gridHelper);
 
       loadGlb("./public/model/bmw.glb").then((gltf: GLTF) => {
@@ -156,31 +160,31 @@ const CarShow = () => {
       });
 
       // 添加灯光
-      const light1 = new DirectionalLight(0xffffff, 1);
+      const light1 = new DirectionalLight(0xffffff, 1 * Math.PI);
       light1.position.set(0, 0, 10);
       scene.add(light1);
-      const light2 = new DirectionalLight(0xffffff, 1);
+      const light2 = new DirectionalLight(0xffffff, 1 * Math.PI);
       light2.position.set(0, 0, -10);
       scene.add(light2);
-      const light3 = new DirectionalLight(0xffffff, 1);
+      const light3 = new DirectionalLight(0xffffff, 1 * Math.PI);
       light3.position.set(10, 0, 0);
       scene.add(light3);
-      const light4 = new DirectionalLight(0xffffff, 1);
+      const light4 = new DirectionalLight(0xffffff, 1 * Math.PI);
       light4.position.set(-10, 0, 0);
       scene.add(light4);
-      const light5 = new DirectionalLight(0xffffff, 1);
+      const light5 = new DirectionalLight(0xffffff, 1 * Math.PI);
       light5.position.set(0, 10, 0);
       scene.add(light5);
-      const light6 = new DirectionalLight(0xffffff, 0.3);
+      const light6 = new DirectionalLight(0xffffff, 0.3 * Math.PI);
       light6.position.set(5, 10, 0);
       scene.add(light6);
-      const light7 = new DirectionalLight(0xffffff, 0.3);
+      const light7 = new DirectionalLight(0xffffff, 0.3 * Math.PI);
       light7.position.set(0, 10, 5);
       scene.add(light7);
-      const light8 = new DirectionalLight(0xffffff, 0.3);
+      const light8 = new DirectionalLight(0xffffff, 0.3 * Math.PI);
       light7.position.set(0, 10, -5);
       scene.add(light8);
-      const light9 = new DirectionalLight(0xffffff, 0.3);
+      const light9 = new DirectionalLight(0xffffff, 0.3 * Math.PI);
       light9.position.set(-5, 10, 0);
       scene.add(light9);
     }
