@@ -1,17 +1,17 @@
 import { useRef, useEffect, RefObject } from "react";
-import { Scene, PerspectiveCamera, WebGLRenderer } from "three";
+import { Scene, PerspectiveCamera, WebGLRenderer, SRGBColorSpace } from "three";
 
 type Handle = (
   scene: Scene,
   camera: PerspectiveCamera,
-  renderer: WebGLRenderer
-) => void;
+  renderer: WebGLRenderer,
+) => boolean | void;
 
 const useInitialize = (
   conatinerRef: RefObject<HTMLDivElement>,
   initializeHandle?: Handle | null,
   resizeHandle?: Handle | null,
-  renderHandle?: Handle | null
+  renderHandle?: Handle | null,
 ) => {
   const sceneRef = useRef<Scene | null>(null);
   const cameraRef = useRef<PerspectiveCamera | null>(null);
@@ -20,9 +20,18 @@ const useInitialize = (
 
   const render = () => {
     if (sceneRef.current && cameraRef.current && rendererRef.current) {
-      renderHandle &&
-        renderHandle(sceneRef.current, cameraRef.current, rendererRef.current);
-      rendererRef.current.render(sceneRef.current, cameraRef.current);
+      if (renderHandle) {
+        const hasRender: boolean | void = renderHandle(
+          sceneRef.current,
+          cameraRef.current,
+          rendererRef.current,
+        );
+        if (!hasRender) {
+          rendererRef.current.render(sceneRef.current, cameraRef.current);
+        }
+      } else {
+        rendererRef.current.render(sceneRef.current, cameraRef.current);
+      }
       frameId.current = window.requestAnimationFrame(render);
     }
   };
@@ -40,7 +49,7 @@ const useInitialize = (
         75,
         clientWidth / clientHeight,
         0.1,
-        1000
+        1000,
       );
       camera.position.set(0, 0, 10);
       cameraRef.current = camera;
@@ -51,6 +60,7 @@ const useInitialize = (
       renderer.setSize(clientWidth, clientHeight);
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.shadowMap.enabled = true;
+      renderer.outputColorSpace = SRGBColorSpace;
 
       // 将Canvas插入到页面
       conatinerRef.current.append(renderer.domElement);

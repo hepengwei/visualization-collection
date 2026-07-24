@@ -270,11 +270,11 @@ const ThrowDice = () => {
       renderer.setClearColor('#224141');
 
       // 添加环境光
-      const light = new AmbientLight(0xffffff, 0.5);
+      const light = new AmbientLight(0xffffff, 0.5 * Math.PI);
       scene.add(light);
 
       // 添加右上角灯光
-      const rightTopLight = new PointLight(0xffffff, 1);
+      const rightTopLight = new PointLight(0xffffff, 1.5 * Math.PI);
       rightTopLight.position.set(100, 200, -10);
       rightTopLight.castShadow = true;
       rightTopLight.shadow.camera.near = 5;

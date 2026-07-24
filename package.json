@@ -35,7 +35,7 @@
     "@types/lodash-es": "^4.17.6",
     "@types/react": "^18.0.20",
     "@types/react-dom": "^18.0.6",
-    "@types/three": "^0.150.2",
+    "@types/three": "^0.185.1",
     "@types/webpack-env": "^1.18.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "autoprefixer": "^10.4.11",
@@ -104,7 +104,7 @@
     "react-tilt": "^0.1.4",
     "sphere-collision": "^1.1.11",
     "swiper": "^9.2.0",
-    "three": "^0.151.3",
+    "three": "^0.185.1",
     "typed.js": "^2.0.12",
     "uzip": "^0.20201231.0"
   }
