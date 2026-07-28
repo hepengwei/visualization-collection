@@ -22,4 +22,16 @@
       margin: 3px 0;
     }
   }
+
+  .crosshair {
+    width: 12px;
+    height: 12px;
+    border: 2px solid #ff3b32;
+    border-radius: 50%;
+    box-sizing: border-box;
+    pointer-events: none;
+    position: absolute;
+    top: -12px;
+    left: -12px;
+  }
 }

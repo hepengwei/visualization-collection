@@ -1,7 +1,7 @@
 /**
  * 房屋展示 - 3D房屋漫游
  */
-import React, { useRef, useLayoutEffect } from "react";
+import React, { useRef, useLayoutEffect, useMemo, useCallback } from "react";
 import {
   Scene,
   PerspectiveCamera,
@@ -9,26 +9,38 @@ import {
   Vector3,
   Vector2,
   Color,
+  Mesh,
+  Raycaster,
+  Object3D,
 } from "three";
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
+import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js';
 import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls";
 import { useGlobalContext } from "hooks/useGlobalContext";
 import useInitialize from "hooks/threejs/useInitialize";
 import addLighting from "./addLighting";
-import createHouseStructure from './createHouseStructure';
-import load3dModel from "./load3dModel";
+import addHouseStructure from './addHouseStructure';
+import add3dModel from "./add3dModel";
+import { addCrosshair, crosshairRender, createOutlinePass } from './addCrosshair';
+import { onClickTVScreen } from './addTVScreen';
 import styles from "./index.module.scss";
 
 const HouseDisplay = () => {
-  const { menuWidth } = useGlobalContext();
+  const { menuWidth, headHeight } = useGlobalContext();
   const mainComposerRef = useRef<EffectComposer | null>(null);
   const bloomComposerRef = useRef<EffectComposer | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const tvScreenRef = useRef<Mesh | null>(null);
+  const mousePositionRef = useRef<Vector2>(new Vector2());
+  const raycasterRef = useRef<Raycaster | null>(null);
+  const outlinePassRef = useRef<OutlinePass | null>(null);
+  const currentIntersectedRef = useRef<Object3D | null>(null); // 当前鼠标射线命中的物体
   const controlsRef = useRef<OrbitControls | null>(null); // 使用轨道控制器以便俯视观察
   const velocityRef = useRef<Vector3>(new Vector3());
   const directionRef = useRef<Vector3>(new Vector3());
@@ -125,10 +137,14 @@ const HouseDisplay = () => {
       addLighting(scene);
 
       // 创建并显示地板、墙体和玻璃窗
-      createHouseStructure(scene);
+      addHouseStructure(scene);
 
       // 加载并显示电视墙、沙发、床等模型
-      load3dModel(scene);
+      add3dModel(scene, videoRef.current, tvScreenRef);
+
+      // 添加瞄准准星
+      const raycaster = addCrosshair(scene, containerRef.current);
+      raycasterRef.current = raycaster;
 
       // 启用后期处理器
       //Bloom专用
@@ -148,6 +164,10 @@ const HouseDisplay = () => {
       // 主渲染（无Bloom）
       const mainComposer = new EffectComposer(renderer);
       mainComposer.addPass(new RenderPass(scene, camera));
+      // 鼠标射线指向电视屏幕时，边框高亮显示
+      const outlinePass = createOutlinePass(scene, camera, containerRef.current);
+      outlinePassRef.current = outlinePass;
+      mainComposer.addPass(outlinePass);
       mainComposer.addPass(new OutputPass()); // 必须有，且放在最后
       mainComposerRef.current = mainComposer;
     }
@@ -218,6 +238,10 @@ const HouseDisplay = () => {
     }
     */
 
+    // 瞄准准星跟随鼠标移动
+    const intersectObjects = tvScreenRef.current ? [tvScreenRef.current] : [];
+    crosshairRender(scene, camera, raycasterRef.current, mousePositionRef.current, intersectObjects, outlinePassRef.current, currentIntersectedRef);
+
     // 只让电视屏幕参与Bloom
     camera.layers.set(1);
     bloomComposerRef.current?.render();
@@ -238,6 +262,32 @@ const HouseDisplay = () => {
     resize();
   }, [menuWidth]);
 
+  const onMouseMove = useCallback((e: any) => {
+    if (containerRef.current) {
+      const { clientWidth, clientHeight } = containerRef.current;
+      mousePositionRef.current.x = ((e.clientX - menuWidth + 12) / clientWidth) * 2 - 1;
+      mousePositionRef.current.y = -((e.clientY - headHeight + 12) / clientHeight) * 2 + 1;
+    }
+  }, [menuWidth, headHeight]);
+
+  const onMouseClick = useCallback((e: any) => {
+    if (currentIntersectedRef.current) {
+      if (currentIntersectedRef.current.name === '电视屏幕') {
+        onClickTVScreen(videoRef.current);
+      }
+    }
+  }, []);
+
+  useLayoutEffect(() => {
+    containerRef.current?.addEventListener("mousemove", onMouseMove);
+    containerRef.current?.addEventListener("click", onMouseClick);
+
+    return () => {
+      containerRef.current?.removeEventListener('mousemove', onMouseMove);
+      containerRef.current?.removeEventListener("click", onMouseClick);
+    }
+  }, [menuWidth, headHeight]);
+
   return (
     <div className={styles.container} ref={containerRef}>
       <div className={styles.instructions}>
@@ -246,7 +296,9 @@ const HouseDisplay = () => {
         <div>鼠标右键拖动 平移视角</div>
         <div>鼠标滚轮 缩放视角</div>
       </div>
+      <div className={styles.crosshair} />
       <video
+        ref={videoRef}
         id="tvVideo"
         muted
         autoPlay
