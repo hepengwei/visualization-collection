@@ -1,23 +1,22 @@
 /**
  * 加载并显示家具家电模型
  */
-import {
-  Scene,
-  Mesh,
-  Color,
-  MeshPhysicalMaterial,
-  DoubleSide,
-} from "three";
+import { MutableRefObject } from "react";
+import { Scene, Color, MeshPhysicalMaterial, DoubleSide, Mesh } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
-import addTVScreen from "./addTVScreen";
+import { addTVScreen } from "./addTVScreen";
 
-const load3dModel = (scene: Scene) => {
+const add3dModel = (
+  scene: Scene,
+  video: HTMLVideoElement | null,
+  tvScreenRef: MutableRefObject<Mesh | null>,
+) => {
   const gltfLoader = new GLTFLoader();
   gltfLoader.setCrossOrigin("anonymous");
 
   // 加载电视墙
-  loadTelevisionWall(scene, gltfLoader);
+  loadTelevisionWall(scene, gltfLoader, video, tvScreenRef);
 
   // 加载沙发
   loadSofa(scene, gltfLoader);
@@ -27,11 +26,23 @@ const load3dModel = (scene: Scene) => {
 };
 
 // 加载电视墙
-const loadTelevisionWall = (scene: Scene, gltfLoader: GLTFLoader) => {
+const loadTelevisionWall = (
+  scene: Scene,
+  gltfLoader: GLTFLoader,
+  video: HTMLVideoElement | null,
+  tvScreenRef: MutableRefObject<Mesh | null>,
+) => {
   gltfLoader.load(
     "./public/model/televisionWalls.glb",
     (gltf: GLTF) => {
       const tvWall = gltf.scene;
+
+      // 遍历模型
+      tvWall.traverse((child: any) => {
+        if (child.isMesh) {
+          child.name = "电视墙";
+        }
+      });
 
       // 设置电视墙位置：靠近18号墙（z=4.8），在墙的中间位置
       // 18号墙: x=-9.8, z=4.8, 宽度8.4米，高度4米
@@ -47,7 +58,10 @@ const loadTelevisionWall = (scene: Scene, gltfLoader: GLTFLoader) => {
       scene.add(tvWall);
 
       // 添加电视屏幕，播放视频
-      addTVScreen(scene);
+      const tvScreen: Mesh | null = addTVScreen(scene, video);
+      if (tvScreen) {
+        tvScreenRef.current = tvScreen;
+      }
     },
     (progress) => {
       console.log(
@@ -71,6 +85,7 @@ const loadSofa = (scene: Scene, gltfLoader: GLTFLoader) => {
       // 遍历模型，调整材质和阴影
       sofa.traverse((child: any) => {
         if (child.isMesh) {
+          child.name = "沙发";
           child.castShadow = true;
           child.receiveShadow = true;
 
@@ -154,8 +169,9 @@ const loadBeds = (scene: Scene, gltfLoader: GLTFLoader) => {
       bed.rotation.y = -Math.PI / 2; // 向左旋转90度
 
       // 遍历模型，设置阴影和被子颜色
-      bed.traverse((child) => {
-        if (child instanceof Mesh) {
+      bed.traverse((child: Record<string, any>) => {
+        if (child.isMesh) {
+          child.name = "主卧床";
           child.castShadow = true;
           child.receiveShadow = true;
         }
@@ -211,8 +227,9 @@ const loadBeds = (scene: Scene, gltfLoader: GLTFLoader) => {
       bed2.rotation.y = -Math.PI / 2; // 旋转-90度
 
       // 遍历模型，设置阴影和被子颜色
-      bed2.traverse((child) => {
-        if (child instanceof Mesh) {
+      bed2.traverse((child: Record<string, any>) => {
+        if (child.isMesh) {
+          child.name = "儿童床";
           child.castShadow = true;
           child.receiveShadow = true;
         }
@@ -250,7 +267,8 @@ const loadBeds = (scene: Scene, gltfLoader: GLTFLoader) => {
 
       // 遍历模型，设置阴影和被子颜色
       bed3.traverse((child: Record<string, any>) => {
-        if (child instanceof Mesh) {
+        if (child.isMesh) {
+          child.name = "次卧床";
           child.castShadow = true;
           child.receiveShadow = true;
         }
@@ -270,4 +288,4 @@ const loadBeds = (scene: Scene, gltfLoader: GLTFLoader) => {
   );
 };
 
-export default load3dModel;
+export default add3dModel;

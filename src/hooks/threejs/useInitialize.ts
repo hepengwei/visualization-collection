@@ -48,7 +48,7 @@ const useInitialize = (
       const camera = new PerspectiveCamera(
         75,
         clientWidth / clientHeight,
-        0.1,
+        0.01,
         1000,
       );
       camera.position.set(0, 0, 10);

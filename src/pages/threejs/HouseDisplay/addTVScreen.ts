@@ -15,19 +15,18 @@ import {
   Vector3,
 } from "three";
 
-const addTVScreen = (scene: Scene) => {
-  const video: HTMLVideoElement | null = document.getElementById(
-    "tvVideo",
-  ) as HTMLVideoElement;
+let videoIsPlay = false;
 
+export const addTVScreen = (scene: Scene, video: HTMLVideoElement | null) => {
   if (video) {
     safePlay(video);
+    videoIsPlay = true;
 
     const tvSize = new Vector2(3.75, 2.1); // 电视屏幕的宽高
-    const tvPos = new Vector3(-9.8, 2.2, 3.75); // 电视屏幕位置
+    const tvPos = new Vector3(-9.8, 2.2, 3.76); // 电视屏幕位置
     const videoTexture: any = new VideoTexture(video);
     videoTexture.colorSpace = SRGBColorSpace; // 关键：颜色不灰
-    const tvScreen = createTVScreen(video, tvSize, tvPos, videoTexture);
+    const tvScreen: Mesh = createTVScreen(tvSize, tvPos, videoTexture);
     scene.add(tvScreen);
     const tvLight = createTVLight(tvSize, tvPos);
     scene.add(tvLight);
@@ -36,15 +35,22 @@ const addTVScreen = (scene: Scene) => {
     scene.add(tvProjection.target);
 
     document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible") safePlay(video);
-      else video.pause();
+      if (document.visibilityState === "visible") {
+        if (videoIsPlay) {
+          safePlay(video);
+        }
+      } else {
+        video.pause();
+      }
     });
+
+    return tvScreen;
   }
+  return null;
 };
 
 // 创建电视屏幕
 const createTVScreen = (
-  video: HTMLVideoElement,
   tvSize: Vector2,
   tvPos: Vector3,
   videoTexture: VideoTexture,
@@ -70,8 +76,8 @@ const createTVLight = (tvSize: Vector2, tvPos: Vector3) => {
   const tvLight = new RectAreaLight(
     0xffffff, // 颜色（可以随视频平均色动态改）
     1 * Math.PI, //  第二个参数intensity在v0.155版本后必须要乘以Math.PI
-    tvSize.x,
-    tvSize.y,
+    tvSize.x - 0.2,
+    tvSize.y - 0.2,
   );
   tvLight.position.set(tvPos.x, tvPos.y, tvPos.z + 0.05);
   return tvLight;
@@ -105,4 +111,15 @@ const safePlay = (video: HTMLVideoElement | null) => {
   }
 };
 
-export default addTVScreen;
+// 电视屏幕点击后的回调
+export const onClickTVScreen = (video: HTMLVideoElement | null) => {
+  if (video) {
+    if (video.paused) {
+      video.play();
+      videoIsPlay = true;
+    } else {
+      video.pause();
+      videoIsPlay = false;
+    }
+  }
+};

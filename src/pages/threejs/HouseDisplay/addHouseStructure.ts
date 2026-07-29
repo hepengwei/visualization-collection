@@ -1,5 +1,5 @@
 /**
- * 创建房屋结构，包括地板、所有墙体和玻璃窗
+ * 添加房屋结构，包括地板、所有墙体和玻璃窗
  * showWallLabel 是否显示每个墙体的编号标签，默认不显示
  */
 import {
@@ -24,7 +24,7 @@ import marbleNormalImg from "images/threejs/marbleFloor/marble_normal.png";
 import marbleRoughnessImg from "images/threejs/marbleFloor/marble_roughness.png";
 import marbleHeightImg from "images/threejs/marbleFloor/marble_height.png";
 
-const createHouseStructure = (scene: Scene, showWallLabel = false) => {
+const addHouseStructure = (scene: Scene, showWallLabel = false) => {
   const wallHeight = 4;
   const w = 0.2; // 墙厚保持不变
   const wallColor = 0xf4f3ef; // 珍珠白乳胶漆颜色
@@ -1322,4 +1322,4 @@ const addMarbleFloor = (scene: Scene) => {
   scene.add(gapFloor);
 };
 
-export default createHouseStructure;
+export default addHouseStructure;
