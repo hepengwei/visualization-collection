@@ -73,20 +73,13 @@ const HouseDisplay = () => {
   const initialCameraPosition = useRef(new Vector3(0, 30, 0));
   const initialCameraTarget = useRef(new Vector3(0, 0, 0));
 
-  // 漫游模式相机位置（门口里面一点，在39、26、24号墙围起来的空间）
-  // 39号墙在x=1，26号墙在z=6.4，24号墙在x=4.8
-  // 门口中心大约在x=2.5-3，进门后应该在z=5左右（靠里一点）
+  // 漫游模式相机位置
   const roamingCameraPosition = useRef(new Vector3(2.5, ROAMING_CONFIG.cameraHeight, 5));
 
   // 模式状态: 'overview' 整体模式, 'roaming' 漫游模式
   const [viewMode, setViewMode] = useState<'overview' | 'roaming'>('overview');
   const viewModeRef = useRef<'overview' | 'roaming'>('overview');
-  const [isPointerLocked, setIsPointerLocked] = useState(false); // 指针是否锁定
-
-  // 同步viewMode到ref
-  useLayoutEffect(() => {
-    viewModeRef.current = viewMode;
-  }, [viewMode]);
+  const [isPointerLocked, setIsPointerLocked] = useState(false); // 第一人称控制器指针是否锁定
 
   const initializeHandle = (
     scene: Scene,
@@ -119,6 +112,7 @@ const HouseDisplay = () => {
 
       // ===== 第一人称控制器设置(用于漫游模式) =====
       // 使用容器元素而不是renderer.domElement，避免与OrbitControls冲突
+      // PointerLockControls内置按ESC键就会锁定/解锁指针
       const pointerControls = new PointerLockControls(camera, containerRef.current);
       pointerControlsRef.current = pointerControls;
 
@@ -131,68 +125,12 @@ const HouseDisplay = () => {
 
       // 监听指针锁定/解锁事件
       pointerControls.addEventListener('lock', () => {
-        console.log('指针已锁定，可以使用WASD移动和鼠标转动视角');
         setIsPointerLocked(true);
       });
 
       pointerControls.addEventListener('unlock', () => {
-        console.log('指针已解锁（按了ESC），点击屏幕可重新锁定');
         setIsPointerLocked(false);
       });
-
-      // 键盘事件监听 - WASD移动
-      const onKeyDown = (event: KeyboardEvent) => {
-        if (viewModeRef.current !== 'roaming') return;
-
-        console.log('按键按下:', event.code, '当前模式:', viewModeRef.current);
-
-        switch (event.code) {
-          case "KeyW":
-          case "ArrowUp":
-            moveStateRef.current.forward = true;
-            break;
-          case "KeyS":
-          case "ArrowDown":
-            moveStateRef.current.backward = true;
-            break;
-          case "KeyA":
-          case "ArrowLeft":
-            moveStateRef.current.left = true;
-            break;
-          case "KeyD":
-          case "ArrowRight":
-            moveStateRef.current.right = true;
-            break;
-          case "Space":
-            if (canJumpRef.current) velocityRef.current.y += 5;
-            canJumpRef.current = false;
-            break;
-        }
-      };
-
-      const onKeyUp = (event: KeyboardEvent) => {
-        switch (event.code) {
-          case "KeyW":
-          case "ArrowUp":
-            moveStateRef.current.forward = false;
-            break;
-          case "KeyS":
-          case "ArrowDown":
-            moveStateRef.current.backward = false;
-            break;
-          case "KeyA":
-          case "ArrowLeft":
-            moveStateRef.current.left = false;
-            break;
-          case "KeyD":
-          case "ArrowRight":
-            moveStateRef.current.right = false;
-            break;
-        }
-      };
-
-      document.addEventListener("keydown", onKeyDown);
-      document.addEventListener("keyup", onKeyUp);
 
       // 添加环境光和太阳光
       addLighting(scene);
@@ -231,6 +169,57 @@ const HouseDisplay = () => {
       mainComposer.addPass(outlinePass);
       mainComposer.addPass(new OutputPass());
       mainComposerRef.current = mainComposer;
+
+      // 键盘事件监听 - WASD移动，Space空格
+      const onKeyDown = (event: KeyboardEvent) => {
+        if (animatingRef.current) return;
+        console.log('按键按下:', event.code, '当前模式:', viewModeRef.current);
+
+        switch (event.code) {
+          case "KeyW":
+          case "ArrowUp":
+            moveStateRef.current.forward = true;
+            break;
+          case "KeyS":
+          case "ArrowDown":
+            moveStateRef.current.backward = true;
+            break;
+          case "KeyA":
+          case "ArrowLeft":
+            moveStateRef.current.left = true;
+            break;
+          case "KeyD":
+          case "ArrowRight":
+            moveStateRef.current.right = true;
+            break;
+          case "Space":
+            // 按空格键，切换整体/漫游模式
+            handleModeToggle();
+            break;
+        }
+      };
+      const onKeyUp = (event: KeyboardEvent) => {
+        switch (event.code) {
+          case "KeyW":
+          case "ArrowUp":
+            moveStateRef.current.forward = false;
+            break;
+          case "KeyS":
+          case "ArrowDown":
+            moveStateRef.current.backward = false;
+            break;
+          case "KeyA":
+          case "ArrowLeft":
+            moveStateRef.current.left = false;
+            break;
+          case "KeyD":
+          case "ArrowRight":
+            moveStateRef.current.right = false;
+            break;
+        }
+      };
+      document.addEventListener("keydown", onKeyDown);
+      document.addEventListener("keyup", onKeyUp);
     }
   };
 
@@ -248,7 +237,7 @@ const HouseDisplay = () => {
       const elapsed = performance.now() - animationStartTimeRef.current;
       const progress = Math.min(elapsed / animationDurationRef.current, 1);
 
-      console.log('动画进度:', (progress * 100).toFixed(1) + '%', 'elapsed:', elapsed.toFixed(0) + 'ms');
+      // console.log('动画进度:', (progress * 100).toFixed(1) + '%', 'elapsed:', elapsed.toFixed(0) + 'ms');
 
       // 使用缓动函数使动画更平滑
       const easeProgress = progress < 0.5
@@ -275,9 +264,9 @@ const HouseDisplay = () => {
         camera.rotation.z = 0;
 
         // 每隔一段时间输出日志
-        if (Math.floor(progress * 10) !== Math.floor((progress - 0.05) * 10)) {
-          console.log('动画进度:', Math.floor(progress * 100) + '%', '相机位置:', camera.position, '相机旋转:', camera.rotation);
-        }
+        // if (Math.floor(progress * 10) !== Math.floor((progress - 0.05) * 10)) {
+        //   console.log('动画进度:', Math.floor(progress * 100) + '%', '相机位置:', camera.position, '相机旋转:', camera.rotation);
+        // }
 
         // 天花板下落动画
         if (ceilingGroupRef.current) {
@@ -302,18 +291,6 @@ const HouseDisplay = () => {
         camera.rotation.x = startRotationX + (endRotationX - startRotationX) * easeProgress;
         camera.rotation.y = startRotationY + (endRotationY - startRotationY) * easeProgress;
         camera.rotation.z = 0;
-
-        // 动画过程中持续检查并退出指针锁定（添加错误处理）
-        if (document.pointerLockElement) {
-          try {
-            document.exitPointerLock();
-          } catch (error: any) {
-            // 静默忽略"用户已退出锁定"的错误
-            if (error.message && !error.message.includes('exited the lock')) {
-              console.error('动画中退出指针锁定失败:', error);
-            }
-          }
-        }
 
         // 天花板上升动画
         if (ceilingGroupRef.current) {
@@ -344,7 +321,6 @@ const HouseDisplay = () => {
               }
             }, 100); // 延迟100ms确保DOM稳定
           }
-          console.log('轨道控制器已禁用，即将自动锁定鼠标');
         } else {
           // 重新启用轨道控制器
           if (orbitControlsRef.current) {
@@ -353,6 +329,17 @@ const HouseDisplay = () => {
             orbitControlsRef.current.update();
           }
           console.log('轨道控制器已启用');
+          // 自动解锁指针
+          if (pointerControlsRef.current) {
+            setTimeout(() => {
+              try {
+                pointerControlsRef.current!.unlock();
+                console.log('自动解锁指针成功');
+              } catch (error) {
+                console.error('自动解锁指针失败:', error);
+              }
+            }, 100); // 延迟100ms确保DOM稳定
+          }
         }
       }
     }
@@ -485,25 +472,25 @@ const HouseDisplay = () => {
   /**
    * 模式切换处理函数
    */
-  const handleModeToggle = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation(); // 阻止事件冒泡
+  const handleModeToggle = useCallback((e?: React.MouseEvent<HTMLButtonElement>) => {
+    e?.currentTarget?.blur(); // 点击后立即失焦，避免按下空格或回车键时触发点击事件（由于HTML标准的可访问性特性的存在）
+    e?.stopPropagation(); // 阻止事件冒泡
     if (animatingRef.current) {
-      console.log('动画进行中，忽略点击');
       return; // 动画进行中不允许切换
     }
 
-    const newMode = viewMode === 'overview' ? 'roaming' : 'overview';
+    const newMode = viewModeRef.current === 'overview' ? 'roaming' : 'overview';
     console.log('==== 开始切换模式 ====');
-    console.log('从', viewMode, '切换到', newMode);
+    console.log('从', viewModeRef.current, '切换到', newMode);
     console.log('轨道控制器当前状态:', orbitControlsRef.current?.enabled);
 
+    viewModeRef.current = newMode;
     setViewMode(newMode);
 
     // 开始动画
     animatingRef.current = true;
     animationStartTimeRef.current = performance.now();
     console.log('动画已启动，animatingRef.current =', animatingRef.current);
-    console.log('动画开始时间:', animationStartTimeRef.current);
 
     if (newMode === 'roaming') {
       // 切换到漫游模式
@@ -511,94 +498,34 @@ const HouseDisplay = () => {
       // 立即禁用轨道控制器，避免与指针锁定冲突
       if (orbitControlsRef.current) {
         orbitControlsRef.current.enabled = false;
-        console.log('轨道控制器已禁用，enabled =', orbitControlsRef.current.enabled);
       }
     } else {
       // 切换到整体模式
       console.log('返回整体模式，退出指针锁定并重置状态');
-
-      // 1. 立即强制退出指针锁定
-      const forceUnlock = () => {
-        try {
-          // 只在真正锁定时才退出，避免重复退出报错
-          if (document.pointerLockElement) {
-            document.exitPointerLock();
-            console.log('强制退出指针锁定');
-            return true;
-          }
-          return false;
-        } catch (error: any) {
-          // 忽略"用户已退出锁定"的错误
-          if (!error.message || !error.message.includes('exited the lock')) {
-            console.error('退出指针锁定失败:', error);
-          }
-          return false;
-        }
-      };
-
-      // 立即执行一次
-      forceUnlock();
-
-      // 2. 断开PointerLockControls的事件监听
-      if (pointerControlsRef.current) {
-        pointerControlsRef.current.disconnect();
-        console.log('已断开PointerLockControls的事件监听');
-      }
-
-      // 3. 只在前几次尝试时检查（避免过多的重复调用）
-      const checkAndUnlock = () => {
-        if (document.pointerLockElement) {
-          forceUnlock();
-        }
-      };
-
-      setTimeout(checkAndUnlock, 50);
-      setTimeout(checkAndUnlock, 100);
-
-      // 4. 确保状态更新
-      setIsPointerLocked(false);
-
-      // 5. 重置移动状态
+      // 重置移动状态
       moveStateRef.current = { forward: false, backward: false, left: false, right: false };
       velocityRef.current.set(0, 0, 0);
-
-      // 6. 立即重新启用轨道控制器
-      if (orbitControlsRef.current) {
-        orbitControlsRef.current.enabled = true;
-        console.log('轨道控制器已重新启用');
-      }
-
-      // 7. 延迟重新连接PointerLockControls，以便下次进入漫游模式时可用
-      if (pointerControlsRef.current && containerRef.current) {
-        setTimeout(() => {
-          if (pointerControlsRef.current && containerRef.current) {
-            pointerControlsRef.current.connect(containerRef.current);
-            console.log('已重新连接PointerLockControls');
-          }
-        }, 300);
-      }
     }
-  }, [viewMode]);
+  }, []);
 
   const onMouseMove = useCallback((e: any) => {
     // 只在整体模式下更新鼠标位置
-    if (viewMode === 'overview' && containerRef.current) {
+    if (viewModeRef.current === 'overview' && containerRef.current) {
       const { clientWidth, clientHeight } = containerRef.current;
       mousePositionRef.current.x = ((e.clientX - menuWidth + 12) / clientWidth) * 2 - 1;
       mousePositionRef.current.y = -((e.clientY - headHeight + 12) / clientHeight) * 2 + 1;
     }
-  }, [menuWidth, headHeight, viewMode]);
+  }, [menuWidth, headHeight]);
 
   const onMouseClick = useCallback(() => {
     // 优先处理电视屏幕点击（任何模式下都可以点击电视）
     if (currentIntersectedRef.current && currentIntersectedRef.current.name === '电视屏幕') {
-      console.log('点击了电视屏幕，播放/暂停');
       onClickTVScreen(videoRef.current);
       return; // 点击了电视就不处理其他逻辑
     }
 
     // 处理漫游模式的指针锁定（只有在没有点击电视的情况下）
-    if (viewMode === 'roaming' && !animatingRef.current) {
+    if (viewModeRef.current === 'roaming' && !animatingRef.current) {
       // 检查轨道控制器是否已禁用
       if (orbitControlsRef.current && orbitControlsRef.current.enabled) {
         console.log('轨道控制器还未禁用，等待...');
@@ -617,7 +544,7 @@ const HouseDisplay = () => {
         });
       }
     }
-  }, [viewMode]);
+  }, []);
 
   useLayoutEffect(() => {
     containerRef.current?.addEventListener("mousemove", onMouseMove);
@@ -632,25 +559,24 @@ const HouseDisplay = () => {
   return (
     <div className={styles.container} ref={containerRef}>
       {/* 模式切换按钮 */}
-      <button className={styles.modeToggle} onClick={handleModeToggle}>
+      <button className={styles.modeToggle} onClick={handleModeToggle} tabIndex={-1}>
         {viewMode === 'overview' ? '🚶 进入漫游模式' : '🏠 返回整体模式'}
       </button>
 
       {/* 操作说明 */}
-      {viewMode === 'overview' ? (
+      {viewMode === 'overview' && (
         <div className={styles.instructions}>
           <div>🏠 房屋整体视角</div>
           <div>鼠标左键拖动 旋转视角</div>
           <div>鼠标右键拖动 平移视角</div>
           <div>鼠标滚轮 缩放视角</div>
         </div>
-      ) : (
-        <div className={styles.roamingHint}>
-          {isPointerLocked
-            ? 'WASD移动 | 鼠标转动视角 | ESC解锁鼠标'
-            : '点击屏幕锁定鼠标开始漫游'}
-        </div>
       )}
+      {<div className={styles.roamingHint}>
+        {viewMode === 'overview'
+          ? '空格切换模式'
+          : isPointerLocked ? 'WASD移动 | 鼠标转动视角 | ESC解锁鼠标 | 空格切换模式' : '点击屏幕解锁鼠标 | 空格切换模式'}
+      </div>}
 
       {/* 准星 - 在漫游模式下固定在屏幕中心，否则跟随鼠标 */}
       <div className={`${styles.crosshair} ${viewMode === 'roaming' ? styles.centered : ''}`} />
