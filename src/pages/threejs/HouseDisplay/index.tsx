@@ -34,7 +34,7 @@ import styles from "./index.module.scss";
 
 // 漫游模式配置参数
 const ROAMING_CONFIG = {
-  cameraHeight: 2.5,      // 相机离地板的高度（米）
+  cameraHeight: 2.6,      // 相机离地板的高度（米）
   moveSpeed: 26.0,        // WASD移动速度
   gravity: 9.8 * 3,       // 重力加速度
   friction: 0.9,          // 摩擦系数（0-1，越小摩擦越大）
@@ -136,7 +136,7 @@ const HouseDisplay = () => {
       addLighting(scene);
 
       // 创建并显示地板、墙体和玻璃窗
-      addHouseStructure(scene, false);
+      addHouseStructure(scene, true);
 
       // 加载并显示电视墙、沙发、床等模型
       add3dModel(scene, videoRef.current, tvScreenRef);
@@ -228,7 +228,6 @@ const HouseDisplay = () => {
    * 渲染循环
    */
   const renderHandle = (scene: Scene, camera: PerspectiveCamera) => {
-    // 使用ref而不是state，避免闭包问题
     const currentMode = viewModeRef.current;
 
     // 处理相机动画
