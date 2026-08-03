@@ -22,8 +22,8 @@ export const addTVScreen = (scene: Scene, video: HTMLVideoElement | null) => {
     safePlay(video);
     videoIsPlay = true;
 
-    const tvSize = new Vector2(3.75, 2.1); // 电视屏幕的宽高
-    const tvPos = new Vector3(-9.8, 2.2, 3.76); // 电视屏幕位置
+    const tvSize = new Vector2(3.1, 1.75); // 电视屏幕的宽高
+    const tvPos = new Vector3(-9.8, 1.95, 3.78); // 电视屏幕位置
     const videoTexture: any = new VideoTexture(video);
     videoTexture.colorSpace = SRGBColorSpace; // 关键：颜色不灰
     const tvScreen: Mesh = createTVScreen(tvSize, tvPos, videoTexture);
@@ -97,7 +97,7 @@ const createTVProjection = (tvPos: Vector3, videoTexture: VideoTexture) => {
   // 关键：把视频贴到聚光灯上
   tvProjection.map = videoTexture;
   tvProjection.position.set(tvPos.x, tvPos.y, tvPos.z + 0.05);
-  tvProjection.target.position.set(tvPos.x, 3, 3); // 打向地板
+  tvProjection.target.position.set(tvPos.x, 2.1, 2  ); // 打向地板
   return tvProjection;
 };
 

@@ -25,8 +25,9 @@ import marbleRoughnessImg from "images/threejs/marbleFloor/marble_roughness.png"
 import marbleHeightImg from "images/threejs/marbleFloor/marble_height.png";
 
 const addHouseStructure = (scene: Scene, showWallLabel = false) => {
-  const wallHeight = 4;
-  const w = 0.2; // 墙厚保持不变
+  const wallHeight = 4; // 墙体高度
+  const beamHeight = 0.5; // 门框上方横梁的墙体高度
+  const w = 0.3; // 墙体厚度
   const wallColor = 0xf4f3ef; // 珍珠白乳胶漆颜色
 
   // 创建并添加大理石地板
@@ -519,10 +520,10 @@ const addHouseStructure = (scene: Scene, showWallLabel = false) => {
     showWallLabel,
   );
 
-  // #7 - 入户凹槽底部
+  // #7
   createWallWithLabel(
     7,
-    6.4,
+    6.7,
     wallHeight,
     w,
     -3.2,
@@ -550,10 +551,10 @@ const addHouseStructure = (scene: Scene, showWallLabel = false) => {
   // #9 - 底部外墙右段
   createWallWithLabel(
     9,
-    11.2,
+    11.4,
     wallHeight,
     w,
-    12,
+    12.05,
     wallHeight / 2,
     8.8,
     wallColor,
@@ -783,10 +784,10 @@ const addHouseStructure = (scene: Scene, showWallLabel = false) => {
     14,
     w,
     wallHeight,
-    3.2,
+    3.8,
     -3.2,
     wallHeight / 2,
-    -14.4,
+    -14.0,
     wallColor,
     scene,
     showWallLabel,
@@ -834,38 +835,38 @@ const addHouseStructure = (scene: Scene, showWallLabel = false) => {
     showWallLabel,
   );
 
-  // #19 - 中左竖墙
+  // #19
   createWallWithLabel(
     19,
     w,
     wallHeight,
-    2,
+    2.1,
     -15.6,
     wallHeight / 2,
-    12.2,
+    12.3,
     wallColor,
     scene,
     showWallLabel,
   );
 
-  // #20 - 左下横墙
+  // #20
   createWallWithLabel(
     20,
-    2,
+    2.3,
     wallHeight,
     w,
     -16.6,
     wallHeight / 2,
-    11.2,
+    11.3,
     wallColor,
     scene,
     showWallLabel,
   );
 
-  // #21 - 中下横墙上
+  // #21
   createWallWithLabel(
     21,
-    6.4,
+    6.7,
     wallHeight,
     w,
     -3.2,
@@ -890,43 +891,43 @@ const addHouseStructure = (scene: Scene, showWallLabel = false) => {
     showWallLabel,
   );
 
-  // #23 - 右下顶部横墙
+  // #23
   createWallWithLabel(
     23,
-    4,
+    2.6,
     wallHeight,
     w,
-    15.6,
+    16.4,
     wallHeight / 2,
-    2.48,
+    2.3,
     wallColor,
     scene,
     showWallLabel,
   );
 
-  // #24 - 右下左竖墙
+  // #24
   createWallWithLabel(
     24,
     w,
     wallHeight,
-    4,
+    3,
     4.8,
     wallHeight / 2,
-    4.4,
+    3.9,
     wallColor,
     scene,
     showWallLabel,
   );
 
-  // #25 - 右下右竖墙
+  // #25
   createWallWithLabel(
     25,
     w,
     wallHeight,
-    2.4,
+    3.4,
     6.4,
     wallHeight / 2,
-    7.6,
+    7.3,
     wallColor,
     scene,
     showWallLabel,
@@ -935,12 +936,12 @@ const addHouseStructure = (scene: Scene, showWallLabel = false) => {
   // #26
   createWallWithLabel(
     26,
-    2.8,
+    3,
     wallHeight,
     w,
-    5,
+    5.05,
     wallHeight / 2,
-    6.4,
+    5.5,
     wallColor,
     scene,
     showWallLabel,
@@ -963,10 +964,10 @@ const addHouseStructure = (scene: Scene, showWallLabel = false) => {
   // #28
   createWallWithLabel(
     28,
-    12,
+    11.6,
     wallHeight,
     w,
-    11.6,
+    11.65,
     wallHeight / 2,
     -6.4,
     wallColor,
@@ -1007,7 +1008,7 @@ const addHouseStructure = (scene: Scene, showWallLabel = false) => {
     31,
     w,
     wallHeight,
-    4,
+    4.3,
     -15.6,
     wallHeight / 2,
     -6.8,
@@ -1033,10 +1034,10 @@ const addHouseStructure = (scene: Scene, showWallLabel = false) => {
   // #33
   createWallWithLabel(
     33,
-    2,
+    2.1,
     wallHeight,
     w,
-    16.6,
+    16.5,
     wallHeight / 2,
     -10.4,
     wallColor,
@@ -1058,15 +1059,29 @@ const addHouseStructure = (scene: Scene, showWallLabel = false) => {
     showWallLabel,
   );
 
+  // #35
+  createWallWithLabel(
+    35,
+    w,
+    wallHeight,
+    1.5,
+    -13.2,
+    wallHeight / 2,
+    3.65,
+    wallColor,
+    scene,
+    showWallLabel,
+  );
+
   // #36
   createWallWithLabel(
     36,
-    2,
+    2.4,
     wallHeight,
     w,
-    5.8,
+    5.85,
     wallHeight / 2,
-    2.48,
+    2.3,
     wallColor,
     scene,
     showWallLabel,
@@ -1075,10 +1090,10 @@ const addHouseStructure = (scene: Scene, showWallLabel = false) => {
   // #37
   createWallWithLabel(
     37,
-    3.6,
+    3.7,
     wallHeight,
     w,
-    -0.8,
+    -0.9,
     wallHeight / 2,
     4.4,
     wallColor,
@@ -1091,10 +1106,10 @@ const addHouseStructure = (scene: Scene, showWallLabel = false) => {
     38,
     w,
     wallHeight,
-    2,
+    1.8,
     -14,
     wallHeight / 2,
-    12.2,
+    12.3,
     wallColor,
     scene,
     showWallLabel,
@@ -1105,10 +1120,10 @@ const addHouseStructure = (scene: Scene, showWallLabel = false) => {
     39,
     w,
     wallHeight,
-    2.2,
+    1.5,
     1,
     wallHeight / 2,
-    5.4,
+    5,
     wallColor,
     scene,
     showWallLabel,
@@ -1133,10 +1148,136 @@ const addHouseStructure = (scene: Scene, showWallLabel = false) => {
     41,
     w,
     wallHeight,
-    1.2,
+    1.5,
     -14,
     wallHeight / 2,
     5,
+    wallColor,
+    scene,
+    showWallLabel,
+  );
+
+  // #42
+  createWallWithLabel(
+    42,
+    w,
+    beamHeight,
+    8,
+    -13.2,
+    wallHeight - beamHeight / 2,
+    -0.7,
+    wallColor,
+    scene,
+    showWallLabel,
+  );
+
+  // #43
+  createWallWithLabel(
+    43,
+    8.2,
+    beamHeight,
+    w,
+    11,
+    wallHeight - beamHeight / 2,
+    2.3,
+    wallColor,
+    scene,
+    showWallLabel,
+  );
+
+  // #44
+  createWallWithLabel(
+    44,
+    2.4,
+    beamHeight,
+    w,
+    2.35,
+    wallHeight - beamHeight / 2,
+    5.5,
+    wallColor,
+    scene,
+    showWallLabel,
+  );
+
+  // #45
+  createWallWithLabel(
+    45,
+    w,
+    beamHeight,
+    2.9,
+    -1.35,
+    wallHeight - beamHeight / 2,
+    -8,
+    wallColor,
+    scene,
+    showWallLabel,
+  );
+
+  // #46
+  createWallWithLabel(
+    46,
+    w,
+    beamHeight,
+    2.9,
+    6,
+    wallHeight - beamHeight / 2,
+    -8,
+    wallColor,
+    scene,
+    showWallLabel,
+  );
+
+  // #47
+  createWallWithLabel(
+    47,
+    w,
+    beamHeight,
+    2.9,
+    -3.2,
+    wallHeight - beamHeight / 2,
+    -11,
+    wallColor,
+    scene,
+    showWallLabel,
+  );
+
+  // #48
+  createWallWithLabel(
+    48,
+    2.1,
+    beamHeight,
+    w,
+    4.85,
+    wallHeight - beamHeight / 2,
+    -9.6,
+    wallColor,
+    scene,
+    showWallLabel,
+  );
+
+  // #49
+  createWallWithLabel(
+    49,
+    w,
+    beamHeight,
+    6,
+    -14,
+    wallHeight - beamHeight / 2,
+    8.5,
+    wallColor,
+    scene,
+    showWallLabel,
+  );
+
+  // #50
+  createWallWithLabel(
+    50,
+    2.9,
+    beamHeight,
+    w,
+    -4.2,
+    wallHeight - beamHeight / 2,
+    4.4,
     wallColor,
     scene,
     showWallLabel,

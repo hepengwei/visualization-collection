@@ -56,13 +56,19 @@ export const crosshairRender = (
   intersectObjects: Object3D[],
   outlinePass: OutlinePass | null,
   currentIntersectedRef: MutableRefObject<Object3D | null>,
+  showCrosshair: boolean = true, // 新增参数：是否显示3D准星
 ) => {
+  // 控制3D准星的显示/隐藏
+  reticle.visible = showCrosshair;
+
   if (raycaster) {
     raycaster.setFromCamera(mouse, camera);
     const hits = raycaster.intersectObjects(intersectObjects, true);
     if (hits.length > 0) {
       // 准星贴在命中点
-      reticle.position.copy(hits[0].point);
+      if (showCrosshair) {
+        reticle.position.copy(hits[0].point);
+      }
 
       if (outlinePass) {
         const firstHit = hits[0].object;
@@ -75,10 +81,12 @@ export const crosshairRender = (
       }
     } else {
       // 没打到物体：沿鼠标射线飞到远处
-      const t = camera.far * 0.95; // 接近远裁面
-      const farPoint = new Vector3();
-      raycaster.ray.at(t, farPoint);
-      reticle.position.copy(farPoint);
+      if (showCrosshair) {
+        const t = camera.far * 0.95; // 接近远裁面
+        const farPoint = new Vector3();
+        raycaster.ray.at(t, farPoint);
+        reticle.position.copy(farPoint);
+      }
       if (outlinePass) {
         // 没有瞄准任何东西，清除高亮
         if (currentIntersectedRef.current) {
