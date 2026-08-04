@@ -24,8 +24,18 @@ const addLighting = (scene: Scene) => {
   scene.add(sunLight);
 
   // 辅助光 - 从右侧补光，模拟天空散射光（进一步增加强度）
-  const skyLight = new DirectionalLight(0xb0d4f1, 0.6 * Math.PI); // 天空蓝色调，第二个参数intensity在v0.155版本后必须要乘以Math.PI
+  const skyLight = new DirectionalLight(0xb0d4f1, 0.2 * Math.PI); // 天空蓝色调，第二个参数intensity在v0.155版本后必须要乘以Math.PI
   skyLight.position.set(16, 15, -8);
+  skyLight.castShadow = true;
+  skyLight.shadow.mapSize.width = 2048;
+  skyLight.shadow.mapSize.height = 2048;
+  skyLight.shadow.camera.left = -24;
+  skyLight.shadow.camera.right = 24;
+  skyLight.shadow.camera.top = 24;
+  skyLight.shadow.camera.bottom = -24;
+  skyLight.shadow.camera.near = 0.5;
+  skyLight.shadow.camera.far = 100;
+  skyLight.shadow.bias = -0.0001;
   scene.add(skyLight);
 };
 
