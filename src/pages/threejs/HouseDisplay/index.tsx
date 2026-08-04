@@ -30,6 +30,7 @@ import add3dModel from "./add3dModel";
 import addCeiling from "./addCeiling";
 import { addCrosshair, crosshairRender, createOutlinePass } from './addCrosshair';
 import { onClickTVScreen } from './addTVScreen';
+import { onClickPhoneScreen } from './addPhoneScreen';
 import styles from "./index.module.scss";
 
 // 漫游模式配置参数
@@ -46,8 +47,10 @@ const HouseDisplay = () => {
   const mainComposerRef = useRef<EffectComposer | null>(null);
   const bloomComposerRef = useRef<EffectComposer | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const tvVideoRef = useRef<HTMLVideoElement>(null);
   const tvScreenRef = useRef<Mesh | null>(null);
+  const phoneVideoRef = useRef<HTMLVideoElement>(null);
+  const phoneScreenRef = useRef<Mesh | null>(null);
   const mousePositionRef = useRef<Vector2>(new Vector2());
   const raycasterRef = useRef<Raycaster | null>(null);
   const outlinePassRef = useRef<OutlinePass | null>(null);
@@ -62,6 +65,7 @@ const HouseDisplay = () => {
   const ceilingGroupRef = useRef<Group | null>(null);
   const sceneRef = useRef<Scene | null>(null);
   const cameraRef = useRef<PerspectiveCamera | null>(null);
+  const intersectObjectsRef = useRef<Object3D[]>([]); // 鼠标射线可接受的检测对象列表
   const collisionObjectsRef = useRef<Object3D[]>([]); // 所有可碰撞的物体
 
   // 动画相关
@@ -119,9 +123,9 @@ const HouseDisplay = () => {
       // 限制俯仰角，防止视角过度向下或向上
       // minPolarAngle: 从上方向下看的最小角度（0是正上方）
       // maxPolarAngle: 从上方向下看的最大角度（Math.PI是正下方）
-      // 我们限制在 45度向上 到 135度向下（即不能完全看到天空或地面）
-      pointerControls.minPolarAngle = Math.PI / 4; // 45度，不能过度向上看
-      pointerControls.maxPolarAngle = (Math.PI * 3) / 4; // 135度，不能过度向下看
+      // 我们限制在 30度向上 到 150度向下（即不能完全看到天空或地面）
+      pointerControls.minPolarAngle = Math.PI / 6; // 30度，不能过度向上看
+      pointerControls.maxPolarAngle = (Math.PI * 5) / 6; // 150度，不能过度向下看
 
       // 监听指针锁定/解锁事件
       pointerControls.addEventListener('lock', () => {
@@ -136,10 +140,10 @@ const HouseDisplay = () => {
       addLighting(scene);
 
       // 创建并显示地板、墙体和玻璃窗
-      addHouseStructure(scene, true);
+      addHouseStructure(scene, false);
 
       // 加载并显示电视墙、沙发、床等模型
-      add3dModel(scene, videoRef.current, tvScreenRef);
+      add3dModel(scene, tvVideoRef.current, tvScreenRef, phoneVideoRef.current, phoneScreenRef, intersectObjectsRef);
 
       // 添加天花板（初始隐藏在天空中）
       const ceilingGroup = addCeiling(scene);
@@ -153,7 +157,7 @@ const HouseDisplay = () => {
       const bloomComposer = new EffectComposer(renderer);
       bloomComposer.renderToScreen = false;
       const bloomPass = new UnrealBloomPass(
-        new Vector2(window.innerWidth, window.innerHeight),
+        new Vector2(containerRef.current.clientWidth, containerRef.current.clientHeight),
         1.2,
         0.4,
         0.96,
@@ -439,7 +443,6 @@ const HouseDisplay = () => {
     }
 
     // 瞄准准星渲染
-    const intersectObjects = tvScreenRef.current ? [tvScreenRef.current] : [];
     // 在漫游模式下，准星固定在屏幕中心(0, 0)；在整体模式下，跟随鼠标位置
     const crosshairPosition = currentMode === 'roaming'
       ? new Vector2(0, 0)  // 屏幕中心
@@ -447,7 +450,7 @@ const HouseDisplay = () => {
 
     // 在漫游模式下隐藏3D准星，只显示固定的DOM准星
     const showCrosshair = currentMode === 'overview';
-    crosshairRender(scene, camera, raycasterRef.current, crosshairPosition, intersectObjects, outlinePassRef.current, currentIntersectedRef, showCrosshair);
+    crosshairRender(scene, camera, raycasterRef.current, crosshairPosition, intersectObjectsRef, outlinePassRef.current, currentIntersectedRef, showCrosshair);
 
     // Bloom效果渲染
     camera.layers.set(1);
@@ -517,10 +520,16 @@ const HouseDisplay = () => {
   }, [menuWidth, headHeight]);
 
   const onMouseClick = useCallback(() => {
-    // 优先处理电视屏幕点击（任何模式下都可以点击电视）
-    if (currentIntersectedRef.current && currentIntersectedRef.current.name === '电视屏幕') {
-      onClickTVScreen(videoRef.current);
-      return; // 点击了电视就不处理其他逻辑
+    // 优先处理电视屏幕后手机屏幕的点击（任何模式下都可以点击电视和手机）
+    if (currentIntersectedRef.current) {
+      if (currentIntersectedRef.current.name === '电视屏幕') {
+        onClickTVScreen(tvVideoRef.current);
+        return; // 点击了电视就不处理其他逻辑
+      }
+      if (currentIntersectedRef.current.name === '手机屏幕') {
+        onClickPhoneScreen(phoneVideoRef.current);
+        return; // 点击了手机就不处理其他逻辑
+      }
     }
 
     // 处理漫游模式的指针锁定（只有在没有点击电视的情况下）
@@ -580,7 +589,7 @@ const HouseDisplay = () => {
       {/* 准星 - 在漫游模式下固定在屏幕中心，否则跟随鼠标 */}
       <div className={`${styles.crosshair} ${viewMode === 'roaming' ? styles.centered : ''}`} />
       <video
-        ref={videoRef}
+        ref={tvVideoRef}
         id="tvVideo"
         muted
         autoPlay
@@ -594,6 +603,22 @@ const HouseDisplay = () => {
         style={{ display: 'none' }}
       >
         <source src="public/vista.mp4"></source>
+      </video>
+      <video
+        ref={phoneVideoRef}
+        id="phoneVideo"
+        muted
+        autoPlay
+        preload="true"
+        loop
+        x5-video-player-fullscreen="true"
+        x5-playsinline="true"
+        playsInline
+        webkit-playsinline="true"
+        crossOrigin="anonymous"
+        style={{ display: 'none' }}
+      >
+        <source src="public/dance.mp4"></source>
       </video>
     </div>
   );

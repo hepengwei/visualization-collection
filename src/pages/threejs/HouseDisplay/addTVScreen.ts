@@ -14,6 +14,7 @@ import {
   Vector2,
   Vector3,
 } from "three";
+import { safePlay } from "./utils";
 
 let videoIsPlay = false;
 
@@ -51,11 +52,11 @@ export const addTVScreen = (scene: Scene, video: HTMLVideoElement | null) => {
 
 // 创建电视屏幕
 const createTVScreen = (
-  tvSize: Vector2,
-  tvPos: Vector3,
+  size: Vector2,
+  pos: Vector3,
   videoTexture: VideoTexture,
 ) => {
-  const screenGeo = new PlaneGeometry(tvSize.x, tvSize.y);
+  const screenGeo = new PlaneGeometry(size.x, size.y);
   const screenMat = new MeshStandardMaterial({
     map: videoTexture,
     emissive: 0xffffff,
@@ -63,52 +64,42 @@ const createTVScreen = (
     emissiveIntensity: 2 * Math.PI,
     side: FrontSide,
   });
-  const tvScreen = new Mesh(screenGeo, screenMat);
-  tvScreen.name = "电视屏幕";
-  tvScreen.position.copy(tvPos);
-  tvScreen.rotation.y = Math.PI; // 面向沙发
-  tvScreen.layers.enable(1); // 为了让电视的光能够单独增强
-  return tvScreen;
+  const screen = new Mesh(screenGeo, screenMat);
+  screen.name = "电视屏幕";
+  screen.position.copy(pos);
+  screen.rotation.y = Math.PI; // 面向沙发
+  screen.layers.enable(1); // 为了让电视的光能够单独增强
+  return screen;
 };
 
-// 创建屏幕灯光（模拟电视光，照亮沙发和墙）
-const createTVLight = (tvSize: Vector2, tvPos: Vector3) => {
-  const tvLight = new RectAreaLight(
+// 创建电视屏幕光
+const createTVLight = (size: Vector2, pos: Vector3) => {
+  const light = new RectAreaLight(
     0xffffff, // 颜色（可以随视频平均色动态改）
-    1 * Math.PI, //  第二个参数intensity在v0.155版本后必须要乘以Math.PI
-    tvSize.x - 0.2,
-    tvSize.y - 0.2,
+    1.5 * Math.PI, //  第二个参数intensity在v0.155版本后必须要乘以Math.PI
+    size.x - 0.2,
+    size.y - 0.2,
   );
-  tvLight.position.set(tvPos.x, tvPos.y, tvPos.z + 0.05);
-  return tvLight;
+  light.position.set(pos.x, pos.y, pos.z + 0.05);
+  return light;
 };
 
-// 创建屏幕投影
-const createTVProjection = (tvPos: Vector3, videoTexture: VideoTexture) => {
-  const tvProjection = new SpotLight(
+// 创建电视屏幕投影
+const createTVProjection = (pos: Vector3, videoTexture: VideoTexture) => {
+  const projection = new SpotLight(
     0xffffff,
-    4 * Math.PI, // 第二个参数intensity在v0.155版本后必须要乘以Math.PI
+    3 * Math.PI, // 第二个参数intensity在v0.155版本后必须要乘以Math.PI
     15, // distance
-    Math.PI / 3, // angle
+    Math.PI / 8, // angle
     0.5, // penumbra（边缘柔化）
     1, // decay
   );
 
   // 关键：把视频贴到聚光灯上
-  tvProjection.map = videoTexture;
-  tvProjection.position.set(tvPos.x, tvPos.y, tvPos.z + 0.05);
-  tvProjection.target.position.set(tvPos.x, 2.1, 2  ); // 打向地板
-  return tvProjection;
-};
-
-const safePlay = (video: HTMLVideoElement | null) => {
-  if (document.visibilityState !== "visible") return;
-  const p = video?.play();
-  if (p && p.catch) {
-    p.catch(() => {
-      /* 省电中断，忽略 */
-    });
-  }
+  projection.map = videoTexture;
+  projection.position.set(pos.x, pos.y, pos.z + 0.05);
+  projection.target.position.set(pos.x, 2, 2); // 打向沙发
+  return projection;
 };
 
 // 电视屏幕点击后的回调

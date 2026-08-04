@@ -5,13 +5,6 @@ import { MutableRefObject } from "react";
 import {
   Scene,
   PerspectiveCamera,
-  SRGBColorSpace,
-  PlaneGeometry,
-  MeshStandardMaterial,
-  Mesh,
-  FrontSide,
-  SpotLight,
-  RectAreaLight,
   Vector2,
   Vector3,
   Raycaster,
@@ -36,8 +29,6 @@ export const addCrosshair = (scene: Scene, container: HTMLDivElement) => {
   labelRenderer.domElement.style.position = "absolute";
   labelRenderer.domElement.style.top = "0";
   labelRenderer.domElement.style.left = "0";
-  // labelRenderer.domElement.style.top = "12px";
-  // labelRenderer.domElement.style.left = "12px";
   labelRenderer.domElement.style.pointerEvents = "none";
   labelRenderer.domElement.style.zIndex = "10";
   container.appendChild(labelRenderer.domElement);
@@ -53,7 +44,7 @@ export const crosshairRender = (
   camera: PerspectiveCamera,
   raycaster: Raycaster | null,
   mouse: Vector2,
-  intersectObjects: Object3D[],
+  intersectObjectsRef: MutableRefObject<Object3D[]>,
   outlinePass: OutlinePass | null,
   currentIntersectedRef: MutableRefObject<Object3D | null>,
   showCrosshair: boolean = true, // 新增参数：是否显示3D准星
@@ -63,7 +54,7 @@ export const crosshairRender = (
 
   if (raycaster) {
     raycaster.setFromCamera(mouse, camera);
-    const hits = raycaster.intersectObjects(intersectObjects, true);
+    const hits = raycaster.intersectObjects(intersectObjectsRef.current, true);
     if (hits.length > 0) {
       // 准星贴在命中点
       if (showCrosshair) {
@@ -111,8 +102,10 @@ export const createOutlinePass = (
     camera,
   );
   outlinePass.visibleEdgeColor.set("#1758ee"); // 高亮颜色
-  outlinePass.hiddenEdgeColor.set("#190a05");
+  outlinePass.hiddenEdgeColor.set("#1758ee");
+  outlinePass.edgeThickness = 1.6; // 边缘厚度
   outlinePass.edgeStrength = 10; // 边缘强度
   outlinePass.edgeGlow = 1; // 发光
+  outlinePass.downSampleRatio = 1; // 抗锯齿
   return outlinePass;
 };
