@@ -1,7 +1,7 @@
 /**
- * 添加十字准星
+ * 添加鼠标准星
  */
-import { MutableRefObject } from "react";
+import { MutableRefObject, RefObject } from "react";
 import {
   Scene,
   PerspectiveCamera,
@@ -23,7 +23,11 @@ reticleDiv.className = styles.crosshair;
 const reticle = new CSS2DObject(reticleDiv);
 reticle.scale.set(0.2, 0.2, 0.2); // 控制大小
 
-export const addCrosshair = (scene: Scene, container: HTMLDivElement) => {
+export const addCrosshair = (
+  scene: Scene,
+  container: HTMLDivElement,
+  RaycasterRef: MutableRefObject<Raycaster | null>,
+) => {
   const { clientWidth, clientHeight } = container;
   labelRenderer.setSize(clientWidth, clientHeight);
   labelRenderer.domElement.style.position = "absolute";
@@ -35,25 +39,31 @@ export const addCrosshair = (scene: Scene, container: HTMLDivElement) => {
   scene.add(reticle);
 
   const raycaster = new Raycaster();
+  RaycasterRef.current = raycaster;
   raycaster.far = 50; // 超过 50 个单位不检测
-  return raycaster;
 };
 
 export const crosshairRender = (
   scene: Scene,
   camera: PerspectiveCamera,
   raycaster: Raycaster | null,
-  mouse: Vector2,
+  viewModeRef: MutableRefObject<"overview" | "roaming">,
+  mousePositionRef: RefObject<Vector2>,
   intersectObjectsRef: MutableRefObject<Object3D[]>,
   outlinePass: OutlinePass | null,
   currentIntersectedRef: MutableRefObject<Object3D | null>,
-  showCrosshair: boolean = true, // 新增参数：是否显示3D准星
 ) => {
-  // 控制3D准星的显示/隐藏
+  const showCrosshair = viewModeRef.current === "overview"; // 是否显示3D准星
+  // 控制3D准星的显示/隐藏, 在漫游模式下隐藏3D准星
   reticle.visible = showCrosshair;
 
   if (raycaster) {
-    raycaster.setFromCamera(mouse, camera);
+    // 在漫游模式下，准星固定在屏幕中心(0, 0)；在整体模式下，跟随鼠标位置
+    const crosshairPosition =
+      viewModeRef.current === "roaming"
+        ? new Vector2(0, 0) // 屏幕中心
+        : mousePositionRef.current; // 鼠标位置
+    raycaster.setFromCamera(crosshairPosition as Vector2, camera);
     const hits = raycaster.intersectObjects(intersectObjectsRef.current, true);
     if (hits.length > 0) {
       // 准星贴在命中点
