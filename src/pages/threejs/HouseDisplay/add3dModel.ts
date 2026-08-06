@@ -322,6 +322,7 @@ const loadTable = (
       table.scale.set(5.6, 5.6, 5.6);
       scene.add(table);
 
+      // 加载手机
       loadPhone(scene, gltfLoader, video, phoneScreenRef, intersectObjectsRef);
     },
     (progress) => {
@@ -359,7 +360,7 @@ const loadPhone = (
       });
 
       // 设置手机位置
-      phone.position.set(9.7, 1.45, -1.7);
+      phone.position.set(9.7, 1.43, -1.7);
       // 缩放手机，调整到合适大小
       phone.scale.set(0.4, 0.4, 0.4);
       // 旋转手机

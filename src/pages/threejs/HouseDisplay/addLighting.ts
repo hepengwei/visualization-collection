@@ -12,8 +12,7 @@ const addLighting = (scene: Scene) => {
   const sunLight = new DirectionalLight(0xfffae3, 0.8 * Math.PI); // 暖色调阳光，第二个参数intensity在v0.155版本后必须要乘以Math.PI
   sunLight.position.set(-24, 25, 12); // 从左上方照射（左边为南面）（0.8倍缩放）
   sunLight.castShadow = true;
-  sunLight.shadow.mapSize.width = 2048;
-  sunLight.shadow.mapSize.height = 2048;
+  sunLight.shadow.mapSize.set(1024, 1024);
   sunLight.shadow.camera.left = -24;
   sunLight.shadow.camera.right = 24;
   sunLight.shadow.camera.top = 24;
@@ -27,8 +26,7 @@ const addLighting = (scene: Scene) => {
   const skyLight = new DirectionalLight(0xb0d4f1, 0.2 * Math.PI); // 天空蓝色调，第二个参数intensity在v0.155版本后必须要乘以Math.PI
   skyLight.position.set(16, 15, -8);
   skyLight.castShadow = true;
-  skyLight.shadow.mapSize.width = 2048;
-  skyLight.shadow.mapSize.height = 2048;
+  skyLight.shadow.mapSize.set(1024, 1024);
   skyLight.shadow.camera.left = -24;
   skyLight.shadow.camera.right = 24;
   skyLight.shadow.camera.top = 24;

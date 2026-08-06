@@ -1,6 +1,7 @@
 /**
  * 添加可移动的天花板
  */
+import { MutableRefObject } from "react";
 import {
   Scene,
   BoxGeometry,
@@ -13,8 +14,12 @@ import {
 /**
  * 创建天花板组
  */
-const addCeiling = (scene: Scene): Group => {
+const addCeiling = (
+  scene: Scene,
+  ceilingGroupRef: MutableRefObject<Group | null>,
+) => {
   const ceilingGroup = new Group();
+  ceilingGroupRef.current = ceilingGroup;
   ceilingGroup.name = "天花板组";
 
   const ceilingHeight = 0.2; // 天花板厚度
@@ -41,7 +46,6 @@ const addCeiling = (scene: Scene): Group => {
   ceilingGroup.position.y = 50;
 
   scene.add(ceilingGroup);
-  return ceilingGroup;
 };
 
 export default addCeiling;
