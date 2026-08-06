@@ -28,6 +28,7 @@ import addLighting from "./addLighting";
 import addHouseStructure from './addHouseStructure';
 import add3dModel from "./add3dModel";
 import addCeiling from "./addCeiling";
+import { addCeilingLamp, allCeilingLampsVisibleToggle, dynamicOptimizationLampLightRender } from './addCeilingLamp';
 import { addCrosshair, crosshairRender, createOutlinePass } from './addCrosshair';
 import { onClickTVScreen } from './addTVScreen';
 import { onClickPhoneScreen } from './addPhoneScreen';
@@ -108,8 +109,10 @@ const HouseDisplay = () => {
       add3dModel(scene, tvVideoRef.current, tvScreenRef, phoneVideoRef.current, phoneScreenRef, intersectObjectsRef);
 
       // 添加天花板（初始隐藏在天空中）
-      const ceilingGroup = addCeiling(scene);
-      ceilingGroupRef.current = ceilingGroup;
+      addCeiling(scene, ceilingGroupRef);
+
+      // 添加所有房间吊灯
+      addCeilingLamp(scene);
 
       // 添加鼠标准星
       addCrosshair(scene, containerRef.current, raycasterRef);
@@ -126,6 +129,7 @@ const HouseDisplay = () => {
         viewModeRef,
         orbitControlsRef,
         animationStartTimeRef,
+        allCeilingLampsVisibleToggle,
       );
 
       // 启用后期处理器
@@ -156,15 +160,18 @@ const HouseDisplay = () => {
    */
   const renderHandle = (scene: Scene, camera: PerspectiveCamera) => {
     // 模式切换动画过程渲染
-    modeToggleAnimationRender(camera, animatingRef, viewModeRef, orbitControlsRef, pointerControlsRef, initialCameraPosition, initialCameraTarget, ceilingGroupRef, animationStartTimeRef, animationDurationRef)
+    modeToggleAnimationRender(camera, animatingRef, viewModeRef, orbitControlsRef, pointerControlsRef, initialCameraPosition, initialCameraTarget, ceilingGroupRef, animationStartTimeRef, animationDurationRef, allCeilingLampsVisibleToggle)
 
     // 整体模式下更新轨道控制器
     if (viewModeRef.current === 'overview' && orbitControlsRef.current && !animatingRef.current) {
       orbitControlsRef.current.update();
     }
 
-    // 漫游模式下的第一人称移动过程渲染
+    // 漫游模式下第一人称控制器和摄像机移动过程渲染
     pointerControlsMoveRender(camera, animatingRef, viewModeRef, pointerControlsRef, prevTimeRef)
+
+    // 漫游模式下，实时计算距离摄像机最近的n个吊灯，打开吊灯光源，其他则关闭（客厅和餐厅吊灯除外）
+    dynamicOptimizationLampLightRender(camera, animatingRef, viewModeRef);
 
     // 鼠标准星渲染
     crosshairRender(scene, camera, raycasterRef.current, viewModeRef, mousePositionRef, intersectObjectsRef, outlinePassRef.current, currentIntersectedRef);
@@ -194,7 +201,7 @@ const HouseDisplay = () => {
       <button
         className={styles.modeToggle}
         onClick={
-          (e) => handleModeToggle(e, animatingRef, setViewMode, viewModeRef, orbitControlsRef, animationStartTimeRef)
+          (e) => handleModeToggle(e, animatingRef, setViewMode, viewModeRef, orbitControlsRef, animationStartTimeRef, allCeilingLampsVisibleToggle)
         }
         tabIndex={-1}
       >

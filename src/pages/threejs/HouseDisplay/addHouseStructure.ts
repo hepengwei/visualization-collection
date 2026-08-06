@@ -24,12 +24,12 @@ import marbleNormalImg from "images/threejs/marbleFloor/marble_normal.png";
 import marbleRoughnessImg from "images/threejs/marbleFloor/marble_roughness.png";
 import marbleHeightImg from "images/threejs/marbleFloor/marble_height.png";
 
-const addHouseStructure = (scene: Scene, showWallLabel = false) => {
-  const wallHeight = 4; // 墙体高度
-  const beamHeight = 0.5; // 门框上方横梁的墙体高度
-  const w = 0.3; // 墙体厚度
-  const wallColor = 0xf4f3ef; // 珍珠白乳胶漆颜色
+export const wallHeight = 4; // 墙体高度
+const beamHeight = 0.5; // 门框上方横梁的墙体高度
+const w = 0.3; // 墙体厚度
+const wallColor = 0xf4f3ef; // 珍珠白乳胶漆颜色
 
+const addHouseStructure = (scene: Scene, showWallLabel = false) => {
   // 创建并添加大理石地板
   addMarbleFloor(scene);
 

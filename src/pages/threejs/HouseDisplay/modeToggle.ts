@@ -22,17 +22,19 @@ import {
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls";
 
+export type ViewMode = "overview" | "roaming";
+
 // 漫游模式配置参数
 const ROAMING_CONFIG = {
   cameraHeight: 2.6, // 相机离地板的高度（米）
-  moveSpeed: 25, // WASD移动速度
+  moveSpeed: 40, // WASD移动速度
   gravity: 9.8 * 3, // 重力加速度
-  friction: 0.9, // 摩擦系数（0-1，越小摩擦越大）
+  friction: 0.8, // 摩擦系数（0-1，越小摩擦越大，惯性越小）
   collisionDistance: 0.5, // 碰撞检测距离（米）
 };
 
 // 开始漫游模式时相机的位置
-const roamingCameraPosition = new Vector3(2.5, ROAMING_CONFIG.cameraHeight, 5);
+const startRoamingCameraPosition = new Vector3(2.5, ROAMING_CONFIG.cameraHeight, 5);
 
 // 第一人称控制器移动速度
 const velocity = new Vector3();
@@ -60,8 +62,8 @@ export const useModeToggle = (
   onClickPhoneScreen: (video: HTMLVideoElement | null) => void,
 ) => {
   // 模式状态: 'overview' 整体模式, 'roaming' 漫游模式
-  const [viewMode, setViewMode] = useState<"overview" | "roaming">("overview");
-  const viewModeRef = useRef<"overview" | "roaming">("overview");
+  const [viewMode, setViewMode] = useState<ViewMode>("overview");
+  const viewModeRef = useRef<ViewMode>("overview");
   const pointerControlsRef = useRef<PointerLockControls | null>(null); // 第一人称控制器
   const [isPointerLocked, setIsPointerLocked] = useState(false); // 第一人称控制器指针是否锁定
   const mousePositionRef = useRef<Vector2>(new Vector2()); // 鼠标位置
@@ -107,7 +109,6 @@ export const useModeToggle = (
         return;
       }
       if (pointerControlsRef.current && !pointerControlsRef.current.isLocked) {
-        console.log("尝试重新锁定第一人称控制器...");
         requestAnimationFrame(() => {
           try {
             pointerControlsRef.current!.lock();
@@ -153,10 +154,11 @@ export const initModeToggle = (
   pointerControlsRef: MutableRefObject<PointerLockControls | null>,
   setIsPointerLocked: (isPointerLocked: boolean) => void,
   animatingRef: MutableRefObject<boolean>,
-  setViewMode: (viewMode: "overview" | "roaming") => void,
-  viewModeRef: MutableRefObject<"overview" | "roaming">,
+  setViewMode: (viewMode: ViewMode) => void,
+  viewModeRef: MutableRefObject<ViewMode>,
   orbitControlsRef: RefObject<OrbitControls | null>,
   animationStartTimeRef: MutableRefObject<number>,
+  ceilingLampsVisibleToggle: (visible: boolean) => void,
 ) => {
   // ===== 第一人称控制器(用于漫游模式) =====
   // 使用容器元素而不是renderer.domElement，避免与OrbitControls冲突
@@ -185,11 +187,14 @@ export const initModeToggle = (
   // 收集第一人称控制器可碰撞的所有物体
   scene.traverse((object) => {
     if (object instanceof Mesh && object.geometry) {
-      // 排除地板(y<=0.1的物体)、天花板、准星
+      // 排除地板(y<=0.1的物体)、天花板、准星、吊灯
       if (
         object.position.y > 0.1 &&
         object.name !== "天花板组" &&
-        !object.name.includes("准星")
+        !object.name.includes("准星") &&
+        !object.name.includes("吊灯") &&
+        // 排除吊灯的所有父级Group
+        !isChildOfLamp(object)
       ) {
         collisionObjects.push(object);
       }
@@ -199,7 +204,6 @@ export const initModeToggle = (
   // 键盘事件监听 - WASD移动，Space空格
   const onKeyDown = (event: KeyboardEvent) => {
     if (animatingRef.current) return;
-    console.log("按键按下:", event.code, "当前模式:", viewModeRef.current);
 
     switch (event.code) {
       case "KeyW":
@@ -227,6 +231,7 @@ export const initModeToggle = (
           viewModeRef,
           orbitControlsRef,
           animationStartTimeRef,
+          ceilingLampsVisibleToggle,
         );
         break;
     }
@@ -259,7 +264,7 @@ export const initModeToggle = (
 export const modeToggleAnimationRender = (
   camera: PerspectiveCamera,
   animatingRef: MutableRefObject<boolean>,
-  viewModeRef: MutableRefObject<"overview" | "roaming">,
+  viewModeRef: MutableRefObject<ViewMode>,
   orbitControlsRef: RefObject<OrbitControls | null>,
   pointerControlsRef: RefObject<PointerLockControls | null>,
   initialCameraPosition: Vector3,
@@ -267,11 +272,11 @@ export const modeToggleAnimationRender = (
   ceilingGroupRef: MutableRefObject<Group | null>,
   animationStartTimeRef: MutableRefObject<number>,
   animationDurationRef: MutableRefObject<number>,
+  ceilingLampsVisibleToggle: (visible: boolean) => void,
 ) => {
   // 处理相机动画
   if (animatingRef.current) {
     const currentMode = viewModeRef.current;
-    console.log("检测到动画进行中，当前模式:", currentMode);
     const elapsed = performance.now() - animationStartTimeRef.current;
     const progress = Math.min(elapsed / animationDurationRef.current, 1);
 
@@ -285,7 +290,7 @@ export const modeToggleAnimationRender = (
       // 切换到漫游模式的动画
       camera.position.lerpVectors(
         initialCameraPosition,
-        roamingCameraPosition,
+        startRoamingCameraPosition,
         easeProgress,
       );
 
@@ -317,7 +322,7 @@ export const modeToggleAnimationRender = (
     } else {
       // 切换到整体模式的动画
       camera.position.lerpVectors(
-        roamingCameraPosition,
+        startRoamingCameraPosition,
         initialCameraPosition,
         easeProgress,
       );
@@ -349,6 +354,8 @@ export const modeToggleAnimationRender = (
 
       // 动画结束后的控制器状态确认
       if (currentMode === "roaming") {
+        // 将所有吊灯显示出来
+        ceilingLampsVisibleToggle(true);
         // 确保轨道控制器完全禁用
         if (orbitControlsRef.current) {
           orbitControlsRef.current.enabled = false;
@@ -388,11 +395,11 @@ export const modeToggleAnimationRender = (
   }
 };
 
-// 漫游模式时第一人称控制器移动的动画渲染
+// 漫游模式时第一人称控制器和摄像机移动的动画渲染
 export const pointerControlsMoveRender = (
   camera: PerspectiveCamera,
   animatingRef: MutableRefObject<boolean>,
-  viewModeRef: MutableRefObject<"overview" | "roaming">,
+  viewModeRef: MutableRefObject<ViewMode>,
   pointerControlsRef: RefObject<PointerLockControls | null>,
   prevTimeRef: MutableRefObject<number>,
 ) => {
@@ -480,10 +487,11 @@ export const pointerControlsMoveRender = (
 export const handleModeToggle = (
   e: React.MouseEvent<HTMLButtonElement> | null,
   animatingRef: MutableRefObject<boolean>,
-  setViewMode: (viewMode: "overview" | "roaming") => void,
-  viewModeRef: MutableRefObject<"overview" | "roaming">,
+  setViewMode: (viewMode: ViewMode) => void,
+  viewModeRef: MutableRefObject<ViewMode>,
   orbitControlsRef: RefObject<OrbitControls | null>,
   animationStartTimeRef: MutableRefObject<number>,
+  ceilingLampsVisibleToggle: (visible: boolean) => void,
 ) => {
   e?.currentTarget?.blur(); // 点击后立即失焦，避免按下空格或回车键时触发点击事件（由于HTML标准的可访问性特性的存在）
   e?.stopPropagation(); // 阻止事件冒泡
@@ -512,6 +520,8 @@ export const handleModeToggle = (
   } else {
     // 切换到整体模式
     console.log("返回整体模式，退出指针锁定并重置状态");
+    // 将所有吊灯隐藏
+    ceilingLampsVisibleToggle(false);
     // 重置移动状态
     moveState = {
       forward: false,
@@ -521,4 +531,16 @@ export const handleModeToggle = (
     };
     velocity.set(0, 0, 0);
   }
+};
+
+// 检查对象是否是吊灯的子对象
+const isChildOfLamp = (object: Object3D): boolean => {
+  let current = object.parent;
+  while (current) {
+    if (current.name && current.name.includes("吊灯")) {
+      return true;
+    }
+    current = current.parent;
+  }
+  return false;
 };
