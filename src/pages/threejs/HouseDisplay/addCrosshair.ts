@@ -17,42 +17,65 @@ import {
 import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass.js";
 import styles from "./index.module.scss";
 
-const labelRenderer = new CSS2DRenderer();
-const reticleDiv = document.createElement("div");
-reticleDiv.className = styles.crosshair;
-const reticle = new CSS2DObject(reticleDiv);
-reticle.scale.set(0.2, 0.2, 0.2); // 控制大小
-
 export const addCrosshair = (
   scene: Scene,
   container: HTMLDivElement,
-  RaycasterRef: MutableRefObject<Raycaster | null>,
+  labelRendererRef: MutableRefObject<CSS2DRenderer | null>,
+  raycasterRef: MutableRefObject<Raycaster | null>,
+  reticleRef: MutableRefObject<CSS2DObject | null>,
 ) => {
-  const { clientWidth, clientHeight } = container;
-  labelRenderer.setSize(clientWidth, clientHeight);
-  labelRenderer.domElement.style.position = "absolute";
-  labelRenderer.domElement.style.top = "0";
-  labelRenderer.domElement.style.left = "0";
-  labelRenderer.domElement.style.pointerEvents = "none";
-  labelRenderer.domElement.style.zIndex = "10";
-  container.appendChild(labelRenderer.domElement);
-  scene.add(reticle);
+  if (container) {
+    // 创建 labelRenderer
+    const labelRenderer = new CSS2DRenderer();
+    labelRendererRef.current = labelRenderer;
+    const { clientWidth, clientHeight } = container;
+    labelRenderer.setSize(clientWidth, clientHeight);
+    labelRenderer.domElement.style.position = "absolute";
+    labelRenderer.domElement.style.top = "0";
+    labelRenderer.domElement.style.left = "0";
+    labelRenderer.domElement.style.pointerEvents = "none";
+    labelRenderer.domElement.style.zIndex = "10";
+    container.appendChild(labelRenderer.domElement);
+  }
 
+  if (scene) {
+    // 创建鼠标准星
+    const reticleDiv = document.createElement("div");
+    reticleDiv.className = styles.crosshair;
+    const reticle = new CSS2DObject(reticleDiv);
+    reticle.scale.set(0.2, 0.2, 0.2); // 控制大小
+    reticleRef.current = reticle;
+    scene.add(reticle);
+  }
+
+  // 创建射线
   const raycaster = new Raycaster();
-  RaycasterRef.current = raycaster;
+  raycasterRef.current = raycaster;
   raycaster.far = 50; // 超过 50 个单位不检测
+};
+
+export const resizeCrosshair = (
+  container: HTMLDivElement | null,
+  labelRenderer: CSS2DRenderer | null,
+) => {
+  if (container && labelRenderer) {
+    labelRenderer.setSize(container.clientWidth, container.clientHeight);
+  }
 };
 
 export const crosshairRender = (
   scene: Scene,
   camera: PerspectiveCamera,
+  labelRenderer: CSS2DRenderer | null,
   raycaster: Raycaster | null,
+  reticle: CSS2DObject | null,
   viewModeRef: MutableRefObject<"overview" | "roaming">,
   mousePositionRef: RefObject<Vector2>,
   intersectObjectsRef: MutableRefObject<Object3D[]>,
   outlinePass: OutlinePass | null,
   currentIntersectedRef: MutableRefObject<Object3D | null>,
 ) => {
+  if (!reticle) return;
   const showCrosshair = viewModeRef.current === "overview"; // 是否显示3D准星
   // 控制3D准星的显示/隐藏, 在漫游模式下隐藏3D准星
   reticle.visible = showCrosshair;
@@ -68,7 +91,7 @@ export const crosshairRender = (
     if (hits.length > 0) {
       // 准星贴在命中点
       if (showCrosshair) {
-        reticle.position.copy(hits[0].point);
+        reticle?.position.copy(hits[0].point);
       }
 
       if (outlinePass) {
@@ -86,7 +109,7 @@ export const crosshairRender = (
         const t = camera.far * 0.95; // 接近远裁面
         const farPoint = new Vector3();
         raycaster.ray.at(t, farPoint);
-        reticle.position.copy(farPoint);
+        reticle?.position.copy(farPoint);
       }
       if (outlinePass) {
         // 没有瞄准任何东西，清除高亮
@@ -97,7 +120,7 @@ export const crosshairRender = (
       currentIntersectedRef.current = null;
     }
   }
-  labelRenderer.render(scene, camera);
+  labelRenderer?.render(scene, camera);
 };
 
 export const createOutlinePass = (

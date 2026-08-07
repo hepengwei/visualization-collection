@@ -1,5 +1,5 @@
 /**
- * 添加可移动的天花板
+ * 添加房屋天花板
  */
 import { MutableRefObject } from "react";
 import {

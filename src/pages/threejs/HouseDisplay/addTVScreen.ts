@@ -103,7 +103,7 @@ const createTVProjection = (pos: Vector3, videoTexture: VideoTexture) => {
 };
 
 // 电视屏幕点击后的回调
-export const onClickTVScreen = (video: HTMLVideoElement | null) => {
+export const onClickTVScreen = (video?: HTMLVideoElement | null) => {
   if (video) {
     if (video.paused) {
       video.play();
