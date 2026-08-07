@@ -6,6 +6,8 @@ import { useIntl } from "react-intl";
 import { AppstoreOutlined } from "@ant-design/icons";
 import {
   Scene,
+  PerspectiveCamera,
+  WebGLRenderer,
   BufferGeometry,
   SphereGeometry,
   PlaneGeometry,
@@ -104,7 +106,7 @@ const EarthDisplay = () => {
   const rightBoxRef = useRef<HTMLDivElement>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
   const resourceManagerRef = useRef<ResourceManager | null>(null);
-  const earthObjRef = useRef<THREE.Object3D | null>(null); // 大地球对象(包含大气层)
+  const earthObjRef = useRef<Object3D | null>(null); // 大地球对象(包含大气层)
   const fluctuatingApertureListRef = useRef<Mesh[]>([]); // 所有标注点的波动光圈对象
   const flyLineListRef = useRef<Points[]>([]); // 所有航线对象
   const [showMainPage, setShowMainPage] = useState<boolean>(true);
@@ -367,9 +369,9 @@ const EarthDisplay = () => {
   };
 
   const initializeHandle = (
-    scene: THREE.Scene,
-    camera: THREE.PerspectiveCamera,
-    renderer: THREE.WebGLRenderer
+    scene: Scene,
+    camera: PerspectiveCamera,
+    renderer: WebGLRenderer
   ) => {
     if (containerRef.current) {
       resourceManagerRef.current = new ResourceManager(resourceList, () => {
@@ -405,7 +407,7 @@ const EarthDisplay = () => {
       if (newScale <= fluctuatingApertureSize * 1.5) {
         (mesh.material as Material).opacity = Math.max(
           ((newScale - fluctuatingApertureSize) / fluctuatingApertureSize) *
-            0.5,
+          0.5,
           1
         ); // 透明度在0~1之间逐渐增加
       } else if (
@@ -414,8 +416,8 @@ const EarthDisplay = () => {
       ) {
         (mesh.material as Material).opacity = Math.min(
           1 -
-            ((newScale - fluctuatingApertureSize) / fluctuatingApertureSize) *
-              0.3,
+          ((newScale - fluctuatingApertureSize) / fluctuatingApertureSize) *
+          0.3,
           0
         ); // 透明度在0~1之间逐渐减小
       } else {
