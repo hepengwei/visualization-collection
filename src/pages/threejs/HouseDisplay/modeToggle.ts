@@ -56,10 +56,10 @@ export const useModeToggle = (
   headHeight: number,
   currentIntersectedRef: MutableRefObject<Object3D | null>,
   orbitControlsRef: MutableRefObject<OrbitControls | null>,
-  tvVideoRef: MutableRefObject<HTMLVideoElement | null>,
-  onClickTVScreen: (video: HTMLVideoElement | null) => void,
-  phoneVideoRef: MutableRefObject<HTMLVideoElement | null>,
-  onClickPhoneScreen: (video: HTMLVideoElement | null) => void,
+  tvVideoRef?: MutableRefObject<HTMLVideoElement | null>,
+  onClickTVScreen?: (video?: HTMLVideoElement | null) => void,
+  phoneVideoRef?: MutableRefObject<HTMLVideoElement | null>,
+  onClickPhoneScreen?: (video?: HTMLVideoElement | null) => void,
 ) => {
   // 模式状态: 'overview' 整体模式, 'roaming' 漫游模式
   const [viewMode, setViewMode] = useState<ViewMode>("overview");
@@ -93,11 +93,11 @@ export const useModeToggle = (
     // 优先处理电视屏幕后手机屏幕的点击（任何模式下都可以点击电视和手机）
     if (currentIntersectedRef.current) {
       if (currentIntersectedRef.current.name === "电视屏幕") {
-        onClickTVScreen(tvVideoRef.current);
+        onClickTVScreen?.(tvVideoRef?.current);
         return; // 点击了电视就不处理其他逻辑
       }
       if (currentIntersectedRef.current.name === "手机屏幕") {
-        onClickPhoneScreen(phoneVideoRef.current);
+        onClickPhoneScreen?.(phoneVideoRef?.current);
         return; // 点击了手机就不处理其他逻辑
       }
     }
@@ -158,7 +158,7 @@ export const initModeToggle = (
   viewModeRef: MutableRefObject<ViewMode>,
   orbitControlsRef: RefObject<OrbitControls | null>,
   animationStartTimeRef: MutableRefObject<number>,
-  ceilingLampsVisibleToggle: (visible: boolean) => void,
+  allCeilingLampsVisibleToggle?: (visible: boolean) => void,
 ) => {
   // ===== 第一人称控制器(用于漫游模式) =====
   // 使用容器元素而不是renderer.domElement，避免与OrbitControls冲突
@@ -231,7 +231,7 @@ export const initModeToggle = (
           viewModeRef,
           orbitControlsRef,
           animationStartTimeRef,
-          ceilingLampsVisibleToggle,
+          allCeilingLampsVisibleToggle,
         );
         break;
     }
@@ -272,7 +272,7 @@ export const modeToggleAnimationRender = (
   ceilingGroupRef: MutableRefObject<Group | null>,
   animationStartTimeRef: MutableRefObject<number>,
   animationDurationRef: MutableRefObject<number>,
-  ceilingLampsVisibleToggle: (visible: boolean) => void,
+  allCeilingLampsVisibleToggle: (visible: boolean) => void,
 ) => {
   // 处理相机动画
   if (animatingRef.current) {
@@ -355,7 +355,7 @@ export const modeToggleAnimationRender = (
       // 动画结束后的控制器状态确认
       if (currentMode === "roaming") {
         // 将所有吊灯显示出来
-        ceilingLampsVisibleToggle(true);
+        allCeilingLampsVisibleToggle?.(true);
         // 确保轨道控制器完全禁用
         if (orbitControlsRef.current) {
           orbitControlsRef.current.enabled = false;
@@ -491,7 +491,7 @@ export const handleModeToggle = (
   viewModeRef: MutableRefObject<ViewMode>,
   orbitControlsRef: RefObject<OrbitControls | null>,
   animationStartTimeRef: MutableRefObject<number>,
-  ceilingLampsVisibleToggle: (visible: boolean) => void,
+  allCeilingLampsVisibleToggle?: (visible: boolean) => void,
 ) => {
   e?.currentTarget?.blur(); // 点击后立即失焦，避免按下空格或回车键时触发点击事件（由于HTML标准的可访问性特性的存在）
   e?.stopPropagation(); // 阻止事件冒泡
@@ -521,7 +521,7 @@ export const handleModeToggle = (
     // 切换到整体模式
     console.log("返回整体模式，退出指针锁定并重置状态");
     // 将所有吊灯隐藏
-    ceilingLampsVisibleToggle(false);
+    allCeilingLampsVisibleToggle?.(false);
     // 重置移动状态
     moveState = {
       forward: false,

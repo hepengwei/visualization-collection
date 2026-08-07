@@ -2,7 +2,6 @@
  * 添加手机屏幕，播放视频
  */
 import {
-  Scene,
   VideoTexture,
   SRGBColorSpace,
   PlaneGeometry,
@@ -112,7 +111,7 @@ const createPhoneProjection = (pos: Vector3, videoTexture: VideoTexture) => {
 };
 
 // 电视屏幕点击后的回调
-export const onClickPhoneScreen = (video: HTMLVideoElement | null) => {
+export const onClickPhoneScreen = (video?: HTMLVideoElement | null) => {
   if (video) {
     if (video.paused) {
       video.play();

@@ -68,7 +68,7 @@ const useInitialize = (
       // 渲染
       render();
 
-      initializeHandle && initializeHandle(scene, camera, renderer);
+      initializeHandle?.(scene, camera, renderer);
     }
   };
 
@@ -91,8 +91,7 @@ const useInitialize = (
       // 设置渲染器的像素比
       rendererRef.current.setPixelRatio(window.devicePixelRatio);
 
-      resizeHandle &&
-        resizeHandle(sceneRef.current, cameraRef.current, rendererRef.current);
+      resizeHandle?.(sceneRef.current, cameraRef.current, rendererRef.current);
     }
   };
 

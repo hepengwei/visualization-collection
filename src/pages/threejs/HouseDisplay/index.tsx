@@ -10,10 +10,11 @@ import {
   Vector2,
   Color,
   Mesh,
-  Raycaster,
   Object3D,
   Group,
+  Raycaster,
 } from "three";
+import { CSS2DRenderer, CSS2DObject } from "three/examples/jsm/renderers/CSS2DRenderer";
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
@@ -29,9 +30,9 @@ import addHouseStructure from './addHouseStructure';
 import add3dModel from "./add3dModel";
 import addCeiling from "./addCeiling";
 import { addCeilingLamp, allCeilingLampsVisibleToggle, dynamicOptimizationLampLightRender } from './addCeilingLamp';
-import { addCrosshair, crosshairRender, createOutlinePass } from './addCrosshair';
 import { onClickTVScreen } from './addTVScreen';
 import { onClickPhoneScreen } from './addPhoneScreen';
+import { addCrosshair, resizeCrosshair, crosshairRender, createOutlinePass } from './addCrosshair';
 import styles from "./index.module.scss";
 
 // 初始相机位置
@@ -50,10 +51,12 @@ const HouseDisplay = () => {
   const tvScreenRef = useRef<Mesh | null>(null); // 电视屏幕
   const phoneVideoRef = useRef<HTMLVideoElement>(null); // 手机屏幕播放的视频
   const phoneScreenRef = useRef<Mesh | null>(null); // 手机屏幕
-  const raycasterRef = useRef<Raycaster | null>(null); // 鼠标准星射线
   const outlinePassRef = useRef<OutlinePass | null>(null);
   const currentIntersectedRef = useRef<Object3D | null>(null); // 当前鼠标射线命中的物体
   const ceilingGroupRef = useRef<Group | null>(null); // 房屋天花板
+  const labelRendererRef = useRef<CSS2DRenderer | null>(null); // 鼠标准星渲染器
+  const raycasterRef = useRef<Raycaster | null>(null); // 鼠标准星射线
+  const reticleRef = useRef<CSS2DObject | null>(null); // 鼠标准星对象
   const intersectObjectsRef = useRef<Object3D[]>([]); // 鼠标射线可接受的检测对象列表
 
   const {
@@ -75,7 +78,7 @@ const HouseDisplay = () => {
     camera: PerspectiveCamera,
     renderer: WebGLRenderer
   ) => {
-    if (containerRef.current) {
+    if (containerRef.current && scene) {
       sceneRef.current = scene;
       cameraRef.current = camera;
 
@@ -114,9 +117,6 @@ const HouseDisplay = () => {
       // 添加所有房间吊灯
       addCeilingLamp(scene);
 
-      // 添加鼠标准星
-      addCrosshair(scene, containerRef.current, raycasterRef);
-
       // 初始化整体/漫游模式切换相关
       initModeToggle(
         scene,
@@ -131,6 +131,9 @@ const HouseDisplay = () => {
         animationStartTimeRef,
         allCeilingLampsVisibleToggle,
       );
+
+      // 添加鼠标准星
+      addCrosshair(scene, containerRef.current, labelRendererRef, raycasterRef, reticleRef);
 
       // 启用后期处理器
       const bloomComposer = new EffectComposer(renderer);
@@ -174,7 +177,18 @@ const HouseDisplay = () => {
     dynamicOptimizationLampLightRender(camera, animatingRef, viewModeRef);
 
     // 鼠标准星渲染
-    crosshairRender(scene, camera, raycasterRef.current, viewModeRef, mousePositionRef, intersectObjectsRef, outlinePassRef.current, currentIntersectedRef);
+    crosshairRender(
+      scene,
+      camera,
+      labelRendererRef.current,
+      raycasterRef.current,
+      reticleRef.current,
+      viewModeRef,
+      mousePositionRef,
+      intersectObjectsRef,
+      outlinePassRef.current,
+      currentIntersectedRef
+    );
 
     // Bloom效果渲染
     camera.layers.set(1);
@@ -193,6 +207,8 @@ const HouseDisplay = () => {
 
   useLayoutEffect(() => {
     resize();
+    // 同时调整 labelRenderer 的大小
+    resizeCrosshair(containerRef.current, labelRendererRef.current);
   }, [menuWidth]);
 
   return (
@@ -217,11 +233,11 @@ const HouseDisplay = () => {
           <div>鼠标滚轮 缩放视角</div>
         </div>
       )}
-      {<div className={styles.roamingHint}>
+      <div className={styles.roamingHint}>
         {viewMode === 'overview'
           ? '空格切换模式'
           : isPointerLocked ? 'WASD移动 | 鼠标转动视角 | ESC解锁鼠标 | 空格切换模式' : '点击屏幕解锁鼠标 | 空格切换模式'}
-      </div>}
+      </div>
 
       {/* 准星 - 在漫游模式下固定在屏幕中心，否则跟随鼠标 */}
       <div className={`${styles.crosshair} ${viewMode === 'roaming' ? styles.centered : ''}`} />
@@ -239,7 +255,7 @@ const HouseDisplay = () => {
         crossOrigin="anonymous"
         style={{ display: 'none' }}
       >
-        <source src="public/vista.mp4"></source>
+        <source src="public/vista.mp4" />
       </video>
       <video
         ref={phoneVideoRef}
@@ -255,7 +271,7 @@ const HouseDisplay = () => {
         crossOrigin="anonymous"
         style={{ display: 'none' }}
       >
-        <source src="public/dance.mp4"></source>
+        <source src="public/dance.mp4" />
       </video>
     </div>
   );
