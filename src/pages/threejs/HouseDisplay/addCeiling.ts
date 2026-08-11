@@ -10,33 +10,41 @@ import {
   Group,
   DoubleSide,
 } from "three";
+import type { AssetManager } from "hooks/threejs/useInitialize";
+
+const ceilingHeight = 0.2; // 天花板厚度
+const ceilingColor = 0xf4f3ef; // 珍珠白
+const ceilingY = 4.1; // 天花板相对于组的位置
 
 /**
  * 创建天花板组
  */
 const addCeiling = (
   scene: Scene,
+  assetManager: AssetManager,
   ceilingGroupRef: MutableRefObject<Group | null>,
 ) => {
   const ceilingGroup = new Group();
   ceilingGroupRef.current = ceilingGroup;
   ceilingGroup.name = "天花板组";
 
-  const ceilingHeight = 0.2; // 天花板厚度
-  const ceilingColor = 0xf4f3ef; // 珍珠白
-  const ceilingY = 4.1; // 天花板相对于组的位置
+  let boxGeometry = assetManager.geometries.get("boxGeometry");
+  if (!boxGeometry) {
+    boxGeometry = new BoxGeometry(1, 1, 1);
+    assetManager.geometries.set("boxGeometry", boxGeometry);
+  }
+  const ceilingMaterial = new MeshStandardMaterial({
+    color: ceilingColor,
+    roughness: 0.85,
+    metalness: 0,
+    side: DoubleSide,
+  });
+  assetManager.materials.set("ceilingMaterial", ceilingMaterial);
 
   // 主天花板（覆盖整个房屋）
-  const mainCeiling = new Mesh(
-    new BoxGeometry(35.2, ceilingHeight, 32),
-    new MeshStandardMaterial({
-      color: ceilingColor,
-      roughness: 0.85,
-      metalness: 0,
-      side: DoubleSide,
-    }),
-  );
+  const mainCeiling = new Mesh(boxGeometry, ceilingMaterial);
   mainCeiling.name = "天花板";
+  mainCeiling.scale.set(35.2, ceilingHeight, 32);
   mainCeiling.position.set(0, ceilingY, 0);
   mainCeiling.castShadow = true;
   mainCeiling.receiveShadow = true;

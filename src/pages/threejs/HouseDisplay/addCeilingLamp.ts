@@ -18,155 +18,216 @@ import {
   SRGBColorSpace,
   Group,
   Color,
+  Vector3,
 } from "three";
+import type { AssetManager } from "hooks/threejs/useInitialize";
 import { wallHeight } from "./addHouseStructure";
 import type { ViewMode } from "./modeToggle";
 
 const LAMP_RADIUS = 0.9; // 灯的半径
 const LAMP_THICKNESS = 0.12; // 灯的厚度
-const DYNAMIC_OPTIMIZATION_LAMP_COUNT = 3; // 动态优化吊灯时亮灯的个数
-const lampList: Group[] = []; // 所有吊灯的列表
+const DYNAMIC_OPTIMIZATION_LAMP_COUNT = 2; // 动态优化吊灯时亮灯的个数
+const ceilingLampY = wallHeight - LAMP_THICKNESS / 2 - 0.05;
+const lampConfigList = [
+  {
+    name: "客厅吊灯",
+    position: new Vector3(-8.5, ceilingLampY, -1),
+    noNeedDynamicOptimization: true,
+  },
+  {
+    name: "餐厅吊灯",
+    position: new Vector3(11, ceilingLampY, -1.4),
+    noNeedDynamicOptimization: true,
+  },
+  {
+    name: "主卧吊灯",
+    position: new Vector3(-9, ceilingLampY, -11),
+  },
+  {
+    name: "儿童房吊灯",
+    position: new Vector3(11, ceilingLampY, -11),
+  },
+  {
+    name: "次卧吊灯",
+    position: new Vector3(-9, ceilingLampY, 8),
+  },
+  {
+    name: "厨房吊灯",
+    position: new Vector3(11, ceilingLampY, 5.4),
+  },
+  {
+    name: "厕所吊灯",
+    position: new Vector3(3.6, wallHeight - LAMP_THICKNESS / 2 - 0.05, -12.5),
+    scale: new Vector3(0.6, 0.6, 0.6),
+  },
+  {
+    name: "主卧厕所吊灯",
+    position: new Vector3(-0.4, wallHeight - LAMP_THICKNESS / 2 - 0.05, -12.5),
+    scale: new Vector3(0.6, 0.6, 0.6),
+  },
+];
+let lampList: Group[] = []; // 所有吊灯的列表
+let dynamicOptimizationlampList: Group[] = []; // 动态优化吊灯的列表（动态显示隐藏光源，提高性能）
 
-const dynamicOptimizationlampList: Group[] = []; // 动态优化吊灯的列表（动态显示隐藏光源，提高性能）
+export const addCeilingLamp = (scene: Scene, assetManager: AssetManager) => {
+  lampList = [];
+  dynamicOptimizationlampList = [];
 
-export const addCeilingLamp = (scene: Scene) => {
-  const lamp1 = createLamp();
-  lamp1.name = "客厅吊灯";
-  lamp1.position.set(-8.5, wallHeight - LAMP_THICKNESS / 2 - 0.05, -1);
-  lampList.push(lamp1);
-  scene.add(lamp1);
-
-  const lamp2 = createLamp();
-  lamp2.name = "餐厅吊灯";
-  lamp2.position.set(11, wallHeight - LAMP_THICKNESS / 2 - 0.05, -1.4);
-  lampList.push(lamp2);
-  scene.add(lamp2);
-
-  const lamp3 = createLamp();
-  lamp3.name = "主卧吊灯";
-  lamp3.position.set(-9, wallHeight - LAMP_THICKNESS / 2 - 0.05, -11);
-  lampList.push(lamp3);
-  dynamicOptimizationlampList.push(lamp3);
-  scene.add(lamp3);
-
-  const lamp4 = createLamp();
-  lamp4.name = "儿童房吊灯";
-  lamp4.position.set(11, wallHeight - LAMP_THICKNESS / 2 - 0.05, -11);
-  lampList.push(lamp4);
-  dynamicOptimizationlampList.push(lamp4);
-  scene.add(lamp4);
-
-  const lamp5 = createLamp();
-  lamp5.name = "次卧吊灯";
-  lamp5.position.set(-9, wallHeight - LAMP_THICKNESS / 2 - 0.05, 8);
-  lampList.push(lamp5);
-  dynamicOptimizationlampList.push(lamp5);
-  scene.add(lamp5);
-
-  const lamp6 = createLamp();
-  lamp6.name = "厨房吊灯";
-  lamp6.position.set(11, wallHeight - LAMP_THICKNESS / 2 - 0.05, 5.4);
-  lampList.push(lamp6);
-  dynamicOptimizationlampList.push(lamp6);
-  scene.add(lamp6);
-
-  const lamp7 = createLamp(2 * Math.PI);
-  lamp7.name = "厕所吊灯";
-  lamp7.position.set(3.6, wallHeight - LAMP_THICKNESS / 2 - 0.05, -12.5);
-  lamp7.scale.set(0.6, 0.6, 0.6);
-  lampList.push(lamp7);
-  dynamicOptimizationlampList.push(lamp7);
-  scene.add(lamp7);
-
-  const lamp8 = createLamp(2 * Math.PI);
-  lamp8.name = "主卧厕所吊灯";
-  lamp8.position.set(-0.4, wallHeight - LAMP_THICKNESS / 2 - 0.05, -12.5);
-  lamp8.scale.set(0.6, 0.6, 0.6);
-  lampList.push(lamp8);
-  dynamicOptimizationlampList.push(lamp8);
-  scene.add(lamp8);
-};
-
-// 创建吊灯
-const createLamp = (intensity?: number) => {
-  const lampGroup = new Group();
-  const uniformTex = createUniformLightTexture();
-
-  // 创建并添加吊灯的主体（金属圆柱体）
-  const shellMat = new MeshPhysicalMaterial({
+  // 圆形平面
+  let circleGeometry = assetManager.geometries.get("circleGeometry");
+  if (!circleGeometry) {
+    circleGeometry = new CircleGeometry(1);
+    assetManager.geometries.set("circleGeometry", circleGeometry);
+  }
+  // 圆柱体
+  let cylinderGeometry = assetManager.geometries.get("cylinderGeometry");
+  if (!cylinderGeometry) {
+    cylinderGeometry = new CylinderGeometry(1, 1, 1, 64, 1, false);
+    assetManager.geometries.set("cylinderGeometry", cylinderGeometry);
+  }
+  // 吊灯底部圆环平面
+  const ceilingLampRingGeometry = new RingGeometry(
+    LAMP_RADIUS * 0.96,
+    LAMP_RADIUS * 1.02,
+    64,
+  );
+  assetManager.geometries.set(
+    "ceilingLampRingGeometry",
+    ceilingLampRingGeometry,
+  );
+  // 吊灯上下的金属圆环(甜甜圈形状)
+  const ceilingLampTorusGeometry = new TorusGeometry(
+    LAMP_RADIUS * 0.99,
+    0.008,
+    16,
+    64,
+  );
+  assetManager.geometries.set(
+    "ceilingLampTorusGeometry",
+    ceilingLampTorusGeometry,
+  );
+  // 吊灯圆柱体材质
+  const ceilingLampCylinderMaterial = new MeshPhysicalMaterial({
     color: 0xe8e8ec,
     metalness: 0.95,
     roughness: 0.15,
     clearcoat: 0.8,
     clearcoatRoughness: 0.1,
   });
-  const shell = new Mesh(
-    new CylinderGeometry(
-      LAMP_RADIUS,
-      LAMP_RADIUS,
-      LAMP_THICKNESS,
-      64,
-      1,
-      false,
-    ),
-    shellMat,
+  assetManager.materials.set(
+    "ceilingLampCylinderMaterial",
+    ceilingLampCylinderMaterial,
   );
+  // 吊灯底部发光贴图
+  const ceilingLampBottomPanelTexture = createUniformLightTexture();
+  assetManager.textures.set(
+    "ceilingLampBottomPanelTexture",
+    ceilingLampBottomPanelTexture,
+  );
+  // 吊灯底部发光面板材质
+  const ceilingLampBottomPanelMaterial = new MeshBasicMaterial({
+    map: ceilingLampBottomPanelTexture,
+    color: 0xffffff,
+    toneMapped: false, // 关键：不受色调映射压暗，保持纯亮白
+    side: DoubleSide,
+  });
+  assetManager.materials.set(
+    "ceilingLampBottomPanelMaterial",
+    ceilingLampBottomPanelMaterial,
+  );
+  // 吊灯底部环形面板材质
+  const ceilingLampBottomRingMaterial = new MeshPhysicalMaterial({
+    color: 0xc8c8cc,
+    metalness: 0.92,
+    roughness: 0.18,
+  });
+  assetManager.materials.set(
+    "ceilingLampBottomRingMaterial",
+    ceilingLampBottomRingMaterial,
+  );
+  // 吊灯上下圆环金属材质
+  const ceilingLampTorusMaterial = new MeshPhysicalMaterial({
+    color: 0xf5f5f5,
+    metalness: 1,
+    roughness: 0.05,
+  });
+  assetManager.materials.set(
+    "ceilingLampTorusMaterial",
+    ceilingLampTorusMaterial,
+  );
+
+  // 添加所有吊灯
+  lampConfigList.forEach((item) => {
+    const { name, position, noNeedDynamicOptimization, scale } = item;
+    const lamp = createLamp(assetManager);
+    lamp.name = name;
+    lamp.position.copy(position);
+    if (scale) {
+      lamp.scale.copy(scale as Vector3);
+    }
+    lampList.push(lamp);
+    if (!noNeedDynamicOptimization) {
+      dynamicOptimizationlampList.push(lamp);
+    }
+    scene.add(lamp);
+  });
+};
+
+// 创建吊灯
+const createLamp = (assetManager: AssetManager, intensity?: number) => {
+  const lampGroup = new Group();
+  const circleGeometry = assetManager.geometries.get("circleGeometry");
+  const cylinderGeometry = assetManager.geometries.get("cylinderGeometry");
+  const ceilingLampRingGeometry = assetManager.geometries.get(
+    "ceilingLampRingGeometry",
+  );
+  const ceilingLampTorusGeometry = assetManager.geometries.get(
+    "ceilingLampTorusGeometry",
+  );
+  const ceilingLampCylinderMaterial = assetManager.materials.get(
+    "ceilingLampCylinderMaterial",
+  );
+  const ceilingLampBottomPanelMaterial = assetManager.materials.get(
+    "ceilingLampBottomPanelMaterial",
+  );
+  const ceilingLampBottomRingMaterial = assetManager.materials.get(
+    "ceilingLampBottomRingMaterial",
+  );
+  const ceilingLampTorusMaterial = assetManager.materials.get(
+    "ceilingLampTorusMaterial",
+  );
+
+  // 创建并添加吊灯的主体（金属圆柱体）
+  const shell = new Mesh(cylinderGeometry, ceilingLampCylinderMaterial);
+  shell.scale.set(LAMP_RADIUS, LAMP_THICKNESS, LAMP_RADIUS);
   lampGroup.add(shell);
 
   // 创建并添加金属下盖板（环形，中间留给发光面板）
-  const ringShape = new RingGeometry(
-    LAMP_RADIUS * 0.96,
-    LAMP_RADIUS * 1.02,
-    64,
-  );
   const bottomRing = new Mesh(
-    ringShape,
-    new MeshPhysicalMaterial({
-      color: 0xc8c8cc,
-      metalness: 0.92,
-      roughness: 0.18,
-    }),
+    ceilingLampRingGeometry,
+    ceilingLampBottomRingMaterial,
   );
   bottomRing.rotation.x = -Math.PI / 2;
   bottomRing.position.y = -LAMP_THICKNESS / 2 - 0.0005;
   lampGroup.add(bottomRing);
 
   // 创建并添加底部发光面板
-  const glowPanelMat = new MeshBasicMaterial({
-    map: uniformTex,
-    color: 0xffffff,
-    toneMapped: false, // 关键：不受色调映射压暗，保持纯亮白
-    side: DoubleSide,
-  });
-  const glowPanel = new Mesh(
-    new CircleGeometry(LAMP_RADIUS * 0.96, 64),
-    glowPanelMat,
-  );
+  const glowPanel = new Mesh(circleGeometry, ceilingLampBottomPanelMaterial);
+  glowPanel.scale.set(LAMP_RADIUS * 0.96, LAMP_RADIUS * 0.96);
   glowPanel.rotation.x = -Math.PI / 2; // 面向地板
   glowPanel.position.y = -LAMP_THICKNESS / 2 - 0.001; // 贴在圆饼灯底面
   lampGroup.add(glowPanel);
 
   // 创建并添加上边缘装饰性金属细环
-  const topTorus = new Mesh(
-    new TorusGeometry(LAMP_RADIUS * 0.99, 0.008, 16, 64),
-    new MeshPhysicalMaterial({
-      color: 0xf5f5f5,
-      metalness: 1,
-      roughness: 0.05,
-    }),
-  );
+  const topTorus = new Mesh(ceilingLampTorusGeometry, ceilingLampTorusMaterial);
   topTorus.rotation.x = Math.PI / 2;
   topTorus.position.y = LAMP_THICKNESS / 2;
   lampGroup.add(topTorus);
 
   // 创建并添加下边缘装饰性金属细环
   const bottomTorus = new Mesh(
-    new TorusGeometry(LAMP_RADIUS * 0.99, 0.008, 16, 64),
-    new MeshPhysicalMaterial({
-      color: 0xf5f5f5,
-      metalness: 1,
-      roughness: 0.05,
-    }),
+    ceilingLampTorusGeometry,
+    ceilingLampTorusMaterial,
   );
   bottomTorus.rotation.x = Math.PI / 2;
   bottomTorus.position.y = -LAMP_THICKNESS / 2;

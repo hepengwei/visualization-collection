@@ -1,7 +1,7 @@
 /**
  * 房屋展示 - 3D房屋漫游
  */
-import React, { useRef, useLayoutEffect } from "react";
+import React, { useRef, useLayoutEffect, useState, useEffect } from "react";
 import {
   Scene,
   PerspectiveCamera,
@@ -14,6 +14,7 @@ import {
   Group,
   Raycaster,
 } from "three";
+import Stats from 'stats.js';
 import { CSS2DRenderer, CSS2DObject } from "three/examples/jsm/renderers/CSS2DRenderer";
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
@@ -24,6 +25,7 @@ import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLigh
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { useGlobalContext } from "hooks/useGlobalContext";
 import useInitialize from "hooks/threejs/useInitialize";
+import type { AssetManager } from 'hooks/threejs/useInitialize';
 import { useModeToggle, initModeToggle, modeToggleAnimationRender, pointerControlsMoveRender, handleModeToggle } from './modeToggle';
 import addLighting from "./addLighting";
 import addHouseStructure from './addHouseStructure';
@@ -34,6 +36,9 @@ import { onClickTVScreen } from './addTVScreen';
 import { onClickPhoneScreen } from './addPhoneScreen';
 import { addCrosshair, resizeCrosshair, crosshairRender, createOutlinePass } from './addCrosshair';
 import styles from "./index.module.scss";
+
+// 是否显示Stats性能监控面板
+const showStats = false;
 
 // 初始相机位置
 const initialCameraPosition = new Vector3(0, 30, 0);
@@ -52,12 +57,17 @@ const HouseDisplay = () => {
   const phoneVideoRef = useRef<HTMLVideoElement>(null); // 手机屏幕播放的视频
   const phoneScreenRef = useRef<Mesh | null>(null); // 手机屏幕
   const outlinePassRef = useRef<OutlinePass | null>(null);
-  const currentIntersectedRef = useRef<Object3D | null>(null); // 当前鼠标射线命中的物体
+  const pointerControlsIntersetObjectsRef = useRef<Object3D[]>([]); // 第一人称控制器可接受的碰撞检测对象列表
   const ceilingGroupRef = useRef<Group | null>(null); // 房屋天花板
   const labelRendererRef = useRef<CSS2DRenderer | null>(null); // 鼠标准星渲染器
   const raycasterRef = useRef<Raycaster | null>(null); // 鼠标准星射线
   const reticleRef = useRef<CSS2DObject | null>(null); // 鼠标准星对象
-  const intersectObjectsRef = useRef<Object3D[]>([]); // 鼠标射线可接受的检测对象列表
+  const mouseRaycasterIntersectObjectsRef = useRef<Object3D[]>([]); // 鼠标射线可接受的检测对象列表
+  const mouseRaycasterIntersectedRef = useRef<Object3D | null>(null); // 当前鼠标射线命中的物体
+  const statsRef1 = useRef<Stats | null>(null);
+  const statsRef2 = useRef<Stats | null>(null);
+  const statsRef3 = useRef<Stats | null>(null);
+  const [rendererInfo, setRendererInfo] = useState<Record<string, any>>({});
 
   const {
     viewMode,
@@ -71,12 +81,13 @@ const HouseDisplay = () => {
     animationStartTimeRef,
     animationDurationRef,
     prevTimeRef,
-  } = useModeToggle(containerRef, menuWidth, headHeight, currentIntersectedRef, orbitControlsRef, tvVideoRef, onClickTVScreen, phoneVideoRef, onClickPhoneScreen);
+  } = useModeToggle(containerRef, menuWidth, headHeight, mouseRaycasterIntersectedRef, orbitControlsRef, tvVideoRef, onClickTVScreen, phoneVideoRef, onClickPhoneScreen);
 
   const initializeHandle = (
     scene: Scene,
     camera: PerspectiveCamera,
-    renderer: WebGLRenderer
+    renderer: WebGLRenderer,
+    assetManager: AssetManager,
   ) => {
     if (containerRef.current && scene) {
       sceneRef.current = scene;
@@ -106,16 +117,16 @@ const HouseDisplay = () => {
       addLighting(scene);
 
       // 创建并显示地板、墙体和玻璃窗
-      addHouseStructure(scene, false);
+      addHouseStructure(scene, assetManager, pointerControlsIntersetObjectsRef, false);
 
       // 加载并显示电视墙、沙发、床等模型
-      add3dModel(scene, tvVideoRef.current, tvScreenRef, phoneVideoRef.current, phoneScreenRef, intersectObjectsRef);
+      add3dModel(scene, assetManager, tvVideoRef.current, tvScreenRef, phoneVideoRef.current, phoneScreenRef, mouseRaycasterIntersectObjectsRef);
 
       // 添加天花板（初始隐藏在天空中）
-      addCeiling(scene, ceilingGroupRef);
+      addCeiling(scene, assetManager, ceilingGroupRef);
 
       // 添加所有房间吊灯
-      addCeilingLamp(scene);
+      addCeilingLamp(scene, assetManager);
 
       // 初始化整体/漫游模式切换相关
       initModeToggle(
@@ -161,7 +172,7 @@ const HouseDisplay = () => {
   /**
    * 渲染循环
    */
-  const renderHandle = (scene: Scene, camera: PerspectiveCamera) => {
+  const renderHandle = (scene: Scene, camera: PerspectiveCamera, renderer: WebGLRenderer) => {
     // 模式切换动画过程渲染
     modeToggleAnimationRender(camera, animatingRef, viewModeRef, orbitControlsRef, pointerControlsRef, initialCameraPosition, initialCameraTarget, ceilingGroupRef, animationStartTimeRef, animationDurationRef, allCeilingLampsVisibleToggle)
 
@@ -171,7 +182,7 @@ const HouseDisplay = () => {
     }
 
     // 漫游模式下第一人称控制器和摄像机移动过程渲染
-    pointerControlsMoveRender(camera, animatingRef, viewModeRef, pointerControlsRef, prevTimeRef)
+    pointerControlsMoveRender(camera, animatingRef, viewModeRef, pointerControlsRef, pointerControlsIntersetObjectsRef.current, prevTimeRef)
 
     // 漫游模式下，实时计算距离摄像机最近的n个吊灯，打开吊灯光源，其他则关闭（客厅和餐厅吊灯除外）
     dynamicOptimizationLampLightRender(camera, animatingRef, viewModeRef);
@@ -185,9 +196,9 @@ const HouseDisplay = () => {
       reticleRef.current,
       viewModeRef,
       mousePositionRef,
-      intersectObjectsRef,
+      mouseRaycasterIntersectObjectsRef,
       outlinePassRef.current,
-      currentIntersectedRef
+      mouseRaycasterIntersectedRef
     );
 
     // Bloom效果渲染
@@ -195,6 +206,39 @@ const HouseDisplay = () => {
     bloomComposerRef.current?.render();
     camera.layers.enableAll();
     mainComposerRef.current?.render();
+
+    if (showStats) {
+      if (statsRef1.current) {
+        statsRef1.current.dom.style.top = 'auto';
+        statsRef1.current.dom.style.left = 'auto';
+        statsRef1.current.dom.style.bottom = '0px';
+        statsRef1.current.dom.style.right = '0px';
+        statsRef1.current.update();
+      }
+      if (statsRef2.current) {
+        statsRef2.current.dom.style.top = 'auto';
+        statsRef2.current.dom.style.left = 'auto';
+        statsRef2.current.dom.style.bottom = '0px';
+        statsRef2.current.dom.style.right = '80px';
+        statsRef2.current.update();
+      }
+      if (statsRef3.current) {
+        statsRef3.current.dom.style.top = 'auto';
+        statsRef3.current.dom.style.left = 'auto';
+        statsRef3.current.dom.style.bottom = '0px';
+        statsRef3.current.dom.style.right = '160px';
+        statsRef3.current.update();
+      }
+    }
+
+    // 显示Three.js内置的渲染统计监控指标
+    setRendererInfo({
+      drawCallCount: renderer.info.render.calls,
+      trianglesTotal: renderer.info.render.triangles,
+      geometriesCount: renderer.info.memory.geometries,
+      texturesCount: renderer.info.memory.textures,
+    })
+
     return true;
   };
 
@@ -210,6 +254,47 @@ const HouseDisplay = () => {
     // 同时调整 labelRenderer 的大小
     resizeCrosshair(containerRef.current, labelRendererRef.current);
   }, [menuWidth]);
+
+  useEffect(() => {
+    if (showStats) {
+      // 添加Stats性能监控面板
+      const stats1 = new Stats();
+      statsRef1.current = stats1;
+      stats1.showPanel(0);
+      stats1.dom.style.position = 'absolute';
+      stats1.dom.style.bottom = '0px';
+      stats1.dom.style.right = '0px';
+      stats1.dom.style.zIndex = '10';
+      stats1.dom.style.pointerEvents = 'none';
+      containerRef.current?.appendChild(stats1.dom);
+
+      const stats2 = new Stats();
+      statsRef2.current = stats2;
+      stats2.showPanel(1);
+      stats2.dom.style.position = 'absolute';
+      stats2.dom.style.bottom = '0px';
+      stats2.dom.style.right = '80px';
+      stats2.dom.style.zIndex = '10';
+      stats2.dom.style.pointerEvents = 'none';
+      containerRef.current?.appendChild(stats2.dom);
+
+      const stats3 = new Stats();
+      statsRef3.current = stats3;
+      stats3.showPanel(2);
+      stats3.dom.style.position = 'absolute';
+      stats3.dom.style.bottom = '0px';
+      stats3.dom.style.right = '160px';
+      stats3.dom.style.zIndex = '10';
+      stats3.dom.style.pointerEvents = 'none';
+      containerRef.current?.appendChild(stats3.dom);
+    }
+
+    return () => {
+      statsRef1.current?.dom.remove();
+      statsRef2.current?.dom.remove();
+      statsRef3.current?.dom.remove();
+    }
+  }, [])
 
   return (
     <div className={styles.container} ref={containerRef}>

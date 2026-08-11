@@ -1,5 +1,20 @@
 import { useRef, useEffect, RefObject } from "react";
-import { Scene, PerspectiveCamera, WebGLRenderer, SRGBColorSpace } from "three";
+import {
+  Scene,
+  PerspectiveCamera,
+  WebGLRenderer,
+  SRGBColorSpace,
+  BufferGeometry,
+  Texture,
+  Material,
+} from "three";
+import { disposeThreeJsScene } from "utils/threejsUtil";
+
+export type AssetManager = {
+  geometries: Map<string, BufferGeometry>;
+  textures: Map<string, Texture>;
+  materials: Map<string, Material>;
+};
 
 type Handle = (
   scene: Scene,
@@ -7,15 +22,27 @@ type Handle = (
   renderer: WebGLRenderer,
 ) => boolean | void;
 
+type InitializeHandle = (
+  scene: Scene,
+  camera: PerspectiveCamera,
+  renderer: WebGLRenderer,
+  assetManager: AssetManager,
+) => boolean | void;
+
 const useInitialize = (
   conatinerRef: RefObject<HTMLDivElement>,
-  initializeHandle?: Handle | null,
+  initializeHandle?: InitializeHandle | null,
   resizeHandle?: Handle | null,
   renderHandle?: Handle | null,
 ) => {
   const sceneRef = useRef<Scene | null>(null);
   const cameraRef = useRef<PerspectiveCamera | null>(null);
   const rendererRef = useRef<WebGLRenderer | null>(null);
+  const assetManagerRef = useRef<AssetManager>({
+    geometries: new Map(),
+    textures: new Map(),
+    materials: new Map(),
+  });
   const frameId = useRef<number>(0);
 
   const render = () => {
@@ -68,7 +95,7 @@ const useInitialize = (
       // 渲染
       render();
 
-      initializeHandle?.(scene, camera, renderer);
+      initializeHandle?.(scene, camera, renderer, assetManagerRef.current);
     }
   };
 
@@ -102,6 +129,8 @@ const useInitialize = (
     return () => {
       frameId.current && window.cancelAnimationFrame(frameId.current);
       window.removeEventListener("resize", onResize);
+      // 销毁three.js场景中的所有GPU资源对象，防止内存泄漏
+      disposeThreeJsScene(sceneRef.current, rendererRef.current);
     };
   }, []);
 
@@ -109,6 +138,7 @@ const useInitialize = (
     scene: sceneRef.current,
     camera: cameraRef.current,
     renderer: rendererRef.current,
+    assetManager: assetManagerRef.current,
     resize: onResize,
   };
 };

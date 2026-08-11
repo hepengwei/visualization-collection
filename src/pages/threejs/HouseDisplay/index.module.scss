@@ -53,12 +53,12 @@
     font-weight: bold;
     cursor: pointer;
     z-index: 10;
-    border: 2px solid #4CAF50;
+    border: 2px solid #4caf50;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 
     &:hover {
-      background-color: #4CAF50;
+      background-color: #4caf50;
       color: white;
       transform: scale(1.05);
     }
