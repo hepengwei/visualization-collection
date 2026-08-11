@@ -37,7 +37,7 @@ import useMoveTo from "hooks/useMoveTo";
 import Border2 from "components/LargeScreenBorder/Border2";
 import luminousPointData from "./luminousPointData";
 import { getTextWidth } from "@/utils/util";
-import { lon2xyz, distoryObject } from "utils/threejsUtil";
+import { lon2xyz } from "utils/threejsUtil";
 import { flyArc } from "./flyLine";
 import pageBg from "images/threejs/pageBg.png";
 import topBg from "images/threejs/topBg.png";
@@ -451,12 +451,6 @@ const EarthDisplay = () => {
   useLayoutEffect(() => {
     resize();
   }, [menuWidth]);
-
-  useEffect(() => {
-    return () => {
-      distoryObject(earthObjRef.current, scene);
-    };
-  }, []);
 
   return (
     <div className={styles.container} ref={containerRef}>

@@ -14,11 +14,16 @@ import {
   Vector2,
   Vector3,
 } from "three";
+import type { AssetManager } from "hooks/threejs/useInitialize";
 import { safePlay } from "./utils";
 
 let videoIsPlay = false;
 
-export const addTVScreen = (scene: Scene, video: HTMLVideoElement | null) => {
+export const addTVScreen = (
+  scene: Scene,
+  assetManager: AssetManager,
+  video: HTMLVideoElement | null,
+) => {
   if (video) {
     safePlay(video);
     videoIsPlay = true;
@@ -27,7 +32,12 @@ export const addTVScreen = (scene: Scene, video: HTMLVideoElement | null) => {
     const tvPos = new Vector3(-9.8, 1.95, 3.78); // 电视屏幕位置
     const videoTexture: any = new VideoTexture(video);
     videoTexture.colorSpace = SRGBColorSpace; // 关键：颜色不灰
-    const tvScreen: Mesh = createTVScreen(tvSize, tvPos, videoTexture);
+    const tvScreen: Mesh = createTVScreen(
+      assetManager,
+      tvSize,
+      tvPos,
+      videoTexture,
+    );
     scene.add(tvScreen);
     const tvLight = createTVLight(tvSize, tvPos);
     scene.add(tvLight);
@@ -52,20 +62,27 @@ export const addTVScreen = (scene: Scene, video: HTMLVideoElement | null) => {
 
 // 创建电视屏幕
 const createTVScreen = (
+  assetManager: AssetManager,
   size: Vector2,
   pos: Vector3,
   videoTexture: VideoTexture,
 ) => {
-  const screenGeo = new PlaneGeometry(size.x, size.y);
-  const screenMat = new MeshStandardMaterial({
+  let planeGeometry = assetManager.geometries.get("planeGeometry");
+  if (!planeGeometry) {
+    planeGeometry = new PlaneGeometry(1, 1);
+    assetManager.geometries.set("planeGeometry", planeGeometry);
+  }
+  const tvScreenMaterial = new MeshStandardMaterial({
     map: videoTexture,
     emissive: 0xffffff,
     emissiveMap: videoTexture,
     emissiveIntensity: 2 * Math.PI,
     side: FrontSide,
   });
-  const screen = new Mesh(screenGeo, screenMat);
+  assetManager.materials.set("tvScreenMaterial", tvScreenMaterial);
+  const screen = new Mesh(planeGeometry, tvScreenMaterial);
   screen.name = "电视屏幕";
+  screen.scale.set(size.x, size.y);
   screen.position.copy(pos);
   screen.rotation.y = Math.PI; // 面向沙发
   screen.layers.enable(1); // 为了让电视的光能够单独增强

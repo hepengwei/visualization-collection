@@ -10,6 +10,7 @@ import {
   Mesh,
   Object3D,
 } from "three";
+import type { AssetManager } from "hooks/threejs/useInitialize";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 import { addTVScreen } from "./addTVScreen";
@@ -17,11 +18,12 @@ import { addPhoneScreen } from "./addPhoneScreen";
 
 const add3dModel = (
   scene: Scene,
+  assetManager: AssetManager,
   tvVideo: HTMLVideoElement | null,
   tvScreenRef: MutableRefObject<Mesh | null>,
   phoneVideo: HTMLVideoElement | null,
   phoneScreenRef: MutableRefObject<Mesh | null>,
-  intersectObjectsRef: MutableRefObject<Object3D[]>,
+  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   const gltfLoader = new GLTFLoader();
   gltfLoader.setCrossOrigin("anonymous");
@@ -30,28 +32,37 @@ const add3dModel = (
   loadTelevisionWall(
     scene,
     gltfLoader,
+    assetManager,
     tvVideo,
     tvScreenRef,
-    intersectObjectsRef,
+    mouseRaycasterIntersectObjectsRef,
   );
 
   // 加载沙发
   loadSofa(scene, gltfLoader);
 
   // 加载三个卧室的三个床
-  loadBeds(scene, gltfLoader);
+  loadBeds(scene, gltfLoader, assetManager);
 
   // 加载餐桌
-  loadTable(scene, gltfLoader, phoneVideo, phoneScreenRef, intersectObjectsRef);
+  loadTable(
+    scene,
+    gltfLoader,
+    assetManager,
+    phoneVideo,
+    phoneScreenRef,
+    mouseRaycasterIntersectObjectsRef,
+  );
 };
 
 // 加载电视墙
 const loadTelevisionWall = (
   scene: Scene,
   gltfLoader: GLTFLoader,
+  assetManager: AssetManager,
   video: HTMLVideoElement | null,
   tvScreenRef: MutableRefObject<Mesh | null>,
-  intersectObjectsRef: MutableRefObject<Object3D[]>,
+  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   gltfLoader.load(
     "./public/model/televisionWalls.glb",
@@ -77,10 +88,10 @@ const loadTelevisionWall = (
       scene.add(tvWall);
 
       // 添加电视屏幕，播放视频
-      const tvScreen: Mesh | null = addTVScreen(scene, video);
+      const tvScreen: Mesh | null = addTVScreen(scene, assetManager, video);
       if (tvScreen) {
         tvScreenRef.current = tvScreen;
-        intersectObjectsRef.current.push(tvScreen);
+        mouseRaycasterIntersectObjectsRef.current.push(tvScreen);
       }
     },
     (progress) => {
@@ -151,48 +162,81 @@ const loadSofa = (scene: Scene, gltfLoader: GLTFLoader) => {
 };
 
 // 加载三个卧室的三个床
-const loadBeds = (scene: Scene, gltfLoader: GLTFLoader) => {
+const loadBeds = (
+  scene: Scene,
+  gltfLoader: GLTFLoader,
+  assetManager: AssetManager,
+) => {
+  const blueBedMaterial = new MeshPhysicalMaterial({
+    color: 0xc2c1c8, // 淡蓝色床
+    roughness: 0.85, // 布料表面偏粗糙
+    metalness: 0.0, // 布料几乎不金属
+    side: DoubleSide, // 薄片必须双面
+    // —— 布料灵魂参数 ——
+    sheen: 1.0, // 边缘柔光强度 0~1
+    sheenRoughness: 0.6, // 绒光粗糙度
+    sheenColor: new Color(0xffffff),
+    // 薄纱可加
+    transmission: 0.0, // 0.1~0.3 做纱巾
+  });
+  assetManager.materials.set("blueBedMaterial", blueBedMaterial);
+
   // 加载左上角房间的床
   gltfLoader.load(
     "./public/model/bed.glb",
     (gltf: GLTF) => {
-      const bed = gltf.scene;
-
-      bed.traverse((child: any) => {
-        if (child.isMesh) {
-          const clothMat = new MeshPhysicalMaterial({
-            color: 0xc2c1c8, // 淡蓝色床
-            roughness: 0.85, // 布料表面偏粗糙
-            metalness: 0.0, // 布料几乎不金属
-            side: DoubleSide, // 薄片必须双面
-            // —— 布料灵魂参数 ——
-            sheen: 1.0, // 边缘柔光强度 0~1
-            sheenRoughness: 0.6, // 绒光粗糙度
-            sheenColor: new Color(0xffffff),
-            // 薄纱可加
-            transmission: 0.0, // 0.1~0.3 做纱巾
-          });
-          child.material = clothMat;
-        }
-      });
-
-      // 设置床位置：放在左上角房间
-      bed.position.set(-10.4, 1.2, -13);
-      // 缩放床，调整到合适大小
-      bed.scale.set(6, 6, 6);
-      // 旋转床，向左旋转90度
-      bed.rotation.y = -Math.PI / 2;
-
-      // 遍历模型，设置阴影和被子颜色
-      bed.traverse((child: Record<string, any>) => {
+      const bed1 = gltf.scene.clone();
+      // 遍历模型，设置阴影和材质
+      bed1.traverse((child: any) => {
         if (child.isMesh) {
           child.name = "主卧床";
           child.castShadow = true;
           child.receiveShadow = true;
+          child.material = blueBedMaterial;
         }
       });
+      // 设置床位置：放在左上角房间
+      bed1.position.set(-10.4, 1.2, -13);
+      // 缩放床，调整到合适大小
+      bed1.scale.set(6, 6, 6);
+      // 旋转床，向左旋转90度
+      bed1.rotation.y = -Math.PI / 2;
+      scene.add(bed1);
 
-      scene.add(bed);
+      const bed2 = gltf.scene.clone();
+      // 遍历模型，设置阴影和材质
+      bed2.traverse((child: any) => {
+        if (child.isMesh) {
+          child.name = "儿童床";
+          child.castShadow = true;
+          child.receiveShadow = true;
+          child.material = blueBedMaterial;
+        }
+      });
+      // 设置床位置：放在右上角房间
+      bed2.position.set(11.8, 1.2, -13);
+      // 缩放床，调整到合适大小
+      bed2.scale.set(6, 6, 6);
+      // 旋转床，旋转-90度
+      bed2.rotation.y = -Math.PI / 2;
+      scene.add(bed2);
+
+      const bed3 = gltf.scene.clone();
+      // 遍历模型，设置阴影和材质
+      bed3.traverse((child: any) => {
+        if (child.isMesh) {
+          child.name = "次卧床";
+          child.castShadow = true;
+          child.receiveShadow = true;
+        }
+      });
+      // 设置床位置：放在左下角房间
+      bed3.position.set(-10.5, 1.2, 10.1);
+      // 缩放床，调整到合适大小
+      bed3.scale.set(6, 6, 6);
+      // 旋转床，向右旋转90度
+      bed3.rotation.y = Math.PI / 2; // 向右旋转90度
+      scene.add(bed3);
     },
     (progress) => {
       console.log(
@@ -204,100 +248,13 @@ const loadBeds = (scene: Scene, gltfLoader: GLTFLoader) => {
       console.error("床模型加载失败:", error);
     },
   );
-
-  // 加载右上角房间的床
-  gltfLoader.load(
-    "./public/model/bed.glb",
-    (gltf: GLTF) => {
-      const bed2 = gltf.scene;
-
-      bed2.traverse((child: any) => {
-        if (child.isMesh) {
-          const clothMat = new MeshPhysicalMaterial({
-            color: 0xc2c1c8, // 淡蓝色床
-            roughness: 0.85, // 布料表面偏粗糙
-            metalness: 0.0, // 布料几乎不金属
-            side: DoubleSide, // 薄片必须双面
-            // —— 布料灵魂参数 ——
-            sheen: 1.0, // 边缘柔光强度 0~1
-            sheenRoughness: 0.6, // 绒光粗糙度
-            sheenColor: new Color(0xffffff),
-            // 薄纱可加
-            transmission: 0.0, // 0.1~0.3 做纱巾
-          });
-          child.material = clothMat;
-        }
-      });
-
-      // 设置床位置：放在右上角房间
-      bed2.position.set(11.8, 1.2, -13);
-      // 缩放床，调整到合适大小
-      bed2.scale.set(6, 6, 6);
-      // 旋转床，旋转-90度
-      bed2.rotation.y = -Math.PI / 2;
-
-      // 遍历模型，设置阴影和被子颜色
-      bed2.traverse((child: Record<string, any>) => {
-        if (child.isMesh) {
-          child.name = "儿童床";
-          child.castShadow = true;
-          child.receiveShadow = true;
-        }
-      });
-
-      scene.add(bed2);
-    },
-    (progress) => {
-      console.log(
-        "第二张床加载进度:",
-        ((progress.loaded / progress.total) * 100).toFixed(2) + "%",
-      );
-    },
-    (error) => {
-      console.error("第二张床模型加载失败:", error);
-    },
-  );
-
-  // 加载左下角房间的床
-  gltfLoader.load(
-    "./public/model/bed.glb",
-    (gltf: GLTF) => {
-      const bed3 = gltf.scene;
-
-      // 设置床位置：放在左下角房间
-      bed3.position.set(-10.5, 1.2, 10.1);
-      // 缩放床，调整到合适大小
-      bed3.scale.set(6, 6, 6);
-      // 旋转床，向右旋转90度
-      bed3.rotation.y = Math.PI / 2; // 向右旋转90度
-
-      // 遍历模型，设置阴影和被子颜色
-      bed3.traverse((child: Record<string, any>) => {
-        if (child.isMesh) {
-          child.name = "次卧床";
-          child.castShadow = true;
-          child.receiveShadow = true;
-        }
-      });
-
-      scene.add(bed3);
-    },
-    (progress: Record<string, any>) => {
-      console.log(
-        "第三张床加载进度:",
-        ((progress.loaded / progress.total) * 100).toFixed(2) + "%",
-      );
-    },
-    (error: any) => {
-      console.error("第三张床模型加载失败:", error);
-    },
-  );
 };
 
 // 加载餐桌
 const loadTable = (
   scene: Scene,
   gltfLoader: GLTFLoader,
+  assetManager: AssetManager,
   video: HTMLVideoElement | null,
   phoneScreenRef: MutableRefObject<Mesh | null>,
   intersectObjectsRef: MutableRefObject<Object3D[]>,
@@ -323,7 +280,14 @@ const loadTable = (
       scene.add(table);
 
       // 加载手机
-      loadPhone(scene, gltfLoader, video, phoneScreenRef, intersectObjectsRef);
+      loadPhone(
+        scene,
+        gltfLoader,
+        assetManager,
+        video,
+        phoneScreenRef,
+        intersectObjectsRef,
+      );
     },
     (progress) => {
       console.log(
@@ -341,6 +305,7 @@ const loadTable = (
 const loadPhone = (
   scene: Scene,
   gltfLoader: GLTFLoader,
+  assetManager: AssetManager,
   video: HTMLVideoElement | null,
   phoneScreenRef: MutableRefObject<Mesh | null>,
   intersectObjectsRef: MutableRefObject<Object3D[]>,
@@ -370,7 +335,11 @@ const loadPhone = (
       scene.add(phone);
 
       // 添加手机屏幕，播放视频
-      const phoneScreen: Mesh | null = addPhoneScreen(phone, video);
+      const phoneScreen: Mesh | null = addPhoneScreen(
+        phone,
+        assetManager,
+        video,
+      );
       if (phoneScreen) {
         phoneScreenRef.current = phoneScreen;
         intersectObjectsRef.current.push(phoneScreen);

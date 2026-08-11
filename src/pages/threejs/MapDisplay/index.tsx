@@ -35,7 +35,6 @@ import useInitialize from "hooks/threejs/useInitialize";
 import useMoveTo from "hooks/useMoveTo";
 import Border1 from "components/LargeScreenBorder/Border1";
 import useDynamicBg1 from "@/hooks/threejs/useDynamicBg1";
-import { distoryObject } from "utils/threejsUtil";
 import pageBg from "images/threejs/pageBg.png";
 import topBg from "images/threejs/topBg.png";
 import shine from "images/threejs/shine.png";
@@ -293,13 +292,6 @@ const MapDisplay = () => {
   useLayoutEffect(() => {
     resize();
   }, [menuWidth]);
-
-  useEffect(() => {
-    return () => {
-      distoryObject(mapRef.current, scene);
-      distoryObject(dynamicBgRef.current, scene);
-    };
-  }, []);
 
   return (
     <div

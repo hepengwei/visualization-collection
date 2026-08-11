@@ -15,12 +15,14 @@ import {
   Group,
   Object3DEventMap,
 } from "three";
+import type { AssetManager } from "hooks/threejs/useInitialize";
 import { safePlay } from "./utils";
 
 let phoneIsPlay = false;
 
 export const addPhoneScreen = (
   phone: Group<Object3DEventMap>,
+  assetManager: AssetManager,
   video: HTMLVideoElement | null,
 ) => {
   if (video) {
@@ -32,6 +34,7 @@ export const addPhoneScreen = (
     const videoTexture: any = new VideoTexture(video);
     videoTexture.colorSpace = SRGBColorSpace; // 关键：颜色不灰
     const phoneScreen: Mesh = createPhoneScreen(
+      assetManager,
       phoneSize,
       phonePos,
       videoTexture,
@@ -60,20 +63,27 @@ export const addPhoneScreen = (
 
 // 创建手机屏幕
 const createPhoneScreen = (
+  assetManager: AssetManager,
   size: Vector2,
   pos: Vector3,
   videoTexture: VideoTexture,
 ) => {
-  const screenGeo = new PlaneGeometry(size.x, size.y);
-  const screenMat = new MeshStandardMaterial({
+  let planeGeometry = assetManager.geometries.get("planeGeometry");
+  if (!planeGeometry) {
+    planeGeometry = new PlaneGeometry(1, 1);
+    assetManager.geometries.set("planeGeometry", planeGeometry);
+  }
+  const phoneScreenMaterial = new MeshStandardMaterial({
     map: videoTexture,
     emissive: 0xffffff,
     emissiveMap: videoTexture,
     emissiveIntensity: 0.5 * Math.PI,
     side: FrontSide,
   });
-  const screen = new Mesh(screenGeo, screenMat);
+  assetManager.materials.set("phoneScreenMaterial", phoneScreenMaterial);
+  const screen = new Mesh(planeGeometry, phoneScreenMaterial);
   screen.name = "手机屏幕";
+  screen.scale.set(size.x, size.y);
   screen.position.copy(pos);
   screen.layers.enable(1); // 为了让手机的光能够单独增强
   return screen;

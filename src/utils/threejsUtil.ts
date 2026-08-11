@@ -1,4 +1,11 @@
-import { Object3D, Vector3, Scene } from "three";
+import {
+  Scene,
+  WebGLRenderer,
+  Object3D,
+  Vector3,
+  Mesh,
+  BufferGeometry,
+} from "three";
 import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 
@@ -19,7 +26,7 @@ export const loadGlb: (url: string) => Promise<GLTF> = (url) => {
       undefined,
       (error) => {
         reject(error);
-      }
+      },
     );
   });
 };
@@ -33,7 +40,7 @@ export const loadGlb: (url: string) => Promise<GLTF> = (url) => {
 export const lon2xyz = (
   radius: number,
   longitude: number,
-  latitude: number
+  latitude: number,
 ): Vector3 => {
   let lon = (longitude * Math.PI) / 180; // 转弧度值
   const lat = (latitude * Math.PI) / 180; // 转弧度值
@@ -49,28 +56,53 @@ export const lon2xyz = (
 };
 
 /**
- * @description: 销毁物体对象
- * @param {object} THREE.Object3D 销毁的物体
- * @param {parent} THREE.Object3D 销毁的物体的父级，从父级移除物体
+ * @description: 销毁three.js场景中的所有GPU资源对象
+ * @param {scene} Scene 销毁的物体
+ * @param {renderer} WebGLRenderer 销毁的物体
  * @return {void}
  */
-export const distoryObject = (
-  object: Object3D | null,
-  parent: Object3D | Scene | null
+export const disposeThreeJsScene = (
+  scene: Scene | null,
+  renderer: WebGLRenderer | null,
 ) => {
-  if (object && parent) {
-    parent.remove(object);
-    const children = object.children as THREE.Mesh[];
-    if (!children) return;
-    children.forEach(({ geometry, material, children }) => {
-      geometry?.dispose();
-      if (Array.isArray(material)) {
-        material.forEach((m) => m?.dispose());
-      } else {
-        material?.dispose();
-      }
-      if (children.length)
-        children.forEach((item) => distoryObject(item, object));
+  if (scene) {
+    // 先收集所有对象，避免在遍历过程中修改树结构
+    const objects: Object3D[] = [];
+    scene.traverse((obj) => {
+      objects.push(obj);
     });
+
+    // 逐个销毁对象
+    objects.forEach((obj) => {
+      if ((obj as Mesh).isMesh) {
+        const mesh = obj as Mesh;
+        // Geometry
+        (mesh.geometry as BufferGeometry)?.dispose();
+
+        // Material(s)
+        const mats = Array.isArray(mesh.material)
+          ? mesh.material
+          : [mesh.material];
+
+        mats.forEach((mat) => {
+          // Texture
+          Object.values(mat).forEach((value) => {
+            if (value && value.isTexture) {
+              value.dispose();
+            }
+          });
+          mat.dispose();
+        });
+      }
+    });
+
+    scene.clear();
   }
+
+  renderer?.dispose();
+  renderer?.forceContextLoss?.();
+  renderer?.domElement?.remove();
+
+  renderer = null;
+  scene = null;
 };
