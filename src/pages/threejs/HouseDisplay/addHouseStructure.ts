@@ -210,7 +210,7 @@ const addAllWall = (
   scene.add(instancedMesh);
 
   // 添加所有的玻璃窗
-  glassList.forEach((item: number[], index: number) => {
+  glassList.forEach((item: number[]) => {
     addGlassWindow(
       scene,
       assetManager,

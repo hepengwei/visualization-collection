@@ -257,7 +257,7 @@ const loadTable = (
   assetManager: AssetManager,
   video: HTMLVideoElement | null,
   phoneScreenRef: MutableRefObject<Mesh | null>,
-  intersectObjectsRef: MutableRefObject<Object3D[]>,
+  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   gltfLoader.load(
     "./public/model/table.glb",
@@ -286,7 +286,7 @@ const loadTable = (
         assetManager,
         video,
         phoneScreenRef,
-        intersectObjectsRef,
+        mouseRaycasterIntersectObjectsRef,
       );
     },
     (progress) => {
@@ -308,7 +308,7 @@ const loadPhone = (
   assetManager: AssetManager,
   video: HTMLVideoElement | null,
   phoneScreenRef: MutableRefObject<Mesh | null>,
-  intersectObjectsRef: MutableRefObject<Object3D[]>,
+  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   gltfLoader.load(
     "./public/model/phone.glb",
@@ -342,7 +342,7 @@ const loadPhone = (
       );
       if (phoneScreen) {
         phoneScreenRef.current = phoneScreen;
-        intersectObjectsRef.current.push(phoneScreen);
+        mouseRaycasterIntersectObjectsRef.current.push(phoneScreen);
       }
     },
     (progress) => {

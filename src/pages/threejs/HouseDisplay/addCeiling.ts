@@ -16,9 +16,6 @@ const ceilingHeight = 0.2; // 天花板厚度
 const ceilingColor = 0xf4f3ef; // 珍珠白
 const ceilingY = 4.1; // 天花板相对于组的位置
 
-/**
- * 创建天花板组
- */
 const addCeiling = (
   scene: Scene,
   assetManager: AssetManager,

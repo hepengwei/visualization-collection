@@ -1,7 +1,7 @@
 /**
  * 房屋展示 - 3D房屋漫游
  */
-import React, { useRef, useLayoutEffect, useState, useEffect } from "react";
+import React, { useRef, useLayoutEffect, useEffect } from "react";
 import {
   Scene,
   PerspectiveCamera,
@@ -26,7 +26,13 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { useGlobalContext } from "hooks/useGlobalContext";
 import useInitialize from "hooks/threejs/useInitialize";
 import type { AssetManager } from 'hooks/threejs/useInitialize';
-import { useModeToggle, initModeToggle, modeToggleAnimationRender, pointerControlsMoveRender, handleModeToggle } from './modeToggle';
+import {
+  useModeToggle,
+  initModeToggle,
+  modeToggleAnimationRender,
+  pointerControlsMoveRender,
+  handleModeToggle
+} from './modeToggle';
 import addLighting from "./addLighting";
 import addHouseStructure from './addHouseStructure';
 import add3dModel from "./add3dModel";
@@ -67,7 +73,6 @@ const HouseDisplay = () => {
   const statsRef1 = useRef<Stats | null>(null);
   const statsRef2 = useRef<Stats | null>(null);
   const statsRef3 = useRef<Stats | null>(null);
-  const [rendererInfo, setRendererInfo] = useState<Record<string, any>>({});
 
   const {
     viewMode,
@@ -81,7 +86,17 @@ const HouseDisplay = () => {
     animationStartTimeRef,
     animationDurationRef,
     prevTimeRef,
-  } = useModeToggle(containerRef, menuWidth, headHeight, mouseRaycasterIntersectedRef, orbitControlsRef, tvVideoRef, onClickTVScreen, phoneVideoRef, onClickPhoneScreen);
+  } = useModeToggle(
+    containerRef,
+    menuWidth,
+    headHeight,
+    mouseRaycasterIntersectedRef,
+    orbitControlsRef,
+    tvVideoRef,
+    onClickTVScreen,
+    phoneVideoRef,
+    onClickPhoneScreen
+  );
 
   const initializeHandle = (
     scene: Scene,
@@ -120,7 +135,15 @@ const HouseDisplay = () => {
       addHouseStructure(scene, assetManager, pointerControlsIntersetObjectsRef, false);
 
       // 加载并显示电视墙、沙发、床等模型
-      add3dModel(scene, assetManager, tvVideoRef.current, tvScreenRef, phoneVideoRef.current, phoneScreenRef, mouseRaycasterIntersectObjectsRef);
+      add3dModel(
+        scene,
+        assetManager,
+        tvVideoRef.current,
+        tvScreenRef,
+        phoneVideoRef.current,
+        phoneScreenRef,
+        mouseRaycasterIntersectObjectsRef
+      );
 
       // 添加天花板（初始隐藏在天空中）
       addCeiling(scene, assetManager, ceilingGroupRef);
@@ -172,9 +195,21 @@ const HouseDisplay = () => {
   /**
    * 渲染循环
    */
-  const renderHandle = (scene: Scene, camera: PerspectiveCamera, renderer: WebGLRenderer) => {
+  const renderHandle = (scene: Scene, camera: PerspectiveCamera) => {
     // 模式切换动画过程渲染
-    modeToggleAnimationRender(camera, animatingRef, viewModeRef, orbitControlsRef, pointerControlsRef, initialCameraPosition, initialCameraTarget, ceilingGroupRef, animationStartTimeRef, animationDurationRef, allCeilingLampsVisibleToggle)
+    modeToggleAnimationRender(
+      camera,
+      animatingRef,
+      viewModeRef,
+      orbitControlsRef,
+      pointerControlsRef,
+      initialCameraPosition,
+      initialCameraTarget,
+      ceilingGroupRef,
+      animationStartTimeRef,
+      animationDurationRef,
+      allCeilingLampsVisibleToggle
+    );
 
     // 整体模式下更新轨道控制器
     if (viewModeRef.current === 'overview' && orbitControlsRef.current && !animatingRef.current) {
@@ -230,14 +265,6 @@ const HouseDisplay = () => {
         statsRef3.current.update();
       }
     }
-
-    // 显示Three.js内置的渲染统计监控指标
-    setRendererInfo({
-      drawCallCount: renderer.info.render.calls,
-      trianglesTotal: renderer.info.render.triangles,
-      geometriesCount: renderer.info.memory.geometries,
-      texturesCount: renderer.info.memory.textures,
-    })
 
     return true;
   };
@@ -302,7 +329,15 @@ const HouseDisplay = () => {
       <button
         className={styles.modeToggle}
         onClick={
-          (e) => handleModeToggle(e, animatingRef, setViewMode, viewModeRef, orbitControlsRef, animationStartTimeRef, allCeilingLampsVisibleToggle)
+          (e) => handleModeToggle(
+            e,
+            animatingRef,
+            setViewMode,
+            viewModeRef,
+            orbitControlsRef,
+            animationStartTimeRef,
+            allCeilingLampsVisibleToggle
+          )
         }
         tabIndex={-1}
       >
