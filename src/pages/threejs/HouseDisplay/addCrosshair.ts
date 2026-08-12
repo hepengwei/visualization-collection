@@ -77,7 +77,7 @@ export const crosshairRender = (
   mousePositionRef: RefObject<Vector2>,
   mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
   outlinePass: OutlinePass | null,
-  currentIntersectedRef: MutableRefObject<Object3D | null>,
+  mouseRaycasterIntersectedRef: MutableRefObject<Object3D | null>,
 ) => {
   if (!reticle) return;
   const showCrosshair = viewModeRef.current === "overview"; // 是否显示3D准星
@@ -112,12 +112,34 @@ export const crosshairRender = (
           reticle?.position.copy(hits[0].point);
         }
         if (outlinePass) {
-          const firstHit = hits[0].object;
-          // 处理高亮切换
-          if (currentIntersectedRef.current !== firstHit) {
-            // 设置新的高亮
-            outlinePass.selectedObjects = [firstHit];
-            currentIntersectedRef.current = firstHit;
+          let namedObj: Object3D = hits[0].object;
+          // 沿父链向上找到有 name 的节点
+          while (!namedObj.name && namedObj.parent) {
+            namedObj = namedObj.parent;
+          }
+          // 将墙体加入鼠标射线检测是为了防止隔墙高亮了可交互的物体
+          if (namedObj.name && namedObj.name !== "墙体") {
+            // 处理高亮切换
+            if (mouseRaycasterIntersectedRef.current !== namedObj) {
+              // 设置新的高亮
+              outlinePass.selectedObjects = [namedObj];
+              mouseRaycasterIntersectedRef.current = namedObj;
+            }
+          } else {
+            // 没打到物体：准星飞到远处
+            if (showCrosshair) {
+              const t = camera.far * 0.95; // 接近远裁面
+              const farPoint = new Vector3();
+              raycaster.ray.at(t, farPoint);
+              reticle?.position.copy(farPoint);
+            }
+            if (outlinePass) {
+              // 没有瞄准任何东西，清除高亮
+              if (mouseRaycasterIntersectedRef.current) {
+                outlinePass.selectedObjects = [];
+              }
+            }
+            mouseRaycasterIntersectedRef.current = null;
           }
         }
       } else {
@@ -130,11 +152,11 @@ export const crosshairRender = (
         }
         if (outlinePass) {
           // 没有瞄准任何东西，清除高亮
-          if (currentIntersectedRef.current) {
+          if (mouseRaycasterIntersectedRef.current) {
             outlinePass.selectedObjects = [];
           }
         }
-        currentIntersectedRef.current = null;
+        mouseRaycasterIntersectedRef.current = null;
       }
     }
   }
@@ -154,8 +176,8 @@ export const createOutlinePass = (
   );
   outlinePass.visibleEdgeColor.set("#1758ee"); // 高亮颜色
   outlinePass.hiddenEdgeColor.set("#1758ee");
-  outlinePass.edgeThickness = 1.6; // 边缘厚度
-  outlinePass.edgeStrength = 10; // 边缘强度
+  outlinePass.edgeThickness = 2; // 边缘厚度
+  outlinePass.edgeStrength = 14; // 边缘强度
   outlinePass.edgeGlow = 1; // 发光
   outlinePass.downSampleRatio = 1; // 抗锯齿
   return outlinePass;

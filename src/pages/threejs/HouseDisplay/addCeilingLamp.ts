@@ -19,10 +19,15 @@ import {
   Group,
   Color,
   Vector3,
+  Object3D,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import { wallHeight } from "./addHouseStructure";
 import type { ViewMode } from "./modeToggle";
+import {
+  addCeilingLampSwitch,
+  ceilingLampSwitchToggle,
+} from "./addCeilingLampSwitch";
 
 const LAMP_RADIUS = 0.9; // 灯的半径
 const LAMP_THICKNESS = 0.12; // 灯的厚度
@@ -66,11 +71,15 @@ const lampConfigList = [
     scale: new Vector3(0.6, 0.6, 0.6),
   },
 ];
-let lampList: Group[] = []; // 所有吊灯的列表
 let dynamicOptimizationlampList: Group[] = []; // 动态优化吊灯的列表（动态显示隐藏光源，提高性能）
 
-export const addCeilingLamp = (scene: Scene, assetManager: AssetManager) => {
-  lampList = [];
+export const addCeilingLamp = (
+  scene: Scene,
+  assetManager: AssetManager,
+  lampListRef: MutableRefObject<Group[]>,
+  lampSwitchListRef: MutableRefObject<Group[]>,
+  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
+) => {
   dynamicOptimizationlampList = [];
 
   // 圆形平面
@@ -165,12 +174,21 @@ export const addCeilingLamp = (scene: Scene, assetManager: AssetManager) => {
     if (scale) {
       lamp.scale.copy(scale as Vector3);
     }
-    lampList.push(lamp);
+    lampListRef.current.push(lamp);
     if (!noNeedDynamicOptimization) {
       dynamicOptimizationlampList.push(lamp);
     }
     scene.add(lamp);
   });
+
+  // 添加所有的吊灯开关
+  addCeilingLampSwitch(
+    scene,
+    assetManager,
+    lampSwitchListRef,
+    mouseRaycasterIntersectObjectsRef,
+    lampListRef.current,
+  );
 };
 
 // 创建吊灯
@@ -301,9 +319,16 @@ const kelvinToColor = (k: number) => {
 };
 
 // 切换所有吊灯的显示/隐藏
-export const allCeilingLampsVisibleToggle = (visible: boolean) => {
+export const allCeilingLampsVisibleToggle = (
+  lampList: Group[],
+  lampSwitchList: Group[],
+  visible: boolean,
+) => {
   lampList.forEach((lamp: Group) => {
     ceilingLampVisibleToggle(lamp, visible);
+  });
+  lampSwitchList.forEach((lampSwitch: Group) => {
+    ceilingLampSwitchToggle(lampSwitch, visible ? "ON" : "OFF");
   });
 };
 
@@ -350,11 +375,14 @@ export const dynamicOptimizationLampLightRender = (
       distanceInfoList.forEach(
         (item: { lamp: Group; dist: number }, index: number) => {
           if (index < DYNAMIC_OPTIMIZATION_LAMP_COUNT) {
-            item.lamp.traverse((child) => {
-              if (child instanceof PointLight) {
-                child.visible = true;
-              }
-            });
+            // @ts-ignore
+            if (item.lamp.switchStatus === "ON") {
+              item.lamp.traverse((child) => {
+                if (child instanceof PointLight) {
+                  child.visible = true;
+                }
+              });
+            }
           } else {
             item.lamp.traverse((child) => {
               if (child instanceof PointLight) {
