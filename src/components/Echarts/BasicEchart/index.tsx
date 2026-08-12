@@ -2,8 +2,8 @@ import React, {
   useCallback,
   useEffect,
   useRef,
-  RefObject,
   useImperativeHandle,
+  ForwardedRef,
 } from "react";
 import echarts from "utils/echarts.config";
 import type { ChartOptions } from "utils/echarts.config";
@@ -22,23 +22,21 @@ export interface BasicEchartProps {
 const BasicEchart = (
   {
     options = {}, // options
-    renderType = "canvas", //默认渲染模式canva 类型
+    renderType = "canvas", // 默认渲染模式canva 类型
     style = { width: "100%", height: "100%" }, // 样式
-    onHoverChange, //点击事件
-    onClickChange, //鼠标hover事件
-    legendSelectChanged, //legend点击事件
+    onHoverChange, // 鼠标hover事件
+    onClickChange, // 点击事件
+    legendSelectChanged, // legend点击事件
     onGlobalout, // 鼠标离开图表事件
   }: BasicEchartProps,
-  ref: RefObject<RefObject<echarts.ECharts | null> | null>
+  ref: ForwardedRef<echarts.ECharts | null>
 ) => {
-  const chartRef = useRef<HTMLDivElement>(null); //当前div实例
+  const chartRef = useRef<HTMLDivElement>(null); // 当前div实例
   const chartInstance = useRef<echarts.ECharts | null>(null); // 用于保存上一次chartRef被赋值的实例对象
 
   useImperativeHandle(
     ref,
-    () => {
-      return chartInstance;
-    },
+    () => chartInstance.current!,
     []
   );
 
@@ -46,7 +44,7 @@ const BasicEchart = (
     params: Record<string, any>,
     myChart: echarts.ECharts | null
   ) => {
-    //配置环形图图的折线长度
+    // 配置环形图的折线长度
     const isLeft =
       params.labelRect.x < (myChart as echarts.ECharts).getWidth() / 2;
     const points = params.labelLinePoints;
@@ -58,7 +56,7 @@ const BasicEchart = (
     return { labelLinePoints: points };
   };
 
-  //初始化图表，设置配置项
+  // 初始化图表，设置配置项
   const renderChart = useCallback(() => {
     if (chartRef.current) {
       const render = echarts?.getInstanceByDom(chartRef.current);
@@ -70,30 +68,30 @@ const BasicEchart = (
         });
       }
 
-      //绑定点击事件
+      // 绑定点击事件
       onClickChange &&
         chartInstance.current?.on("click", (params) => {
           onClickChange(params);
         });
 
-      //鼠标hover事件
+      // 鼠标hover事件
       onHoverChange &&
         chartInstance.current?.on("mousemove", (params) => {
           onHoverChange(params);
         });
 
-      //鼠标legend点击事件
+      // 鼠标legend点击事件
       legendSelectChanged &&
         chartInstance.current?.on("legendselectchanged", (params) => {
           legendSelectChanged(params);
         });
 
-      //设置环形图的labelLayout
+      // 设置环形图的labelLayout
       if (
         (options.series &&
           ((options.series as SeriesOption[])[0]?.type ?? "")) === "pie"
       ) {
-        //当echart为环形图时
+        // 当echart为环形图时
         const pieSeriesItem = (options?.series as SeriesOption[])[0];
         pieSeriesItem.labelLayout = (params) =>
           setPieLabelLayout(params, chartInstance.current);
@@ -102,7 +100,7 @@ const BasicEchart = (
       // 鼠标离开图表的事件
       onGlobalout && chartInstance.current?.on("globalout", onGlobalout);
 
-      //设置配置项
+      // 设置配置项
       chartInstance.current.setOption(options);
     }
   }, [options, renderType]);
@@ -147,4 +145,4 @@ const BasicEchart = (
 //   }
 // }
 // export default memo(BasicEchart, areEqual);
-export default React.forwardRef(BasicEchart, {});
+export default React.forwardRef(BasicEchart);

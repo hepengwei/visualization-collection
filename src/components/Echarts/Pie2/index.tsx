@@ -72,7 +72,7 @@ const Pie2 = ({
   onHoverChange, // 鼠标hover事件
   onClickChange, // 点击事件
 }: Pie2Props) => {
-  const chartInstance = useRef<RefObject<echarts.ECharts | null>>(null);
+  const chartInstance = useRef<echarts.ECharts | null>(null);
   const currentPieIndex = useRef<number>(0);
 
   // 图表最终的配置数据
@@ -87,16 +87,16 @@ const Pie2 = ({
   const onChartMouseMove = (params: any) => {
     const index = params.dataIndex;
     if (
-      chartInstance.current?.current &&
+      chartInstance.current &&
       params.componentType === "series" &&
       index !== currentPieIndex.current
     ) {
-      chartInstance.current.current.dispatchAction({
+      chartInstance.current.dispatchAction({
         type: "downplay",
         seriesIndex: 0,
         dataIndex: currentPieIndex.current,
       });
-      chartInstance.current.current.dispatchAction({
+      chartInstance.current.dispatchAction({
         type: "highlight",
         seriesIndex: 0,
         dataIndex: index,
@@ -107,13 +107,13 @@ const Pie2 = ({
   };
 
   const onMouseMoveRight = (index: number) => {
-    if (chartInstance.current?.current && index !== currentPieIndex.current) {
-      chartInstance.current.current.dispatchAction({
+    if (chartInstance.current && index !== currentPieIndex.current) {
+      chartInstance.current.dispatchAction({
         type: "downplay",
         seriesIndex: 0,
         dataIndex: currentPieIndex.current,
       });
-      chartInstance.current.current.dispatchAction({
+      chartInstance.current.dispatchAction({
         type: "highlight",
         seriesIndex: 0,
         dataIndex: index,

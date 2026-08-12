@@ -5,6 +5,8 @@ import {
   Vector3,
   Mesh,
   BufferGeometry,
+  InstancedMesh,
+  Material,
 } from "three";
 import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
@@ -66,34 +68,33 @@ export const disposeThreeJsScene = (
   renderer: WebGLRenderer | null,
 ) => {
   if (scene) {
-    // 先收集所有对象，避免在遍历过程中修改树结构
+    // 先收集所有Mesh对象和InstancedMesh对象，避免在遍历过程中修改树结构
     const objects: Object3D[] = [];
     scene.traverse((obj) => {
-      objects.push(obj);
+      if ((obj as Mesh | InstancedMesh).isMesh) {
+        objects.push(obj);
+      }
     });
 
     // 逐个销毁对象
-    objects.forEach((obj) => {
-      if ((obj as Mesh).isMesh) {
-        const mesh = obj as Mesh;
-        // Geometry
-        (mesh.geometry as BufferGeometry)?.dispose();
+    objects.forEach((obj: Object3D) => {
+      // Geometry
+      ((obj as Mesh | InstancedMesh).geometry as BufferGeometry)?.dispose();
 
-        // Material(s)
-        const mats = Array.isArray(mesh.material)
-          ? mesh.material
-          : [mesh.material];
+      // Material(s)
+      const mats = Array.isArray((obj as Mesh | InstancedMesh).material)
+        ? (obj as Mesh | InstancedMesh).material
+        : [(obj as Mesh | InstancedMesh).material];
 
-        mats.forEach((mat) => {
-          // Texture
-          Object.values(mat).forEach((value) => {
-            if (value && value.isTexture) {
-              value.dispose();
-            }
-          });
-          mat.dispose();
+      (mats as Material[]).forEach((mat: Material) => {
+        // Texture
+        Object.values(mat).forEach((value) => {
+          if (value && value.isTexture) {
+            value.dispose();
+          }
         });
-      }
+        mat.dispose();
+      });
     });
 
     scene.clear();
