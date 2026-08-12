@@ -25,11 +25,13 @@ const addCeiling = (
   ceilingGroupRef.current = ceilingGroup;
   ceilingGroup.name = "天花板组";
 
+  // 创建立方体
   let boxGeometry = assetManager.geometries.get("boxGeometry");
   if (!boxGeometry) {
     boxGeometry = new BoxGeometry(1, 1, 1);
     assetManager.geometries.set("boxGeometry", boxGeometry);
   }
+  // 创建天花板材质
   const ceilingMaterial = new MeshStandardMaterial({
     color: ceilingColor,
     roughness: 0.85,

@@ -2,6 +2,7 @@
  * 添加房屋结构，包括地板、所有墙体和玻璃窗
  * showWallLabel 是否显示每个墙体的编号标签，默认不显示
  */
+import { RefObject } from "react";
 import {
   Scene,
   BoxGeometry,
@@ -26,13 +27,13 @@ import marbleBaseColorImg from "images/threejs/marbleFloor/marble_basecolor.png"
 import marbleNormalImg from "images/threejs/marbleFloor/marble_normal.png";
 import marbleRoughnessImg from "images/threejs/marbleFloor/marble_roughness.png";
 import marbleHeightImg from "images/threejs/marbleFloor/marble_height.png";
-import { RefObject } from "react";
 
 // 墙体参数
 export const wallHeight = 4; // 墙体高度
 const beamHeight = 0.5; // 门框上方横梁的墙体高度
 const w = 0.3; // 墙体厚度
 const wallColor = 0xf4f3ef; // 珍珠白乳胶漆颜色
+const wallColor2 = 0xede4d8; // 米白色乳胶漆颜色
 const wallLabelSize = 1.5; // 墙体标签的大小
 const wallLabelColor = "#FFFF00"; // 墙体标签的颜色
 // 所有墙体的尺寸和位置
@@ -131,6 +132,7 @@ const floorDepth = 32; // 地板总深度
 const addHouseStructure = (
   scene: Scene,
   assetManager: AssetManager,
+  mouseRaycasterIntersectObjectsRef: RefObject<Object3D[]>,
   pointerControlsIntersetObjectsRef: RefObject<Object3D[]>,
   showWallLabel = false,
 ) => {
@@ -141,6 +143,7 @@ const addHouseStructure = (
   addAllWall(
     scene,
     assetManager,
+    mouseRaycasterIntersectObjectsRef,
     pointerControlsIntersetObjectsRef,
     showWallLabel,
   );
@@ -152,9 +155,11 @@ const addHouseStructure = (
 const addAllWall = (
   scene: Scene,
   assetManager: AssetManager,
+  mouseRaycasterIntersectObjectsRef: RefObject<Object3D[]>,
   pointerControlsIntersetObjectsRef: RefObject<Object3D[]>,
   showWallLabel: boolean,
 ) => {
+  // 创建立方体
   let boxGeometry = assetManager.geometries.get("boxGeometry");
   if (!boxGeometry) {
     boxGeometry = new BoxGeometry(1, 1, 1);
@@ -184,11 +189,13 @@ const addAllWall = (
     wallMaterial,
     wallList.length,
   );
+  instancedMesh.name = "墙体";
+  // 将墙体加入鼠标射线检测是为了防止隔墙高亮了可交互的物体
+  mouseRaycasterIntersectObjectsRef.current?.push(instancedMesh);
   pointerControlsIntersetObjectsRef.current?.push(instancedMesh);
   instancedMesh.instanceMatrix.setUsage(DynamicDrawUsage);
   instancedMesh.receiveShadow = true;
   instancedMesh.castShadow = true;
-  instancedMesh.name = "墙体";
 
   // 添加所有的墙体
   const dummy = new Object3D();

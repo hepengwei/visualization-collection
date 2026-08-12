@@ -38,6 +38,7 @@ import addHouseStructure from './addHouseStructure';
 import add3dModel from "./add3dModel";
 import addCeiling from "./addCeiling";
 import { addCeilingLamp, allCeilingLampsVisibleToggle, dynamicOptimizationLampLightRender } from './addCeilingLamp';
+import { onClickCeilingLampSwitch } from './addCeilingLampSwitch';
 import { onClickTVScreen } from './addTVScreen';
 import { onClickPhoneScreen } from './addPhoneScreen';
 import { addCrosshair, resizeCrosshair, crosshairRender, createOutlinePass } from './addCrosshair';
@@ -65,6 +66,8 @@ const HouseDisplay = () => {
   const outlinePassRef = useRef<OutlinePass | null>(null);
   const pointerControlsIntersetObjectsRef = useRef<Object3D[]>([]); // 第一人称控制器可接受的碰撞检测对象列表
   const ceilingGroupRef = useRef<Group | null>(null); // 房屋天花板
+  const lampListRef = useRef<Group[]>([]); // 所有吊灯的列表
+  const lampSwitchListRef = useRef<Group[]>([]); // 所有吊灯开关的列表
   const labelRendererRef = useRef<CSS2DRenderer | null>(null); // 鼠标准星渲染器
   const raycasterRef = useRef<Raycaster | null>(null); // 鼠标准星射线
   const reticleRef = useRef<CSS2DObject | null>(null); // 鼠标准星对象
@@ -92,10 +95,12 @@ const HouseDisplay = () => {
     headHeight,
     mouseRaycasterIntersectedRef,
     orbitControlsRef,
+    lampListRef,
     tvVideoRef,
     onClickTVScreen,
     phoneVideoRef,
-    onClickPhoneScreen
+    onClickPhoneScreen,
+    onClickCeilingLampSwitch,
   );
 
   const initializeHandle = (
@@ -132,7 +137,7 @@ const HouseDisplay = () => {
       addLighting(scene);
 
       // 创建并显示地板、墙体和玻璃窗
-      addHouseStructure(scene, assetManager, pointerControlsIntersetObjectsRef, false);
+      addHouseStructure(scene, assetManager, mouseRaycasterIntersectObjectsRef, pointerControlsIntersetObjectsRef, false);
 
       // 加载并显示电视墙、沙发、床等模型
       add3dModel(
@@ -149,11 +154,10 @@ const HouseDisplay = () => {
       addCeiling(scene, assetManager, ceilingGroupRef);
 
       // 添加所有房间吊灯
-      addCeilingLamp(scene, assetManager);
+      addCeilingLamp(scene, assetManager, lampListRef, lampSwitchListRef, mouseRaycasterIntersectObjectsRef);
 
       // 初始化整体/漫游模式切换相关
       initModeToggle(
-        scene,
         camera,
         containerRef.current,
         pointerControlsRef,
@@ -163,6 +167,8 @@ const HouseDisplay = () => {
         viewModeRef,
         orbitControlsRef,
         animationStartTimeRef,
+        lampListRef.current,
+        lampSwitchListRef.current,
         allCeilingLampsVisibleToggle,
       );
 
@@ -208,6 +214,8 @@ const HouseDisplay = () => {
       ceilingGroupRef,
       animationStartTimeRef,
       animationDurationRef,
+      lampListRef.current,
+      lampSwitchListRef.current,
       allCeilingLampsVisibleToggle
     );
 
@@ -336,6 +344,8 @@ const HouseDisplay = () => {
             viewModeRef,
             orbitControlsRef,
             animationStartTimeRef,
+            lampListRef.current,
+            lampSwitchListRef.current,
             allCeilingLampsVisibleToggle
           )
         }
