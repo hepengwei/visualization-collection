@@ -158,7 +158,6 @@ const HouseDisplay = () => {
 
       // 初始化整体/漫游模式切换相关
       initModeToggle(
-        scene,
         camera,
         containerRef.current,
         pointerControlsRef,

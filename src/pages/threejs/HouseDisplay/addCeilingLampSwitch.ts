@@ -16,6 +16,7 @@ import {
   PointLight,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
+import { ceilingLampSwitchStatusToggle } from "./addCeilingLamp";
 
 const SWITCH_WIDTH = 0.25; // 开关的宽
 const SWITCH_HEIGHT = 0.2; // 开关的高
@@ -230,31 +231,21 @@ export const onClickCeilingLampSwitch = (
       0,
       ceilingLampSwitch.name.length - 4,
     );
+    const nextStatus =
+      // @ts-ignore
+      ceilingLampSwitch.switchStatus === "ON" ? "OFF" : "ON";
     for (let i = 0, l = lampList.length; i < l; i++) {
       const lamp = lampList[i];
       if (lamp.name.substring(0, lamp.name.length - 2) === positionName) {
-        // @ts-ignore
-        lamp.switchStatus =
-          // @ts-ignore
-          ceilingLampSwitch.switchStatus === "ON" ? "OFF" : "ON";
-        // 同时控制吊灯光源的关闭
-        lamp.traverse((child) => {
-          if (child instanceof PointLight) {
-            // @ts-ignore
-            child.visible = ceilingLampSwitch.switchStatus !== "ON";
-          }
-        });
+        ceilingLampSwitchStatusToggle(lamp, nextStatus);
         break;
       }
     }
-    // @ts-ignore
-    ceilingLampSwitch.switchStatus =
-      // @ts-ignore
-      ceilingLampSwitch.switchStatus === "ON" ? "OFF" : "ON";
+    ceilingLampSwitchToggle(ceilingLampSwitch, nextStatus);
   }
 };
 
-// 切换单个吊灯开关的开/关
+// 切换单个吊灯开关的开关状态
 export const ceilingLampSwitchToggle = (
   lampSwitch: Group,
   switchStatus: "ON" | "OFF",

@@ -133,16 +133,25 @@ export const addCeilingLamp = (
     "ceilingLampBottomPanelTexture",
     ceilingLampBottomPanelTexture,
   );
-  // 吊灯底部发光面板材质
-  const ceilingLampBottomPanelMaterial = new MeshBasicMaterial({
+  // 吊灯底部发光时的面板材质
+  const ceilingLampBottomLightPanelMaterial = new MeshBasicMaterial({
     map: ceilingLampBottomPanelTexture,
     color: 0xffffff,
     toneMapped: false, // 关键：不受色调映射压暗，保持纯亮白
     side: DoubleSide,
   });
   assetManager.materials.set(
-    "ceilingLampBottomPanelMaterial",
-    ceilingLampBottomPanelMaterial,
+    "ceilingLampBottomLightPanelMaterial",
+    ceilingLampBottomLightPanelMaterial,
+  );
+  // 吊灯底部不发光时面板材质
+  const ceilingLampBottomDarkPanelMaterial = new MeshBasicMaterial({
+    color: 0xdddddd,
+    side: DoubleSide,
+  });
+  assetManager.materials.set(
+    "ceilingLampBottomDarkPanelMaterial",
+    ceilingLampBottomDarkPanelMaterial,
   );
   // 吊灯底部环形面板材质
   const ceilingLampBottomRingMaterial = new MeshPhysicalMaterial({
@@ -194,6 +203,8 @@ export const addCeilingLamp = (
 // 创建吊灯
 const createLamp = (assetManager: AssetManager, intensity?: number) => {
   const lampGroup = new Group();
+  // 默认隐藏
+  lampGroup.visible = false;
   const circleGeometry = assetManager.geometries.get("circleGeometry");
   const cylinderGeometry = assetManager.geometries.get("cylinderGeometry");
   const ceilingLampRingGeometry = assetManager.geometries.get(
@@ -205,8 +216,11 @@ const createLamp = (assetManager: AssetManager, intensity?: number) => {
   const ceilingLampCylinderMaterial = assetManager.materials.get(
     "ceilingLampCylinderMaterial",
   );
-  const ceilingLampBottomPanelMaterial = assetManager.materials.get(
-    "ceilingLampBottomPanelMaterial",
+  const ceilingLampBottomLightPanelMaterial = assetManager.materials.get(
+    "ceilingLampBottomLightPanelMaterial",
+  );
+  const ceilingLampBottomDarkPanelMaterial = assetManager.materials.get(
+    "ceilingLampBottomDarkPanelMaterial",
   );
   const ceilingLampBottomRingMaterial = assetManager.materials.get(
     "ceilingLampBottomRingMaterial",
@@ -229,8 +243,19 @@ const createLamp = (assetManager: AssetManager, intensity?: number) => {
   bottomRing.position.y = -LAMP_THICKNESS / 2 - 0.0005;
   lampGroup.add(bottomRing);
 
-  // 创建并添加底部发光面板
-  const glowPanel = new Mesh(circleGeometry, ceilingLampBottomPanelMaterial);
+  // 创建并添加底部面板(开关灯时发光材质和不发光材质会进行切换)
+  const glowPanel = new Mesh(
+    circleGeometry,
+    lampGroup.visible
+      ? ceilingLampBottomLightPanelMaterial
+      : ceilingLampBottomDarkPanelMaterial,
+  );
+  glowPanel.name = "吊灯底面";
+  // 将两种材质存储到 mesh 上，供点击开关时直接切换
+  // @ts-ignore
+  glowPanel.lightMaterial = ceilingLampBottomLightPanelMaterial;
+  // @ts-ignore
+  glowPanel.darkMaterial = ceilingLampBottomDarkPanelMaterial;
   glowPanel.scale.set(LAMP_RADIUS * 0.96, LAMP_RADIUS * 0.96);
   glowPanel.rotation.x = -Math.PI / 2; // 面向地板
   glowPanel.position.y = -LAMP_THICKNESS / 2 - 0.001; // 贴在圆饼灯底面
@@ -254,8 +279,6 @@ const createLamp = (assetManager: AssetManager, intensity?: number) => {
   // 添加吊灯光源
   addLampLight(lampGroup, intensity);
 
-  // 默认隐藏
-  lampGroup.visible = false;
   // 添加自定义属性值
   // @ts-ignore
   lampGroup.switchStatus = lampGroup.visible ? "ON" : "OFF";
@@ -333,15 +356,34 @@ export const allCeilingLampsVisibleToggle = (
 };
 
 // 切换单个吊灯的显示/隐藏
-export const ceilingLampVisibleToggle = (lamp: Group, visible: boolean) => {
+export const ceilingLampVisibleToggle = (
+  lamp: Group,
+  visible: boolean,
+) => {
+  if (lamp.visible === visible) return;
   lamp.visible = visible;
-  // 修改自定义属性值
+  const nextStatus = visible ? "ON" : "OFF";
+  ceilingLampSwitchStatusToggle(lamp, nextStatus);
+};
+
+// 切换单个吊灯的开关状态
+export const ceilingLampSwitchStatusToggle = (
+  lamp: Group,
+  nextStatus: "ON" | "OFF",
+) => {
   // @ts-ignore
-  lamp.switchStatus = visible ? "ON" : "OFF";
-  // 同时控制光源的启用/禁用，避免隐藏时仍然计算阴影导致性能问题
+  lamp.switchStatus = nextStatus;
   lamp.traverse((child) => {
     if (child instanceof PointLight) {
-      child.visible = visible;
+      // @ts-ignore
+      child.visible = nextStatus === "ON";
+    } else if (child.name === "吊灯底面") {
+      const panel = child as any;
+      const newMaterial =
+        nextStatus === "ON" ? panel.lightMaterial : panel.darkMaterial;
+      if (newMaterial) {
+        (child as Mesh).material = newMaterial;
+      }
     }
   });
 };

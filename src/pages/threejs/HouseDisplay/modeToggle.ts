@@ -10,7 +10,6 @@ import {
   RefObject,
 } from "react";
 import {
-  Scene,
   PerspectiveCamera,
   Vector3,
   Vector2,
@@ -163,7 +162,6 @@ export const useModeToggle = (
 
 // 初始化整体/漫游模式切换相关
 export const initModeToggle = (
-  scene: Scene,
   camera: PerspectiveCamera,
   container: HTMLDivElement,
   pointerControlsRef: MutableRefObject<PointerLockControls | null>,
@@ -367,7 +365,11 @@ export const modeToggleAnimationRender = (
       // 动画结束后的控制器状态确认
       if (currentMode === "roaming") {
         // 将所有吊灯显示出来
-        allCeilingLampsVisibleToggle?.(lampList, lampSwitchList, true);
+        allCeilingLampsVisibleToggle?.(
+          lampList,
+          lampSwitchList,
+          true,
+        );
         // 确保轨道控制器完全禁用
         if (orbitControlsRef.current) {
           orbitControlsRef.current.enabled = false;
@@ -543,7 +545,11 @@ export const handleModeToggle = (
     // 切换到整体模式
     console.log("返回整体模式，退出指针锁定并重置状态");
     // 将所有吊灯隐藏
-    allCeilingLampsVisibleToggle?.(lampList, lampSwitchList, false);
+    allCeilingLampsVisibleToggle?.(
+      lampList,
+      lampSwitchList,
+      false,
+    );
     // 重置移动状态
     moveState = {
       forward: false,
