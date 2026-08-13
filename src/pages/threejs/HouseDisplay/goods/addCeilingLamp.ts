@@ -23,7 +23,7 @@ import {
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import { wallHeight } from "./addHouseStructure";
-import type { ViewMode } from "./modeToggle";
+import type { ViewMode } from "../function/modeToggle";
 import {
   addCeilingLampSwitch,
   ceilingLampSwitchToggle,
@@ -91,7 +91,7 @@ export const addCeilingLamp = (
   // 圆柱体
   let cylinderGeometry = assetManager.geometries.get("cylinderGeometry");
   if (!cylinderGeometry) {
-    cylinderGeometry = new CylinderGeometry(1, 1, 1, 64, 1, false);
+    cylinderGeometry = new CylinderGeometry(1, 1, 1);
     assetManager.geometries.set("cylinderGeometry", cylinderGeometry);
   }
   // 吊灯底部圆环平面
