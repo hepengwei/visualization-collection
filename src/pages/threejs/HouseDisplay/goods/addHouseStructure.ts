@@ -33,7 +33,6 @@ export const wallHeight = 4; // 墙体高度
 const beamHeight = 0.5; // 门框上方横梁的墙体高度
 const w = 0.3; // 墙体厚度
 const wallColor = 0xf4f3ef; // 珍珠白乳胶漆颜色
-const wallColor2 = 0xede4d8; // 米白色乳胶漆颜色
 const wallLabelSize = 1.5; // 墙体标签的大小
 const wallLabelColor = "#FFFF00"; // 墙体标签的颜色
 // 所有墙体的尺寸和位置

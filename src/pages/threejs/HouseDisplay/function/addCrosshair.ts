@@ -15,7 +15,7 @@ import {
   CSS2DObject,
 } from "three/examples/jsm/renderers/CSS2DRenderer";
 import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass.js";
-import styles from "./index.module.scss";
+import styles from "../index.module.scss";
 
 let frameCount = 0;
 const RAY_INTERVAL = 6; // 每 N 帧检测一次

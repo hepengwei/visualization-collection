@@ -13,7 +13,6 @@ import {
   Group,
   Vector3,
   Object3D,
-  PointLight,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import { ceilingLampSwitchStatusToggle } from "./addCeilingLamp";

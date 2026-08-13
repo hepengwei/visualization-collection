@@ -32,16 +32,16 @@ import {
   modeToggleAnimationRender,
   pointerControlsMoveRender,
   handleModeToggle
-} from './modeToggle';
-import addLighting from "./addLighting";
-import addHouseStructure from './addHouseStructure';
-import add3dModel from "./add3dModel";
-import addCeiling from "./addCeiling";
-import { addCeilingLamp, allCeilingLampsVisibleToggle, dynamicOptimizationLampLightRender } from './addCeilingLamp';
-import { onClickCeilingLampSwitch } from './addCeilingLampSwitch';
-import { onClickTVScreen } from './addTVScreen';
-import { onClickPhoneScreen } from './addPhoneScreen';
-import { addCrosshair, resizeCrosshair, crosshairRender, createOutlinePass } from './addCrosshair';
+} from './function/modeToggle';
+import addLighting from "./function/addLighting";
+import addHouseStructure from './goods/addHouseStructure';
+import add3dModel from "./goods/add3dModel";
+import addCeiling from "./goods/addCeiling";
+import { addCeilingLamp, allCeilingLampsVisibleToggle, dynamicOptimizationLampLightRender } from './goods/addCeilingLamp';
+import { onClickCeilingLampSwitch } from './goods/addCeilingLampSwitch';
+import { onClickTVScreen } from './goods/addTVScreen';
+import { onClickPhoneScreen } from './goods/addPhoneScreen';
+import { addCrosshair, resizeCrosshair, crosshairRender, createOutlinePass } from './function/addCrosshair';
 import styles from "./index.module.scss";
 
 // 是否显示Stats性能监控面板

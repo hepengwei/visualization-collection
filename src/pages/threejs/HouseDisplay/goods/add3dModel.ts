@@ -9,12 +9,17 @@ import {
   DoubleSide,
   Mesh,
   Object3D,
+  Vector3,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 import { addTVScreen } from "./addTVScreen";
 import { addPhoneScreen } from "./addPhoneScreen";
+import addVase from "./addVase";
+
+const phonePosition = new Vector3(9.7, 1.43, -1.7); // 手机位置
+const vasePosition = new Vector3(11, 1.42, -1); // 花瓶位置
 
 const add3dModel = (
   scene: Scene,
@@ -288,6 +293,9 @@ const loadTable = (
         phoneScreenRef,
         mouseRaycasterIntersectObjectsRef,
       );
+
+      // 添加花瓶
+      addVase(scene, assetManager, vasePosition);
     },
     (progress) => {
       console.log(
@@ -325,7 +333,7 @@ const loadPhone = (
       });
 
       // 设置手机位置
-      phone.position.set(9.7, 1.43, -1.7);
+      phone.position.copy(phonePosition);
       // 缩放手机，调整到合适大小
       phone.scale.set(0.4, 0.4, 0.4);
       // 旋转手机

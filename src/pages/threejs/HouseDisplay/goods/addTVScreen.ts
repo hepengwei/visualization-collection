@@ -15,7 +15,7 @@ import {
   Vector3,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
-import { safePlay } from "./utils";
+import { safePlay } from "../utils";
 
 let videoIsPlay = false;
 

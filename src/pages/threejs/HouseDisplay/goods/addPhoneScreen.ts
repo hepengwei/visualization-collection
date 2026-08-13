@@ -16,7 +16,7 @@ import {
   Object3DEventMap,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
-import { safePlay } from "./utils";
+import { safePlay } from "../utils";
 
 let phoneIsPlay = false;
 
