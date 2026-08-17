@@ -35,6 +35,7 @@ import {
 } from './function/modeToggle';
 import addLighting from "./function/addLighting";
 import addHouseStructure from './goods/addHouseStructure';
+import { addDoor } from "./goods/addDoor";
 import add3dModel from "./goods/add3dModel";
 import addCeiling from "./goods/addCeiling";
 import { addCeilingLamp, allCeilingLampsVisibleToggle, dynamicOptimizationLampLightRender } from './goods/addCeilingLamp';
@@ -137,7 +138,16 @@ const HouseDisplay = () => {
       addLighting(scene);
 
       // 创建并显示地板、墙体和玻璃窗
-      addHouseStructure(scene, assetManager, mouseRaycasterIntersectObjectsRef, pointerControlsIntersetObjectsRef, false);
+      addHouseStructure(
+        scene,
+        assetManager,
+        mouseRaycasterIntersectObjectsRef,
+        pointerControlsIntersetObjectsRef,
+        false,
+      );
+
+      // 创建并显示房门
+      addDoor(scene, assetManager);
 
       // 加载并显示电视墙、沙发、床等模型
       add3dModel(
