@@ -2,11 +2,11 @@
  * 添加花瓶
  */
 import {
-  Scene,
   SphereGeometry,
   CylinderGeometry,
   LatheGeometry,
   MeshStandardMaterial,
+  Object3D,
   Mesh,
   Group,
   Vector3,
@@ -24,7 +24,7 @@ const flowerConfigs = [
 const stemBottom = new Vector3(0, 0.02, 0); // 花茎底部
 
 const addVase = (
-  scene: Scene,
+  parent: Object3D,
   assetManager: AssetManager,
   positon: Vector3,
 ) => {
@@ -118,7 +118,12 @@ const addVase = (
   }
 
   vaseGroup.position.copy(positon);
-  scene.add(vaseGroup);
+  vaseGroup.scale.set(
+    1 / parent.scale.x,
+    1 / parent.scale.y,
+    1 / parent.scale.z,
+  );
+  parent.add(vaseGroup);
 };
 
 export default addVase;

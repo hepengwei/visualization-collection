@@ -10,6 +10,7 @@ import {
   Mesh,
   Object3D,
   Vector3,
+  Group,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
@@ -18,8 +19,8 @@ import { addTVScreen } from "./addTVScreen";
 import { addPhoneScreen } from "./addPhoneScreen";
 import addVase from "./addVase";
 
-const phonePosition = new Vector3(9.7, 1.43, -1.7); // 手机位置
-const vasePosition = new Vector3(11, 1.42, -1); // 花瓶位置
+const phonePosition = new Vector3(-0.23 , 0.1, -0.12); // 手机位置
+const vasePosition = new Vector3(0, 0.1, 0); // 花瓶位置
 
 const add3dModel = (
   scene: Scene,
@@ -81,10 +82,8 @@ const loadTelevisionWall = (
         }
       });
 
-      // 设置电视墙位置：靠近18号墙（z=4.8），在墙的中间位置
-      // 18号墙: x=-9.8, z=4.8, 宽度8.4米，高度4米
-      // 电视墙放在靠近18号墙内侧，正面朝向13号墙（z=-6.4方向，即朝北）
-      tvWall.position.set(-9.8, 1.2, 3.9); // x为18号墙中心，z略靠内侧
+      // 设置电视墙位置
+      tvWall.position.set(-8.5, 1.2, 3.9);
       // 放大模型
       tvWall.scale.set(5, 5, 5);
       // 旋转电视墙
@@ -142,12 +141,11 @@ const loadSofa = (scene: Scene, gltfLoader: GLTFLoader) => {
         }
       });
 
-      // 设置沙发位置：贴着13号墙和34号墙
-      // 沙发放在两墙交角处，背靠34号墙，面向电视墙方向
-      sofa.position.set(-10, 0.8, -4.2); // 贴近34号墙和13号墙的交角
+      // 设置沙发位置
+      sofa.position.set(-9, 0.8, -4.2);
 
       // 缩放沙发，调整到合适大小
-      sofa.scale.set(5.6, 5.6, 5.6);
+      sofa.scale.set(8, 5.6, 5.6);
 
       // 旋转沙发，使其面向电视墙（朝向18号墙方向，即z正方向）
       sofa.rotation.y = 0; // 面向南方（z正方向）
@@ -286,7 +284,7 @@ const loadTable = (
 
       // 加载手机
       loadPhone(
-        scene,
+        table,
         gltfLoader,
         assetManager,
         video,
@@ -295,7 +293,7 @@ const loadTable = (
       );
 
       // 添加花瓶
-      addVase(scene, assetManager, vasePosition);
+      addVase(table, assetManager, vasePosition);
     },
     (progress) => {
       console.log(
@@ -311,7 +309,7 @@ const loadTable = (
 
 // 加载手机
 const loadPhone = (
-  scene: Scene,
+  table: Group,
   gltfLoader: GLTFLoader,
   assetManager: AssetManager,
   video: HTMLVideoElement | null,
@@ -335,12 +333,16 @@ const loadPhone = (
       // 设置手机位置
       phone.position.copy(phonePosition);
       // 缩放手机，调整到合适大小
-      phone.scale.set(0.4, 0.4, 0.4);
+      phone.scale.set(
+        0.4 / table.scale.x,
+        0.4 / table.scale.y,
+        0.4 / table.scale.z,
+      );
       // 旋转手机
       phone.rotation.x = -Math.PI / 2;
       phone.rotation.z = -(Math.PI * 3) / 4;
 
-      scene.add(phone);
+      table.add(phone);
 
       // 添加手机屏幕，播放视频
       const phoneScreen: Mesh | null = addPhoneScreen(

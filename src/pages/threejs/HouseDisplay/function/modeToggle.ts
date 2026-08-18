@@ -451,32 +451,30 @@ export const pointerControlsMoveRender = (
     pointerControlsRef.current.moveRight(-velocity.x * delta);
     pointerControlsRef.current.moveForward(-velocity.z * delta);
 
-    // 碰撞检测,使用射线检测进行碰撞
-    const raycaster = new Raycaster();
-
-    // 检测四个方向
-    const directions = [
-      new Vector3(1, 0, 0), // 右
-      new Vector3(-1, 0, 0), // 左
-      new Vector3(0, 0, 1), // 前
-      new Vector3(0, 0, -1), // 后
-    ];
-
+    // 碰撞检测：基于实际移动方向动态检测
     const cameraPosition = camera.position;
+    const moveVector = new Vector3().subVectors(cameraPosition, oldPosition);
+
     let hasCollision = false;
-    for (const dir of directions) {
-      raycaster.set(cameraPosition, dir);
+
+    // 如果有实际移动，沿移动方向检测碰撞
+    if (moveVector.lengthSq() > 0.0001) {
+      const raycaster = new Raycaster();
+      const moveDirection = moveVector.clone().normalize();
+
+      // 从旧位置沿移动方向发射射线
+      raycaster.set(oldPosition, moveDirection);
       const intersections = raycaster.intersectObjects(
         pointerControlsIntersetObjects,
         true,
       );
 
+      // 检查是否会在移动过程中碰撞
       if (
         intersections.length > 0 &&
-        intersections[0].distance < ROAMING_CONFIG.collisionDistance
+        intersections[0].distance < moveVector.length() + ROAMING_CONFIG.collisionDistance
       ) {
         hasCollision = true;
-        break;
       }
     }
 

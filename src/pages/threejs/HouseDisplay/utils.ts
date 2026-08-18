@@ -1,4 +1,5 @@
 import { CanvasTexture, SRGBColorSpace, RepeatWrapping, Color } from "three";
+import { ParametricGeometry } from "three/examples/jsm/geometries/ParametricGeometry.js";
 
 export const safePlay = (video: HTMLVideoElement | null) => {
   if (document.visibilityState !== "visible") return;
@@ -53,7 +54,7 @@ export const generateColorMap = (color: Color, size = 1024) => {
   for (let i = 0; i < 500; i++) {
     const y = rand() * size;
     const h = 1 + rand() * 3;
-      ctx.fillStyle =
+    ctx.fillStyle =
       rand() > 0.5 ? "rgba(255,255,255,0.7)" : "rgba(140,140,140,0.5)";
     ctx.fillRect(0, y, size, h);
   }
@@ -184,3 +185,32 @@ export const generateRoughnessMap = (size = 1024) => {
   return tex;
 };
 
+/**
+ * @description: 生成椭圆形的圆环刚体
+ * @param {number} longRadius 椭圆长轴半径
+ * @param {number} shortRadius 椭圆短轴半径
+ * @param {number} tube 圆环截面半径
+ * @return {ParametricGeometry}
+ */
+export const generateEllipticalTorusGeometry = (
+  longRadius: number,
+  shortRadius: number,
+  tube: number,
+) => {
+  return new ParametricGeometry(
+    (u, v, target) => {
+      const theta = 2 * Math.PI * u; // 椭圆轨道角
+      const phi = 2 * Math.PI * v; // 截面角
+
+      const x =
+        longRadius * Math.cos(theta) + tube * Math.cos(phi) * Math.cos(theta);
+      const z =
+        shortRadius * Math.sin(theta) + tube * Math.cos(phi) * Math.sin(theta);
+      const y = tube * Math.sin(phi);
+
+      target.set(x, y, z);
+    },
+    120, // 轨道分段
+    40, // 截面分段
+  );
+};
