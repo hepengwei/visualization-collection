@@ -223,9 +223,9 @@ const createSwitch = (assetManager: AssetManager, switchStatus = "OFF") => {
 // 吊灯开关点击后的回调
 export const onClickCeilingLampSwitch = (
   ceilingLampSwitch: Group,
-  lampList: Group[],
+  lampList?: Group[],
 ) => {
-  if (ceilingLampSwitch) {
+  if (ceilingLampSwitch && lampList && lampList?.length > 0) {
     const positionName = ceilingLampSwitch.name.substring(
       0,
       ceilingLampSwitch.name.length - 4,

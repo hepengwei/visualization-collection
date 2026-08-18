@@ -79,7 +79,7 @@ const wallList = [
   [14.4, wallHeight, w, -8.4, wallHeight / 2, -6.4],
   [w, wallHeight, 4.2, -3.25, wallHeight / 2, -13.7],
   [w, wallHeight, 6.4, 1.6, wallHeight / 2, -12.8],
-  [w, wallHeight, 7.32, 6, wallHeight / 2, -12.4],
+  [w, wallHeight, 7.34, 6, wallHeight / 2, -12.39],
   // #41
   [8.9, wallHeight, w, -9.4, wallHeight / 2, 4.4],
   [w, wallHeight, 2.1, -15.6, wallHeight / 2, 12.3],
@@ -117,9 +117,9 @@ const wallList = [
   [2.1, beamHeight, w, 4.85, wallHeight - beamHeight / 2, -9.6],
   [w, beamHeight, 6, -14, wallHeight - beamHeight / 2, 8.5],
   [1.8, beamHeight, w, -4.05, wallHeight - beamHeight / 2, 4.4],
-  [w, wallHeight, 0.42, -1.35, wallHeight / 2, -6.71],
-  [w, wallHeight, 0.71, -1.35, wallHeight / 2, -9.095],
-  [w, wallHeight, 0.4, 6, wallHeight / 2, -6.72],
+  [w, wallHeight, 0.45, -1.35, wallHeight / 2, -6.72],
+  [w, wallHeight, 0.75, -1.35, wallHeight / 2, -9.07],
+  [w, wallHeight, 0.42, 6, wallHeight / 2, -6.73],
 ];
 // 所有玻璃窗的尺寸和位置
 const glassList = [

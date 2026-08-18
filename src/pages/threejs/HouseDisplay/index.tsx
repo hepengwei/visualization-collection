@@ -35,7 +35,7 @@ import {
 } from './function/modeToggle';
 import addLighting from "./function/addLighting";
 import addHouseStructure from './goods/addHouseStructure';
-import { addDoor } from "./goods/addDoor";
+import { addDoor, onClickDoor, doorAnimationRender } from "./goods/addDoor";
 import add3dModel from "./goods/add3dModel";
 import addCeiling from "./goods/addCeiling";
 import { addCeilingLamp, allCeilingLampsVisibleToggle, dynamicOptimizationLampLightRender } from './goods/addCeilingLamp';
@@ -44,6 +44,8 @@ import { onClickTVScreen } from './goods/addTVScreen';
 import { onClickPhoneScreen } from './goods/addPhoneScreen';
 import { addCrosshair, resizeCrosshair, crosshairRender, createOutlinePass } from './function/addCrosshair';
 import styles from "./index.module.scss";
+
+export type SwitchStatus = 'ON' | 'OFF';
 
 // 是否显示Stats性能监控面板
 const showStats = false;
@@ -67,6 +69,7 @@ const HouseDisplay = () => {
   const outlinePassRef = useRef<OutlinePass | null>(null);
   const pointerControlsIntersetObjectsRef = useRef<Object3D[]>([]); // 第一人称控制器可接受的碰撞检测对象列表
   const ceilingGroupRef = useRef<Group | null>(null); // 房屋天花板
+  const doorListRef = useRef<Mesh[]>([]); // 所有房门的列表
   const lampListRef = useRef<Group[]>([]); // 所有吊灯的列表
   const lampSwitchListRef = useRef<Group[]>([]); // 所有吊灯开关的列表
   const labelRendererRef = useRef<CSS2DRenderer | null>(null); // 鼠标准星渲染器
@@ -96,11 +99,12 @@ const HouseDisplay = () => {
     headHeight,
     mouseRaycasterIntersectedRef,
     orbitControlsRef,
-    lampListRef,
+    onClickDoor,
     tvVideoRef,
     onClickTVScreen,
     phoneVideoRef,
     onClickPhoneScreen,
+    lampListRef,
     onClickCeilingLampSwitch,
   );
 
@@ -147,7 +151,12 @@ const HouseDisplay = () => {
       );
 
       // 创建并显示房门
-      addDoor(scene, assetManager);
+      addDoor(scene,
+        assetManager,
+        doorListRef,
+        mouseRaycasterIntersectObjectsRef,
+        pointerControlsIntersetObjectsRef,
+      );
 
       // 加载并显示电视墙、沙发、床等模型
       add3dModel(
@@ -228,6 +237,9 @@ const HouseDisplay = () => {
       lampSwitchListRef.current,
       allCeilingLampsVisibleToggle
     );
+
+    // 房门开/关动画过程渲染
+    doorAnimationRender(doorListRef.current)
 
     // 整体模式下更新轨道控制器
     if (viewModeRef.current === 'overview' && orbitControlsRef.current && !animatingRef.current) {
