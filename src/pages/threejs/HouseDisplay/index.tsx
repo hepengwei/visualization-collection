@@ -43,6 +43,7 @@ import { onClickCeilingLampSwitch } from './goods/addCeilingLampSwitch';
 import { onClickTVScreen } from './goods/addTVScreen';
 import { onClickPhoneScreen } from './goods/addPhoneScreen';
 import { addCrosshair, resizeCrosshair, crosshairRender, createOutlinePass } from './function/addCrosshair';
+import addTeaTable from './goods/addTeaTable';
 import styles from "./index.module.scss";
 
 export type SwitchStatus = 'ON' | 'OFF';
@@ -193,6 +194,9 @@ const HouseDisplay = () => {
 
       // 添加鼠标准星
       addCrosshair(scene, containerRef.current, labelRendererRef, raycasterRef, reticleRef);
+
+      // 添加茶几
+      addTeaTable(scene, assetManager);
 
       // 启用后期处理器
       const bloomComposer = new EffectComposer(renderer);

@@ -29,7 +29,7 @@ export const addTVScreen = (
     videoIsPlay = true;
 
     const tvSize = new Vector2(3.1, 1.75); // 电视屏幕的宽高
-    const tvPos = new Vector3(-9.8, 1.95, 3.78); // 电视屏幕位置
+    const tvPos = new Vector3(-8.5, 1.95, 3.78); // 电视屏幕位置
     const videoTexture: any = new VideoTexture(video);
     videoTexture.colorSpace = SRGBColorSpace; // 关键：颜色不灰
     const tvScreen: Mesh = createTVScreen(
