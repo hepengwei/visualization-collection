@@ -307,7 +307,7 @@ const createUniformLightTexture = () => {
 };
 
 // 创建并添加吊灯的光源
-const addLampLight = (lampGroup: Group, intensity = 3 * Math.PI) => {
+const addLampLight = (lampGroup: Group, intensity = 2.5 * Math.PI) => {
   const lightColor = kelvinToColor(4000); // 色温，值越大颜色越冷
   const light = new PointLight(lightColor, intensity, 30, 1.2);
   light.position.set(0, 0, 0);
@@ -356,10 +356,7 @@ export const allCeilingLampsVisibleToggle = (
 };
 
 // 切换单个吊灯的显示/隐藏
-export const ceilingLampVisibleToggle = (
-  lamp: Group,
-  visible: boolean,
-) => {
+export const ceilingLampVisibleToggle = (lamp: Group, visible: boolean) => {
   if (lamp.visible === visible) return;
   lamp.visible = visible;
   const nextStatus = visible ? "ON" : "OFF";

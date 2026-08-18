@@ -16,6 +16,7 @@ import {
   Raycaster,
   Object3D,
   Group,
+  Mesh,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls";
@@ -56,14 +57,15 @@ export const useModeToggle = (
   headHeight: number,
   mouseRaycasterIntersectedRef: MutableRefObject<Object3D | null>,
   orbitControlsRef: MutableRefObject<OrbitControls | null>,
-  lampListRef: MutableRefObject<Group[]>,
+  onClickDoor?: (door: Mesh) => void,
   tvVideoRef?: MutableRefObject<HTMLVideoElement | null>,
   onClickTVScreen?: (video?: HTMLVideoElement | null) => void,
   phoneVideoRef?: MutableRefObject<HTMLVideoElement | null>,
   onClickPhoneScreen?: (video?: HTMLVideoElement | null) => void,
+  lampListRef?: MutableRefObject<Group[]>,
   onClickCeilingLampSwitch?: (
     ceilingLampSwitch: Group,
-    lampList: Group[],
+    lampList?: Group[],
   ) => void,
 ) => {
   // 模式状态: 'overview' 整体模式, 'roaming' 漫游模式
@@ -97,11 +99,15 @@ export const useModeToggle = (
   const onMouseClick = useCallback(() => {
     // 优先处理可交互物体的点击
     if (mouseRaycasterIntersectedRef.current) {
+      if (mouseRaycasterIntersectedRef.current.name === "门板") {
+        onClickDoor?.(mouseRaycasterIntersectedRef.current as Mesh);
+        return; // 点击了房门就不处理其他逻辑
+      }
       if (mouseRaycasterIntersectedRef.current.name.endsWith("吊灯开关")) {
         if (viewModeRef.current === "roaming") {
           onClickCeilingLampSwitch?.(
             mouseRaycasterIntersectedRef.current as Group,
-            lampListRef.current,
+            lampListRef?.current,
           );
           return; // 点击了吊灯的开关就不处理其他逻辑
         }
@@ -365,11 +371,7 @@ export const modeToggleAnimationRender = (
       // 动画结束后的控制器状态确认
       if (currentMode === "roaming") {
         // 将所有吊灯显示出来
-        allCeilingLampsVisibleToggle?.(
-          lampList,
-          lampSwitchList,
-          true,
-        );
+        allCeilingLampsVisibleToggle?.(lampList, lampSwitchList, true);
         // 确保轨道控制器完全禁用
         if (orbitControlsRef.current) {
           orbitControlsRef.current.enabled = false;
@@ -466,7 +468,7 @@ export const pointerControlsMoveRender = (
       raycaster.set(cameraPosition, dir);
       const intersections = raycaster.intersectObjects(
         pointerControlsIntersetObjects,
-        false,
+        true,
       );
 
       if (
@@ -545,11 +547,7 @@ export const handleModeToggle = (
     // 切换到整体模式
     console.log("返回整体模式，退出指针锁定并重置状态");
     // 将所有吊灯隐藏
-    allCeilingLampsVisibleToggle?.(
-      lampList,
-      lampSwitchList,
-      false,
-    );
+    allCeilingLampsVisibleToggle?.(lampList, lampSwitchList, false);
     // 重置移动状态
     moveState = {
       forward: false,
