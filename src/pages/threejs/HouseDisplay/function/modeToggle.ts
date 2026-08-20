@@ -58,6 +58,7 @@ export const useModeToggle = (
   mouseRaycasterIntersectedRef: MutableRefObject<Object3D | null>,
   orbitControlsRef: MutableRefObject<OrbitControls | null>,
   onClickDoor?: (door: Mesh) => void,
+  onClickGroundGlassDoor?: (groundGlassDoor: Group) => void,
   tvVideoRef?: MutableRefObject<HTMLVideoElement | null>,
   onClickTVScreen?: (video?: HTMLVideoElement | null) => void,
   phoneVideoRef?: MutableRefObject<HTMLVideoElement | null>,
@@ -103,22 +104,26 @@ export const useModeToggle = (
         onClickDoor?.(mouseRaycasterIntersectedRef.current as Mesh);
         return; // 点击了房门就不处理其他逻辑
       }
+      if (mouseRaycasterIntersectedRef.current.name === "磨砂玻璃门") {
+        onClickGroundGlassDoor?.(mouseRaycasterIntersectedRef.current as Group);
+        return;
+      }
       if (mouseRaycasterIntersectedRef.current.name.endsWith("吊灯开关")) {
         if (viewModeRef.current === "roaming") {
           onClickCeilingLampSwitch?.(
             mouseRaycasterIntersectedRef.current as Group,
             lampListRef?.current,
           );
-          return; // 点击了吊灯的开关就不处理其他逻辑
+          return;
         }
       }
       if (mouseRaycasterIntersectedRef.current.name === "电视屏幕") {
         onClickTVScreen?.(tvVideoRef?.current);
-        return; // 点击了电视就不处理其他逻辑
+        return;
       }
       if (mouseRaycasterIntersectedRef.current.name === "手机屏幕") {
         onClickPhoneScreen?.(phoneVideoRef?.current);
-        return; // 点击了手机就不处理其他逻辑
+        return;
       }
     }
 
@@ -472,7 +477,8 @@ export const pointerControlsMoveRender = (
       // 检查是否会在移动过程中碰撞
       if (
         intersections.length > 0 &&
-        intersections[0].distance < moveVector.length() + ROAMING_CONFIG.collisionDistance
+        intersections[0].distance <
+          moveVector.length() + ROAMING_CONFIG.collisionDistance
       ) {
         hasCollision = true;
       }

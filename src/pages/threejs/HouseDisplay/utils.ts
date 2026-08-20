@@ -1,5 +1,72 @@
-import { CanvasTexture, SRGBColorSpace, RepeatWrapping, Color } from "three";
+import {
+  CanvasTexture,
+  SRGBColorSpace,
+  RepeatWrapping,
+  EquirectangularReflectionMapping,
+  Color,
+} from "three";
 import { ParametricGeometry } from "three/examples/jsm/geometries/ParametricGeometry.js";
+
+// 生成天空贴图
+export const generateSkyTexture = (width = 1024, height = 512) => {
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+
+  // 1. 天空渐变
+  const skyGradient = ctx.createLinearGradient(0, 0, 0, height);
+  skyGradient.addColorStop(0, "#3c82de"); // 天顶蓝
+  skyGradient.addColorStop(0.25, "#6fa8f9"); // 蓝
+  skyGradient.addColorStop(0.65, "#87CEEB"); // 中景
+  skyGradient.addColorStop(1, "#d6eaf8"); // 地平线浅蓝
+  ctx.fillStyle = skyGradient;
+  ctx.fillRect(0, 0, width, height);
+
+  // 2. 画云函数
+  function drawCloud(
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    alpha: number,
+  ) {
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = "#ffffff";
+
+    const steps = 30;
+    for (let i = 0; i < steps; i++) {
+      const t = i / (steps - 1);
+      const radius = (Math.sin(t * Math.PI) * w) / 2;
+      const cx = x + t * w;
+      const cy = y + Math.sin(t * Math.PI) * h * 0.3;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // 3. 随机云朵
+  const cloudCount = 30;
+  for (let i = 0; i < cloudCount; i++) {
+    const x = Math.random() * width;
+    const y = Math.random() * height * 0.45;
+    const w = 40 + Math.random() * 80;
+    const h = 12 + Math.random() * 8;
+    const alpha = 0.25 + Math.random() * 0.3;
+    drawCloud(x, y, w, h, alpha);
+  }
+
+  // 4. 转为 Three.js 贴图
+  const texture = new CanvasTexture(canvas);
+  texture.mapping = EquirectangularReflectionMapping;
+  texture.colorSpace = SRGBColorSpace;
+  texture.needsUpdate = true;
+
+  return texture;
+};
 
 export const safePlay = (video: HTMLVideoElement | null) => {
   if (document.visibilityState !== "visible") return;
@@ -105,7 +172,7 @@ export const generateColorMap = (color: Color, size = 1024) => {
   return tex;
 };
 
-// --- 木门法线贴图（凹痕凹凸感）---
+// 生成木门法线贴图（凹痕凹凸感）
 export const generateNormalMap = (size = 1024) => {
   const canvas = document.createElement("canvas");
   canvas.width = size;
@@ -149,7 +216,7 @@ export const generateNormalMap = (size = 1024) => {
   return tex;
 };
 
-// --- 木门粗糙度贴图 ---
+// 生成木门粗糙度贴图
 export const generateRoughnessMap = (size = 1024) => {
   const canvas = document.createElement("canvas");
   canvas.width = size;
