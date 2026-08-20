@@ -61,7 +61,7 @@ const lampConfigList = [
     position: new Vector3(11, ceilingLampY, 5.4),
   },
   {
-    name: "厕所吊灯",
+    name: "外厕所吊灯",
     position: new Vector3(3.6, wallHeight - LAMP_THICKNESS / 2 - 0.05, -12.5),
     scale: new Vector3(0.6, 0.6, 0.6),
   },

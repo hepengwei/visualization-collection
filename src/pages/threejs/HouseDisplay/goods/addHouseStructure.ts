@@ -90,7 +90,7 @@ const wallList = [
   [w, wallHeight, 3, 4.8, wallHeight / 2, 3.9],
   [w, wallHeight, 3.4, 6.4, wallHeight / 2, 7.3],
   [3, wallHeight, w, 5.05, wallHeight / 2, 5.5],
-  [7.2, wallHeight, w, 0.2, wallHeight / 2, -9.6],
+  [7.4, wallHeight, w, 0.3, wallHeight / 2, -9.6],
   // #51
   [11.6, wallHeight, w, 11.65, wallHeight / 2, -6.4],
   [2, wallHeight, w, -16.6, wallHeight / 2, -8.8],

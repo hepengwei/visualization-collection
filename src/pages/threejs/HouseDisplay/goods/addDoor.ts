@@ -34,6 +34,9 @@ const DOOR_T = 0.04; // 门扇的厚度
 const TOP_GAP = 0.004; // 门和门框上方的缝隙
 const FRAME_TRIM_W = 0.1; // 门框左右竖框的宽
 const FRAME_D = 0.1; // 门框的厚度
+const DOORKNOB_CYLINDER_RADIUS = 0.012; // 门把手圆柱半径
+const DOORKNOB_CYLINDER_LONG = 0.2; // 门把手圆柱长度
+const DOORKNOB_SPHERE_RADIUS = 0.026; // 门把手圆球半径
 const HANDLE_POSITION_Y = 1.8; // 门把手高度
 const HINGE_W = 0.01; // 合页总厚度（两叶之和）
 const HINGE_H = 0.14; // 合页高度（Y方向）
@@ -47,7 +50,8 @@ const doorConfigs = [
     rotationY: Math.PI / 2,
     customParams: {
       openDoorMaxAngle: (Math.PI * 21) / 36,
-      switchStatus: "OFF",
+      switchStatus: "ON",
+      isAnimating: false,
       handlePosition: "right",
     },
   },
@@ -58,6 +62,7 @@ const doorConfigs = [
     customParams: {
       openDoorMaxAngle: -(Math.PI * 21) / 36,
       switchStatus: "OFF",
+      isAnimating: false,
       handlePosition: "left",
     },
   },
@@ -68,6 +73,7 @@ const doorConfigs = [
     customParams: {
       openDoorMaxAngle: (Math.PI * 21) / 36,
       switchStatus: "OFF",
+      isAnimating: false,
       handlePosition: "right",
     },
   },
@@ -85,18 +91,6 @@ export const addDoor = (
   if (!boxGeometry) {
     boxGeometry = new BoxGeometry(1, 1, 1);
     assetManager.geometries.set("boxGeometry", boxGeometry);
-  }
-  // 圆柱体
-  let cylinderGeometry = assetManager.geometries.get("cylinderGeometry");
-  if (!cylinderGeometry) {
-    cylinderGeometry = new CylinderGeometry(1, 1, 1);
-    assetManager.geometries.set("cylinderGeometry", cylinderGeometry);
-  }
-  // 球体
-  let sphereGeometry = assetManager.geometries.get("sphereGeometry");
-  if (!sphereGeometry) {
-    sphereGeometry = new SphereGeometry(1);
-    assetManager.geometries.set("sphereGeometry", sphereGeometry);
   }
 
   // 实木门材质
@@ -137,22 +131,6 @@ export const addDoor = (
   });
   assetManager.materials.set("doorFrameMaterial", doorFrameMaterial);
 
-  // 门把手材质
-  const doorknobMaterial = new MeshStandardMaterial({
-    color: 0xc9a84c,
-    roughness: 0.28,
-    metalness: 0.85,
-  });
-  assetManager.materials.set("doorknobMaterial", doorknobMaterial);
-
-  // 暗的门把手材质
-  const darkDoorknobMaterial = new MeshStandardMaterial({
-    color: 0x443322,
-    roughness: 0.45,
-    metalness: 0.7,
-  });
-  assetManager.materials.set("darkDoorknobMaterial", darkDoorknobMaterial);
-
   // 合页材质 — 深色青铜/铸铁（欧式复古感）
   const hingeMaterial = new MeshStandardMaterial({
     color: 0x3a2e24,
@@ -168,8 +146,8 @@ export const addDoor = (
       doorListRef,
       customParams,
       mouseRaycasterIntersectObjectsRef,
-      pointerControlsIntersetObjectsRef,
     );
+    pointerControlsIntersetObjectsRef.current.push(door);
     door.position.copy(positon);
     if (rotationY) {
       door.rotation.y = rotationY;
@@ -178,26 +156,19 @@ export const addDoor = (
   });
 };
 
+// 创建房门
 const createDoor = (
   assetManager: AssetManager,
   doorListRef: MutableRefObject<Mesh[]>,
   customParams: Record<string, any>,
   mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
-  pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   const boxGeometry = assetManager.geometries.get("boxGeometry");
-  const cylinderGeometry = assetManager.geometries.get("cylinderGeometry");
-  const sphereGeometry = assetManager.geometries.get("sphereGeometry");
   const woodDoorMaterial = assetManager.materials.get("woodDoorMaterial");
   const doorFrameMaterial = assetManager.materials.get("doorFrameMaterial");
-  const doorknobMaterial = assetManager.materials.get("doorknobMaterial");
-  const darkDoorknobMaterial = assetManager.materials.get(
-    "darkDoorknobMaterial",
-  );
 
   const doorGroup = new Group();
   doorGroup.name = "房门";
-  pointerControlsIntersetObjectsRef.current.push(doorGroup);
   doorGroup.castShadow = true;
   doorGroup.receiveShadow = true;
 
@@ -226,10 +197,13 @@ const createDoor = (
 
   /** 门扇部分*/
   const doorPanelGroup = new Group();
-  const { handlePosition } = customParams;
+  const { handlePosition, switchStatus, openDoorMaxAngle } = customParams;
   let doorPanelGroupPositionX = -HALF_DOOR_W;
   if (handlePosition === "left") {
     doorPanelGroupPositionX = -doorPanelGroupPositionX;
+  }
+  if (switchStatus === "ON") {
+    doorPanelGroup.rotation.y = openDoorMaxAngle;
   }
   doorPanelGroup.position.set(doorPanelGroupPositionX, 0, 0);
   const doorPanel = new Mesh(boxGeometry, woodDoorMaterial);
@@ -247,40 +221,13 @@ const createDoor = (
   doorPanelGroup.add(doorPanel);
 
   /** 门把手部分*/
-  const handleGroup = new Group();
-  const handleBase = new Mesh(cylinderGeometry, doorknobMaterial);
-  handleBase.scale.set(0.032, 0.01, 0.038);
-  handleBase.rotation.x = Math.PI / 2;
-  handleGroup.add(handleBase);
-
-  const handleRod = new Mesh(cylinderGeometry, doorknobMaterial);
-  handleRod.scale.set(0.012, 0.12, 0.012);
-  handleRod.rotation.x = Math.PI / 2;
-  handleRod.position.z = 0.06;
-  handleGroup.add(handleRod);
-
-  const handleKnob = new Mesh(sphereGeometry, doorknobMaterial);
-  handleKnob.scale.set(0.026, 0.026, 0.026);
-  handleKnob.position.z = 0.13;
-  handleGroup.add(handleKnob);
-
-  const lockMesh = new Mesh(cylinderGeometry, darkDoorknobMaterial);
-  lockMesh.scale.set(0.02, 0.008, 0.02);
-  lockMesh.rotation.x = Math.PI / 2;
-  lockMesh.position.z = 0.004;
-  handleGroup.add(lockMesh);
-
+  const doorknob = createDoorknob(assetManager);
   let handleGroupPositionX = DOOR_W - 0.08;
   if (handlePosition === "left") {
     handleGroupPositionX = -handleGroupPositionX;
   }
-  handleGroup.position.set(
-    handleGroupPositionX,
-    HANDLE_POSITION_Y,
-    DOOR_T / 2 + 0.008,
-  );
-
-  doorPanelGroup.add(handleGroup);
+  doorknob.position.set(handleGroupPositionX, HANDLE_POSITION_Y, DOOR_T / 2);
+  doorPanelGroup.add(doorknob);
   doorGroup.add(doorPanelGroup);
 
   // 安装三个合页（上、中、下）
@@ -292,6 +239,61 @@ const createDoor = (
   }
 
   return doorGroup;
+};
+
+// 创建门把手
+export const createDoorknob = (assetManager: AssetManager) => {
+  // 圆柱体
+  let cylinderGeometry = assetManager.geometries.get("cylinderGeometry");
+  if (!cylinderGeometry) {
+    cylinderGeometry = new CylinderGeometry(1, 1, 1);
+    assetManager.geometries.set("cylinderGeometry", cylinderGeometry);
+  }
+  // 球体
+  let sphereGeometry = assetManager.geometries.get("sphereGeometry");
+  if (!sphereGeometry) {
+    sphereGeometry = new SphereGeometry(1);
+    assetManager.geometries.set("sphereGeometry", sphereGeometry);
+  }
+  // 门把手材质
+  let doorknobMaterial = assetManager.materials.get("doorknobMaterial");
+  if (!doorknobMaterial) {
+    doorknobMaterial = new MeshStandardMaterial({
+      color: 0xc9a84c,
+      roughness: 0.28,
+      metalness: 0.85,
+    });
+    assetManager.materials.set("doorknobMaterial", doorknobMaterial);
+  }
+
+  const doorknobGroup = new Group();
+
+  // 长圆柱
+  const handleRod = new Mesh(cylinderGeometry, doorknobMaterial);
+  handleRod.scale.set(
+    DOORKNOB_CYLINDER_RADIUS,
+    DOORKNOB_CYLINDER_LONG,
+    DOORKNOB_CYLINDER_RADIUS,
+  );
+  handleRod.rotation.x = Math.PI / 2;
+  doorknobGroup.add(handleRod);
+
+  // 前面的圆球
+  const frontHandleKnob = new Mesh(sphereGeometry, doorknobMaterial);
+  frontHandleKnob.scale.set(
+    DOORKNOB_SPHERE_RADIUS,
+    DOORKNOB_SPHERE_RADIUS,
+    DOORKNOB_SPHERE_RADIUS,
+  );
+  frontHandleKnob.position.set(0, 0, DOORKNOB_CYLINDER_LONG / 2);
+  doorknobGroup.add(frontHandleKnob);
+
+  // 背面的圆球
+  const backHandleKnob = frontHandleKnob.clone();
+  backHandleKnob.position.z = -DOORKNOB_CYLINDER_LONG / 2;
+  doorknobGroup.add(backHandleKnob);
+
+  return doorknobGroup;
 };
 
 // 创建合页

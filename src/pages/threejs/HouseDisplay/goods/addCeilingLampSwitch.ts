@@ -51,7 +51,7 @@ const switchConfigList = [
     position: new Vector3(6.5, SWITCH_POSITION_HEIGHT, 2.46),
   },
   {
-    name: "厕所吊灯开关",
+    name: "外厕所吊灯开关",
     position: new Vector3(3.2, SWITCH_POSITION_HEIGHT, -9.76),
     rotationY: Math.PI,
   },

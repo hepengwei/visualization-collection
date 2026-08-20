@@ -8,7 +8,6 @@ import {
   WebGLRenderer,
   Vector3,
   Vector2,
-  Color,
   Mesh,
   Object3D,
   Group,
@@ -26,6 +25,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { useGlobalContext } from "hooks/useGlobalContext";
 import useInitialize from "hooks/threejs/useInitialize";
 import type { AssetManager } from 'hooks/threejs/useInitialize';
+import { generateSkyTexture } from './utils';
 import {
   useModeToggle,
   initModeToggle,
@@ -36,6 +36,7 @@ import {
 import addLighting from "./function/addLighting";
 import addHouseStructure from './goods/addHouseStructure';
 import { addDoor, onClickDoor, doorAnimationRender } from "./goods/addDoor";
+import { addGroundGlassDoor, onClickGroundGlassDoor, groundGlassDoorAnimationRender } from './goods/addGroundGlassDoor';
 import add3dModel from "./goods/add3dModel";
 import addCeiling from "./goods/addCeiling";
 import { addCeilingLamp, allCeilingLampsVisibleToggle, dynamicOptimizationLampLightRender } from './goods/addCeilingLamp';
@@ -71,6 +72,7 @@ const HouseDisplay = () => {
   const pointerControlsIntersetObjectsRef = useRef<Object3D[]>([]); // 第一人称控制器可接受的碰撞检测对象列表
   const ceilingGroupRef = useRef<Group | null>(null); // 房屋天花板
   const doorListRef = useRef<Mesh[]>([]); // 所有房门的列表
+  const groundGlassDoorListRef = useRef<Group[]>([]); // 所有磨砂玻璃门的列表
   const lampListRef = useRef<Group[]>([]); // 所有吊灯的列表
   const lampSwitchListRef = useRef<Group[]>([]); // 所有吊灯开关的列表
   const labelRendererRef = useRef<CSS2DRenderer | null>(null); // 鼠标准星渲染器
@@ -101,6 +103,7 @@ const HouseDisplay = () => {
     mouseRaycasterIntersectedRef,
     orbitControlsRef,
     onClickDoor,
+    onClickGroundGlassDoor,
     tvVideoRef,
     onClickTVScreen,
     phoneVideoRef,
@@ -120,7 +123,8 @@ const HouseDisplay = () => {
       cameraRef.current = camera;
 
       // 设置场景背景颜色为天空蓝
-      scene.background = new Color(0x87CEEB);
+      const skyTexture = generateSkyTexture();
+      scene.background = skyTexture;
 
       // 设置相机初始位置为俯视角度(从天花板上方向下看)
       camera.position.copy(initialCameraPosition);
@@ -152,12 +156,16 @@ const HouseDisplay = () => {
       );
 
       // 创建并显示房门
-      addDoor(scene,
+      addDoor(
+        scene,
         assetManager,
         doorListRef,
         mouseRaycasterIntersectObjectsRef,
         pointerControlsIntersetObjectsRef,
       );
+
+      // 创建并显示磨砂玻璃门
+      addGroundGlassDoor(scene, assetManager, groundGlassDoorListRef, mouseRaycasterIntersectObjectsRef, pointerControlsIntersetObjectsRef)
 
       // 加载并显示电视墙、沙发、床等模型
       add3dModel(
@@ -243,7 +251,10 @@ const HouseDisplay = () => {
     );
 
     // 房门开/关动画过程渲染
-    doorAnimationRender(doorListRef.current)
+    doorAnimationRender(doorListRef.current);
+
+    // 磨砂玻璃门开/关动画过程渲染
+    groundGlassDoorAnimationRender(groundGlassDoorListRef.current)
 
     // 整体模式下更新轨道控制器
     if (viewModeRef.current === 'overview' && orbitControlsRef.current && !animatingRef.current) {
