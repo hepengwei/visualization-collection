@@ -175,7 +175,7 @@ export const addCeilingLamp = (
   );
 
   // 添加所有吊灯
-  lampConfigList.forEach((item) => {
+  lampConfigList.forEach((item: Record<string, any>) => {
     const { name, position, noNeedDynamicOptimization, scale } = item;
     const lamp = createLamp(assetManager);
     lamp.name = name;
@@ -307,7 +307,7 @@ const createUniformLightTexture = () => {
 };
 
 // 创建并添加吊灯的光源
-const addLampLight = (lampGroup: Group, intensity = 2.5 * Math.PI) => {
+const addLampLight = (lampGroup: Group, intensity = 2.2 * Math.PI) => {
   const lightColor = kelvinToColor(4000); // 色温，值越大颜色越冷
   const light = new PointLight(lightColor, intensity, 30, 1.2);
   light.position.set(0, 0, 0);

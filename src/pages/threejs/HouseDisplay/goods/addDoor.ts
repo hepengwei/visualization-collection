@@ -21,11 +21,12 @@ import {
   generateColorMap,
   generateNormalMap,
   generateRoughnessMap,
+  getEaseProgress,
 } from "../utils";
 
 type HandlePosition = "left" | "right";
 
-const OPEN_OR_CLOSE_DOOR_DURATION = 800; // 开/关门动画总时长
+const OPEN_OR_CLOSE_DURATION = 800; // 开/关门动画总时长
 const DOOR_COLOR = new Color(235, 235, 245); // 门扇的颜色
 const FRAME_COLOR = new Color(197, 193, 189); // 门框的颜色
 const DOOR_W = 1.6; // 门扇的宽
@@ -169,8 +170,6 @@ const createDoor = (
 
   const doorGroup = new Group();
   doorGroup.name = "房门";
-  doorGroup.castShadow = true;
-  doorGroup.receiveShadow = true;
 
   /** 门框部分*/
   const frameGroup = new Group();
@@ -210,6 +209,8 @@ const createDoor = (
   doorPanel.name = "门板";
   // @ts-ignore
   doorPanel.customParams = customParams;
+  doorPanel.castShadow = true;
+  doorPanel.receiveShadow = true;
   doorListRef.current.push(doorPanel);
   mouseRaycasterIntersectObjectsRef.current.push(doorPanel);
   doorPanel.scale.set(DOOR_W, DOOR_H, DOOR_T);
@@ -381,15 +382,12 @@ export const doorAnimationRender = (doorList: Mesh[]) => {
       if (isAnimating && door.parent) {
         const now = performance.now();
         const progress = Math.min(
-          (now - startTime) / OPEN_OR_CLOSE_DOOR_DURATION,
+          (now - startTime) / OPEN_OR_CLOSE_DURATION,
           1,
         );
         if (progress < 1) {
           // 使用缓动函数,先慢后快
-          const easeProgress =
-            progress < 0.5
-              ? 4 * progress * progress * progress
-              : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+          const easeProgress = getEaseProgress(progress);
 
           if (switchStatus === "OFF") {
             door.parent.rotation.y = openDoorMaxAngle * easeProgress;

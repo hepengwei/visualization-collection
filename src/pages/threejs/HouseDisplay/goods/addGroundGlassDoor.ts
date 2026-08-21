@@ -15,9 +15,9 @@ import {
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import { createDoorknob } from "./addDoor";
+import { getEaseProgress } from "../utils";
 
 const OPEN_OR_CLOSE_DOOR_DURATION = 800; // 开/关门动画总时长
-
 const GROUND_GLASS_W = 1.6; // 磨砂玻璃的宽
 const GROUND_GLASS_H = 3.4; // 磨砂玻璃的高
 const GROUND_GLASS_T = 0.04; // 磨砂玻璃的厚度
@@ -28,7 +28,7 @@ const MOVE_DISTANCE = FRAME_D + GROUND_GLASS_W - 0.2; // 磨砂玻璃门可移�
 const doorConfigs = [
   // 主卧厕所门
   {
-    positon: new Vector3(-3.05, 0, -10.7),
+    positon: new Vector3(-3.08, 0, -10.7),
     rotationY: -Math.PI / 2,
     customParams: {
       switchStatus: "OFF",
@@ -37,7 +37,7 @@ const doorConfigs = [
   },
   // 外厕所门
   {
-    positon: new Vector3(4.9, 0, -9.8),
+    positon: new Vector3(4.9, 0, -9.76),
     customParams: {
       switchStatus: "OFF",
       isAnimating: false,
@@ -71,6 +71,8 @@ export const addGroundGlassDoor = (
     clearcoatRoughness: 0.6,
     transparent: true,
     opacity: 0.9,
+    depthWrite: false, // 透明物体不写深度，避免遮挡后面的透明物体
+    alphaTest: 0.5, // 设置alphaTest阈值，让半透明物体也能投射阴影
     envMapIntensity: 0.6,
     side: DoubleSide,
   });
@@ -127,11 +129,11 @@ const createGroundGlassDoor = (
   groundGlassDoorGroup.name = "磨砂玻璃门";
   // @ts-ignore
   groundGlassDoorGroup.customParams = customParams;
-  groundGlassDoorGroup.castShadow = true;
-  groundGlassDoorGroup.receiveShadow = true;
 
   /** 磨砂玻璃门包边部分*/
   const frameGroup = new Group();
+  frameGroup.castShadow = true;
+  frameGroup.receiveShadow = true;
 
   // 左包边
   const leftJamb = new Mesh(boxGeometry, groundGlassDoorFrameMaterial);
@@ -164,6 +166,8 @@ const createGroundGlassDoor = (
   const groundGlass = new Mesh(boxGeometry, groundGlassMaterial);
   groundGlass.scale.set(GROUND_GLASS_W, GROUND_GLASS_H, GROUND_GLASS_T);
   groundGlass.position.set(0, GROUND_GLASS_H / 2, 0);
+  groundGlass.castShadow = true;
+  groundGlass.receiveShadow = true;
   groundGlassDoorGroup.add(groundGlass);
 
   /** 门把手部分*/
@@ -208,10 +212,7 @@ export const groundGlassDoorAnimationRender = (
         );
         if (progress < 1) {
           // 使用缓动函数,先慢后快
-          const easeProgress =
-            progress < 0.5
-              ? 4 * progress * progress * progress
-              : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+          const easeProgress = getEaseProgress(progress);
 
           if (switchStatus === "OFF") {
             if (rotationY === -Math.PI / 2) {
