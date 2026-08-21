@@ -68,6 +68,7 @@ export const useModeToggle = (
     ceilingLampSwitch: Group,
     lampList?: Group[],
   ) => void,
+  onClickCurtain?: (curtain: Group) => void,
 ) => {
   // 模式状态: 'overview' 整体模式, 'roaming' 漫游模式
   const [viewMode, setViewMode] = useState<ViewMode>("overview");
@@ -100,15 +101,16 @@ export const useModeToggle = (
   const onMouseClick = useCallback(() => {
     // 优先处理可交互物体的点击
     if (mouseRaycasterIntersectedRef.current) {
-      if (mouseRaycasterIntersectedRef.current.name === "门板") {
+      const { name } = mouseRaycasterIntersectedRef.current;
+      if (name === "门板") {
         onClickDoor?.(mouseRaycasterIntersectedRef.current as Mesh);
         return; // 点击了房门就不处理其他逻辑
       }
-      if (mouseRaycasterIntersectedRef.current.name === "磨砂玻璃门") {
+      if (name === "磨砂玻璃门") {
         onClickGroundGlassDoor?.(mouseRaycasterIntersectedRef.current as Group);
         return;
       }
-      if (mouseRaycasterIntersectedRef.current.name.endsWith("吊灯开关")) {
+      if (name.endsWith("吊灯开关")) {
         if (viewModeRef.current === "roaming") {
           onClickCeilingLampSwitch?.(
             mouseRaycasterIntersectedRef.current as Group,
@@ -117,12 +119,22 @@ export const useModeToggle = (
           return;
         }
       }
-      if (mouseRaycasterIntersectedRef.current.name === "电视屏幕") {
+      if (name === "电视屏幕") {
         onClickTVScreen?.(tvVideoRef?.current);
         return;
       }
-      if (mouseRaycasterIntersectedRef.current.name === "手机屏幕") {
+      if (name === "手机屏幕") {
         onClickPhoneScreen?.(phoneVideoRef?.current);
+        return;
+      }
+      if (name === "左白纱" || name === "右白纱") {
+        const curtain = mouseRaycasterIntersectedRef.current.parent;
+        if (curtain?.name === "窗帘") {
+          onClickCurtain?.(curtain as Group);
+          return;
+        }
+      } else if (name === "窗帘") {
+        onClickCurtain?.(mouseRaycasterIntersectedRef.current as Group);
         return;
       }
     }

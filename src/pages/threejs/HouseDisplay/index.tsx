@@ -45,6 +45,7 @@ import { onClickTVScreen } from './goods/addTVScreen';
 import { onClickPhoneScreen } from './goods/addPhoneScreen';
 import { addCrosshair, resizeCrosshair, crosshairRender, createOutlinePass } from './function/addCrosshair';
 import addTeaTable from './goods/addTeaTable';
+import { addCurtain, onClickCurtain, curtainAnimationRender } from "./goods/addCurtain";
 import styles from "./index.module.scss";
 
 export type SwitchStatus = 'ON' | 'OFF';
@@ -80,6 +81,7 @@ const HouseDisplay = () => {
   const reticleRef = useRef<CSS2DObject | null>(null); // 鼠标准星对象
   const mouseRaycasterIntersectObjectsRef = useRef<Object3D[]>([]); // 鼠标射线可接受的检测对象列表
   const mouseRaycasterIntersectedRef = useRef<Object3D | null>(null); // 当前鼠标射线命中的物体
+  const curtainListRef = useRef<Group[]>([]); // 所有窗帘的列表
   const statsRef1 = useRef<Stats | null>(null);
   const statsRef2 = useRef<Stats | null>(null);
   const statsRef3 = useRef<Stats | null>(null);
@@ -110,6 +112,7 @@ const HouseDisplay = () => {
     onClickPhoneScreen,
     lampListRef,
     onClickCeilingLampSwitch,
+    onClickCurtain,
   );
 
   const initializeHandle = (
@@ -165,7 +168,13 @@ const HouseDisplay = () => {
       );
 
       // 创建并显示磨砂玻璃门
-      addGroundGlassDoor(scene, assetManager, groundGlassDoorListRef, mouseRaycasterIntersectObjectsRef, pointerControlsIntersetObjectsRef)
+      addGroundGlassDoor(
+        scene,
+        assetManager,
+        groundGlassDoorListRef,
+        mouseRaycasterIntersectObjectsRef,
+        pointerControlsIntersetObjectsRef
+      )
 
       // 加载并显示电视墙、沙发、床等模型
       add3dModel(
@@ -182,7 +191,13 @@ const HouseDisplay = () => {
       addCeiling(scene, assetManager, ceilingGroupRef);
 
       // 添加所有房间吊灯
-      addCeilingLamp(scene, assetManager, lampListRef, lampSwitchListRef, mouseRaycasterIntersectObjectsRef);
+      addCeilingLamp(
+        scene,
+        assetManager,
+        lampListRef,
+        lampSwitchListRef,
+        mouseRaycasterIntersectObjectsRef
+      );
 
       // 初始化整体/漫游模式切换相关
       initModeToggle(
@@ -201,10 +216,25 @@ const HouseDisplay = () => {
       );
 
       // 添加鼠标准星
-      addCrosshair(scene, containerRef.current, labelRendererRef, raycasterRef, reticleRef);
+      addCrosshair(
+        scene,
+        containerRef.current,
+        labelRendererRef,
+        raycasterRef,
+        reticleRef
+      );
 
       // 添加茶几
       addTeaTable(scene, assetManager);
+
+      // 添加窗帘
+      addCurtain(
+        scene,
+        assetManager,
+        curtainListRef,
+        mouseRaycasterIntersectObjectsRef,
+        pointerControlsIntersetObjectsRef
+      );
 
       // 启用后期处理器
       const bloomComposer = new EffectComposer(renderer);
@@ -255,6 +285,9 @@ const HouseDisplay = () => {
 
     // 磨砂玻璃门开/关动画过程渲染
     groundGlassDoorAnimationRender(groundGlassDoorListRef.current)
+
+    // 窗帘开/关动画过程渲染
+    curtainAnimationRender(curtainListRef.current);
 
     // 整体模式下更新轨道控制器
     if (viewModeRef.current === 'overview' && orbitControlsRef.current && !animatingRef.current) {

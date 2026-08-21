@@ -189,6 +189,7 @@ const addAllWall = (
     opacity: 0.25,
     roughness: 0.1,
     metalness: 0.1,
+    depthWrite: false, // 透明物体不写深度，避免遮挡后面的透明物体
   });
   assetManager.materials.set("glassMaterial", glassMaterial);
 

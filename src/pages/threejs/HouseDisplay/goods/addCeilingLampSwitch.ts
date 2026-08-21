@@ -120,7 +120,7 @@ export const addCeilingLampSwitch = (
   );
 
   // 添加所有吊灯的开关
-  switchConfigList.forEach((item, index) => {
+  switchConfigList.forEach((item: Record<string, any>, index: number) => {
     const { name, position, rotationY } = item;
     let switchStatus = "OFF";
     if (lampList.length > 0) {

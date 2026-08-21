@@ -78,6 +78,12 @@ export const safePlay = (video: HTMLVideoElement | null) => {
   }
 };
 
+// 动画的缓动函数,先慢后快
+export const getEaseProgress = (progress: number) =>
+  progress < 0.5
+    ? 4 * progress * progress * progress
+    : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
 const makeSeedableRand = (seedVal: number) => {
   let s = seedVal;
   return function () {
