@@ -28,7 +28,7 @@ type HandlePosition = "left" | "right";
 
 const OPEN_OR_CLOSE_DURATION = 800; // 开/关门动画总时长
 const DOOR_COLOR = new Color(235, 235, 245); // 门扇的颜色
-const FRAME_COLOR = new Color(197, 193, 189); // 门框的颜色
+const FRAME_COLOR = 0xc5c1bd; // 门框的颜色
 const DOOR_W = 1.6; // 门扇的宽
 const DOOR_H = 3.4; // 门扇的高
 const DOOR_T = 0.04; // 门扇的厚度
@@ -114,21 +114,10 @@ export const addDoor = (
   assetManager.materials.set("woodDoorMaterial", woodDoorMaterial);
 
   // 门框材质
-  const frameColorMap = generateColorMap(FRAME_COLOR, 512);
-  const frameNormalMap = generateNormalMap(512);
-  const frameRoughMap = generateRoughnessMap(512);
-  frameColorMap.repeat.set(1, 4.2);
-  frameNormalMap.repeat.set(1, 4.2);
-  frameRoughMap.repeat.set(1, 4.2);
   const doorFrameMaterial = new MeshStandardMaterial({
-    map: frameColorMap,
-    normalMap: frameNormalMap,
-    normalScale: new Vector2(1, 1),
-    roughnessMap: frameRoughMap,
+    color: FRAME_COLOR,
     roughness: 0.6,
-    metalness: 0.02,
-    envMapIntensity: 1.3,
-    side: DoubleSide,
+    metalness: 0.0,
   });
   assetManager.materials.set("doorFrameMaterial", doorFrameMaterial);
 

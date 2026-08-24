@@ -26,7 +26,7 @@ export type ViewMode = "overview" | "roaming";
 // 漫游模式配置参数
 const ROAMING_CONFIG = {
   cameraHeight: 2.6, // 相机离地板的高度（米）
-  moveSpeed: 40, // WASD移动速度
+  moveSpeed: 36, // WASD移动速度
   gravity: 9.8 * 3, // 重力加速度
   friction: 0.8, // 摩擦系数（0-1，越小摩擦越大，惯性越小）
   collisionDistance: 0.5, // 碰撞检测距离（米）
@@ -127,7 +127,7 @@ export const useModeToggle = (
         onClickPhoneScreen?.(phoneVideoRef?.current);
         return;
       }
-      if (name === "左白纱" || name === "右白纱") {
+      if (name.startsWith("左白纱") || name.startsWith("右白纱")) {
         const curtain = mouseRaycasterIntersectedRef.current.parent;
         if (curtain?.name === "窗帘") {
           onClickCurtain?.(curtain as Group);
