@@ -78,16 +78,21 @@ export const addGroundGlassDoor = (
   });
   assetManager.materials.set("groundGlassMaterial", groundGlassMaterial);
 
-  // 磨砂玻璃包边材质（铝合金）
-  const groundGlassDoorFrameMaterial = new MeshStandardMaterial({
-    color: 0xc0c0c8,
-    roughness: 0.3,
-    metalness: 0.9,
-  });
-  assetManager.materials.set(
-    "groundGlassDoorFrameMaterial",
-    groundGlassDoorFrameMaterial,
+  // 铝合金包边材质
+  let aluminiumAlloyFrameMaterial = assetManager.materials.get(
+    "aluminiumAlloyFrameMaterial",
   );
+  if (!aluminiumAlloyFrameMaterial) {
+    aluminiumAlloyFrameMaterial = new MeshStandardMaterial({
+      color: 0xc0c0c8,
+      roughness: 0.3,
+      metalness: 0.9,
+    });
+    assetManager.materials.set(
+      "aluminiumAlloyFrameMaterial",
+      aluminiumAlloyFrameMaterial,
+    );
+  }
 
   doorConfigs.forEach((item) => {
     const { positon, rotationY, customParams } = item;
@@ -121,8 +126,8 @@ const createGroundGlassDoor = (
 ) => {
   const boxGeometry = assetManager.geometries.get("boxGeometry");
   const groundGlassMaterial = assetManager.materials.get("groundGlassMaterial");
-  const groundGlassDoorFrameMaterial = assetManager.materials.get(
-    "groundGlassDoorFrameMaterial",
+  const aluminiumAlloyFrameMaterial = assetManager.materials.get(
+    "aluminiumAlloyFrameMaterial",
   );
 
   const groundGlassDoorGroup = new Group();
@@ -136,7 +141,7 @@ const createGroundGlassDoor = (
   frameGroup.receiveShadow = true;
 
   // 左包边
-  const leftJamb = new Mesh(boxGeometry, groundGlassDoorFrameMaterial);
+  const leftJamb = new Mesh(boxGeometry, aluminiumAlloyFrameMaterial);
   leftJamb.scale.set(FRAME_D, GROUND_GLASS_H, GROUND_GLASS_T);
   leftJamb.position.set(
     -HALF_GROUND_GLASS_W - FRAME_D / 2,
@@ -146,7 +151,7 @@ const createGroundGlassDoor = (
   frameGroup.add(leftJamb);
 
   // 右包边
-  const rightJamb = new Mesh(boxGeometry, groundGlassDoorFrameMaterial);
+  const rightJamb = new Mesh(boxGeometry, aluminiumAlloyFrameMaterial);
   rightJamb.scale.set(FRAME_D, GROUND_GLASS_H, GROUND_GLASS_T);
   rightJamb.position.set(
     HALF_GROUND_GLASS_W + FRAME_D / 2,
@@ -156,7 +161,7 @@ const createGroundGlassDoor = (
   frameGroup.add(rightJamb);
 
   // 上包边
-  const headerMesh = new Mesh(boxGeometry, groundGlassDoorFrameMaterial);
+  const headerMesh = new Mesh(boxGeometry, aluminiumAlloyFrameMaterial);
   headerMesh.scale.set(GROUND_GLASS_W + FRAME_D * 2, FRAME_D, GROUND_GLASS_T);
   headerMesh.position.set(0, GROUND_GLASS_H + FRAME_D / 2, 0);
   frameGroup.add(headerMesh);
