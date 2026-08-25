@@ -117,8 +117,8 @@ export const crosshairRender = (
           while (!namedObj.name && namedObj.parent) {
             namedObj = namedObj.parent;
           }
-          // 将墙体加入鼠标射线检测是为了防止隔墙高亮了可交互的物体
-          if (namedObj.name && namedObj.name !== "墙体") {
+          // 将墙体和垭口包边加入鼠标射线检测是为了防止隔墙或垭口包边高亮了可交互的物体
+          if (namedObj.name && !["墙体", "垭口包边"].includes(namedObj.name)) {
             // 处理高亮切换
             if (mouseRaycasterIntersectedRef.current !== namedObj) {
               // 设置新的高亮
