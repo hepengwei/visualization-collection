@@ -28,7 +28,7 @@ const MOVE_DISTANCE = FRAME_D + GROUND_GLASS_W - 0.2; // 磨砂玻璃门可移�
 const doorConfigs = [
   // 主卧厕所门
   {
-    positon: new Vector3(-3.08, 0, -10.7),
+    positon: new Vector3(-3.08, 0, -10.65),
     rotationY: -Math.PI / 2,
     customParams: {
       switchStatus: "OFF",
