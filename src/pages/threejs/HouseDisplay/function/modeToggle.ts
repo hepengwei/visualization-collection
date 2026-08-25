@@ -127,7 +127,7 @@ export const useModeToggle = (
         onClickPhoneScreen?.(phoneVideoRef?.current);
         return;
       }
-      if (name.startsWith("左白纱") || name.startsWith("右白纱")) {
+      if (name.startsWith("左半边") || name.startsWith("右半边")) {
         const curtain = mouseRaycasterIntersectedRef.current.parent;
         if (curtain?.name === "窗帘") {
           onClickCurtain?.(curtain as Group);

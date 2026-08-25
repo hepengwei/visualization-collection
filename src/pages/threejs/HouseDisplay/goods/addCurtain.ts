@@ -6,30 +6,35 @@ import {
   Scene,
   PlaneGeometry,
   MeshStandardMaterial,
+  MeshPhysicalMaterial,
   MeshLambertMaterial,
   Mesh,
   Group,
   Vector3,
   Object3D,
   DoubleSide,
+  Color,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import { getEaseProgress } from "../utils";
 
-const whiteVoileDoublicationWidth = 0.06; // 窗帘白纱展开后重合多出的宽度
+type CurtainType = "voile" | "cloth";
+
+const whiteVoileDoublicationWidth = 0.06; // 窗帘半边展开后重合多出的宽度
 const curtainConfigs = [
   // 客厅窗帘
   {
     positon: new Vector3(-17.3, 0, 3.2),
     rotationY: -Math.PI / 2,
     customParams: {
-      switchStatus: "OFF", // 窗帘的打开/关闭状态，窗帘打开时单片白纱是完全收起的，窗帘关闭时单片白纱是完全展开的
+      switchStatus: "OFF", // 窗帘的打开/关闭状态，窗帘打开时单片半边是完全收起的，窗帘关闭时单片半边是完全展开的
       isAnimating: false, // 窗帘是否在打开/关闭动画中
       curtainHeight: 4, // 窗帘高度
-      expandedWidth: 7.7, // 窗帘单片白纱完全展开后的宽度
-      stackedWidth: 1, // 窗帘单片白纱完全收起后的宽度
+      expandedWidth: 7.7, // 窗帘单片半边完全展开后的宽度
+      stackedWidth: 1, // 窗帘单片半边完全收起后的宽度
       animationDuration: 1400, // 开/关窗帘动画总时长
     },
+    curtainType: "voile",
   },
   // 餐厅窗帘
   {
@@ -38,11 +43,54 @@ const curtainConfigs = [
     customParams: {
       switchStatus: "ON",
       isAnimating: false,
-      curtainHeight: 4, // 窗帘高度
-      expandedWidth: 4.1, // 窗帘单片白纱完全展开后的宽度
-      stackedWidth: 0.6, // 窗帘单片白纱完全收起后的宽度
-      animationDuration: 1000, // 开/关窗帘动画总时长
+      curtainHeight: 4,
+      expandedWidth: 4.1,
+      stackedWidth: 0.6,
+      animationDuration: 1000,
     },
+    curtainType: "voile",
+  },
+  // 主卧窗帘
+  {
+    positon: new Vector3(-17.3, 0, -12.4),
+    rotationY: -Math.PI / 2,
+    customParams: {
+      switchStatus: "ON",
+      isAnimating: false,
+      curtainHeight: 4,
+      expandedWidth: 3.4,
+      stackedWidth: 0.5,
+      animationDuration: 900,
+    },
+    curtainType: "cloth",
+  },
+  // 儿童房窗帘
+  {
+    positon: new Vector3(17.2, 0, -13.2),
+    rotationY: Math.PI / 2,
+    customParams: {
+      switchStatus: "ON",
+      isAnimating: false,
+      curtainHeight: 4,
+      expandedWidth: 2.6,
+      stackedWidth: 0.4,
+      animationDuration: 700,
+    },
+    curtainType: "cloth",
+  },
+  // 次卧窗帘
+  {
+    positon: new Vector3(-13.6, 0, 8.8),
+    rotationY: -Math.PI / 2,
+    customParams: {
+      switchStatus: "ON",
+      isAnimating: false,
+      curtainHeight: 4,
+      expandedWidth: 4.2,
+      stackedWidth: 0.8,
+      animationDuration: 1000,
+    },
+    curtainType: "cloth",
   },
 ];
 
@@ -73,6 +121,22 @@ export const addCurtain = (
   });
   assetManager.materials.set("whiteVoileMaterial", whiteVoileMaterial);
 
+  // 布料材质
+  const clothMaterial = new MeshPhysicalMaterial({
+    color: 0x6b7280, // 窗帘底色（灰/米/藏青都行）
+    roughness: 0.85, // 布料不是镜子，给高粗糙
+    metalness: 0.0, // 织物非金属
+    transmission: 0, // 0 = 完全不透明
+    transparent: false,
+    // —— 布料质感灵魂：sheen 模拟经纬微纤维边缘光 ——
+    sheen: 1.0, // 开到 1，绒布/棉布都靠它
+    sheenRoughness: 0.9, // 越大越哑光蓬松，越小越像缎面
+    sheenColor: new Color(0xf5f5f5),
+    envMapIntensity: 0.6, // 有 HDRI 时让 sheen 更自然
+    side: DoubleSide,
+  });
+  assetManager.materials.set("clothMaterial", clothMaterial);
+
   // 完全不可见且射线检测能检测到的材质
   let completelyInvisibleMaterial = assetManager.materials.get(
     "completelyInvisibleMaterial",
@@ -90,8 +154,12 @@ export const addCurtain = (
   }
 
   curtainConfigs.forEach((item: Record<string, any>) => {
-    const { positon, rotationY, customParams } = item;
-    const curtain = createCurtain(assetManager, { ...customParams, positon });
+    const { positon, rotationY, customParams, curtainType } = item;
+    const curtain = createCurtain(
+      assetManager,
+      { ...customParams, positon },
+      curtainType,
+    );
     curtainListRef.current.push(curtain);
     pointerControlsIntersetObjectsRef.current.push(curtain);
     mouseRaycasterIntersectObjectsRef.current.push(curtain);
@@ -107,9 +175,11 @@ export const addCurtain = (
 const createCurtain = (
   assetManager: AssetManager,
   customParams: Record<string, any>,
+  curtainType: CurtainType,
 ) => {
   const planeGeometry = assetManager.geometries.get("planeGeometry");
   const whiteVoileMaterial = assetManager.materials.get("whiteVoileMaterial");
+  const clothMaterial = assetManager.materials.get("clothMaterial");
   const completelyInvisibleMaterial = assetManager.materials.get(
     "completelyInvisibleMaterial",
   );
@@ -120,7 +190,7 @@ const createCurtain = (
   const { curtainHeight, expandedWidth, stackedWidth, switchStatus } =
     customParams;
 
-  // 由于窗帘的两个白纱在动画过程中要动态修改定点位置，所以不能共用同一个PlaneGeometry
+  // 由于窗帘的两个半边在动画过程中要动态修改定点位置，所以不能共用同一个PlaneGeometry
   const leftWhiteVoilePlaneGeometry = new PlaneGeometry(
     expandedWidth,
     curtainHeight,
@@ -140,10 +210,10 @@ const createCurtain = (
   };
   const leftWhiteVoile = new Mesh(
     leftWhiteVoilePlaneGeometry,
-    whiteVoileMaterial,
+    curtainType === "voile" ? whiteVoileMaterial : clothMaterial,
   );
-  leftWhiteVoile.name = "左白纱";
-  leftWhiteVoile.renderOrder = 10; // 设置renderOrder，在玻璃窗之后渲染，这样在外面斜着透过玻璃窗才不会看不到白纱
+  leftWhiteVoile.name = "左半边";
+  leftWhiteVoile.renderOrder = 10; // 设置renderOrder，在玻璃窗之后渲染，这样在外面斜着透过玻璃窗才不会看不到半边
   leftWhiteVoile.frustumCulled = false; // 顶点变形后包围球失效，禁用视锥体剔除
   leftWhiteVoile.castShadow = true; // 启用阴影投射
   leftWhiteVoile.receiveShadow = true; // 启用接收阴影
@@ -155,10 +225,10 @@ const createCurtain = (
   );
   const rightWhiteVoile = new Mesh(
     rightWhiteVoilePlaneGeometry,
-    whiteVoileMaterial,
+    curtainType === "voile" ? whiteVoileMaterial : clothMaterial,
   );
-  rightWhiteVoile.name = "右白纱";
-  rightWhiteVoile.renderOrder = 10; // 设置renderOrder，在玻璃窗之后渲染，这样在外面斜着透过玻璃窗才不会看不到白纱
+  rightWhiteVoile.name = "右半边";
+  rightWhiteVoile.renderOrder = 10; // 设置renderOrder，在玻璃窗之后渲染，这样在外面斜着透过玻璃窗才不会看不到半边
   rightWhiteVoile.frustumCulled = false; // 顶点变形后包围球失效，禁用视锥体剔除
   rightWhiteVoile.castShadow = true; // 启用阴影投射
   rightWhiteVoile.receiveShadow = true; // 启用接收阴影
@@ -172,12 +242,12 @@ const createCurtain = (
   curtainGroup.add(rightWhiteVoile);
 
   // 添加不可见的碰撞检测平面，解决褶皱变形后射线检测不稳定的问题
-  // 这个平面始终保持简单的矩形形状，不会像白纱一样变形，宽度会随着白纱进行改变
+  // 这个平面始终保持简单的矩形形状，不会像半边一样变形，宽度会随着半边进行改变
   const leftCollisionPlane = new Mesh(
     planeGeometry,
     completelyInvisibleMaterial,
   );
-  leftCollisionPlane.name = "左白纱碰撞检测面";
+  leftCollisionPlane.name = "左半边碰撞检测面";
   let leftCollisionPlaneWidth = expandedWidth + whiteVoileDoublicationWidth;
   let leftCollisionPlanePositionX = -expandedWidth / 2;
   if (switchStatus === "ON") {
@@ -197,7 +267,7 @@ const createCurtain = (
     planeGeometry,
     completelyInvisibleMaterial,
   );
-  rightCollisionPlane.name = "右白纱碰撞检测面";
+  rightCollisionPlane.name = "右半边碰撞检测面";
   let rightCollisionPlaneWidth = expandedWidth + whiteVoileDoublicationWidth;
   let rightCollisionPlanePositionX = expandedWidth / 2;
   if (switchStatus === "ON") {
@@ -214,7 +284,7 @@ const createCurtain = (
   rightCollisionPlane.customParams = whiteVoileCustomParams;
   curtainGroup.add(rightCollisionPlane);
 
-  // 初始化一次窗帘左右两个白纱的各顶点位置
+  // 初始化一次窗帘左右两个半边的各顶点位置
   updateWhiteVoile(
     leftWhiteVoile,
     switchStatus === "ON" ? 0 : 1,
@@ -262,8 +332,8 @@ export const curtainAnimationRender = (curtainList: Group[]) => {
           }
           curtain.traverse((child) => {
             if ((child as Mesh).isMesh) {
-              if (child.name.startsWith("左白纱")) {
-                if (child.name === "左白纱") {
+              if (child.name.startsWith("左半边")) {
+                if (child.name === "左半边") {
                   updateWhiteVoile(
                     child as Mesh,
                     openAmt,
@@ -278,8 +348,8 @@ export const curtainAnimationRender = (curtainList: Group[]) => {
                   child.scale.x = currentWidth;
                   child.position.x = -expandedWidth + currentWidth / 2;
                 }
-              } else if (child.name.startsWith("右白纱")) {
-                if (child.name === "右白纱") {
+              } else if (child.name.startsWith("右半边")) {
+                if (child.name === "右半边") {
                   updateWhiteVoile(
                     child as Mesh,
                     openAmt,
@@ -312,12 +382,12 @@ export const curtainAnimationRender = (curtainList: Group[]) => {
 };
 
 /**
- * 窗帘白纱顶点变形函数
+ * 窗帘半边顶点变形函数
  * 褶皱：三角波，收起时密集深褶，展开时稀疏浅褶
- * @param mesh 窗帘的单片白纱
- * @param origArray  白纱的所有顶点
- * @param openAmt  白纱当前的的展开程度，0为完全未展开，1为完全展开
- * @param isLeft  是否是窗帘的左边白纱
+ * @param mesh 窗帘的单片半边
+ * @param origArray  半边的所有顶点
+ * @param openAmt  半边当前的的展开程度，0为完全未展开，1为完全展开
+ * @param isLeft  是否是窗帘的左边半边
  * @param position 整个窗帘的位置
  */
 const updateWhiteVoile = (
