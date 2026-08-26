@@ -1,11 +1,10 @@
 /**
- * 添加房屋结构，包括地板、所有墙体和玻璃窗
+ * 添加房屋结构，包括地板、所有墙体、踢脚线和玻璃窗
  * showWallLabel 是否显示每个墙体的编号标签，默认不显示
  */
 import { RefObject } from "react";
 import {
   Scene,
-  BoxGeometry,
   MeshStandardMaterial,
   Mesh,
   DoubleSide,
@@ -30,7 +29,6 @@ import marbleHeightImg from "images/threejs/marbleFloor/marble_height.png";
 
 type SkirtingLineType = "front" | "back" | "double" | "all"; // 如果是竖墙，则"front"为左， "back"为右
 
-// 墙体参数
 export const wallHeight = 4; // 墙体高度
 const beamHeight = 0.5; // 门框上方横梁的墙体高度
 const wallDepth = 0.3; // 墙体厚度
@@ -45,6 +43,11 @@ const aluminiumAlloyFrameHeight = 0.1; // 玻璃铝合金包边高度
 const aluminiumAlloyFrameDepth = 0.12; // 玻璃铝合金包边厚度
 const passEdgeBindingHeight = 0.1; // 垭口包边高度
 const passEdgeBindingDepth = 0.02; // 垭口包边厚度
+// 地板参数
+const tileSize = 1.5; // 1.5m的地砖
+const gapSize = 0.005; // 5mm的缝隙
+const floorWidth = 41.6; // 地板总宽度
+const floorDepth = 32; // 地板总深度
 
 // 所有墙体的尺寸和位置
 const wallList: (
@@ -204,12 +207,6 @@ const passEdgeBindingList = [
   ],
 ];
 
-// 地板参数
-const tileSize = 1.5; // 1.5m的地砖
-const gapSize = 0.005; // 5mm的缝隙
-const floorWidth = 41.6; // 地板总宽度
-const floorDepth = 32; // 地板总深度
-
 const addHouseStructure = (
   scene: Scene,
   assetManager: AssetManager,
@@ -271,9 +268,6 @@ const addAllWall = (
     roughness: 0.1,
     metalness: 0.1,
     depthWrite: false, // 透明物体不写深度，避免遮挡后面的透明物体
-    polygonOffset: true,
-    polygonOffsetFactor: -1, // 往相机方向"推"一点（负值=更靠前）
-    polygonOffsetUnits: 1,
   });
   assetManager.materials.set("glassMaterial", glassMaterial);
 
@@ -576,11 +570,10 @@ const addGlassWindow = (
   pointerControlsIntersetObjectsRef.current?.push(glassWindow);
   glassWindowGroup.add(glassWindow);
 
-  // 添加玻璃窗合金包边
+  // 添加玻璃窗铝合金包边
   const aluminiumAlloyFrameMaterial = assetManager.materials.get(
     "aluminiumAlloyFrameMaterial",
   );
-
   const topAluminiumAlloyFrame = new Mesh(
     boxGeometry,
     aluminiumAlloyFrameMaterial,
@@ -736,13 +729,13 @@ const addMarbleFloor = (scene: Scene, assetManager: AssetManager) => {
   // 生成每块地砖
   const dummy = new Object3D();
   dummy.scale.set(tileSize, tileSize);
+  dummy.rotation.x = -Math.PI / 2;
   for (let x = 0; x < tilesX; x++) {
     for (let z = 0; z < tilesZ; z++) {
       // 计算地砖位置（从左上角开始）
       const posX = -floorWidth / 2 + x * (tileSize + gapSize) + tileSize / 2;
       const posZ = -floorDepth / 2 + z * (tileSize + gapSize) + tileSize / 2;
       dummy.position.set(posX, 0, posZ);
-      dummy.rotation.x = -Math.PI / 2;
       dummy.updateMatrix();
       instancedMesh.setMatrixAt(z * tilesX + x, dummy.matrix);
     }

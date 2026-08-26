@@ -149,7 +149,7 @@ const HouseDisplay = () => {
       // 初始化资源管理器，将所有公共的刚体和部分公共材质预先创建并存到资源管理器中
       initAssetManager(assetManager);
 
-      // 创建并显示地板、墙体和玻璃窗
+      // 添加地板、墙体和玻璃窗
       addHouseStructure(
         scene,
         assetManager,
@@ -158,7 +158,7 @@ const HouseDisplay = () => {
         false,
       );
 
-      // 创建并显示房门
+      // 添加房门
       addDoor(
         scene,
         assetManager,
@@ -167,13 +167,13 @@ const HouseDisplay = () => {
         pointerControlsIntersetObjectsRef,
       );
 
-      // 创建并显示磨砂玻璃门
+      // 添加磨砂玻璃门
       addGroundGlassDoor(
         scene,
         assetManager,
         groundGlassDoorListRef,
         mouseRaycasterIntersectObjectsRef,
-        pointerControlsIntersetObjectsRef
+        pointerControlsIntersetObjectsRef,
       )
 
       // 加载并显示电视墙、沙发、床等模型
@@ -184,7 +184,7 @@ const HouseDisplay = () => {
         tvScreenRef,
         phoneVideoRef.current,
         phoneScreenRef,
-        mouseRaycasterIntersectObjectsRef
+        mouseRaycasterIntersectObjectsRef,
       );
 
       // 添加天花板（初始隐藏在天空中）
@@ -196,7 +196,7 @@ const HouseDisplay = () => {
         assetManager,
         lampListRef,
         lampSwitchListRef,
-        mouseRaycasterIntersectObjectsRef
+        mouseRaycasterIntersectObjectsRef,
       );
 
       // 初始化整体/漫游模式切换相关
@@ -221,7 +221,7 @@ const HouseDisplay = () => {
         containerRef.current,
         labelRendererRef,
         raycasterRef,
-        reticleRef
+        reticleRef,
       );
 
       // 添加茶几
@@ -233,11 +233,19 @@ const HouseDisplay = () => {
         assetManager,
         curtainListRef,
         mouseRaycasterIntersectObjectsRef,
-        pointerControlsIntersetObjectsRef
+        pointerControlsIntersetObjectsRef,
       );
 
       // 启用双后处理器架构
-      useDualComposer(scene, camera, renderer, mainComposerRef, bloomComposerRef, containerRef, outlinePassRef);
+      useDualComposer(
+        scene,
+        camera,
+        renderer,
+        mainComposerRef,
+        bloomComposerRef,
+        containerRef,
+        outlinePassRef,
+      );
     }
   };
 
