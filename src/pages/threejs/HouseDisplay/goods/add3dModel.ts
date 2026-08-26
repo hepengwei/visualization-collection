@@ -19,7 +19,7 @@ import { addTVScreen } from "./addTVScreen";
 import { addPhoneScreen } from "./addPhoneScreen";
 import addVase from "./addVase";
 
-const phonePosition = new Vector3(-0.23 , 0.1, -0.12); // 手机位置
+const phonePosition = new Vector3(-0.23, 0.1, -0.12); // 手机位置
 const vasePosition = new Vector3(0, 0.1, 0); // 花瓶位置
 
 const add3dModel = (
@@ -82,13 +82,9 @@ const loadTelevisionWall = (
         }
       });
 
-      // 设置电视墙位置
       tvWall.position.set(-8.5, 1.2, 3.9);
-      // 放大模型
       tvWall.scale.set(5, 5, 5);
-      // 旋转电视墙
       tvWall.rotation.y = Math.PI;
-
       scene.add(tvWall);
 
       // 添加电视屏幕，播放视频
@@ -128,8 +124,6 @@ const loadSofa = (scene: Scene, gltfLoader: GLTFLoader) => {
             color: 0xd3dce1, // 浅灰蓝色
             roughness: 0.75, // 布艺略糙，皮革可降到 0.3~0.5
             metalness: 0.0,
-
-            // 移除 envMapIntensity，因为场景中没有环境贴图
             reflectivity: 0.1, // 微弱反射
             // 布艺沙发特有（可选）
             sheen: 0.4, // 边缘绒感
@@ -141,15 +135,8 @@ const loadSofa = (scene: Scene, gltfLoader: GLTFLoader) => {
         }
       });
 
-      // 设置沙发位置
       sofa.position.set(-9, 0.8, -4.2);
-
-      // 缩放沙发，调整到合适大小
       sofa.scale.set(8, 5.6, 5.6);
-
-      // 旋转沙发，使其面向电视墙（朝向18号墙方向，即z正方向）
-      sofa.rotation.y = 0; // 面向南方（z正方向）
-
       scene.add(sofa);
     },
     (progress) => {
@@ -198,11 +185,9 @@ const loadBeds = (
           child.material = blueBedMaterial;
         }
       });
-      // 设置床位置：放在左上角房间
+
       bed1.position.set(-10.4, 1.2, -13);
-      // 缩放床，调整到合适大小
       bed1.scale.set(6, 6, 6);
-      // 旋转床，向左旋转90度
       bed1.rotation.y = -Math.PI / 2;
       scene.add(bed1);
 
@@ -216,11 +201,9 @@ const loadBeds = (
           child.material = blueBedMaterial;
         }
       });
-      // 设置床位置：放在右上角房间
+  
       bed2.position.set(11.8, 1.2, -13);
-      // 缩放床，调整到合适大小
       bed2.scale.set(6, 6, 6);
-      // 旋转床，旋转-90度
       bed2.rotation.y = -Math.PI / 2;
       scene.add(bed2);
 
@@ -233,11 +216,9 @@ const loadBeds = (
           child.receiveShadow = true;
         }
       });
-      // 设置床位置：放在左下角房间
+  
       bed3.position.set(-10.5, 1.2, 10.1);
-      // 缩放床，调整到合适大小
       bed3.scale.set(6, 6, 6);
-      // 旋转床，向右旋转90度
       bed3.rotation.y = Math.PI / 2; // 向右旋转90度
       scene.add(bed3);
     },
@@ -276,9 +257,7 @@ const loadTable = (
         }
       });
 
-      // 设置餐桌位置
       table.position.set(11, 0.86, -1);
-      // 缩放餐桌，调整到合适大小
       table.scale.set(5.6, 5.6, 5.6);
       scene.add(table);
 
@@ -330,15 +309,12 @@ const loadPhone = (
         }
       });
 
-      // 设置手机位置
       phone.position.copy(phonePosition);
-      // 缩放手机，调整到合适大小
       phone.scale.set(
         0.4 / table.scale.x,
         0.4 / table.scale.y,
         0.4 / table.scale.z,
       );
-      // 旋转手机
       phone.rotation.x = -Math.PI / 2;
       phone.rotation.z = -(Math.PI * 3) / 4;
 

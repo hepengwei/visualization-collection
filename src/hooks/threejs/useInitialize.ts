@@ -117,7 +117,8 @@ const useInitialize = (
       rendererRef.current.setSize(clientWidth, clientHeight);
 
       // 设置渲染器的像素比
-      rendererRef.current.setPixelRatio(window.devicePixelRatio);
+      const pixelRatio = Math.min(window.devicePixelRatio, 2); // 别超过 2
+      rendererRef.current.setPixelRatio(pixelRatio);
 
       resizeHandle?.(sceneRef.current, cameraRef.current, rendererRef.current);
     }

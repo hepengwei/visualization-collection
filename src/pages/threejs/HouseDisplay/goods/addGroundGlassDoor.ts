@@ -4,7 +4,6 @@
 import { MutableRefObject } from "react";
 import {
   Scene,
-  MeshStandardMaterial,
   MeshPhysicalMaterial,
   Mesh,
   Group,

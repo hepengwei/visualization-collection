@@ -14,8 +14,9 @@ import {
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
-import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
 import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass.js";
+import { SMAAPass } from "three/examples/jsm/postprocessing/SMAAPass.js";
+import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
 
 const useDualComposer = (
   scene: Scene,
@@ -36,6 +37,8 @@ const useDualComposer = (
   const { clientWidth, clientHeight } = containerRef.current;
   const rtWidth = clientWidth * pixelRatio;
   const rtHeight = clientHeight * pixelRatio;
+
+  // Bloom Composer
   const bloomRT = new WebGLRenderTarget(rtWidth, rtHeight, rtOptions);
   const bloomComposer = new EffectComposer(renderer, bloomRT);
   bloomComposer.renderToScreen = false;
@@ -49,12 +52,15 @@ const useDualComposer = (
   bloomComposer.addPass(bloomPass);
   bloomComposerRef.current = bloomComposer;
 
+  // Main Composer
   const mainRT = new WebGLRenderTarget(rtWidth, rtHeight, rtOptions); // 一定不能和bloomRT共用同一个对象
   const mainComposer = new EffectComposer(renderer, mainRT);
   mainComposer.addPass(new RenderPass(scene, camera));
-  const outlinePass = createOutlinePass(scene, camera, containerRef.current);
+  const outlinePass = createOutlinePass(scene, camera, rtWidth, rtHeight);
   outlinePassRef.current = outlinePass;
   mainComposer.addPass(outlinePass);
+  const smaaPass = new SMAAPass();
+  mainComposer.addPass(smaaPass); // 解决后处理产生的新的边缘锯齿问题，必须放在OutputPass之前
   mainComposer.addPass(new OutputPass());
   mainComposerRef.current = mainComposer;
 };
@@ -62,11 +68,11 @@ const useDualComposer = (
 const createOutlinePass = (
   scene: Scene,
   camera: PerspectiveCamera,
-  container: HTMLDivElement,
+  width: number,
+  height: number,
 ) => {
-  const { clientWidth, clientHeight } = container;
   const outlinePass = new OutlinePass(
-    new Vector2(clientWidth, clientHeight),
+    new Vector2(width, height),
     scene,
     camera,
   );

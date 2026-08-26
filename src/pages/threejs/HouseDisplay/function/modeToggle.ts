@@ -26,7 +26,7 @@ export type ViewMode = "overview" | "roaming";
 // 漫游模式配置参数
 const ROAMING_CONFIG = {
   cameraHeight: 2.6, // 相机离地板的高度（米）
-  moveSpeed: 36, // WASD移动速度
+  moveSpeed: 20, // WASD移动速度
   gravity: 9.8 * 3, // 重力加速度
   friction: 0.8, // 摩擦系数（0-1，越小摩擦越大，惯性越小）
   collisionDistance: 0.5, // 碰撞检测距离（米）

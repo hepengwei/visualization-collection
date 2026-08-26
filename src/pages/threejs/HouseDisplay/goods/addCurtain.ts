@@ -115,7 +115,7 @@ export const addCurtain = (
 
   // 布料材质
   const clothMaterial = new MeshPhysicalMaterial({
-    color: 0x6b7280, // 窗帘底色（灰/米/藏青都行）
+    color: 0x6b7280, // 藏青色
     roughness: 0.85, // 布料不是镜子，给高粗糙
     metalness: 0.0, // 织物非金属
     transmission: 0, // 0 = 完全不透明
