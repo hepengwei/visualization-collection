@@ -4,7 +4,6 @@
 import { MutableRefObject } from "react";
 import {
   Scene,
-  BoxGeometry,
   EdgesGeometry,
   MeshStandardMaterial,
   LineSegments,
@@ -69,12 +68,6 @@ export const addCeilingLampSwitch = (
   mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
   lampList: Group[],
 ) => {
-  // 创建立方体
-  let boxGeometry = assetManager.geometries.get("boxGeometry");
-  if (!boxGeometry) {
-    boxGeometry = new BoxGeometry(1, 1, 1);
-    assetManager.geometries.set("boxGeometry", boxGeometry);
-  }
   // 创建开关底盒材质
   const switchBackBoxMaterial = new MeshStandardMaterial({
     color: 0xeaeaea,

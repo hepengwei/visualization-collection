@@ -7,7 +7,6 @@ import {
   PerspectiveCamera,
   WebGLRenderer,
   Vector3,
-  Vector2,
   Mesh,
   Object3D,
   Group,
@@ -16,16 +15,14 @@ import {
 import Stats from 'stats.js';
 import { CSS2DRenderer, CSS2DObject } from "three/examples/jsm/renderers/CSS2DRenderer";
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js';
 import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { useGlobalContext } from "hooks/useGlobalContext";
 import useInitialize from "hooks/threejs/useInitialize";
 import type { AssetManager } from 'hooks/threejs/useInitialize';
-import { generateSkyTexture } from './utils';
+import useDualComposer from './function/useDualComposer';
+import { generateSkyTexture, initAssetManager } from './utils';
 import {
   useModeToggle,
   initModeToggle,
@@ -43,7 +40,7 @@ import { addCeilingLamp, allCeilingLampsVisibleToggle, dynamicOptimizationLampLi
 import { onClickCeilingLampSwitch } from './goods/addCeilingLampSwitch';
 import { onClickTVScreen } from './goods/addTVScreen';
 import { onClickPhoneScreen } from './goods/addPhoneScreen';
-import { addCrosshair, resizeCrosshair, crosshairRender, createOutlinePass } from './function/addCrosshair';
+import { addCrosshair, resizeCrosshair, crosshairRender } from './function/addCrosshair';
 import addTeaTable from './goods/addTeaTable';
 import { addCurtain, onClickCurtain, curtainAnimationRender } from "./goods/addCurtain";
 import styles from "./index.module.scss";
@@ -149,6 +146,9 @@ const HouseDisplay = () => {
       // 添加环境光和太阳光
       addLighting(scene);
 
+      // 初始化资源管理器，将所有公共的刚体和部分公共材质预先创建并存到资源管理器中
+      initAssetManager(assetManager);
+
       // 创建并显示地板、墙体和玻璃窗
       addHouseStructure(
         scene,
@@ -236,26 +236,8 @@ const HouseDisplay = () => {
         pointerControlsIntersetObjectsRef
       );
 
-      // 启用后期处理器
-      const bloomComposer = new EffectComposer(renderer);
-      bloomComposer.renderToScreen = false;
-      const bloomPass = new UnrealBloomPass(
-        new Vector2(containerRef.current.clientWidth, containerRef.current.clientHeight),
-        1.2,
-        0.4,
-        0.96,
-      );
-      bloomComposer.addPass(new RenderPass(scene, camera));
-      bloomComposer.addPass(bloomPass);
-      bloomComposerRef.current = bloomComposer;
-
-      const mainComposer = new EffectComposer(renderer);
-      mainComposer.addPass(new RenderPass(scene, camera));
-      const outlinePass = createOutlinePass(scene, camera, containerRef.current);
-      outlinePassRef.current = outlinePass;
-      mainComposer.addPass(outlinePass);
-      mainComposer.addPass(new OutputPass());
-      mainComposerRef.current = mainComposer;
+      // 启用双后处理器架构
+      useDualComposer(scene, camera, renderer, mainComposerRef, bloomComposerRef, containerRef, outlinePassRef);
     }
   };
 

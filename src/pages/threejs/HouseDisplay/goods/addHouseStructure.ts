@@ -8,7 +8,6 @@ import {
   BoxGeometry,
   MeshStandardMaterial,
   Mesh,
-  PlaneGeometry,
   DoubleSide,
   CanvasTexture,
   SpriteMaterial,
@@ -247,12 +246,7 @@ const addAllWall = (
   pointerControlsIntersetObjectsRef: RefObject<Object3D[]>,
   showWallLabel: boolean,
 ) => {
-  // 创建立方体
-  let boxGeometry = assetManager.geometries.get("boxGeometry");
-  if (!boxGeometry) {
-    boxGeometry = new BoxGeometry(1, 1, 1);
-    assetManager.geometries.set("boxGeometry", boxGeometry);
-  }
+  const boxGeometry = assetManager.geometries.get("boxGeometry");
   // 墙体材质
   const wallMaterial = new MeshStandardMaterial({
     color: wallColor,
@@ -277,23 +271,11 @@ const addAllWall = (
     roughness: 0.1,
     metalness: 0.1,
     depthWrite: false, // 透明物体不写深度，避免遮挡后面的透明物体
+    polygonOffset: true,
+    polygonOffsetFactor: -1, // 往相机方向"推"一点（负值=更靠前）
+    polygonOffsetUnits: 1,
   });
   assetManager.materials.set("glassMaterial", glassMaterial);
-  // 铝合金包边材质
-  let aluminiumAlloyFrameMaterial = assetManager.materials.get(
-    "aluminiumAlloyFrameMaterial",
-  );
-  if (!aluminiumAlloyFrameMaterial) {
-    aluminiumAlloyFrameMaterial = new MeshStandardMaterial({
-      color: 0xc0c0c8,
-      roughness: 0.3,
-      metalness: 0.9,
-    });
-    assetManager.materials.set(
-      "aluminiumAlloyFrameMaterial",
-      aluminiumAlloyFrameMaterial,
-    );
-  }
 
   // 使用InstancedMesh实例化渲染，提高性能
   const instancedMesh = new InstancedMesh(
@@ -350,6 +332,7 @@ const addAllWall = (
     addGlassWindow(
       scene,
       assetManager,
+      mouseRaycasterIntersectObjectsRef,
       pointerControlsIntersetObjectsRef,
       item[0],
       item[1],
@@ -571,6 +554,7 @@ const addWallLabel = (
 const addGlassWindow = (
   scene: Scene,
   assetManager: AssetManager,
+  mouseRaycasterIntersectObjectsRef: RefObject<Object3D[]>,
   pointerControlsIntersetObjectsRef: RefObject<Object3D[]>,
   width: number,
   height: number,
@@ -585,15 +569,18 @@ const addGlassWindow = (
   glassWindowGroup.position.set(x, y, z);
   scene.add(glassWindowGroup);
   const glassWindow = new Mesh(boxGeometry, glassMaterial);
-  pointerControlsIntersetObjectsRef.current?.push(glassWindow);
-  glassWindow.scale.set(width, height, depth);
   glassWindow.name = "玻璃窗";
+  glassWindow.scale.set(width, height, depth);
+  // 将玻璃窗加入鼠标射线检测是为了防止隔玻璃高亮了可交互的物体
+  mouseRaycasterIntersectObjectsRef.current?.push(glassWindow);
+  pointerControlsIntersetObjectsRef.current?.push(glassWindow);
   glassWindowGroup.add(glassWindow);
 
   // 添加玻璃窗合金包边
   const aluminiumAlloyFrameMaterial = assetManager.materials.get(
     "aluminiumAlloyFrameMaterial",
   );
+
   const topAluminiumAlloyFrame = new Mesh(
     boxGeometry,
     aluminiumAlloyFrameMaterial,
@@ -719,9 +706,7 @@ const addMarbleFloor = (scene: Scene, assetManager: AssetManager) => {
   const tilesX = Math.ceil(floorWidth / (tileSize + gapSize));
   const tilesZ = Math.ceil(floorDepth / (tileSize + gapSize));
 
-  // 创建地砖结构体
-  const tileGeometry = new PlaneGeometry(tileSize, tileSize);
-  assetManager.geometries.set("tileGeometry", tileGeometry);
+  const planeGeometry = assetManager.geometries.get("planeGeometry");
   // 创建地砖材质
   const tileMaterial = new MeshPhysicalMaterial({
     map: marbleBaseColor,
@@ -741,7 +726,7 @@ const addMarbleFloor = (scene: Scene, assetManager: AssetManager) => {
 
   // 使用InstancedMesh实例化渲染，提高性能
   const instancedMesh = new InstancedMesh(
-    tileGeometry,
+    planeGeometry,
     tileMaterial,
     tilesX * tilesZ,
   );
@@ -750,6 +735,7 @@ const addMarbleFloor = (scene: Scene, assetManager: AssetManager) => {
 
   // 生成每块地砖
   const dummy = new Object3D();
+  dummy.scale.set(tileSize, tileSize);
   for (let x = 0; x < tilesX; x++) {
     for (let z = 0; z < tilesZ; z++) {
       // 计算地砖位置（从左上角开始）
@@ -764,15 +750,14 @@ const addMarbleFloor = (scene: Scene, assetManager: AssetManager) => {
   scene.add(instancedMesh);
 
   // 创建白色缝隙底板
-  const gapFloorGeometry = new PlaneGeometry(floorWidth, floorDepth);
-  assetManager.geometries.set("gapFloorGeometry", gapFloorGeometry);
   const gapFloorMaterial = new MeshStandardMaterial({
     color: 0xffffff, // 白色缝隙
     roughness: 0.8,
     metalness: 0,
   });
   assetManager.materials.set("gapFloorMaterial", gapFloorMaterial);
-  const gapFloor = new Mesh(gapFloorGeometry, gapFloorMaterial);
+  const gapFloor = new Mesh(planeGeometry, gapFloorMaterial);
+  gapFloor.scale.set(floorWidth, floorDepth);
   gapFloor.rotation.x = -Math.PI / 2;
   gapFloor.position.y = -0.001; // 略低于地砖，作为缝隙
   gapFloor.receiveShadow = true;

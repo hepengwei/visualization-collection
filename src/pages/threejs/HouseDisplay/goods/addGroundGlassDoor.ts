@@ -4,7 +4,6 @@
 import { MutableRefObject } from "react";
 import {
   Scene,
-  BoxGeometry,
   MeshStandardMaterial,
   MeshPhysicalMaterial,
   Mesh,
@@ -52,13 +51,6 @@ export const addGroundGlassDoor = (
   mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
   pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
-  // 创建立方体
-  let boxGeometry = assetManager.geometries.get("boxGeometry");
-  if (!boxGeometry) {
-    boxGeometry = new BoxGeometry(1, 1, 1);
-    assetManager.geometries.set("boxGeometry", boxGeometry);
-  }
-
   // 磨砂玻璃材质
   const groundGlassMaterial = new MeshPhysicalMaterial({
     color: 0xeaf2ff,
@@ -77,22 +69,6 @@ export const addGroundGlassDoor = (
     side: DoubleSide,
   });
   assetManager.materials.set("groundGlassMaterial", groundGlassMaterial);
-
-  // 铝合金包边材质
-  let aluminiumAlloyFrameMaterial = assetManager.materials.get(
-    "aluminiumAlloyFrameMaterial",
-  );
-  if (!aluminiumAlloyFrameMaterial) {
-    aluminiumAlloyFrameMaterial = new MeshStandardMaterial({
-      color: 0xc0c0c8,
-      roughness: 0.3,
-      metalness: 0.9,
-    });
-    assetManager.materials.set(
-      "aluminiumAlloyFrameMaterial",
-      aluminiumAlloyFrameMaterial,
-    );
-  }
 
   doorConfigs.forEach((item) => {
     const { positon, rotationY, customParams } = item;

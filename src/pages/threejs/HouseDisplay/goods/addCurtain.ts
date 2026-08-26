@@ -5,7 +5,6 @@ import { MutableRefObject } from "react";
 import {
   Scene,
   PlaneGeometry,
-  MeshStandardMaterial,
   MeshPhysicalMaterial,
   MeshLambertMaterial,
   Mesh,
@@ -101,13 +100,6 @@ export const addCurtain = (
   mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
   pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
-  // 平面
-  let planeGeometry = assetManager.geometries.get("planeGeometry");
-  if (!planeGeometry) {
-    planeGeometry = new PlaneGeometry(1, 1);
-    assetManager.geometries.set("planeGeometry", planeGeometry);
-  }
-
   // 白纱材质
   const whiteVoileMaterial = new MeshLambertMaterial({
     color: 0xffffff,
@@ -136,22 +128,6 @@ export const addCurtain = (
     side: DoubleSide,
   });
   assetManager.materials.set("clothMaterial", clothMaterial);
-
-  // 完全不可见且射线检测能检测到的材质
-  let completelyInvisibleMaterial = assetManager.materials.get(
-    "completelyInvisibleMaterial",
-  );
-  if (!completelyInvisibleMaterial) {
-    completelyInvisibleMaterial = new MeshStandardMaterial({
-      colorWrite: false, // 不写入颜色缓冲，完全不可见
-      depthWrite: false, // 不写入深度缓冲
-      side: DoubleSide,
-    });
-    assetManager.materials.set(
-      "completelyInvisibleMaterial",
-      completelyInvisibleMaterial,
-    );
-  }
 
   curtainConfigs.forEach((item: Record<string, any>) => {
     const { positon, rotationY, customParams, curtainType } = item;

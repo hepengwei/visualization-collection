@@ -4,8 +4,6 @@
 import { MutableRefObject } from "react";
 import {
   Scene,
-  BoxGeometry,
-  CylinderGeometry,
   SphereGeometry,
   MeshStandardMaterial,
   Mesh,
@@ -87,13 +85,6 @@ export const addDoor = (
   mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
   pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
-  // 创建立方体
-  let boxGeometry = assetManager.geometries.get("boxGeometry");
-  if (!boxGeometry) {
-    boxGeometry = new BoxGeometry(1, 1, 1);
-    assetManager.geometries.set("boxGeometry", boxGeometry);
-  }
-
   // 实木门材质
   const colorMap = generateColorMap(DOOR_COLOR, 512);
   const normalMap = generateNormalMap(512);
@@ -233,18 +224,8 @@ const createDoor = (
 
 // 创建门把手
 export const createDoorknob = (assetManager: AssetManager) => {
-  // 圆柱体
-  let cylinderGeometry = assetManager.geometries.get("cylinderGeometry");
-  if (!cylinderGeometry) {
-    cylinderGeometry = new CylinderGeometry(1, 1, 1);
-    assetManager.geometries.set("cylinderGeometry", cylinderGeometry);
-  }
-  // 球体
-  let sphereGeometry = assetManager.geometries.get("sphereGeometry");
-  if (!sphereGeometry) {
-    sphereGeometry = new SphereGeometry(1);
-    assetManager.geometries.set("sphereGeometry", sphereGeometry);
-  }
+  const cylinderGeometry = assetManager.geometries.get("cylinderGeometry");
+  const sphereGeometry = assetManager.geometries.get("sphereGeometry");
   // 门把手材质
   let doorknobMaterial = assetManager.materials.get("doorknobMaterial");
   if (!doorknobMaterial) {
@@ -291,6 +272,7 @@ const createButtHinge = (
   assetManager: AssetManager,
   handlePosition: HandlePosition,
 ) => {
+  const boxGeometry = assetManager.geometries.get("boxGeometry");
   const hingeMaterial = assetManager.materials.get("hingeMaterial");
 
   const buttHingeGroup = new Group();
@@ -303,8 +285,9 @@ const createButtHinge = (
   if (handlePosition === "left") {
     leaf1PositonX = -leaf1PositonX;
   }
-  const leafGeo = new BoxGeometry(leafT, HINGE_H, HINGE_D);
-  const leaf1 = new Mesh(leafGeo, hingeMaterial);
+
+  const leaf1 = new Mesh(boxGeometry, hingeMaterial);
+  leaf1.scale.set(leafT, HINGE_H, HINGE_D);
   // 叶板中心在门扇左侧面再往左偏移 leafT/2
   leaf1.position.set(leaf1PositonX, 0, 0);
   leaf1.castShadow = true;
@@ -315,7 +298,8 @@ const createButtHinge = (
   if (handlePosition === "left") {
     leaf2PositonX = -leaf2PositonX;
   }
-  const leaf2 = new Mesh(leafGeo, hingeMaterial);
+  const leaf2 = new Mesh(boxGeometry, hingeMaterial);
+  leaf2.scale.set(leafT, HINGE_H, HINGE_D);
   leaf2.position.set(leaf2PositonX, 0, 0);
   leaf2.castShadow = true;
   buttHingeGroup.add(leaf2);

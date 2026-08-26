@@ -117,8 +117,8 @@ export const crosshairRender = (
           while (!namedObj.name && namedObj.parent) {
             namedObj = namedObj.parent;
           }
-          // 将墙体和垭口包边加入鼠标射线检测是为了防止隔墙或垭口包边高亮了可交互的物体
-          if (namedObj.name && !["墙体", "垭口包边"].includes(namedObj.name)) {
+          // 将墙体、玻璃窗和垭口包边加入鼠标射线检测是为了防止隔着这些物体高亮了可交互的物体
+          if (namedObj.name && !["墙体", "玻璃窗", "垭口包边"].includes(namedObj.name)) {
             // 处理高亮切换
             if (mouseRaycasterIntersectedRef.current !== namedObj) {
               // 设置新的高亮
@@ -161,24 +161,4 @@ export const crosshairRender = (
     }
   }
   labelRenderer?.render(scene, camera);
-};
-
-export const createOutlinePass = (
-  scene: Scene,
-  camera: PerspectiveCamera,
-  container: HTMLDivElement,
-) => {
-  const { clientWidth, clientHeight } = container;
-  const outlinePass = new OutlinePass(
-    new Vector2(clientWidth, clientHeight),
-    scene,
-    camera,
-  );
-  outlinePass.visibleEdgeColor.set("#1758ee"); // 高亮颜色
-  outlinePass.hiddenEdgeColor.set("#1758ee");
-  outlinePass.edgeThickness = 2; // 边缘厚度
-  outlinePass.edgeStrength = 14; // 边缘强度
-  outlinePass.edgeGlow = 1; // 发光
-  outlinePass.downSampleRatio = 1; // 抗锯齿
-  return outlinePass;
 };

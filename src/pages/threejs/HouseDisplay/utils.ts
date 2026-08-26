@@ -1,11 +1,59 @@
 import {
+  PlaneGeometry,
+  CircleGeometry,
+  BoxGeometry,
+  CylinderGeometry,
+  SphereGeometry,
+  MeshStandardMaterial,
   CanvasTexture,
   SRGBColorSpace,
   RepeatWrapping,
   EquirectangularReflectionMapping,
   Color,
+  DoubleSide,
 } from "three";
 import { ParametricGeometry } from "three/examples/jsm/geometries/ParametricGeometry.js";
+import type { AssetManager } from "hooks/threejs/useInitialize";
+
+// 初始化资源管理器，将所有公共的几何体和部分公共材质预先创建并存到资源管理器中
+export const initAssetManager = (assetManager: AssetManager) => {
+  // 创建矩形平面
+  const planeGeometry = new PlaneGeometry(1, 1);
+  assetManager.geometries.set("planeGeometry", planeGeometry);
+  // 创建圆形平面
+  const circleGeometry = new CircleGeometry(1);
+  assetManager.geometries.set("circleGeometry", circleGeometry);
+  // 创建立方体
+  const boxGeometry = new BoxGeometry(1, 1, 1);
+  assetManager.geometries.set("boxGeometry", boxGeometry);
+  // 创建圆柱体
+  const cylinderGeometry = new CylinderGeometry(1, 1, 1);
+  assetManager.geometries.set("cylinderGeometry", cylinderGeometry);
+  //创建球体
+  const sphereGeometry = new SphereGeometry(1);
+  assetManager.geometries.set("sphereGeometry", sphereGeometry);
+
+  // 创建完全不可见且射线检测能检测到的材质
+  const completelyInvisibleMaterial = new MeshStandardMaterial({
+    colorWrite: false, // 不写入颜色缓冲，完全不可见
+    depthWrite: false, // 不写入深度缓冲
+    side: DoubleSide,
+  });
+  assetManager.materials.set(
+    "completelyInvisibleMaterial",
+    completelyInvisibleMaterial,
+  );
+  // 创建铝合金包边材质
+  const aluminiumAlloyFrameMaterial = new MeshStandardMaterial({
+    color: 0xc0c0c8,
+    roughness: 0.3,
+    metalness: 0.9,
+  });
+  assetManager.materials.set(
+    "aluminiumAlloyFrameMaterial",
+    aluminiumAlloyFrameMaterial,
+  );
+};
 
 // 生成天空贴图
 export const generateSkyTexture = (width = 1024, height = 512) => {

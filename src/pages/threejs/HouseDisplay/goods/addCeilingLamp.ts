@@ -5,8 +5,6 @@ import { MutableRefObject } from "react";
 import {
   Scene,
   PerspectiveCamera,
-  CircleGeometry,
-  CylinderGeometry,
   RingGeometry,
   TorusGeometry,
   MeshBasicMaterial,
@@ -82,18 +80,6 @@ export const addCeilingLamp = (
 ) => {
   dynamicOptimizationlampList = [];
 
-  // 圆形平面
-  let circleGeometry = assetManager.geometries.get("circleGeometry");
-  if (!circleGeometry) {
-    circleGeometry = new CircleGeometry(1);
-    assetManager.geometries.set("circleGeometry", circleGeometry);
-  }
-  // 圆柱体
-  let cylinderGeometry = assetManager.geometries.get("cylinderGeometry");
-  if (!cylinderGeometry) {
-    cylinderGeometry = new CylinderGeometry(1, 1, 1);
-    assetManager.geometries.set("cylinderGeometry", cylinderGeometry);
-  }
   // 吊灯底部圆环平面
   const ceilingLampRingGeometry = new RingGeometry(
     LAMP_RADIUS * 0.96,
