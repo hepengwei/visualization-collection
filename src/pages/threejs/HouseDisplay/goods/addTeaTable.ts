@@ -3,7 +3,6 @@
  */
 import {
   Scene,
-  SphereGeometry,
   CylinderGeometry,
   TorusGeometry,
   MeshStandardMaterial,
@@ -39,17 +38,9 @@ const addTeaTable = (scene: Scene, assetManager: AssetManager) => {
   teaTableGroup.receiveShadow = true;
 
   // 圆柱体
-  let cylinderGeometry = assetManager.geometries.get("cylinderGeometry");
-  if (!cylinderGeometry) {
-    cylinderGeometry = new CylinderGeometry(1, 1, 1);
-    assetManager.geometries.set("cylinderGeometry", cylinderGeometry);
-  }
+  const cylinderGeometry = assetManager.geometries.get("cylinderGeometry");
   // 球体
-  let sphereGeometry = assetManager.geometries.get("sphereGeometry");
-  if (!sphereGeometry) {
-    sphereGeometry = new SphereGeometry(1);
-    assetManager.geometries.set("sphereGeometry", sphereGeometry);
-  }
+  const sphereGeometry = assetManager.geometries.get("sphereGeometry");
   // 茶几中心金属支撑柱
   const teaTableCylinderGeometry = new CylinderGeometry(
     0.06,

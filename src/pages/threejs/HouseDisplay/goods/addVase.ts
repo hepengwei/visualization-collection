@@ -2,8 +2,6 @@
  * 添加花瓶
  */
 import {
-  SphereGeometry,
-  CylinderGeometry,
   LatheGeometry,
   MeshStandardMaterial,
   Object3D,
@@ -32,17 +30,9 @@ const addVase = (
   vaseGroup.name = "花瓶";
 
   // 圆柱体
-  let cylinderGeometry = assetManager.geometries.get("cylinderGeometry");
-  if (!cylinderGeometry) {
-    cylinderGeometry = new CylinderGeometry(1, 1, 1);
-    assetManager.geometries.set("cylinderGeometry", cylinderGeometry);
-  }
+  const cylinderGeometry = assetManager.geometries.get("cylinderGeometry");
   // 球体
-  let sphereGeometry = assetManager.geometries.get("sphereGeometry");
-  if (!sphereGeometry) {
-    sphereGeometry = new SphereGeometry(1);
-    assetManager.geometries.set("sphereGeometry", sphereGeometry);
-  }
+  const sphereGeometry = assetManager.geometries.get("sphereGeometry");
   // 花瓶材质
   const vaseMaterial = new MeshStandardMaterial({
     color: 0x3a7a9a,

@@ -85,7 +85,8 @@ const useInitialize = (
       const renderer = new WebGLRenderer({ antialias: true });
       rendererRef.current = renderer;
       renderer.setSize(clientWidth, clientHeight);
-      renderer.setPixelRatio(window.devicePixelRatio);
+      const pixelRatio = Math.min(window.devicePixelRatio, 2); // 别超过 2
+      renderer.setPixelRatio(pixelRatio);
       renderer.shadowMap.enabled = true;
       renderer.outputColorSpace = SRGBColorSpace;
 

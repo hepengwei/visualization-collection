@@ -4,7 +4,6 @@
 import {
   VideoTexture,
   SRGBColorSpace,
-  PlaneGeometry,
   MeshStandardMaterial,
   Mesh,
   FrontSide,
@@ -68,11 +67,7 @@ const createPhoneScreen = (
   pos: Vector3,
   videoTexture: VideoTexture,
 ) => {
-  let planeGeometry = assetManager.geometries.get("planeGeometry");
-  if (!planeGeometry) {
-    planeGeometry = new PlaneGeometry(1, 1);
-    assetManager.geometries.set("planeGeometry", planeGeometry);
-  }
+  const planeGeometry = assetManager.geometries.get("planeGeometry");
   const phoneScreenMaterial = new MeshStandardMaterial({
     map: videoTexture,
     emissive: 0xffffff,
