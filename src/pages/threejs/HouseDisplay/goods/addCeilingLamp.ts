@@ -20,7 +20,7 @@ import {
   Object3D,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
-import { wallHeight } from "./addHouseStructure";
+import { WALL_HEIGHT } from "./addHouseStructure";
 import type { ViewMode } from "../function/modeToggle";
 import {
   addCeilingLampSwitch,
@@ -30,7 +30,7 @@ import {
 const LAMP_RADIUS = 0.9; // 灯的半径
 const LAMP_THICKNESS = 0.12; // 灯的厚度
 const DYNAMIC_OPTIMIZATION_LAMP_COUNT = 2; // 动态优化吊灯时亮灯的个数
-const ceilingLampY = wallHeight - LAMP_THICKNESS / 2 - 0.05;
+const ceilingLampY = WALL_HEIGHT - LAMP_THICKNESS / 2 - 0.05;
 const lampConfigList = [
   {
     name: "客厅吊灯",
@@ -60,12 +60,12 @@ const lampConfigList = [
   },
   {
     name: "外厕所吊灯",
-    position: new Vector3(3.6, wallHeight - LAMP_THICKNESS / 2 - 0.05, -12.5),
+    position: new Vector3(3.6, WALL_HEIGHT - LAMP_THICKNESS / 2 - 0.05, -12.5),
     scale: new Vector3(0.6, 0.6, 0.6),
   },
   {
     name: "主卧厕所吊灯",
-    position: new Vector3(-0.4, wallHeight - LAMP_THICKNESS / 2 - 0.05, -12.5),
+    position: new Vector3(-0.4, WALL_HEIGHT - LAMP_THICKNESS / 2 - 0.05, -12.5),
     scale: new Vector3(0.6, 0.6, 0.6),
   },
 ];

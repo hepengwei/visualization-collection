@@ -26,9 +26,7 @@ export type ViewMode = "overview" | "roaming";
 // 漫游模式配置参数
 const ROAMING_CONFIG = {
   cameraHeight: 2.6, // 相机离地板的高度（米）
-  moveSpeed: 20, // WASD移动速度
-  gravity: 9.8 * 3, // 重力加速度
-  friction: 0.8, // 摩擦系数（0-1，越小摩擦越大，惯性越小）
+  moveSpeed: 5, // WASD移动速度
   collisionDistance: 0.5, // 碰撞检测距离（米）
 };
 
@@ -50,6 +48,8 @@ let moveState = {
 };
 // 第一人称控制器在各方向上的移动值
 const direction = new Vector3();
+// 复用碰撞检测射线，避免每帧创建
+const collisionRaycaster = new Raycaster();
 
 export const useModeToggle = (
   containerRef: MutableRefObject<HTMLDivElement | null>,
@@ -69,6 +69,7 @@ export const useModeToggle = (
     lampList?: Group[],
   ) => void,
   onClickCurtain?: (curtain: Group) => void,
+  onClickFridgeDoor?: (fridgeDoor: Group) => void,
 ) => {
   // 模式状态: 'overview' 整体模式, 'roaming' 漫游模式
   const [viewMode, setViewMode] = useState<ViewMode>("overview");
@@ -127,7 +128,7 @@ export const useModeToggle = (
         onClickPhoneScreen?.(phoneVideoRef?.current);
         return;
       }
-      if (name.startsWith("左半边") || name.startsWith("右半边")) {
+      if (name.startsWith("窗帘左半边") || name.startsWith("窗帘右半边")) {
         const curtain = mouseRaycasterIntersectedRef.current.parent;
         if (curtain?.name === "窗帘") {
           onClickCurtain?.(curtain as Group);
@@ -135,6 +136,10 @@ export const useModeToggle = (
         }
       } else if (name === "窗帘") {
         onClickCurtain?.(mouseRaycasterIntersectedRef.current as Group);
+        return;
+      }
+      if (["冰箱上门", "冰箱下门"].includes(name)) {
+        onClickFridgeDoor?.(mouseRaycasterIntersectedRef.current as Group);
         return;
       }
     }
@@ -445,43 +450,41 @@ export const pointerControlsMoveRender = (
     const time = performance.now();
     const delta = (time - prevTimeRef.current) / 1000;
 
-    // 重力模拟
-    velocity.y -= ROAMING_CONFIG.gravity * delta;
-
     // 移动方向计算
-    direction.z = Number(moveState.forward) - Number(moveState.backward);
+    direction.z = Number(moveState.backward) - Number(moveState.forward);
     direction.x = Number(moveState.right) - Number(moveState.left);
     direction.normalize();
 
     // 移动速度
     if (moveState.forward || moveState.backward) {
-      velocity.z -= direction.z * ROAMING_CONFIG.moveSpeed * delta;
+      velocity.z = direction.z * ROAMING_CONFIG.moveSpeed * delta;
+    } else {
+      velocity.z = 0;
     }
     if (moveState.left || moveState.right) {
-      velocity.x -= direction.x * ROAMING_CONFIG.moveSpeed * delta;
+      velocity.x = direction.x * ROAMING_CONFIG.moveSpeed * delta;
+    } else {
+      velocity.x = 0;
     }
 
     // 保存当前位置用于碰撞检测
     const oldPosition = camera.position.clone();
 
     // 应用移动
-    pointerControlsRef.current.moveRight(-velocity.x * delta);
-    pointerControlsRef.current.moveForward(-velocity.z * delta);
+    pointerControlsRef.current.moveRight(velocity.x);
+    pointerControlsRef.current.moveForward(-velocity.z);
 
     // 碰撞检测：基于实际移动方向动态检测
     const cameraPosition = camera.position;
     const moveVector = new Vector3().subVectors(cameraPosition, oldPosition);
 
-    let hasCollision = false;
-
     // 如果有实际移动，沿移动方向检测碰撞
     if (moveVector.lengthSq() > 0.0001) {
-      const raycaster = new Raycaster();
       const moveDirection = moveVector.clone().normalize();
 
       // 从旧位置沿移动方向发射射线
-      raycaster.set(oldPosition, moveDirection);
-      const intersections = raycaster.intersectObjects(
+      collisionRaycaster.set(oldPosition, moveDirection);
+      const intersections = collisionRaycaster.intersectObjects(
         pointerControlsIntersetObjects,
         true,
       );
@@ -492,28 +495,10 @@ export const pointerControlsMoveRender = (
         intersections[0].distance <
           moveVector.length() + ROAMING_CONFIG.collisionDistance
       ) {
-        hasCollision = true;
+        // 如果发生碰撞,恢复到旧位置
+        cameraPosition.copy(oldPosition);
       }
     }
-
-    // 如果发生碰撞,恢复到旧位置
-    if (hasCollision) {
-      cameraPosition.copy(oldPosition);
-    }
-
-    // Y轴限制(地板和天花板)
-    if (cameraPosition.y < ROAMING_CONFIG.cameraHeight) {
-      velocity.y = 0;
-      cameraPosition.y = ROAMING_CONFIG.cameraHeight;
-    }
-    if (cameraPosition.y > 3.5) {
-      velocity.y = 0;
-      cameraPosition.y = 3.5;
-    }
-
-    // 应用摩擦力
-    velocity.x *= ROAMING_CONFIG.friction;
-    velocity.z *= ROAMING_CONFIG.friction;
 
     prevTimeRef.current = time;
   }

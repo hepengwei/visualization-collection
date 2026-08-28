@@ -11,9 +11,9 @@ import {
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 
-const ceilingHeight = 0.2; // 天花板厚度
-const ceilingColor = 0xf4f3ef; // 珍珠白
-const ceilingY = 4.1; // 天花板相对于组的位置
+const CEILING_HEIGHT = 0.2; // 天花板厚度
+const CEILING_COLOR = 0xf4f3ef; // 珍珠白
+const CEILING_POSITION_Y = 4.1; // 天花板相对于组的位置
 
 const addCeiling = (
   scene: Scene,
@@ -27,7 +27,7 @@ const addCeiling = (
   const boxGeometry = assetManager.geometries.get("boxGeometry");
   // 创建天花板材质
   const ceilingMaterial = new MeshStandardMaterial({
-    color: ceilingColor,
+    color: CEILING_COLOR,
     roughness: 0.85,
     metalness: 0,
     side: DoubleSide,
@@ -37,8 +37,8 @@ const addCeiling = (
   // 主天花板（覆盖整个房屋）
   const mainCeiling = new Mesh(boxGeometry, ceilingMaterial);
   mainCeiling.name = "天花板";
-  mainCeiling.scale.set(35.2, ceilingHeight, 32);
-  mainCeiling.position.set(0, ceilingY, 0);
+  mainCeiling.scale.set(35.2, CEILING_HEIGHT, 32);
+  mainCeiling.position.set(0, CEILING_POSITION_Y, 0);
   mainCeiling.castShadow = true;
   mainCeiling.receiveShadow = true;
   ceilingGroup.add(mainCeiling);

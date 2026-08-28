@@ -125,8 +125,16 @@ export const crosshairRender = (
             // 处理高亮切换
             if (mouseRaycasterIntersectedRef.current !== namedObj) {
               // 设置新的高亮
-              outlinePass.selectedObjects = [namedObj];
-              mouseRaycasterIntersectedRef.current = namedObj;
+              if (
+                ["冰箱门左半边", "冰箱门右半边"].includes(namedObj.name) &&
+                namedObj.parent
+              ) {
+                outlinePass.selectedObjects = [namedObj.parent];
+                mouseRaycasterIntersectedRef.current = namedObj.parent;
+              } else {
+                outlinePass.selectedObjects = [namedObj];
+                mouseRaycasterIntersectedRef.current = namedObj;
+              }
             }
           } else {
             // 没打到物体：准星飞到远处

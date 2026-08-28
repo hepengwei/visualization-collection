@@ -29,25 +29,25 @@ import marbleHeightImg from "images/threejs/marbleFloor/marble_height.png";
 
 type SkirtingLineType = "front" | "back" | "double" | "all"; // 如果是竖墙，则"front"为左， "back"为右
 
-export const wallHeight = 4; // 墙体高度
-const beamHeight = 0.5; // 门框上方横梁的墙体高度
-const wallDepth = 0.3; // 墙体厚度
-const wallColor = 0xf4f3ef; // 珍珠白乳胶漆颜色
-const wallLabelSize = 1.5; // 墙体标签的大小
-const wallLabelColor = "#FFFF00"; // 墙体标签的颜色
-const skirtingLineHeight = 0.1; // 墙体踢脚线高度
-const skirtingLineDepth = 0.02; // 墙体踢脚线厚度
-const skirtingLineColor = 0xbfc3c7; // 墙体踢脚线的颜色
-const glassDepth = 0.1; // 玻璃厚度
-const aluminiumAlloyFrameHeight = 0.1; // 玻璃铝合金包边高度
-const aluminiumAlloyFrameDepth = 0.12; // 玻璃铝合金包边厚度
-const passEdgeBindingHeight = 0.1; // 垭口包边高度
-const passEdgeBindingDepth = 0.02; // 垭口包边厚度
+export const WALL_HEIGHT = 4; // 墙体高度
+const BEAM_HEIGHT = 0.5; // 门框上方横梁的墙体高度
+const WALL_THICKNESS = 0.3; // 墙体厚度
+const WALL_COLOR = 0xf4f3ef; // 珍珠白乳胶漆颜色
+const WALL_LABEL_SIZE = 1.5; // 墙体标签的大小
+const WALL_LABEL_COLOR = "#FFFF00"; // 墙体标签的颜色
+const SKIRTING_LINE_HEIGHT = 0.1; // 墙体踢脚线高度
+const SKIRTING_LINE_THICKNESS = 0.02; // 墙体踢脚线厚度
+const SKIRTING_LINE_COLOR = 0xbfc3c7; // 墙体踢脚线的颜色
+const GLASS_THICKNESS = 0.1; // 玻璃厚度
+const ALUMINIUM_ALLOY_FRAME_HEIGHT = 0.1; // 玻璃铝合金包边高度
+const ALUMINIUM_ALLOY_FRAME_THICKNESS = 0.12; // 玻璃铝合金包边厚度
+const PASS_EDGE_BINDING_HEIGHT = 0.1; // 垭口包边高度
+const PASS_EDGE_BINDING_THICKNESS = 0.02; // 垭口包边厚度
 // 地板参数
-const tileSize = 1.5; // 1.5m的地砖
-const gapSize = 0.005; // 5mm的缝隙
-const floorWidth = 41.6; // 地板总宽度
-const floorDepth = 32; // 地板总深度
+const TILE_SIZE = 1.5; // 1.5m的地砖
+const GAP_SIZE = 0.005; // 5mm的缝隙
+const FLOOR_WIDTH = 41.6; // 地板总宽度
+const FLOOR_DEPTH = 32; // 地板总深度
 
 // 所有墙体的尺寸和位置
 const wallList: (
@@ -62,147 +62,147 @@ const wallList: (
     ]
   | number[]
 )[] = [
-  [14.55, wallHeight, wallDepth, -10.475, wallHeight / 2, -16, "all"],
-  [1.4, 0.5, wallDepth, -0.8, 3.75, -16],
-  [4.8, 1.5, wallDepth, -0.8, 0.75, -16, "double"],
-  [2.31, wallHeight, wallDepth, -2.65, wallHeight / 2, -16, "double"],
-  [1.64, wallHeight, wallDepth, 0.72, wallHeight / 2, -16, "double"],
-  [1.4, 0.5, wallDepth, 3.8, 3.75, -16],
-  [2.9, 1.5, wallDepth, 3.05, 0.75, -16, "double"],
-  [1.71, wallHeight, wallDepth, 2.25, wallHeight / 2, -16, "double"],
-  [13.25, wallHeight, wallDepth, 11.125, wallHeight / 2, -16, "all"],
-  [wallDepth, 0.5, 4, 17.6, 3.75, -13.2],
+  [14.55, WALL_HEIGHT, WALL_THICKNESS, -10.475, WALL_HEIGHT / 2, -16, "all"],
+  [1.4, 0.5, WALL_THICKNESS, -0.8, 3.75, -16],
+  [4.8, 1.5, WALL_THICKNESS, -0.8, 0.75, -16, "double"],
+  [2.31, WALL_HEIGHT, WALL_THICKNESS, -2.65, WALL_HEIGHT / 2, -16, "double"],
+  [1.64, WALL_HEIGHT, WALL_THICKNESS, 0.72, WALL_HEIGHT / 2, -16, "double"],
+  [1.4, 0.5, WALL_THICKNESS, 3.8, 3.75, -16],
+  [2.9, 1.5, WALL_THICKNESS, 3.05, 0.75, -16, "double"],
+  [1.71, WALL_HEIGHT, WALL_THICKNESS, 2.25, WALL_HEIGHT / 2, -16, "double"],
+  [13.25, WALL_HEIGHT, WALL_THICKNESS, 11.125, WALL_HEIGHT / 2, -16, "all"],
+  [WALL_THICKNESS, 0.5, 4, 17.6, 3.75, -13.2],
   // #11
-  [wallDepth, 1.5, 4, 17.6, 0.75, -13.2, "double"],
-  [wallDepth, wallHeight, 0.8, 17.6, wallHeight / 2, -15.6, "double"],
-  [wallDepth, wallHeight, 0.8, 17.6, wallHeight / 2, -10.8, "double"],
-  [wallDepth, wallHeight, 4, 17.6, wallHeight / 2, -8.4, "back"],
-  [wallDepth, 0.5, 7.12, 17.6, 3.75, -1.92],
-  [wallDepth, 0.5, 7.12, 17.6, 0.25, -1.92, "double"],
-  [wallDepth, wallHeight, 0.92, 17.6, wallHeight / 2, -5.94, "double"],
-  [wallDepth, wallHeight, 0.92, 17.6, wallHeight / 2, 1.8, "double"],
-  [wallDepth, 0.5, 1.4, 17.6, 3.75, 5.09],
-  [wallDepth, 1.5, 1.4, 17.6, 0.75, 5.09, "double"],
+  [WALL_THICKNESS, 1.5, 4, 17.6, 0.75, -13.2, "double"],
+  [WALL_THICKNESS, WALL_HEIGHT, 0.8, 17.6, WALL_HEIGHT / 2, -15.6, "double"],
+  [WALL_THICKNESS, WALL_HEIGHT, 0.8, 17.6, WALL_HEIGHT / 2, -10.8, "double"],
+  [WALL_THICKNESS, WALL_HEIGHT, 4, 17.6, WALL_HEIGHT / 2, -8.4, "back"],
+  [WALL_THICKNESS, 0.5, 7.12, 17.6, 3.75, -1.92],
+  [WALL_THICKNESS, 0.5, 7.12, 17.6, 0.25, -1.92, "double"],
+  [WALL_THICKNESS, WALL_HEIGHT, 0.92, 17.6, WALL_HEIGHT / 2, -5.94, "double"],
+  [WALL_THICKNESS, WALL_HEIGHT, 0.92, 17.6, WALL_HEIGHT / 2, 1.8, "double"],
+  [WALL_THICKNESS, 0.5, 1.4, 17.6, 3.75, 5.09],
+  [WALL_THICKNESS, 1.5, 1.4, 17.6, 0.75, 5.09, "double"],
   // #21
-  [wallDepth, wallHeight, 2.2, 17.6, wallHeight / 2, 3.3, "double"],
-  [wallDepth, wallHeight, 2.94, 17.6, wallHeight / 2, 7.25, "double"],
-  [wallDepth, wallHeight, 6.1, -6.4, wallHeight / 2, 12.76, "front"],
-  [6.7, wallHeight, wallDepth, -3.2, wallHeight / 2, 15.92, "all"],
-  [wallDepth, wallHeight, 5.2, -2.56, wallHeight / 2, 7, "double"],
-  [11.4, wallHeight, wallDepth, 12.05, wallHeight / 2, 8.8, "all"],
-  [wallDepth, 0.5, 5.6, -17.6, 3.75, -12.4],
-  [wallDepth, 1.5, 5.6, -17.6, 0.75, -12.4, "double"],
-  [wallDepth, wallHeight, 0.8, -17.6, wallHeight / 2, -15.6, "double"],
-  [wallDepth, wallHeight, 0.8, -17.6, wallHeight / 2, -9.2, "double"],
+  [WALL_THICKNESS, WALL_HEIGHT, 2.2, 17.6, WALL_HEIGHT / 2, 3.3, "double"],
+  [WALL_THICKNESS, WALL_HEIGHT, 2.94, 17.6, WALL_HEIGHT / 2, 7.25, "double"],
+  [WALL_THICKNESS, WALL_HEIGHT, 6.1, -6.4, WALL_HEIGHT / 2, 12.76, "front"],
+  [6.7, WALL_HEIGHT, WALL_THICKNESS, -3.2, WALL_HEIGHT / 2, 15.92, "all"],
+  [WALL_THICKNESS, WALL_HEIGHT, 5.2, -2.56, WALL_HEIGHT / 2, 7, "double"],
+  [11.4, WALL_HEIGHT, WALL_THICKNESS, 12.05, WALL_HEIGHT / 2, 8.8, "all"],
+  [WALL_THICKNESS, 0.5, 5.6, -17.6, 3.75, -12.4],
+  [WALL_THICKNESS, 1.5, 5.6, -17.6, 0.75, -12.4, "double"],
+  [WALL_THICKNESS, WALL_HEIGHT, 0.8, -17.6, WALL_HEIGHT / 2, -15.6, "double"],
+  [WALL_THICKNESS, WALL_HEIGHT, 0.8, -17.6, WALL_HEIGHT / 2, -9.2, "double"],
   // #31
-  [wallDepth, wallHeight, 4, -17.6, wallHeight / 2, -6.8, "front"],
-  [wallDepth, 0.5, 12.8, -17.6, 3.75, 3.2],
-  [wallDepth, 0.5, 12.8, -17.6, 0.25, 3.2, "double"],
-  [wallDepth, wallHeight, 1.6, -17.6, wallHeight / 2, -4, "double"],
-  [wallDepth, wallHeight, 1.6, -17.6, wallHeight / 2, 10.4, "double"],
-  [14.4, wallHeight, wallDepth, -8.4, wallHeight / 2, -6.4, "all"],
-  [wallDepth, wallHeight, 4.35, -3.25, wallHeight / 2, -13.7, "all"],
-  [wallDepth, wallHeight, 6.4, 1.6, wallHeight / 2, -12.8, "double"],
-  [wallDepth, wallHeight, 7.34, 6, wallHeight / 2, -12.39, "all"],
-  [8.9, wallHeight, wallDepth, -9.4, wallHeight / 2, 4.4, "all"],
+  [WALL_THICKNESS, WALL_HEIGHT, 4, -17.6, WALL_HEIGHT / 2, -6.8, "front"],
+  [WALL_THICKNESS, 0.5, 12.8, -17.6, 3.75, 3.2],
+  [WALL_THICKNESS, 0.5, 12.8, -17.6, 0.25, 3.2, "double"],
+  [WALL_THICKNESS, WALL_HEIGHT, 1.6, -17.6, WALL_HEIGHT / 2, -4, "double"],
+  [WALL_THICKNESS, WALL_HEIGHT, 1.6, -17.6, WALL_HEIGHT / 2, 10.4, "double"],
+  [14.4, WALL_HEIGHT, WALL_THICKNESS, -8.4, WALL_HEIGHT / 2, -6.4, "all"],
+  [WALL_THICKNESS, WALL_HEIGHT, 4.35, -3.25, WALL_HEIGHT / 2, -13.7, "all"],
+  [WALL_THICKNESS, WALL_HEIGHT, 6.4, 1.6, WALL_HEIGHT / 2, -12.8, "double"],
+  [WALL_THICKNESS, WALL_HEIGHT, 7.34, 6, WALL_HEIGHT / 2, -12.39, "all"],
+  [8.9, WALL_HEIGHT, WALL_THICKNESS, -9.4, WALL_HEIGHT / 2, 4.4, "all"],
   // #41
-  [wallDepth, wallHeight, 2.1, -15.6, wallHeight / 2, 12.3, "all"],
-  [2.3, wallHeight, wallDepth, -16.6, wallHeight / 2, 11.3, "all"],
-  [6.7, wallHeight, wallDepth, -3.2, wallHeight / 2, 9.6, "all"],
-  [wallDepth, wallHeight, 6.1, 0, wallHeight / 2, 12.76, "back"],
-  [2.6, wallHeight, wallDepth, 16.4, wallHeight / 2, 2.3, "double"],
-  [wallDepth, wallHeight, 3, 4.8, wallHeight / 2, 3.9, "double"],
-  [wallDepth, wallHeight, 3.4, 6.4, wallHeight / 2, 7.3, "all"],
-  [3, wallHeight, wallDepth, 5.05, wallHeight / 2, 5.5, "all"],
-  [7.4, wallHeight, wallDepth, 0.3, wallHeight / 2, -9.6, "all"],
-  [11.6, wallHeight, wallDepth, 11.65, wallHeight / 2, -6.4, "all"],
+  [WALL_THICKNESS, WALL_HEIGHT, 2.1, -15.6, WALL_HEIGHT / 2, 12.3, "all"],
+  [2.3, WALL_HEIGHT, WALL_THICKNESS, -16.6, WALL_HEIGHT / 2, 11.3, "all"],
+  [6.7, WALL_HEIGHT, WALL_THICKNESS, -3.2, WALL_HEIGHT / 2, 9.6, "all"],
+  [WALL_THICKNESS, WALL_HEIGHT, 6.1, 0, WALL_HEIGHT / 2, 12.76, "back"],
+  [2.6, WALL_HEIGHT, WALL_THICKNESS, 16.4, WALL_HEIGHT / 2, 2.3, "double"],
+  [WALL_THICKNESS, WALL_HEIGHT, 3, 4.8, WALL_HEIGHT / 2, 3.9, "double"],
+  [WALL_THICKNESS, WALL_HEIGHT, 3.4, 6.4, WALL_HEIGHT / 2, 7.3, "all"],
+  [3, WALL_HEIGHT, WALL_THICKNESS, 5.05, WALL_HEIGHT / 2, 5.5, "all"],
+  [7.4, WALL_HEIGHT, WALL_THICKNESS, 0.3, WALL_HEIGHT / 2, -9.6, "all"],
+  [11.6, WALL_HEIGHT, WALL_THICKNESS, 11.65, WALL_HEIGHT / 2, -6.4, "all"],
   // #51
-  [1.86, wallHeight, wallDepth, -16.67, wallHeight / 2, -8.8, "front"],
-  [1.86, wallHeight, wallDepth, -16.67, wallHeight / 2, -4.8, "back"],
-  [wallDepth, wallHeight, 4.3, -15.6, wallHeight / 2, -6.8, "all"],
-  [wallDepth, wallHeight, 4, 15.6, wallHeight / 2, -8.4, "front"],
-  [2.1, wallHeight, wallDepth, 16.5, wallHeight / 2, -10.4, "all"],
-  [wallDepth, wallHeight, 2, -13.2, wallHeight / 2, -5.4, "double"],
-  [wallDepth, wallHeight, 1.5, -13.2, wallHeight / 2, 3.65, "double"],
-  [2.4, wallHeight, wallDepth, 5.85, wallHeight / 2, 2.3, "all"],
-  [4.1, wallHeight, wallDepth, -1.1, wallHeight / 2, 4.4, "double"],
-  [wallDepth, wallHeight, 1.8, -14, wallHeight / 2, 12.3, "all"],
+  [1.86, WALL_HEIGHT, WALL_THICKNESS, -16.67, WALL_HEIGHT / 2, -8.8, "front"],
+  [1.86, WALL_HEIGHT, WALL_THICKNESS, -16.67, WALL_HEIGHT / 2, -4.8, "back"],
+  [WALL_THICKNESS, WALL_HEIGHT, 4.3, -15.6, WALL_HEIGHT / 2, -6.8, "all"],
+  [WALL_THICKNESS, WALL_HEIGHT, 4, 15.6, WALL_HEIGHT / 2, -8.4, "front"],
+  [2.1, WALL_HEIGHT, WALL_THICKNESS, 16.5, WALL_HEIGHT / 2, -10.4, "all"],
+  [WALL_THICKNESS, WALL_HEIGHT, 2, -13.2, WALL_HEIGHT / 2, -5.4, "double"],
+  [WALL_THICKNESS, WALL_HEIGHT, 1.5, -13.2, WALL_HEIGHT / 2, 3.65, "double"],
+  [2.4, WALL_HEIGHT, WALL_THICKNESS, 5.85, WALL_HEIGHT / 2, 2.3, "all"],
+  [4.1, WALL_HEIGHT, WALL_THICKNESS, -1.1, WALL_HEIGHT / 2, 4.4, "double"],
+  [WALL_THICKNESS, WALL_HEIGHT, 1.8, -14, WALL_HEIGHT / 2, 12.3, "all"],
   // #61
-  [wallDepth, wallHeight, 1.5, 1, wallHeight / 2, 5, "all"],
-  [9.2, wallHeight, wallDepth, -11, wallHeight / 2, 13.2, "all"],
-  [wallDepth, wallHeight, 1.5, -14, wallHeight / 2, 5, "all"],
-  [wallDepth, beamHeight, 7.3, -13.2, wallHeight - beamHeight / 2, -0.75],
-  [8.05, beamHeight, wallDepth, 11.075, wallHeight - beamHeight / 2, 2.3],
-  [2.4, beamHeight, wallDepth, 2.35, wallHeight - beamHeight / 2, 5.5],
-  [wallDepth, beamHeight, 2, -1.35, wallHeight - beamHeight / 2, -7.8],
-  [wallDepth, beamHeight, 2, 6, wallHeight - beamHeight / 2, -7.8],
-  [wallDepth, beamHeight, 1.9, -3.25, wallHeight - beamHeight / 2, -10.68],
-  [2.1, beamHeight, wallDepth, 4.85, wallHeight - beamHeight / 2, -9.6],
+  [WALL_THICKNESS, WALL_HEIGHT, 1.5, 1, WALL_HEIGHT / 2, 5, "all"],
+  [9.2, WALL_HEIGHT, WALL_THICKNESS, -11, WALL_HEIGHT / 2, 13.2, "all"],
+  [WALL_THICKNESS, WALL_HEIGHT, 1.5, -14, WALL_HEIGHT / 2, 5, "all"],
+  [WALL_THICKNESS, BEAM_HEIGHT, 7.3, -13.2, WALL_HEIGHT - BEAM_HEIGHT / 2, -0.75],
+  [8.05, BEAM_HEIGHT, WALL_THICKNESS, 11.075, WALL_HEIGHT - BEAM_HEIGHT / 2, 2.3],
+  [2.4, BEAM_HEIGHT, WALL_THICKNESS, 2.35, WALL_HEIGHT - BEAM_HEIGHT / 2, 5.5],
+  [WALL_THICKNESS, BEAM_HEIGHT, 2, -1.35, WALL_HEIGHT - BEAM_HEIGHT / 2, -7.8],
+  [WALL_THICKNESS, BEAM_HEIGHT, 2, 6, WALL_HEIGHT - BEAM_HEIGHT / 2, -7.8],
+  [WALL_THICKNESS, BEAM_HEIGHT, 1.9, -3.25, WALL_HEIGHT - BEAM_HEIGHT / 2, -10.68],
+  [2.1, BEAM_HEIGHT, WALL_THICKNESS, 4.85, WALL_HEIGHT - BEAM_HEIGHT / 2, -9.6],
   // #71
-  [wallDepth, beamHeight, 6, -14, wallHeight - beamHeight / 2, 8.5],
-  [1.8, beamHeight, wallDepth, -4.05, wallHeight - beamHeight / 2, 4.4],
-  [wallDepth, wallHeight, 0.45, -1.35, wallHeight / 2, -6.72, "all"],
-  [wallDepth, wallHeight, 0.75, -1.35, wallHeight / 2, -9.07, "all"],
-  [wallDepth, wallHeight, 0.42, 6, wallHeight / 2, -6.73, "all"],
+  [WALL_THICKNESS, BEAM_HEIGHT, 6, -14, WALL_HEIGHT - BEAM_HEIGHT / 2, 8.5],
+  [1.8, BEAM_HEIGHT, WALL_THICKNESS, -4.05, WALL_HEIGHT - BEAM_HEIGHT / 2, 4.4],
+  [WALL_THICKNESS, WALL_HEIGHT, 0.45, -1.35, WALL_HEIGHT / 2, -6.72, "all"],
+  [WALL_THICKNESS, WALL_HEIGHT, 0.75, -1.35, WALL_HEIGHT / 2, -9.07, "all"],
+  [WALL_THICKNESS, WALL_HEIGHT, 0.42, 6, WALL_HEIGHT / 2, -6.73, "all"],
 ];
 // 所有玻璃窗的尺寸和位置
 const glassList = [
-  [1.4, 2, glassDepth, -0.8, 2.5, -16],
-  [1.4, 2, glassDepth, 3.8, 2.5, -16],
-  [glassDepth, 2, 4, 17.6, 2.5, -13.2],
-  [glassDepth, 3, 6.84, 17.6, 2, -2.07],
-  [glassDepth, 2, 1.4, 17.6, 2.5, 5.09],
-  [glassDepth, 2, 5.6, -17.6, 2.5, -12.4],
-  [glassDepth, 3, 12.8, -17.6, 2, 3.2],
+  [1.4, 2, GLASS_THICKNESS, -0.8, 2.5, -16],
+  [1.4, 2, GLASS_THICKNESS, 3.8, 2.5, -16],
+  [GLASS_THICKNESS, 2, 4, 17.6, 2.5, -13.2],
+  [GLASS_THICKNESS, 3, 6.84, 17.6, 2, -2.07],
+  [GLASS_THICKNESS, 2, 1.4, 17.6, 2.5, 5.09],
+  [GLASS_THICKNESS, 2, 5.6, -17.6, 2.5, -12.4],
+  [GLASS_THICKNESS, 3, 12.8, -17.6, 2, 3.2],
 ];
 // 所有垭口包边的尺寸和位置
 const passEdgeBindingList = [
   [
-    wallDepth + passEdgeBindingDepth * 2,
-    passEdgeBindingHeight,
+    WALL_THICKNESS + PASS_EDGE_BINDING_THICKNESS * 2,
+    PASS_EDGE_BINDING_HEIGHT,
     7.3,
     -13.2,
-    wallHeight - beamHeight - passEdgeBindingHeight / 2,
+    WALL_HEIGHT - BEAM_HEIGHT - PASS_EDGE_BINDING_HEIGHT / 2,
     -0.75,
   ],
   [
-    wallDepth + passEdgeBindingDepth * 2,
-    wallHeight - beamHeight,
-    passEdgeBindingHeight,
+    WALL_THICKNESS + PASS_EDGE_BINDING_THICKNESS * 2,
+    WALL_HEIGHT - BEAM_HEIGHT,
+    PASS_EDGE_BINDING_HEIGHT,
     -13.2,
-    (wallHeight - beamHeight) / 2,
-    3.65 - (1.5 + passEdgeBindingHeight) / 2,
+    (WALL_HEIGHT - BEAM_HEIGHT) / 2,
+    3.65 - (1.5 + PASS_EDGE_BINDING_HEIGHT) / 2,
   ],
   [
-    wallDepth + passEdgeBindingDepth * 2,
-    wallHeight - beamHeight,
-    passEdgeBindingHeight,
+    WALL_THICKNESS + PASS_EDGE_BINDING_THICKNESS * 2,
+    WALL_HEIGHT - BEAM_HEIGHT,
+    PASS_EDGE_BINDING_HEIGHT,
     -13.2,
-    (wallHeight - beamHeight) / 2,
-    -5.4 + (2 + passEdgeBindingHeight) / 2,
+    (WALL_HEIGHT - BEAM_HEIGHT) / 2,
+    -5.4 + (2 + PASS_EDGE_BINDING_HEIGHT) / 2,
   ],
   [
     8.05,
-    passEdgeBindingHeight,
-    wallDepth + passEdgeBindingDepth * 2,
+    PASS_EDGE_BINDING_HEIGHT,
+    WALL_THICKNESS + PASS_EDGE_BINDING_THICKNESS * 2,
     11.075,
-    wallHeight - beamHeight - passEdgeBindingHeight / 2,
+    WALL_HEIGHT - BEAM_HEIGHT - PASS_EDGE_BINDING_HEIGHT / 2,
     2.3,
   ],
   [
-    passEdgeBindingHeight,
-    wallHeight - beamHeight,
-    wallDepth + passEdgeBindingDepth * 2,
-    5.85 + (2.4 + passEdgeBindingHeight) / 2,
-    (wallHeight - beamHeight) / 2,
+    PASS_EDGE_BINDING_HEIGHT,
+    WALL_HEIGHT - BEAM_HEIGHT,
+    WALL_THICKNESS + PASS_EDGE_BINDING_THICKNESS * 2,
+    5.85 + (2.4 + PASS_EDGE_BINDING_HEIGHT) / 2,
+    (WALL_HEIGHT - BEAM_HEIGHT) / 2,
     2.3,
   ],
   [
-    passEdgeBindingHeight,
-    wallHeight - beamHeight,
-    wallDepth + passEdgeBindingDepth * 2,
-    16.4 - (2.6 + passEdgeBindingHeight) / 2,
-    (wallHeight - beamHeight) / 2,
+    PASS_EDGE_BINDING_HEIGHT,
+    WALL_HEIGHT - BEAM_HEIGHT,
+    WALL_THICKNESS + PASS_EDGE_BINDING_THICKNESS * 2,
+    16.4 - (2.6 + PASS_EDGE_BINDING_HEIGHT) / 2,
+    (WALL_HEIGHT - BEAM_HEIGHT) / 2,
     2.3,
   ],
 ];
@@ -246,7 +246,7 @@ const addAllWall = (
   const boxGeometry = assetManager.geometries.get("boxGeometry");
   // 墙体材质
   const wallMaterial = new MeshStandardMaterial({
-    color: wallColor,
+    color: WALL_COLOR,
     roughness: 0.85, // 乳胶漆的粗糙度，有轻微漫反射
     metalness: 0, // 完全不反射金属光泽
     envMapIntensity: 0.3,
@@ -254,7 +254,7 @@ const addAllWall = (
   assetManager.materials.set("wallMaterial", wallMaterial);
   //  踢脚线材质
   const skirtingLineMaterial = new MeshStandardMaterial({
-    color: skirtingLineColor,
+    color: SKIRTING_LINE_COLOR,
     metalness: 0.8, // 金属感
     roughness: 0.3, // 拉丝阳极氧化，别给到 0 否则变镜子
     envMapIntensity: 1.0, // 需要场景里有 envMap 才出反射
@@ -389,54 +389,54 @@ const addSkirtingLine = (
     // 横墙
     if (skirtingLineType === "front") {
       const frontSkirtingLine = new Mesh(boxGeometry, skirtingLineMaterial);
-      frontSkirtingLine.scale.set(width, skirtingLineHeight, skirtingLineDepth);
+      frontSkirtingLine.scale.set(width, SKIRTING_LINE_HEIGHT, SKIRTING_LINE_THICKNESS);
       frontSkirtingLine.position.set(
         x,
-        y - (height - skirtingLineHeight) / 2,
-        z - (depth + skirtingLineDepth) / 2,
+        y - (height - SKIRTING_LINE_HEIGHT) / 2,
+        z - (depth + SKIRTING_LINE_THICKNESS) / 2,
       );
       scene.add(frontSkirtingLine);
     } else {
       const backSkirtingLine = new Mesh(boxGeometry, skirtingLineMaterial);
-      backSkirtingLine.scale.set(width, skirtingLineHeight, skirtingLineDepth);
+      backSkirtingLine.scale.set(width, SKIRTING_LINE_HEIGHT, SKIRTING_LINE_THICKNESS);
       backSkirtingLine.position.set(
         x,
-        y - (height - skirtingLineHeight) / 2,
-        z + (depth + skirtingLineDepth) / 2,
+        y - (height - SKIRTING_LINE_HEIGHT) / 2,
+        z + (depth + SKIRTING_LINE_THICKNESS) / 2,
       );
       scene.add(backSkirtingLine);
     }
     if (["double", "all"].includes(skirtingLineType)) {
       const frontSkirtingLine = new Mesh(boxGeometry, skirtingLineMaterial);
-      frontSkirtingLine.scale.set(width, skirtingLineHeight, skirtingLineDepth);
+      frontSkirtingLine.scale.set(width, SKIRTING_LINE_HEIGHT, SKIRTING_LINE_THICKNESS);
       frontSkirtingLine.position.set(
         x,
-        y - (height - skirtingLineHeight) / 2,
-        z - (depth + skirtingLineDepth) / 2,
+        y - (height - SKIRTING_LINE_HEIGHT) / 2,
+        z - (depth + SKIRTING_LINE_THICKNESS) / 2,
       );
       scene.add(frontSkirtingLine);
       if (skirtingLineType === "all") {
         const leftSkirtingLine = new Mesh(boxGeometry, skirtingLineMaterial);
         leftSkirtingLine.scale.set(
-          skirtingLineDepth,
-          skirtingLineHeight,
-          depth + skirtingLineDepth * 2,
+          SKIRTING_LINE_THICKNESS,
+          SKIRTING_LINE_HEIGHT,
+          depth + SKIRTING_LINE_THICKNESS * 2,
         );
         leftSkirtingLine.position.set(
-          x - (width + skirtingLineDepth) / 2,
-          y - (height - skirtingLineHeight) / 2,
+          x - (width + SKIRTING_LINE_THICKNESS) / 2,
+          y - (height - SKIRTING_LINE_HEIGHT) / 2,
           z,
         );
         scene.add(leftSkirtingLine);
         const rightSkirtingLine = new Mesh(boxGeometry, skirtingLineMaterial);
         rightSkirtingLine.scale.set(
-          skirtingLineDepth,
-          skirtingLineHeight,
-          depth + skirtingLineDepth * 2,
+          SKIRTING_LINE_THICKNESS,
+          SKIRTING_LINE_HEIGHT,
+          depth + SKIRTING_LINE_THICKNESS * 2,
         );
         rightSkirtingLine.position.set(
-          x + (width + skirtingLineDepth) / 2,
-          y - (height - skirtingLineHeight) / 2,
+          x + (width + SKIRTING_LINE_THICKNESS) / 2,
+          y - (height - SKIRTING_LINE_HEIGHT) / 2,
           z,
         );
         scene.add(rightSkirtingLine);
@@ -446,55 +446,55 @@ const addSkirtingLine = (
     // 竖墙
     if (skirtingLineType === "front") {
       const frontSkirtingLine = new Mesh(boxGeometry, skirtingLineMaterial);
-      frontSkirtingLine.scale.set(skirtingLineDepth, skirtingLineHeight, depth);
+      frontSkirtingLine.scale.set(SKIRTING_LINE_THICKNESS, SKIRTING_LINE_HEIGHT, depth);
       frontSkirtingLine.position.set(
-        x - (width + skirtingLineDepth) / 2,
-        y - (height - skirtingLineHeight) / 2,
+        x - (width + SKIRTING_LINE_THICKNESS) / 2,
+        y - (height - SKIRTING_LINE_HEIGHT) / 2,
         z,
       );
       scene.add(frontSkirtingLine);
     } else {
       const backSkirtingLine = new Mesh(boxGeometry, skirtingLineMaterial);
-      backSkirtingLine.scale.set(skirtingLineDepth, skirtingLineHeight, depth);
+      backSkirtingLine.scale.set(SKIRTING_LINE_THICKNESS, SKIRTING_LINE_HEIGHT, depth);
       backSkirtingLine.position.set(
-        x + (width + skirtingLineDepth) / 2,
-        y - (height - skirtingLineHeight) / 2,
+        x + (width + SKIRTING_LINE_THICKNESS) / 2,
+        y - (height - SKIRTING_LINE_HEIGHT) / 2,
         z,
       );
       scene.add(backSkirtingLine);
     }
     if (["double", "all"].includes(skirtingLineType)) {
       const frontSkirtingLine = new Mesh(boxGeometry, skirtingLineMaterial);
-      frontSkirtingLine.scale.set(skirtingLineDepth, skirtingLineHeight, depth);
+      frontSkirtingLine.scale.set(SKIRTING_LINE_THICKNESS, SKIRTING_LINE_HEIGHT, depth);
       frontSkirtingLine.position.set(
-        x - (width + skirtingLineDepth) / 2,
-        y - (height - skirtingLineHeight) / 2,
+        x - (width + SKIRTING_LINE_THICKNESS) / 2,
+        y - (height - SKIRTING_LINE_HEIGHT) / 2,
         z,
       );
       scene.add(frontSkirtingLine);
       if (skirtingLineType === "all") {
         const leftSkirtingLine = new Mesh(boxGeometry, skirtingLineMaterial);
         leftSkirtingLine.scale.set(
-          width + skirtingLineDepth * 2,
-          skirtingLineHeight,
-          skirtingLineDepth,
+          width + SKIRTING_LINE_THICKNESS * 2,
+          SKIRTING_LINE_HEIGHT,
+          SKIRTING_LINE_THICKNESS,
         );
         leftSkirtingLine.position.set(
           x,
-          y - (height - skirtingLineHeight) / 2,
-          z - (depth + skirtingLineDepth) / 2,
+          y - (height - SKIRTING_LINE_HEIGHT) / 2,
+          z - (depth + SKIRTING_LINE_THICKNESS) / 2,
         );
         scene.add(leftSkirtingLine);
         const rightSkirtingLine = new Mesh(boxGeometry, skirtingLineMaterial);
         rightSkirtingLine.scale.set(
-          width + skirtingLineDepth * 2,
-          skirtingLineHeight,
-          skirtingLineDepth,
+          width + SKIRTING_LINE_THICKNESS * 2,
+          SKIRTING_LINE_HEIGHT,
+          SKIRTING_LINE_THICKNESS,
         );
         rightSkirtingLine.position.set(
           x,
-          y - (height - skirtingLineHeight) / 2,
-          z + (depth + skirtingLineDepth) / 2,
+          y - (height - SKIRTING_LINE_HEIGHT) / 2,
+          z + (depth + SKIRTING_LINE_THICKNESS) / 2,
         );
         scene.add(rightSkirtingLine);
       }
@@ -519,7 +519,7 @@ const addWallLabel = (
   canvas.height = 128;
   const ctx = canvas.getContext("2d");
   if (ctx) {
-    ctx.fillStyle = wallLabelColor; // 黄色
+    ctx.fillStyle = WALL_LABEL_COLOR; // 黄色
     ctx.font = "bold 80px Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
@@ -538,7 +538,7 @@ const addWallLabel = (
     // 竖墙
     labelSprite.position.set(x, y + height / 2 + 0.2, z);
   }
-  labelSprite.scale.set(wallLabelSize, wallLabelSize, wallLabelSize);
+  labelSprite.scale.set(WALL_LABEL_SIZE, WALL_LABEL_SIZE, WALL_LABEL_SIZE);
   scene.add(labelSprite);
 };
 
@@ -594,75 +594,75 @@ const addGlassWindow = (
     // 横向玻璃
     topAluminiumAlloyFrame.scale.set(
       width,
-      aluminiumAlloyFrameHeight,
-      aluminiumAlloyFrameDepth,
+      ALUMINIUM_ALLOY_FRAME_HEIGHT,
+      ALUMINIUM_ALLOY_FRAME_THICKNESS,
     );
     bottomAluminiumAlloyFrame.scale.set(
       width,
-      aluminiumAlloyFrameHeight,
-      aluminiumAlloyFrameDepth,
+      ALUMINIUM_ALLOY_FRAME_HEIGHT,
+      ALUMINIUM_ALLOY_FRAME_THICKNESS,
     );
     leftAluminiumAlloyFrame.scale.set(
-      aluminiumAlloyFrameHeight,
+      ALUMINIUM_ALLOY_FRAME_HEIGHT,
       height,
-      aluminiumAlloyFrameDepth,
+      ALUMINIUM_ALLOY_FRAME_THICKNESS,
     );
     leftAluminiumAlloyFrame.position.set(
-      (aluminiumAlloyFrameDepth - width) / 2,
+      (ALUMINIUM_ALLOY_FRAME_THICKNESS - width) / 2,
       0,
       0,
     );
     rightAluminiumAlloyFrame.scale.set(
-      aluminiumAlloyFrameHeight,
+      ALUMINIUM_ALLOY_FRAME_HEIGHT,
       height,
-      aluminiumAlloyFrameDepth,
+      ALUMINIUM_ALLOY_FRAME_THICKNESS,
     );
     rightAluminiumAlloyFrame.position.set(
-      (width - aluminiumAlloyFrameDepth) / 2,
+      (width - ALUMINIUM_ALLOY_FRAME_THICKNESS) / 2,
       0,
       0,
     );
   } else {
     // 竖向玻璃
     topAluminiumAlloyFrame.scale.set(
-      aluminiumAlloyFrameDepth,
-      aluminiumAlloyFrameHeight,
+      ALUMINIUM_ALLOY_FRAME_THICKNESS,
+      ALUMINIUM_ALLOY_FRAME_HEIGHT,
       depth,
     );
     bottomAluminiumAlloyFrame.scale.set(
-      aluminiumAlloyFrameDepth,
-      aluminiumAlloyFrameHeight,
+      ALUMINIUM_ALLOY_FRAME_THICKNESS,
+      ALUMINIUM_ALLOY_FRAME_HEIGHT,
       depth,
     );
     leftAluminiumAlloyFrame.scale.set(
-      aluminiumAlloyFrameDepth,
+      ALUMINIUM_ALLOY_FRAME_THICKNESS,
       height,
-      aluminiumAlloyFrameHeight,
+      ALUMINIUM_ALLOY_FRAME_HEIGHT,
     );
     leftAluminiumAlloyFrame.position.set(
       0,
       0,
-      (depth - aluminiumAlloyFrameHeight) / 2,
+      (depth - ALUMINIUM_ALLOY_FRAME_HEIGHT) / 2,
     );
     rightAluminiumAlloyFrame.scale.set(
-      aluminiumAlloyFrameDepth,
+      ALUMINIUM_ALLOY_FRAME_THICKNESS,
       height,
-      aluminiumAlloyFrameHeight,
+      ALUMINIUM_ALLOY_FRAME_HEIGHT,
     );
     rightAluminiumAlloyFrame.position.set(
       0,
       0,
-      (aluminiumAlloyFrameHeight - depth) / 2,
+      (ALUMINIUM_ALLOY_FRAME_HEIGHT - depth) / 2,
     );
   }
   topAluminiumAlloyFrame.position.set(
     0,
-    (height - aluminiumAlloyFrameHeight) / 2,
+    (height - ALUMINIUM_ALLOY_FRAME_HEIGHT) / 2,
     0,
   );
   bottomAluminiumAlloyFrame.position.set(
     0,
-    (aluminiumAlloyFrameHeight - height) / 2,
+    (ALUMINIUM_ALLOY_FRAME_HEIGHT - height) / 2,
     0,
   );
   glassWindowGroup.add(topAluminiumAlloyFrame);
@@ -696,8 +696,8 @@ const addMarbleFloor = (scene: Scene, assetManager: AssetManager) => {
   );
 
   // 计算需要多少块砖
-  const tilesX = Math.ceil(floorWidth / (tileSize + gapSize));
-  const tilesZ = Math.ceil(floorDepth / (tileSize + gapSize));
+  const tilesX = Math.ceil(FLOOR_WIDTH / (TILE_SIZE + GAP_SIZE));
+  const tilesZ = Math.ceil(FLOOR_DEPTH / (TILE_SIZE + GAP_SIZE));
 
   const planeGeometry = assetManager.geometries.get("planeGeometry");
   // 创建地砖材质
@@ -728,13 +728,13 @@ const addMarbleFloor = (scene: Scene, assetManager: AssetManager) => {
 
   // 生成每块地砖
   const dummy = new Object3D();
-  dummy.scale.set(tileSize, tileSize);
+  dummy.scale.set(TILE_SIZE, TILE_SIZE);
   dummy.rotation.x = -Math.PI / 2;
   for (let x = 0; x < tilesX; x++) {
     for (let z = 0; z < tilesZ; z++) {
       // 计算地砖位置（从左上角开始）
-      const posX = -floorWidth / 2 + x * (tileSize + gapSize) + tileSize / 2;
-      const posZ = -floorDepth / 2 + z * (tileSize + gapSize) + tileSize / 2;
+      const posX = -FLOOR_WIDTH / 2 + x * (TILE_SIZE + GAP_SIZE) + TILE_SIZE / 2;
+      const posZ = -FLOOR_DEPTH / 2 + z * (TILE_SIZE + GAP_SIZE) + TILE_SIZE / 2;
       dummy.position.set(posX, 0, posZ);
       dummy.updateMatrix();
       instancedMesh.setMatrixAt(z * tilesX + x, dummy.matrix);
@@ -750,7 +750,7 @@ const addMarbleFloor = (scene: Scene, assetManager: AssetManager) => {
   });
   assetManager.materials.set("gapFloorMaterial", gapFloorMaterial);
   const gapFloor = new Mesh(planeGeometry, gapFloorMaterial);
-  gapFloor.scale.set(floorWidth, floorDepth);
+  gapFloor.scale.set(FLOOR_WIDTH, FLOOR_DEPTH);
   gapFloor.rotation.x = -Math.PI / 2;
   gapFloor.position.y = -0.001; // 略低于地砖，作为缝隙
   gapFloor.receiveShadow = true;
