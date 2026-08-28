@@ -43,6 +43,7 @@ import { onClickPhoneScreen } from './goods/addPhoneScreen';
 import { addCrosshair, resizeCrosshair, crosshairRender } from './function/addCrosshair';
 import addTeaTable from './goods/addTeaTable';
 import { addCurtain, onClickCurtain, curtainAnimationRender } from "./goods/addCurtain";
+import { addFridge, onClickFridgeDoor, fridgeDoorAnimationRender } from "./goods/addFridge";
 import styles from "./index.module.scss";
 
 export type SwitchStatus = 'ON' | 'OFF';
@@ -79,6 +80,7 @@ const HouseDisplay = () => {
   const mouseRaycasterIntersectObjectsRef = useRef<Object3D[]>([]); // 鼠标射线可接受的检测对象列表
   const mouseRaycasterIntersectedRef = useRef<Object3D | null>(null); // 当前鼠标射线命中的物体
   const curtainListRef = useRef<Group[]>([]); // 所有窗帘的列表
+  const fridgeDoorListRef = useRef<Group[]>([]); // 冰箱门的列表
   const statsRef1 = useRef<Stats | null>(null);
   const statsRef2 = useRef<Stats | null>(null);
   const statsRef3 = useRef<Stats | null>(null);
@@ -110,6 +112,7 @@ const HouseDisplay = () => {
     lampListRef,
     onClickCeilingLampSwitch,
     onClickCurtain,
+    onClickFridgeDoor,
   );
 
   const initializeHandle = (
@@ -236,6 +239,15 @@ const HouseDisplay = () => {
         pointerControlsIntersetObjectsRef,
       );
 
+      // 添加冰箱
+      addFridge(
+        scene,
+        assetManager,
+        fridgeDoorListRef,
+        mouseRaycasterIntersectObjectsRef,
+        pointerControlsIntersetObjectsRef
+      );
+
       // 启用双后处理器架构
       useDualComposer(
         scene,
@@ -278,6 +290,9 @@ const HouseDisplay = () => {
 
     // 窗帘开/关动画过程渲染
     curtainAnimationRender(curtainListRef.current);
+
+    // 冰箱门开/关动画过程渲染
+    fridgeDoorAnimationRender(fridgeDoorListRef.current);
 
     // 整体模式下更新轨道控制器
     if (viewModeRef.current === 'overview' && orbitControlsRef.current && !animatingRef.current) {

@@ -53,6 +53,14 @@ export const initAssetManager = (assetManager: AssetManager) => {
     "aluminiumAlloyFrameMaterial",
     aluminiumAlloyFrameMaterial,
   );
+  // 创建哑光工业铝材质
+  const whiteAluminumMaterial = new MeshStandardMaterial({
+    color: 0xf2f5f8,
+    metalness: 0.9, // 金属度，0.85~1.0
+    roughness: 0.7, // 哑光工业铝
+    envMapIntensity: 1.0, // 有 scene.environment 时才有效果
+  });
+  assetManager.materials.set("whiteAluminumMaterial", whiteAluminumMaterial);
 };
 
 // 生成天空贴图

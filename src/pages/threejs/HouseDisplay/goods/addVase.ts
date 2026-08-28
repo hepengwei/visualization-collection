@@ -19,7 +19,7 @@ const flowerConfigs = [
   { color: 0xffdd66, angle: 2.6, spread: 0.055, height: 0.18 }, // 金黄
   { color: 0xffaadd, angle: 4.6, spread: 0.055, height: 0.2 }, // 浅粉
 ];
-const stemBottom = new Vector3(0, 0.02, 0); // 花茎底部
+const STEM_BOTTOM = new Vector3(0, 0.02, 0); // 花茎底部
 
 const addVase = (
   parent: Object3D,
@@ -79,14 +79,14 @@ const addVase = (
     const fz = Math.sin(flowerConfig.angle) * flowerConfig.spread;
     const fy = 0.32 + flowerConfig.height;
     const stemTop = new Vector3(fx, fy, fz); // 花茎顶部
-    const stemDir = stemTop.clone().sub(stemBottom);
+    const stemDir = stemTop.clone().sub(STEM_BOTTOM);
     const stemLength = stemDir.length();
 
     // 花茎
     const stem = new Mesh(cylinderGeometry, stemMaterial);
     stem.castShadow = true;
     stem.scale.set(0.005, stemLength, 0.005);
-    stem.position.copy(stemBottom).add(stemTop).multiplyScalar(0.5);
+    stem.position.copy(STEM_BOTTOM).add(stemTop).multiplyScalar(0.5);
     // 用 quaternion 让茎从底部指向花朵
     const yAxis = new Vector3(0, 1, 0);
     const quat = new Quaternion().setFromUnitVectors(

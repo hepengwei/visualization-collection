@@ -188,7 +188,7 @@ const createCurtain = (
     leftWhiteVoilePlaneGeometry,
     curtainType === "voile" ? whiteVoileMaterial : clothMaterial,
   );
-  leftWhiteVoile.name = "左半边";
+  leftWhiteVoile.name = "窗帘左半边";
   leftWhiteVoile.renderOrder = 10; // 设置renderOrder，在玻璃窗之后渲染，这样在外面斜着透过玻璃窗才不会看不到半边
   leftWhiteVoile.frustumCulled = false; // 顶点变形后包围球失效，禁用视锥体剔除
   leftWhiteVoile.castShadow = true; // 启用阴影投射
@@ -203,7 +203,7 @@ const createCurtain = (
     rightWhiteVoilePlaneGeometry,
     curtainType === "voile" ? whiteVoileMaterial : clothMaterial,
   );
-  rightWhiteVoile.name = "右半边";
+  rightWhiteVoile.name = "窗帘右半边";
   rightWhiteVoile.renderOrder = 10; // 设置renderOrder，在玻璃窗之后渲染，这样在外面斜着透过玻璃窗才不会看不到半边
   rightWhiteVoile.frustumCulled = false; // 顶点变形后包围球失效，禁用视锥体剔除
   rightWhiteVoile.castShadow = true; // 启用阴影投射
@@ -223,7 +223,7 @@ const createCurtain = (
     planeGeometry,
     completelyInvisibleMaterial,
   );
-  leftCollisionPlane.name = "左半边碰撞检测面";
+  leftCollisionPlane.name = "窗帘左半边碰撞检测面";
   let leftCollisionPlaneWidth = expandedWidth + whiteVoileDoublicationWidth;
   let leftCollisionPlanePositionX = -expandedWidth / 2;
   if (switchStatus === "ON") {
@@ -243,7 +243,7 @@ const createCurtain = (
     planeGeometry,
     completelyInvisibleMaterial,
   );
-  rightCollisionPlane.name = "右半边碰撞检测面";
+  rightCollisionPlane.name = "窗帘右半边碰撞检测面";
   let rightCollisionPlaneWidth = expandedWidth + whiteVoileDoublicationWidth;
   let rightCollisionPlanePositionX = expandedWidth / 2;
   if (switchStatus === "ON") {
@@ -308,8 +308,8 @@ export const curtainAnimationRender = (curtainList: Group[]) => {
           }
           curtain.traverse((child) => {
             if ((child as Mesh).isMesh) {
-              if (child.name.startsWith("左半边")) {
-                if (child.name === "左半边") {
+              if (child.name.startsWith("窗帘左半边")) {
+                if (child.name === "窗帘左半边") {
                   updateWhiteVoile(
                     child as Mesh,
                     openAmt,
@@ -324,8 +324,8 @@ export const curtainAnimationRender = (curtainList: Group[]) => {
                   child.scale.x = currentWidth;
                   child.position.x = -expandedWidth + currentWidth / 2;
                 }
-              } else if (child.name.startsWith("右半边")) {
-                if (child.name === "右半边") {
+              } else if (child.name.startsWith("窗帘右半边")) {
+                if (child.name === "窗帘右半边") {
                   updateWhiteVoile(
                     child as Mesh,
                     openAmt,

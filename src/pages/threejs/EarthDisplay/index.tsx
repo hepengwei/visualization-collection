@@ -281,8 +281,7 @@ const EarthDisplay = () => {
     const material = new MeshBasicMaterial({
       map: resourceManagerRef.current?.textures.lightColumn,
       color: isStartCity ? lightColumnStartColor : lightColumnEndColor,
-      // transparent: true,
-      // opacity: 1,
+      transparent: true,
       side: DoubleSide,
       depthWrite: false, // 禁止写入深度缓冲区数据
     });

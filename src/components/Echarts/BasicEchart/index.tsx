@@ -33,6 +33,7 @@ const BasicEchart = (
 ) => {
   const chartRef = useRef<HTMLDivElement>(null); // 当前div实例
   const chartInstance = useRef<echarts.ECharts | null>(null); // 用于保存上一次chartRef被赋值的实例对象
+  const resizeObserverRef = useRef<ResizeObserver | null>(null);
 
   useImperativeHandle(
     ref,
@@ -105,17 +106,14 @@ const BasicEchart = (
     }
   }, [options, renderType]);
 
-  // 监听屏幕变化，重绘图表
+  // 监听容器尺寸变化，重绘图表
   useEffect(() => {
-    const handleResize = () => {
-      const chart = chartInstance?.current;
-      if (chart) {
-        chart.resize();
-      }
-    };
-    window.addEventListener("resize", handleResize);
+    resizeObserverRef.current = new ResizeObserver(() => {
+      chartInstance.current?.resize();
+    });
+    resizeObserverRef.current.observe(chartRef.current!);
     return () => {
-      window.removeEventListener("resize", handleResize);
+      resizeObserverRef.current?.disconnect();
     };
   }, []);
 
