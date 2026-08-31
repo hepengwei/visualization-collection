@@ -117,10 +117,10 @@ export const crosshairRender = (
           while (!namedObj.name && namedObj.parent) {
             namedObj = namedObj.parent;
           }
-          // 将墙体、玻璃窗和垭口包边加入鼠标射线检测是为了防止隔着这些物体高亮了可交互的物体
+          // 将墙体、玻璃窗、垭口包边和餐边柜加入鼠标射线检测是为了防止隔着这些物体高亮了可交互的物体
           if (
             namedObj.name &&
-            !["墙体", "玻璃窗", "垭口包边"].includes(namedObj.name)
+            !["墙体", "玻璃窗", "垭口包边", "餐边柜"].includes(namedObj.name)
           ) {
             // 处理高亮切换
             if (mouseRaycasterIntersectedRef.current !== namedObj) {

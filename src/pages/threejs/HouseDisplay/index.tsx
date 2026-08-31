@@ -44,6 +44,7 @@ import { addCrosshair, resizeCrosshair, crosshairRender } from './function/addCr
 import addTeaTable from './goods/addTeaTable';
 import { addCurtain, onClickCurtain, curtainAnimationRender } from "./goods/addCurtain";
 import { addFridge, onClickFridgeDoor, fridgeDoorAnimationRender } from "./goods/addFridge";
+import { addSideboard } from './goods/addSideboard';
 import styles from "./index.module.scss";
 
 export type SwitchStatus = 'ON' | 'OFF';
@@ -247,6 +248,14 @@ const HouseDisplay = () => {
         mouseRaycasterIntersectObjectsRef,
         pointerControlsIntersetObjectsRef
       );
+
+      // 添加餐边柜
+      addSideboard(
+        scene,
+        assetManager,
+        mouseRaycasterIntersectObjectsRef,
+        pointerControlsIntersetObjectsRef,
+      )
 
       // 启用双后处理器架构
       useDualComposer(

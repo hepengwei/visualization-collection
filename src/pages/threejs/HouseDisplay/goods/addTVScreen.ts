@@ -89,8 +89,8 @@ const createTVLight = (size: Vector2, pos: Vector3) => {
   const light = new RectAreaLight(
     0xffffff, // 颜色（可以随视频平均色动态改）
     1.5 * Math.PI, //  第二个参数intensity在v0.155版本后必须要乘以Math.PI
-    size.x - 0.2,
-    size.y - 0.2,
+    size.x - 0.05,
+    size.y - 0.05,
   );
   light.position.set(pos.x, pos.y, pos.z + 0.05);
   return light;

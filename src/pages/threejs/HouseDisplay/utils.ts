@@ -5,12 +5,15 @@ import {
   CylinderGeometry,
   SphereGeometry,
   MeshStandardMaterial,
+  MeshPhysicalMaterial,
   CanvasTexture,
   SRGBColorSpace,
   RepeatWrapping,
   EquirectangularReflectionMapping,
   Color,
+  ColorRepresentation,
   DoubleSide,
+  FrontSide,
 } from "three";
 import { ParametricGeometry } from "three/examples/jsm/geometries/ParametricGeometry.js";
 import type { AssetManager } from "hooks/threejs/useInitialize";
@@ -61,6 +64,32 @@ export const initAssetManager = (assetManager: AssetManager) => {
     envMapIntensity: 1.0, // 有 scene.environment 时才有效果
   });
   assetManager.materials.set("whiteAluminumMaterial", whiteAluminumMaterial);
+
+  // 创建不同颜色的实木木板材质
+  const woodBoardLightMaterial = makeWoodBoardMaterial(0xebe9e4); // 灰白色柜身
+  const woodBoardDarkMaterial = makeWoodBoardMaterial(0x676a70); // 深灰色置物区
+  assetManager.materials.set("woodBoardLightMaterial", woodBoardLightMaterial);
+  assetManager.materials.set("woodBoardDarkMaterial", woodBoardDarkMaterial);
+
+  // 创建白色面板材质
+  const whitePanelMaterial = new MeshStandardMaterial({
+    color: "0xffffff",
+    side: FrontSide,
+  });
+  assetManager.materials.set("whitePanelMaterial", whitePanelMaterial);
+};
+
+// 创建实木木板材质
+export const makeWoodBoardMaterial = (color: ColorRepresentation) => {
+  return new MeshPhysicalMaterial({
+    color: new Color(color),
+    roughness: 0.62,
+    metalness: 0.0,
+    sheen: 0.25,
+    sheenRoughness: 0.6,
+    clearcoat: 0.15, // 轻微漆面
+    clearcoatRoughness: 0.5,
+  });
 };
 
 // 生成天空贴图
