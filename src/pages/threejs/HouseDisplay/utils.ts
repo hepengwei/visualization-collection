@@ -8,15 +8,20 @@ import {
   MeshBasicMaterial,
   MeshStandardMaterial,
   MeshPhysicalMaterial,
+  Mesh,
   CanvasTexture,
   SRGBColorSpace,
   RepeatWrapping,
   EquirectangularReflectionMapping,
   Color,
+  Vector3,
   ColorRepresentation,
   DoubleSide,
   FrontSide,
   Shape,
+  Group,
+  RectAreaLight,
+  SpotLight,
 } from "three";
 import { ParametricGeometry } from "three/examples/jsm/geometries/ParametricGeometry.js";
 import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils";
@@ -465,4 +470,131 @@ export const generateHalfCylinderGeometry = (
   geometry.computeVertexNormals();
 
   return geometry;
+};
+
+// 创建并添加发光灯带
+export const addLightingStrip = (
+  parent: Group,
+  assetManager: AssetManager,
+  w: number,
+  h: number,
+  x: number,
+  y: number,
+  z: number,
+) => {
+  const planeGeometry = assetManager.geometries.get("planeGeometry");
+  const whitePanelMaterial = assetManager.materials.get("whitePanelMaterial");
+  const lightingStrip = new Mesh(planeGeometry, whitePanelMaterial);
+  lightingStrip.scale.set(w, h);
+  lightingStrip.position.set(x, y, z);
+  lightingStrip.rotation.x = Math.PI / 2; // 面向地面
+  lightingStrip.layers.enable(1); // 为了让灯带的光能够单独增强
+  parent.add(lightingStrip);
+  // 添加发光灯带的光源
+  addRectAreaLight(
+    parent,
+    w,
+    h,
+    x,
+    y - 0.01,
+    z,
+    new Vector3(-Math.PI / 2, 0, 0),
+  );
+};
+
+// 添加矩形平面光源
+export const addRectAreaLight = (
+  parent: Group,
+  w: number,
+  h: number,
+  x: number,
+  y: number,
+  z: number,
+  rotation?: Vector3,
+  intensity = 2 * Math.PI,
+) => {
+  const light = new RectAreaLight(
+    0xffffff, // 颜色（可以随视频平均色动态改）
+    intensity, //  第二个参数intensity在v0.155版本后必须要乘以Math.PI
+    w,
+    h,
+  );
+  light.position.set(x, y, z);
+  if (rotation) {
+    light.rotation.x = rotation.x;
+    light.rotation.y = rotation.y;
+    light.rotation.z = rotation.z;
+  }
+  parent.add(light);
+};
+
+// 创建并添加圆形筒灯
+export const addLightingRoundLight = (
+  parent: Group,
+  assetManager: AssetManager,
+  radius: number,
+  x: number,
+  y: number,
+  z: number,
+  distance: number,
+) => {
+  const circleGeometry = assetManager.geometries.get("circleGeometry");
+  const whitePanelMaterial = assetManager.materials.get("whitePanelMaterial");
+  const roundLight = new Mesh(circleGeometry, whitePanelMaterial);
+  roundLight.scale.set(radius, radius);
+  roundLight.position.set(x, y, z);
+  roundLight.rotation.x = Math.PI / 2; // 面向地面
+  roundLight.layers.enable(1); // 为了让灯带的光能够单独增强
+  parent.add(roundLight);
+  // 添加发光灯带的光源
+  addRoundLight(parent, x, y - 0.01, z, -x, 0, z, distance);
+};
+
+// 添加圆筒形光源
+export const addRoundLight = (
+  parent: Group,
+  x: number,
+  y: number,
+  z: number,
+  tx: number,
+  ty: number,
+  tz: number,
+  distance: number,
+  intensity = 1 * Math.PI,
+) => {
+  const light = new SpotLight(
+    0xffffff, // 颜色（可以随视频平均色动态改）
+    intensity, //  第二个参数intensity在v0.155版本后必须要乘以Math.PI
+    distance,
+    Math.PI / 8, // angle
+    0.5, // penumbra（边缘柔化）
+    1, // decay
+  );
+  light.castShadow = true;
+  light.position.set(x, y, z);
+  light.target.position.set(tx, ty, tz);
+  parent.add(light);
+  parent.add(light.target);
+};
+
+// 创建并添加木板
+export const addBoard = (
+  parent: Group,
+  assetManager: AssetManager,
+  mat: MeshPhysicalMaterial,
+  w: number,
+  h: number,
+  d: number,
+  x: number,
+  y: number,
+  z: number,
+) => {
+  if (!mat) return;
+  const boxGeometry = assetManager.geometries.get("boxGeometry");
+  const m = new Mesh(boxGeometry, mat);
+  m.scale.set(w, h, d);
+  m.position.set(x, y, z);
+  m.castShadow = true;
+  m.receiveShadow = true;
+  parent.add(m);
 };
