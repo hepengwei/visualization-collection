@@ -44,7 +44,8 @@ import { addCrosshair, resizeCrosshair, crosshairRender } from './function/addCr
 import addTeaTable from './goods/addTeaTable';
 import { addCurtain, onClickCurtain, curtainAnimationRender } from "./goods/addCurtain";
 import { addFridge, onClickFridgeDoor, fridgeDoorAnimationRender } from "./goods/addFridge";
-import { addSideboard } from './goods/addSideboard';
+import addSideboard from './goods/addSideboard';
+import addShoeCabinet from './goods/addShoeCabinet';
 import styles from "./index.module.scss";
 
 export type SwitchStatus = 'ON' | 'OFF';
@@ -254,6 +255,13 @@ const HouseDisplay = () => {
         scene,
         assetManager,
         mouseRaycasterIntersectObjectsRef,
+        pointerControlsIntersetObjectsRef,
+      )
+
+      // 添加鞋柜
+      addShoeCabinet(
+        scene,
+        assetManager,
         pointerControlsIntersetObjectsRef,
       )
 
