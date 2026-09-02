@@ -4,6 +4,8 @@ import {
   BoxGeometry,
   CylinderGeometry,
   SphereGeometry,
+  ExtrudeGeometry,
+  MeshBasicMaterial,
   MeshStandardMaterial,
   MeshPhysicalMaterial,
   CanvasTexture,
@@ -14,8 +16,10 @@ import {
   ColorRepresentation,
   DoubleSide,
   FrontSide,
+  Shape,
 } from "three";
 import { ParametricGeometry } from "three/examples/jsm/geometries/ParametricGeometry.js";
+import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 
 // 初始化资源管理器，将所有公共的几何体和部分公共材质预先创建并存到资源管理器中
@@ -32,9 +36,19 @@ export const initAssetManager = (assetManager: AssetManager) => {
   // 创建圆柱体
   const cylinderGeometry = new CylinderGeometry(1, 1, 1);
   assetManager.geometries.set("cylinderGeometry", cylinderGeometry);
-  //创建球体
+  // 创建球体
   const sphereGeometry = new SphereGeometry(1);
   assetManager.geometries.set("sphereGeometry", sphereGeometry);
+  // 创建斜面为四分之一圆的内曲面的直角三角棱柱几何体
+  const curvedSurfaceRightAngledTriangularPrismGeometry =
+    generateCurvedSurfaceRightAngledTriangularPrismGeometry(1, 1);
+  assetManager.geometries.set(
+    "curvedSurfaceRightAngledTriangularPrismGeometry",
+    curvedSurfaceRightAngledTriangularPrismGeometry,
+  );
+  // 创建半圆柱几何体
+  const halfCylinderGeometry = generateHalfCylinderGeometry(1, 1);
+  assetManager.geometries.set("halfCylinderGeometry", halfCylinderGeometry);
 
   // 创建完全不可见且射线检测能检测到的材质
   const completelyInvisibleMaterial = new MeshStandardMaterial({
@@ -72,7 +86,7 @@ export const initAssetManager = (assetManager: AssetManager) => {
   assetManager.materials.set("woodBoardDarkMaterial", woodBoardDarkMaterial);
 
   // 创建白色面板材质
-  const whitePanelMaterial = new MeshStandardMaterial({
+  const whitePanelMaterial = new MeshBasicMaterial({
     color: "0xffffff",
     side: FrontSide,
   });
@@ -87,8 +101,9 @@ export const makeWoodBoardMaterial = (color: ColorRepresentation) => {
     metalness: 0.0,
     sheen: 0.25,
     sheenRoughness: 0.6,
-    clearcoat: 0.15, // 轻微漆面
-    clearcoatRoughness: 0.5,
+    clearcoat: 0.25, // 轻微漆面
+    clearcoatRoughness: 0.3,
+    flatShading: true, // 关键：每个面用独立法线，光照一致
   });
 };
 
@@ -344,7 +359,7 @@ export const generateRoughnessMap = (size = 1024) => {
 };
 
 /**
- * @description: 生成椭圆形的圆环刚体
+ * @description: 生成椭圆形的圆环几何体
  * @param {number} longRadius 椭圆长轴半径
  * @param {number} shortRadius 椭圆短轴半径
  * @param {number} tube 圆环截面半径
@@ -371,4 +386,83 @@ export const generateEllipticalTorusGeometry = (
     120, // 轨道分段
     40, // 截面分段
   );
+};
+
+/**
+ * @description: 生成斜面为四分之一圆的内曲面的直角三角棱柱几何体
+ * @param {number} radius 曲面圆半径
+ * @param {number} depth 直角三角柱的深度
+ * @return {ExtrudeGeometry}
+ */
+export const generateCurvedSurfaceRightAngledTriangularPrismGeometry = (
+  radius: number,
+  depth: number,
+) => {
+  const shape = new Shape();
+  shape.moveTo(0, 0);
+  shape.lineTo(radius, 0);
+  // 内曲面（四分之一圆）
+  shape.absarc(
+    radius, // 圆心 x
+    radius, // 圆心 y
+    radius, // 半径
+    -Math.PI / 2, // 起始角度
+    -Math.PI, // 结束角度
+    true, // 顺时针
+  );
+  shape.lineTo(0, 0);
+
+  let geometry: any = new ExtrudeGeometry(shape, {
+    depth,
+    bevelEnabled: false, // 关掉倒角，否则两端会变圆边
+    curveSegments: 64, // 圆弧细分（越高越平滑）
+  });
+
+  // 先转为索引几何体，让顶点可以共享
+  geometry = geometry.toNonIndexed(); // ExtrudeGeometry是非索引几何体
+  // 合并重复顶点 → 顶点共享 → 法线可跨三角形平均
+  geometry = mergeVertices(geometry, 1e-4);
+  geometry.computeVertexNormals();
+
+  return geometry;
+};
+
+/**
+ * @description: 生成半圆柱几何体
+ * @param {number} radius 圆半径
+ * @param {number} depth 半圆柱深度
+ * @return {ExtrudeGeometry}
+ */
+export const generateHalfCylinderGeometry = (
+  radius: number,
+  depth: number,
+  segments = 64,
+) => {
+  const shape = new Shape();
+  shape.moveTo(0, 0);
+  shape.lineTo(radius, 0);
+  // 内曲面（四分之一圆）
+  shape.absarc(
+    0, // 圆心 x
+    0, // 圆心 y
+    radius, // 半径
+    0, // 起始角度
+    Math.PI, // 结束角度
+    false, // 逆时针
+  );
+  shape.lineTo(0, 0);
+
+  let geometry: any = new ExtrudeGeometry(shape, {
+    depth,
+    bevelEnabled: false, // 关掉倒角，否则两端会变圆边
+    curveSegments: 64, // 圆弧细分（越高越平滑）
+  });
+
+  // 先转为索引几何体，让顶点可以共享
+  geometry = geometry.toNonIndexed(); // ExtrudeGeometry是非索引几何体
+  // 合并重复顶点 → 顶点共享 → 法线可跨三角形平均
+  geometry = mergeVertices(geometry, 1e-4);
+  geometry.computeVertexNormals();
+
+  return geometry;
 };
