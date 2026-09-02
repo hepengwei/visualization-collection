@@ -19,8 +19,8 @@ import { addTVScreen } from "./addTVScreen";
 import { addPhoneScreen } from "./addPhoneScreen";
 import addVase from "./addVase";
 
-const phonePosition = new Vector3(-0.23, 0.1, -0.12); // 手机位置
-const vasePosition = new Vector3(0, 0.1, 0); // 花瓶位置
+const PHONE_POSITION = new Vector3(-0.23, 0.1, -0.12); // 手机位置
+const VASE_POSITION = new Vector3(0, 0.1, 0); // 花瓶位置
 
 const add3dModel = (
   scene: Scene,
@@ -201,7 +201,7 @@ const loadBeds = (
           child.material = blueBedMaterial;
         }
       });
-  
+
       bed2.position.set(11.8, 1.2, -13);
       bed2.scale.set(6, 6, 6);
       bed2.rotation.y = -Math.PI / 2;
@@ -216,7 +216,7 @@ const loadBeds = (
           child.receiveShadow = true;
         }
       });
-  
+
       bed3.position.set(-10.5, 1.2, 10.1);
       bed3.scale.set(6, 6, 6);
       bed3.rotation.y = Math.PI / 2; // 向右旋转90度
@@ -272,7 +272,7 @@ const loadTable = (
       );
 
       // 添加花瓶
-      addVase(table, assetManager, vasePosition);
+      addVase(table, assetManager, VASE_POSITION);
     },
     (progress) => {
       console.log(
@@ -309,7 +309,7 @@ const loadPhone = (
         }
       });
 
-      phone.position.copy(phonePosition);
+      phone.position.copy(PHONE_POSITION);
       phone.scale.set(
         0.4 / table.scale.x,
         0.4 / table.scale.y,

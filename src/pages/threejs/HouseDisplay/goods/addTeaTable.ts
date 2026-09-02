@@ -25,11 +25,12 @@ const GLASS_PANEL_DISTANCE = 0.36; // 下层玻璃隔板与桌面的距离
 const PILLAR_HEIGHT = 0.48; // 中心支撑柱的高度
 const TEA_TABLE_LEG_CONTACT_RADIUS = 0.035; // 茶几桌腿的球形接头的半径
 const TEA_TABLE_POSITION = new Vector3(-7.8, 0.025, -1.8); // 茶几位置
-const vasePosition = new Vector3(
+// 花瓶位置
+const VASE_POSITION = new Vector3(
   0,
   TEA_TABLE_LEG_LENGTH + TEA_TABLE_LEG_CONTACT_RADIUS / 2 + PANEL_THICKNESS,
   0,
-); // 花瓶位置
+);
 
 const addTeaTable = (scene: Scene, assetManager: AssetManager) => {
   const teaTableGroup = new Group();
@@ -204,7 +205,7 @@ const addTeaTable = (scene: Scene, assetManager: AssetManager) => {
   scene.add(teaTableGroup);
 
   // 添加花瓶
-  addVase(teaTableGroup, assetManager, vasePosition);
+  addVase(teaTableGroup, assetManager, VASE_POSITION);
 };
 
 export default addTeaTable;

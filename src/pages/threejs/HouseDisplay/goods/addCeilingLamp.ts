@@ -30,7 +30,7 @@ import {
 const LAMP_RADIUS = 0.9; // 灯的半径
 const LAMP_THICKNESS = 0.12; // 灯的厚度
 const DYNAMIC_OPTIMIZATION_LAMP_COUNT = 2; // 动态优化吊灯时亮灯的个数
-const ceilingLampY = WALL_HEIGHT - LAMP_THICKNESS / 2 - 0.05;
+const ceilingLampY = WALL_HEIGHT - LAMP_THICKNESS / 2 - 0.02;
 const lampConfigList = [
   {
     name: "客厅吊灯",
@@ -60,12 +60,12 @@ const lampConfigList = [
   },
   {
     name: "外厕所吊灯",
-    position: new Vector3(3.6, WALL_HEIGHT - LAMP_THICKNESS / 2 - 0.05, -12.5),
+    position: new Vector3(3.6, WALL_HEIGHT - LAMP_THICKNESS / 2 - 0.02, -12.5),
     scale: new Vector3(0.6, 0.6, 0.6),
   },
   {
     name: "主卧厕所吊灯",
-    position: new Vector3(-0.4, WALL_HEIGHT - LAMP_THICKNESS / 2 - 0.05, -12.5),
+    position: new Vector3(-0.4, WALL_HEIGHT - LAMP_THICKNESS / 2 - 0.02, -12.5),
     scale: new Vector3(0.6, 0.6, 0.6),
   },
 ];
@@ -293,10 +293,10 @@ const createUniformLightTexture = () => {
 };
 
 // 创建并添加吊灯的光源
-const addLampLight = (lampGroup: Group, intensity = 2.2 * Math.PI) => {
+const addLampLight = (lampGroup: Group, intensity = 2.5 * Math.PI) => {
   const lightColor = kelvinToColor(4000); // 色温，值越大颜色越冷
   const light = new PointLight(lightColor, intensity, 30, 1.2);
-  light.position.set(0, 0, 0);
+  light.position.set(0, -LAMP_THICKNESS / 2 - 0.02, 0);
   light.castShadow = true;
   light.shadow.mapSize.set(512, 512);
   light.shadow.bias = -0.0005;
