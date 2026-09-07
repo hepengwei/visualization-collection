@@ -2,19 +2,22 @@
  * 添加鞋柜
  */
 import { MutableRefObject } from "react";
-import {
-  Scene,
-  MeshPhysicalMaterial,
-  Group,
-  Vector3,
-  Object3D,
-} from "three";
+import { Scene, MeshPhysicalMaterial, Group, Vector3, Object3D } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import { addBoard, addLightingStrip } from "../utils";
+import {
+  WALL_THICKNESS,
+  WALL_72_POSITION_X,
+  WALL_72_POSITION_Z,
+} from "./addHouseStructure";
 
-const SHOE_CABINET_POSITON = new Vector3(4.64, 0, 3.74); // 鞋柜的位置
+const SHOE_CABINET_POSITON = new Vector3(
+  WALL_72_POSITION_X - WALL_THICKNESS / 2,
+  0,
+  WALL_72_POSITION_Z - WALL_THICKNESS / 2 + 0.14,
+); // 鞋柜的位置
 const CHEST_COL_COUNT = 4; // 柜子的列数,保证为偶数
-const SHOE_CABINET_WIDTH = 3.2; // 鞋柜柜体的总宽
+const SHOE_CABINET_WIDTH = 2.6; // 鞋柜柜体的总宽
 const CHEST_GAP = 0.012; // 柜子之间的缝隙
 const SHOE_CABINET_HEIGHT = 4; // 鞋柜的总高
 const SHOE_CABINET_DEPTH = 0.62; // 鞋柜的总深度（不包含左右两边多出的部分）
@@ -301,7 +304,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
   addBoard(
     shoeCabinetGroup,
     assetManager,
-    woodBoardLightMaterial,
+    woodBoardDarkMaterial,
     SHOE_CABINET_WIDTH - BOARD_THICKNESS * 2,
     BOARD_THICKNESS,
     SHOE_CABINET_DEPTH - BOARD_THICKNESS,
@@ -343,23 +346,6 @@ const createShoeCabinet = (assetManager: AssetManager) => {
       SHOE_CABINET_DEPTH - BOARD_THICKNESS / 2,
     );
   }
-
-  /**第二层置物区添加发光灯带*/
-  addLightingStrip(
-    shoeCabinetGroup,
-    assetManager,
-    SHOE_CABINET_WIDTH - BOARD_THICKNESS * 2,
-    LIGHTING_STRIP_HEIGHT,
-    0,
-    SHOE_CABINET_HEIGHT -
-      BOARD_THICKNESS -
-      CHEST_GAP -
-      TOP_CHEST_HEIGHT -
-      CHEST_GAP -
-      BOARD_THICKNESS -
-      0.01,
-    BOARD_THICKNESS + LIGHTING_STRIP_HEIGHT / 2 + 0.02,
-  );
 
   /**第三层抽屉门*/
   for (let i = 0; i < CHEST_COL_COUNT / 2; i++) {
@@ -412,6 +398,42 @@ const createShoeCabinet = (assetManager: AssetManager) => {
       SHOE_CABINET_DEPTH - BOARD_THICKNESS / 2,
     );
   }
+
+  /**第二层置物区添加发光灯带*/
+  addLightingStrip(
+    shoeCabinetGroup,
+    assetManager,
+    SHOE_CABINET_WIDTH - BOARD_THICKNESS * 2,
+    LIGHTING_STRIP_HEIGHT,
+    0,
+    SHOE_CABINET_HEIGHT -
+      BOARD_THICKNESS -
+      CHEST_GAP -
+      TOP_CHEST_HEIGHT -
+      CHEST_GAP -
+      BOARD_THICKNESS -
+      0.001,
+    BOARD_THICKNESS + LIGHTING_STRIP_HEIGHT / 2 + 0.1,
+  );
+  /**第五层和第六层鞋区添加发光灯带*/
+  addLightingStrip(
+    shoeCabinetGroup,
+    assetManager,
+    SHOE_CABINET_WIDTH - BOARD_THICKNESS * 2,
+    LIGHTING_STRIP_HEIGHT,
+    0,
+    PUT_SHOE_AREA_HEIGHT * 2 + BOARD_THICKNESS - 0.001,
+    BOARD_THICKNESS + LIGHTING_STRIP_HEIGHT / 2 + 0.1,
+  );
+  addLightingStrip(
+    shoeCabinetGroup,
+    assetManager,
+    SHOE_CABINET_WIDTH - BOARD_THICKNESS * 2,
+    LIGHTING_STRIP_HEIGHT,
+    0,
+    PUT_SHOE_AREA_HEIGHT - 0.001,
+    BOARD_THICKNESS + LIGHTING_STRIP_HEIGHT / 2 + 0.1,
+  );
 
   return shoeCabinetGroup;
 };

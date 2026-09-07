@@ -21,18 +21,28 @@ import {
   generateRoughnessMap,
   getEaseProgress,
 } from "../utils";
+import {
+  BEAM_HEIGHT,
+  BEAM_POSITION_Y,
+  WALL_22_WIDTH,
+  WALL_22_POSITION_Z,
+  WALL_11_POSITION_X,
+  WALL_28_POSITION_X,
+  WALL_55_POSITION_Z,
+  WALL_63_POSITION_X,
+} from "./addHouseStructure";
 
 type HandlePosition = "left" | "right";
 
 const OPEN_OR_CLOSE_DURATION = 800; // 开/关门动画总时长
 const DOOR_COLOR = new Color(235, 235, 245); // 门扇的颜色
 const FRAME_COLOR = 0xc5c1bd; // 门框的颜色
-const DOOR_WIDTH = 1.6; // 门扇的宽
-const DOOR_HEIGHT = 3.4; // 门扇的高
 const DOOR_THICKNESS = 0.04; // 门扇的厚度
 const TOP_GAP = 0.004; // 门和门框上方的缝隙
-const FRAME_TRIM_W = 0.1; // 门框左右竖框的宽
+const FRAME_TRIM_WIDTH = 0.1; // 门框左右竖框的宽
 const FRAME_THICKNESS = 0.1; // 门框的厚度
+const DOOR_WIDTH = WALL_22_WIDTH - FRAME_TRIM_WIDTH * 2; // 门扇的宽
+const DOOR_HEIGHT = BEAM_POSITION_Y - BEAM_HEIGHT / 2 - FRAME_TRIM_WIDTH; // 门扇的高
 const DOORKNOB_CYLINDER_RADIUS = 0.012; // 门把手圆柱半径
 const DOORKNOB_CYLINDER_LONG = 0.2; // 门把手圆柱长度
 const DOORKNOB_SPHERE_RADIUS = 0.026; // 门把手圆球半径
@@ -45,10 +55,10 @@ const OPENING_HEIGHT = DOOR_HEIGHT + TOP_GAP;
 const doorConfigs = [
   // 主卧门
   {
-    positon: new Vector3(-1.34, 0, -7.83),
+    positon: new Vector3(WALL_11_POSITION_X, 0, WALL_22_POSITION_Z),
     rotationY: Math.PI / 2,
     customParams: {
-      openDoorMaxAngle: (Math.PI * 21) / 36,
+      openDoorMaxAngle: (Math.PI * 20) / 36,
       switchStatus: "ON",
       isAnimating: false,
       handlePosition: "right",
@@ -56,10 +66,10 @@ const doorConfigs = [
   },
   // 儿童房门
   {
-    positon: new Vector3(6.02, 0, -7.83),
+    positon: new Vector3(WALL_28_POSITION_X, 0, WALL_22_POSITION_Z),
     rotationY: -Math.PI / 2,
     customParams: {
-      openDoorMaxAngle: -(Math.PI * 21) / 36,
+      openDoorMaxAngle: -(Math.PI * 20) / 36,
       switchStatus: "OFF",
       isAnimating: false,
       handlePosition: "left",
@@ -67,7 +77,7 @@ const doorConfigs = [
   },
   // 次卧门
   {
-    positon: new Vector3(-4.05, 0, 4.45),
+    positon: new Vector3(WALL_63_POSITION_X, 0, WALL_55_POSITION_Z),
     rotationY: Math.PI,
     customParams: {
       openDoorMaxAngle: (Math.PI * 21) / 36,
@@ -156,20 +166,32 @@ const createDoor = (
 
   // 左竖框
   const leftJamb = new Mesh(boxGeometry, doorFrameMaterial);
-  leftJamb.scale.set(FRAME_TRIM_W, OPENING_HEIGHT, FRAME_THICKNESS);
-  leftJamb.position.set(-HALF_DOOR_WIDTH - FRAME_TRIM_W / 2, OPENING_HEIGHT / 2, 0);
+  leftJamb.scale.set(FRAME_TRIM_WIDTH, OPENING_HEIGHT, FRAME_THICKNESS);
+  leftJamb.position.set(
+    -HALF_DOOR_WIDTH - FRAME_TRIM_WIDTH / 2,
+    OPENING_HEIGHT / 2,
+    0,
+  );
   frameGroup.add(leftJamb);
 
   // 右竖框
   const rightJamb = new Mesh(boxGeometry, doorFrameMaterial);
-  rightJamb.scale.set(FRAME_TRIM_W, OPENING_HEIGHT, FRAME_THICKNESS);
-  rightJamb.position.set(HALF_DOOR_WIDTH + FRAME_TRIM_W / 2, OPENING_HEIGHT / 2, 0);
+  rightJamb.scale.set(FRAME_TRIM_WIDTH, OPENING_HEIGHT, FRAME_THICKNESS);
+  rightJamb.position.set(
+    HALF_DOOR_WIDTH + FRAME_TRIM_WIDTH / 2,
+    OPENING_HEIGHT / 2,
+    0,
+  );
   frameGroup.add(rightJamb);
 
   // 上方横框
-  const HEADER_H = FRAME_TRIM_W;
+  const HEADER_H = FRAME_TRIM_WIDTH;
   const headerMesh = new Mesh(boxGeometry, doorFrameMaterial);
-  headerMesh.scale.set(DOOR_WIDTH + FRAME_TRIM_W * 2, HEADER_H, FRAME_THICKNESS);
+  headerMesh.scale.set(
+    DOOR_WIDTH + FRAME_TRIM_WIDTH * 2,
+    HEADER_H,
+    FRAME_THICKNESS,
+  );
   headerMesh.position.set(0, OPENING_HEIGHT + HEADER_H / 2, 0);
   frameGroup.add(headerMesh);
   doorGroup.add(frameGroup);
@@ -198,7 +220,11 @@ const createDoor = (
   if (handlePosition === "left") {
     doorPanelPositionX = -doorPanelPositionX;
   }
-  doorPanel.position.set(doorPanelPositionX, DOOR_HEIGHT / 2, DOOR_THICKNESS / 2);
+  doorPanel.position.set(
+    doorPanelPositionX,
+    DOOR_HEIGHT / 2,
+    DOOR_THICKNESS / 2,
+  );
   doorPanelGroup.add(doorPanel);
 
   /** 门把手部分*/
@@ -207,7 +233,11 @@ const createDoor = (
   if (handlePosition === "left") {
     handleGroupPositionX = -handleGroupPositionX;
   }
-  doorknob.position.set(handleGroupPositionX, HANDLE_POSITION_Y, DOOR_THICKNESS / 2);
+  doorknob.position.set(
+    handleGroupPositionX,
+    HANDLE_POSITION_Y,
+    DOOR_THICKNESS / 2,
+  );
   doorPanelGroup.add(doorknob);
   doorGroup.add(doorPanelGroup);
 
@@ -312,10 +342,10 @@ const createButtHinge = (
     metalness: 0.8,
   });
   const rivetPositions = [
-    [0, HINGE_HEIGHT * 0.35, HINGE_THICKNESS* 0.35],
-    [0, -HINGE_HEIGHT * 0.35, HINGE_THICKNESS* 0.35],
-    [0, HINGE_HEIGHT * 0.35, -HINGE_THICKNESS* 0.35],
-    [0, -HINGE_HEIGHT * 0.35, -HINGE_THICKNESS* 0.35],
+    [0, HINGE_HEIGHT * 0.35, HINGE_THICKNESS * 0.35],
+    [0, -HINGE_HEIGHT * 0.35, HINGE_THICKNESS * 0.35],
+    [0, HINGE_HEIGHT * 0.35, -HINGE_THICKNESS * 0.35],
+    [0, -HINGE_HEIGHT * 0.35, -HINGE_THICKNESS * 0.35],
   ];
   let rivetPositonX = -HALF_DOOR_WIDTH - leafT - 0.001;
   if (handlePosition === "left") {

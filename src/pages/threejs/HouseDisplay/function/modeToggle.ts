@@ -20,13 +20,17 @@ import {
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls";
+import {
+  CEILING_POSITION_Y,
+  CEILING_INIT_POSITION_Y,
+} from "../goods/addCeiling";
 
 export type ViewMode = "overview" | "roaming";
 
 // 漫游模式配置参数
 const ROAMING_CONFIG = {
-  cameraHeight: 2.6, // 相机离地板的高度（米）
-  moveSpeed: 5, // WASD移动速度
+  cameraHeight: 2.4, // 相机离地板的高度（米）
+  moveSpeed: 3, // WASD移动速度
   collisionDistance: 0.5, // 碰撞检测距离（米）
 };
 
@@ -34,7 +38,7 @@ const ROAMING_CONFIG = {
 const startRoamingCameraPosition = new Vector3(
   2.5,
   ROAMING_CONFIG.cameraHeight,
-  5,
+  3.2,
 );
 
 // 第一人称控制器移动速度
@@ -301,7 +305,7 @@ export const modeToggleAnimationRender = (
   pointerControlsRef: RefObject<PointerLockControls | null>,
   initialCameraPosition: Vector3,
   initialCameraTarget: Vector3,
-  ceilingGroupRef: MutableRefObject<Group | null>,
+  ceilingRef: MutableRefObject<Mesh | null>,
   animationStartTimeRef: MutableRefObject<number>,
   animationDurationRef: MutableRefObject<number>,
   lampList: Group[],
@@ -351,11 +355,10 @@ export const modeToggleAnimationRender = (
       // }
 
       // 天花板下落动画
-      if (ceilingGroupRef.current) {
-        const startY = 50;
-        const endY = 0;
-        ceilingGroupRef.current.position.y =
-          startY + (endY - startY) * easeProgress;
+      if (ceilingRef.current) {
+        const startY = CEILING_INIT_POSITION_Y;
+        const endY = CEILING_POSITION_Y;
+        ceilingRef.current.position.y = startY + (endY - startY) * easeProgress;
       }
     } else {
       // 切换到整体模式的动画
@@ -378,11 +381,10 @@ export const modeToggleAnimationRender = (
       camera.rotation.z = 0;
 
       // 天花板上升动画
-      if (ceilingGroupRef.current) {
-        const startY = 0;
-        const endY = 50;
-        ceilingGroupRef.current.position.y =
-          startY + (endY - startY) * easeProgress;
+      if (ceilingRef.current) {
+        const startY = CEILING_POSITION_Y;
+        const endY = CEILING_INIT_POSITION_Y;
+        ceilingRef.current.position.y = startY + (endY - startY) * easeProgress;
       }
     }
 

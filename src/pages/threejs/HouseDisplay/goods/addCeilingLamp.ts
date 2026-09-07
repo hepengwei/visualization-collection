@@ -26,6 +26,23 @@ import {
   addCeilingLampSwitch,
   ceilingLampSwitchToggle,
 } from "./addCeilingLampSwitch";
+import {
+  WALL_1_POSITION_X,
+  WALL_10_POSITION_X,
+  WALL_15_POSITION_X,
+  WALL_25_POSITION_X,
+  WALL_33_POSITION_X,
+  WALL_34_POSITION_X,
+  WALL_55_POSITION_X,
+  WALL_75_POSITION_X,
+  WALL_3_POSITION_Z,
+  WALL_19_POSITION_Z,
+  WALL_40_POSITION_Z,
+  WALL_42_POSITION_Z,
+  WALL_53_POSITION_Z,
+  WALL_58_POSITION_Z,
+  WALL_67_POSITION_Z,
+} from "./addHouseStructure";
 
 const LAMP_RADIUS = 0.9; // 灯的半径
 const LAMP_THICKNESS = 0.12; // 灯的厚度
@@ -34,38 +51,70 @@ const ceilingLampY = WALL_HEIGHT - LAMP_THICKNESS / 2 - 0.02;
 const lampConfigList = [
   {
     name: "客厅吊灯",
-    position: new Vector3(-8.5, ceilingLampY, -1),
+    position: new Vector3(
+      WALL_10_POSITION_X + 0.8,
+      ceilingLampY,
+      WALL_58_POSITION_Z - 0.2,
+    ),
     noNeedDynamicOptimization: true,
   },
   {
     name: "餐厅吊灯",
-    position: new Vector3(11, ceilingLampY, -1.4),
+    position: new Vector3(
+      WALL_34_POSITION_X,
+      ceilingLampY,
+      WALL_42_POSITION_Z + 0.5,
+    ),
     noNeedDynamicOptimization: true,
   },
   {
     name: "主卧吊灯",
-    position: new Vector3(-9, ceilingLampY, -11),
+    position: new Vector3(
+      WALL_1_POSITION_X + 0.1,
+      ceilingLampY,
+      WALL_3_POSITION_Z + 0.4,
+    ),
   },
   {
     name: "儿童房吊灯",
-    position: new Vector3(11, ceilingLampY, -11),
+    position: new Vector3(
+      WALL_33_POSITION_X - 0.1,
+      ceilingLampY,
+      WALL_40_POSITION_Z - 0.1,
+    ),
   },
   {
     name: "次卧吊灯",
-    position: new Vector3(-9, ceilingLampY, 8),
+    position: new Vector3(
+      WALL_55_POSITION_X - 0.4,
+      ceilingLampY,
+      WALL_53_POSITION_Z + 0.2,
+    ),
   },
   {
     name: "厨房吊灯",
-    position: new Vector3(11, ceilingLampY, 5.4),
+    position: new Vector3(
+      WALL_75_POSITION_X,
+      ceilingLampY,
+      WALL_67_POSITION_Z - 0.6,
+    ),
   },
   {
     name: "外厕所吊灯",
-    position: new Vector3(3.6, WALL_HEIGHT - LAMP_THICKNESS / 2 - 0.02, -12.5),
+    position: new Vector3(
+      WALL_25_POSITION_X,
+      WALL_HEIGHT - LAMP_THICKNESS / 2 - 0.02,
+      WALL_19_POSITION_Z,
+    ),
     scale: new Vector3(0.6, 0.6, 0.6),
   },
   {
     name: "主卧厕所吊灯",
-    position: new Vector3(-0.4, WALL_HEIGHT - LAMP_THICKNESS / 2 - 0.02, -12.5),
+    position: new Vector3(
+      WALL_15_POSITION_X,
+      WALL_HEIGHT - LAMP_THICKNESS / 2 - 0.02,
+      WALL_19_POSITION_Z,
+    ),
     scale: new Vector3(0.6, 0.6, 0.6),
   },
 ];

@@ -16,6 +16,22 @@ import {
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import { getEaseProgress } from "../utils";
+import {
+  WALL_THICKNESS,
+  WALL_2_WIDTH,
+  WALL_42_WIDTH,
+  WALL_2_POSITION_X,
+  WALL_35_POSITION_X,
+  WALL_52_POSITION_X,
+  WALL_3_POSITION_Z,
+  WALL_9_POSITION_Z,
+  WALL_36_POSITION_Z,
+  WALL_42_POSITION_Z,
+  WALL_46_POSITION_Z,
+  WALL_49_POSITION_Z,
+  WALL_51_POSITION_Z,
+  WALL_55_POSITION_Z,
+} from "./addHouseStructure";
 
 type CurtainType = "voile" | "cloth";
 
@@ -23,13 +39,18 @@ const whiteVoileDoublicationWidth = 0.06; // 窗帘半边展开后重合多出�
 const curtainConfigs = [
   // 客厅窗帘
   {
-    positon: new Vector3(-17.3, 0, 3.2),
+    positon: new Vector3(
+      WALL_2_POSITION_X + WALL_THICKNESS,
+      0,
+      WALL_46_POSITION_Z,
+    ),
     rotationY: -Math.PI / 2,
     customParams: {
       switchStatus: "OFF", // 窗帘的打开/关闭状态，窗帘打开时单片半边是完全收起的，窗帘关闭时单片半边是完全展开的
       isAnimating: false, // 窗帘是否在打开/关闭动画中
       curtainHeight: 4, // 窗帘高度
-      expandedWidth: 7.7, // 窗帘单片半边完全展开后的宽度
+      expandedWidth:
+        (WALL_49_POSITION_Z - WALL_9_POSITION_Z - WALL_THICKNESS) / 2, // 窗帘单片半边完全展开后的宽度
       stackedWidth: 1, // 窗帘单片半边完全收起后的宽度
       animationDuration: 1400, // 开/关窗帘动画总时长
     },
@@ -37,41 +58,53 @@ const curtainConfigs = [
   },
   // 餐厅窗帘
   {
-    positon: new Vector3(17.2, 0, -2.05),
+    positon: new Vector3(
+      WALL_35_POSITION_X - WALL_THICKNESS,
+      0,
+      WALL_42_POSITION_Z,
+    ),
     rotationY: Math.PI / 2,
     customParams: {
       switchStatus: "ON",
       isAnimating: false,
       curtainHeight: 4,
-      expandedWidth: 4.1,
-      stackedWidth: 0.6,
+      expandedWidth: (WALL_2_WIDTH * 2 + WALL_42_WIDTH) / 2,
+      stackedWidth: 0.4,
       animationDuration: 1000,
     },
     curtainType: "voile",
   },
   // 主卧窗帘
   {
-    positon: new Vector3(-17.3, 0, -12.4),
+    positon: new Vector3(
+      WALL_2_POSITION_X + WALL_THICKNESS,
+      0,
+      WALL_3_POSITION_Z,
+    ),
     rotationY: -Math.PI / 2,
     customParams: {
       switchStatus: "ON",
       isAnimating: false,
       curtainHeight: 4,
-      expandedWidth: 3.4,
-      stackedWidth: 0.5,
+      expandedWidth: 2.3,
+      stackedWidth: 0.4,
       animationDuration: 900,
     },
     curtainType: "cloth",
   },
   // 儿童房窗帘
   {
-    positon: new Vector3(17.2, 0, -13.2),
+    positon: new Vector3(
+      WALL_35_POSITION_X - WALL_THICKNESS,
+      0,
+      WALL_36_POSITION_Z,
+    ),
     rotationY: Math.PI / 2,
     customParams: {
       switchStatus: "ON",
       isAnimating: false,
       curtainHeight: 4,
-      expandedWidth: 2.6,
+      expandedWidth: 1.7,
       stackedWidth: 0.4,
       animationDuration: 700,
     },
@@ -79,14 +112,21 @@ const curtainConfigs = [
   },
   // 次卧窗帘
   {
-    positon: new Vector3(-13.6, 0, 8.8),
+    positon: new Vector3(
+      WALL_52_POSITION_X + WALL_THICKNESS,
+      0,
+      WALL_51_POSITION_Z -
+        WALL_THICKNESS / 2 -
+        (WALL_51_POSITION_Z - WALL_55_POSITION_Z - WALL_THICKNESS) / 2,
+    ),
     rotationY: -Math.PI / 2,
     customParams: {
       switchStatus: "ON",
       isAnimating: false,
       curtainHeight: 4,
-      expandedWidth: 4.2,
-      stackedWidth: 0.8,
+      expandedWidth:
+        (WALL_51_POSITION_Z - WALL_55_POSITION_Z - WALL_THICKNESS) / 2,
+      stackedWidth: 0.5,
       animationDuration: 1000,
     },
     curtainType: "cloth",
