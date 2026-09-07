@@ -15,6 +15,24 @@ import {
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import { ceilingLampSwitchStatusToggle } from "./addCeilingLamp";
+import {
+  WALL_THICKNESS,
+  WALL_20_WIDTH,
+  WALL_23_WIDTH,
+  WALL_51_WIDTH,
+  WALL_70_WIDTH,
+  WALL_11_POSITION_X,
+  WALL_20_POSITION_X,
+  WALL_23_POSITION_X,
+  WALL_28_POSITION_X,
+  WALL_55_POSITION_X,
+  WALL_73_POSITION_X,
+  WALL_10_POSITION_Z,
+  WALL_20_POSITION_Z,
+  WALL_55_POSITION_Z,
+  WALL_73_POSITION_Z,
+} from "./addHouseStructure";
+import { BOARD_THICKNESS } from "./addSideboard";
 
 const SWITCH_WIDTH = 0.25; // 开关的宽
 const SWITCH_HEIGHT = 0.2; // 开关的高
@@ -26,37 +44,69 @@ const SWITCH_POSITION_HEIGHT = 2; // 开关的位置高度
 const switchConfigList = [
   {
     name: "客厅吊灯开关",
-    position: new Vector3(-3, SWITCH_POSITION_HEIGHT, -6.22),
+    position: new Vector3(
+      WALL_11_POSITION_X - WALL_THICKNESS / 2 - 0.4,
+      SWITCH_POSITION_HEIGHT,
+      WALL_10_POSITION_Z + WALL_THICKNESS / 2,
+    ),
   },
   {
     name: "餐厅吊灯开关",
-    position: new Vector3(7.5, SWITCH_POSITION_HEIGHT, -6.22),
+    position: new Vector3(
+      WALL_28_POSITION_X + WALL_THICKNESS / 2 + 0.5,
+      SWITCH_POSITION_HEIGHT,
+      WALL_10_POSITION_Z + WALL_THICKNESS / 2 + BOARD_THICKNESS,
+    ),
   },
   {
     name: "主卧吊灯开关",
-    position: new Vector3(-2.7, SWITCH_POSITION_HEIGHT, -9.41),
+    position: new Vector3(
+      WALL_11_POSITION_X - WALL_THICKNESS / 2 - 0.8,
+      SWITCH_POSITION_HEIGHT,
+      WALL_20_POSITION_Z + WALL_THICKNESS / 2,
+    ),
   },
   {
     name: "儿童房吊灯开关",
-    position: new Vector3(6.19, SWITCH_POSITION_HEIGHT, -9.85),
+    position: new Vector3(
+      WALL_28_POSITION_X + WALL_THICKNESS / 2 + 0.05,
+      SWITCH_POSITION_HEIGHT,
+      WALL_20_POSITION_Z - 0.2,
+    ),
     rotationY: Math.PI / 2,
   },
   {
     name: "次卧吊灯开关",
-    position: new Vector3(-6.5, SWITCH_POSITION_HEIGHT, 4.58),
+    position: new Vector3(
+      WALL_55_POSITION_X + WALL_51_WIDTH / 2 - 0.6,
+      SWITCH_POSITION_HEIGHT,
+      WALL_55_POSITION_Z + WALL_THICKNESS / 2,
+    ),
   },
   {
     name: "厨房吊灯开关",
-    position: new Vector3(6.5, SWITCH_POSITION_HEIGHT, 2.46),
+    position: new Vector3(
+      WALL_73_POSITION_X + WALL_70_WIDTH / 2 - 0.6,
+      SWITCH_POSITION_HEIGHT,
+      WALL_73_POSITION_Z + WALL_THICKNESS / 2,
+    ),
   },
   {
     name: "外厕所吊灯开关",
-    position: new Vector3(3.2, SWITCH_POSITION_HEIGHT, -9.76),
+    position: new Vector3(
+      WALL_23_POSITION_X + WALL_23_WIDTH / 2 - 0.6,
+      SWITCH_POSITION_HEIGHT,
+      WALL_20_POSITION_Z - WALL_THICKNESS / 2,
+    ),
     rotationY: Math.PI,
   },
   {
     name: "主卧厕所吊灯开关",
-    position: new Vector3(-2.4, SWITCH_POSITION_HEIGHT, -9.76),
+    position: new Vector3(
+      WALL_20_POSITION_X - WALL_20_WIDTH / 2 + 0.8,
+      SWITCH_POSITION_HEIGHT,
+      WALL_20_POSITION_Z - WALL_THICKNESS / 2,
+    ),
     rotationY: Math.PI,
   },
 ];

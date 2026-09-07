@@ -12,6 +12,7 @@ import {
   RectAreaLight,
   Vector2,
   Vector3,
+  Group,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import { safePlay } from "../utils";
@@ -19,7 +20,7 @@ import { safePlay } from "../utils";
 let videoIsPlay = false;
 
 export const addTVScreen = (
-  scene: Scene,
+  parent: Group,
   assetManager: AssetManager,
   video: HTMLVideoElement | null,
 ) => {
@@ -27,8 +28,8 @@ export const addTVScreen = (
     safePlay(video);
     videoIsPlay = true;
 
-    const tvSize = new Vector2(3.1, 1.75); // 电视屏幕的宽高
-    const tvPos = new Vector3(-8.5, 1.95, 3.78); // 电视屏幕位置
+    const tvSize = new Vector2(2.85 / parent.scale.x, 1.6 / parent.scale.y); // 电视屏幕的宽高
+    const tvPos = new Vector3(0, 0.15, 0.02); // 电视屏幕相对parent的位置
     const videoTexture: any = new VideoTexture(video);
     videoTexture.colorSpace = SRGBColorSpace; // 关键：颜色不灰
     const tvScreen: Mesh = createTVScreen(
@@ -37,12 +38,12 @@ export const addTVScreen = (
       tvPos,
       videoTexture,
     );
-    scene.add(tvScreen);
+    parent.add(tvScreen);
     const tvLight = createTVLight(tvSize, tvPos);
-    scene.add(tvLight);
+    parent.add(tvLight);
     const tvProjection = createTVProjection(tvPos, videoTexture);
-    scene.add(tvProjection);
-    scene.add(tvProjection.target);
+    parent.add(tvProjection);
+    parent.add(tvProjection.target);
 
     document.addEventListener("visibilitychange", () => {
       if (document.visibilityState === "visible") {
@@ -79,7 +80,6 @@ const createTVScreen = (
   screen.name = "电视屏幕";
   screen.scale.set(size.x, size.y);
   screen.position.copy(pos);
-  screen.rotation.y = Math.PI; // 面向沙发
   screen.layers.enable(1); // 为了让电视的光能够单独增强
   return screen;
 };
@@ -101,7 +101,7 @@ const createTVProjection = (pos: Vector3, videoTexture: VideoTexture) => {
   const projection = new SpotLight(
     0xffffff,
     3 * Math.PI, // 第二个参数intensity在v0.155版本后必须要乘以Math.PI
-    15, // distance
+    10, // distance
     Math.PI / 8, // angle
     0.5, // penumbra（边缘柔化）
     1, // decay
@@ -110,7 +110,7 @@ const createTVProjection = (pos: Vector3, videoTexture: VideoTexture) => {
   // 关键：把视频贴到聚光灯上
   projection.map = videoTexture;
   projection.position.set(pos.x, pos.y, pos.z + 0.05);
-  projection.target.position.set(pos.x, 2, 2); // 打向沙发
+  projection.target.position.set(pos.x, pos.y + 0.2, pos.z + 10); // 打向沙发
   return projection;
 };
 

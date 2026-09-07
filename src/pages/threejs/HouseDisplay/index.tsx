@@ -54,7 +54,7 @@ export type SwitchStatus = 'ON' | 'OFF';
 const showStats = false;
 
 // 初始相机位置
-const initialCameraPosition = new Vector3(0, 30, 0);
+const initialCameraPosition = new Vector3(0, 24, 0);
 const initialCameraTarget = new Vector3(0, 0, 0);
 
 const HouseDisplay = () => {
@@ -71,7 +71,7 @@ const HouseDisplay = () => {
   const phoneScreenRef = useRef<Mesh | null>(null); // 手机屏幕
   const outlinePassRef = useRef<OutlinePass | null>(null);
   const pointerControlsIntersetObjectsRef = useRef<Object3D[]>([]); // 第一人称控制器可接受的碰撞检测对象列表
-  const ceilingGroupRef = useRef<Group | null>(null); // 房屋天花板
+  const ceilingRef = useRef<Mesh | null>(null); // 房屋天花板
   const doorListRef = useRef<Mesh[]>([]); // 所有房门的列表
   const groundGlassDoorListRef = useRef<Group[]>([]); // 所有磨砂玻璃门的列表
   const lampListRef = useRef<Group[]>([]); // 所有吊灯的列表
@@ -193,7 +193,7 @@ const HouseDisplay = () => {
       );
 
       // 添加天花板（初始隐藏在天空中）
-      addCeiling(scene, assetManager, ceilingGroupRef);
+      addCeiling(scene, assetManager, ceilingRef);
 
       // 添加所有房间吊灯
       addCeilingLamp(
@@ -291,7 +291,7 @@ const HouseDisplay = () => {
       pointerControlsRef,
       initialCameraPosition,
       initialCameraTarget,
-      ceilingGroupRef,
+      ceilingRef,
       animationStartTimeRef,
       animationDurationRef,
       lampListRef.current,

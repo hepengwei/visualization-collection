@@ -20,14 +20,24 @@ import {
   addRectAreaLight,
   addLightingRoundLight,
 } from "../utils";
+import {
+  WALL_THICKNESS,
+  WALL_10_POSITION_Z,
+  WALL_34_POSITION_X,
+} from "./addHouseStructure";
 
-const SIDEBOARD_POSITON = new Vector3(10.1, 0, -6.25); // 餐边柜的位置
-const CHEST_COL_COUNT = 10; // 柜子的列数,保证为偶数
-const SIDEBOARD_WIDTH = 8.8; // 餐边柜柜体的总宽（不包含左右两边多出的部分）
+export const BOARD_THICKNESS = 0.03; // 木板的厚度
+// 餐边柜的位置
+const SIDEBOARD_POSITON = new Vector3(
+  WALL_34_POSITION_X - 1.4,
+  0,
+  WALL_10_POSITION_Z + WALL_THICKNESS / 2,
+);
+const CHEST_COL_COUNT = 8; // 柜子的列数,保证为偶数
+const SIDEBOARD_WIDTH = 6; // 餐边柜柜体的总宽（不包含左右两边多出的部分）
 const CHEST_GAP = 0.012; // 柜子之间的缝隙
 const SIDEBOARD_HEIGHT = 4; // 餐边柜的总高
 const SIDEBOARD_DEPTH = 0.62; // 餐边柜的总深度（不包含左右两边多出的部分）
-const BOARD_THICKNESS = 0.03; // 木板的厚度
 const BOARD_COATING_THICKNESS = 0.002; // 木板深灰色涂层的厚度
 const CHEST_DOOR_THICKNESS = 0.01; // 柜门和抽屉门的厚度
 const TOP_CHEST_HEIGHT = 1.2; // 第一层柜子的高度
@@ -417,8 +427,8 @@ const createSideboard = (assetManager: AssetManager) => {
       TOP_CHEST_HEIGHT -
       CHEST_GAP -
       BOARD_THICKNESS -
-      0.01,
-    BOARD_THICKNESS + LIGHTING_STRIP_HEIGHT / 2 + 0.02,
+      0.001,
+    BOARD_THICKNESS + LIGHTING_STRIP_HEIGHT / 2 + 0.1,
   );
   addLightingStrip(
     sideboardGroup,
@@ -434,8 +444,8 @@ const createSideboard = (assetManager: AssetManager) => {
       BOARD_THICKNESS -
       TOP_STORAGE_AREA_HEIGHT -
       BOARD_THICKNESS -
-      0.01,
-    BOARD_THICKNESS + LIGHTING_STRIP_HEIGHT / 2 + 0.02,
+      0.001,
+    BOARD_THICKNESS + LIGHTING_STRIP_HEIGHT / 2 + 0.1,
   );
 
   /**第四层抽屉门*/
