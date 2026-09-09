@@ -23,7 +23,9 @@ import { PointerLockControls } from "three/examples/jsm/controls/PointerLockCont
 import {
   CEILING_POSITION_Y,
   CEILING_INIT_POSITION_Y,
-} from "../goods/addCeiling";
+} from "../hardDecoration/addCeiling";
+import { allSuspendedCeilingVisibleToggle } from "../hardDecoration/addSuspendedCeiling";
+import { allCeilingLampsVisibleToggle } from "../softDecoration/addCeilingLamp";
 
 export type ViewMode = "overview" | "roaming";
 
@@ -203,13 +205,9 @@ export const initModeToggle = (
   viewModeRef: MutableRefObject<ViewMode>,
   orbitControlsRef: RefObject<OrbitControls | null>,
   animationStartTimeRef: MutableRefObject<number>,
+  suspendedCeilingList: (Group | Mesh)[],
   lampList: Group[],
   lampSwitchList: Group[],
-  allCeilingLampsVisibleToggle?: (
-    lampList: Group[],
-    lampSwitchList: Group[],
-    visible: boolean,
-  ) => void,
 ) => {
   // ===== 第一人称控制器(用于漫游模式) =====
   // 使用容器元素而不是renderer.domElement，避免与OrbitControls冲突
@@ -265,9 +263,9 @@ export const initModeToggle = (
           viewModeRef,
           orbitControlsRef,
           animationStartTimeRef,
+          suspendedCeilingList,
           lampList,
           lampSwitchList,
-          allCeilingLampsVisibleToggle,
         );
         break;
     }
@@ -308,13 +306,9 @@ export const modeToggleAnimationRender = (
   ceilingRef: MutableRefObject<Mesh | null>,
   animationStartTimeRef: MutableRefObject<number>,
   animationDurationRef: MutableRefObject<number>,
+  suspendedCeilingList: (Group | Mesh)[],
   lampList: Group[],
   lampSwitchList: Group[],
-  allCeilingLampsVisibleToggle: (
-    lampList: Group[],
-    lampSwitchList: Group[],
-    visible: boolean,
-  ) => void,
 ) => {
   // 处理相机动画
   if (animatingRef.current) {
@@ -394,6 +388,8 @@ export const modeToggleAnimationRender = (
 
       // 动画结束后的控制器状态确认
       if (currentMode === "roaming") {
+        // 将所有吊顶和吊顶板显示出来
+        allSuspendedCeilingVisibleToggle?.(suspendedCeilingList, true);
         // 将所有吊灯显示出来
         allCeilingLampsVisibleToggle?.(lampList, lampSwitchList, true);
         // 确保轨道控制器完全禁用
@@ -514,13 +510,9 @@ export const handleModeToggle = (
   viewModeRef: MutableRefObject<ViewMode>,
   orbitControlsRef: RefObject<OrbitControls | null>,
   animationStartTimeRef: MutableRefObject<number>,
+  suspendedCeilingList: (Group | Mesh)[],
   lampList: Group[],
   lampSwitchList: Group[],
-  allCeilingLampsVisibleToggle?: (
-    lampList: Group[],
-    lampSwitchList: Group[],
-    visible: boolean,
-  ) => void,
 ) => {
   e?.currentTarget?.blur(); // 点击后立即失焦，避免按下空格或回车键时触发点击事件（由于HTML标准的可访问性特性的存在）
   e?.stopPropagation(); // 阻止事件冒泡
@@ -549,6 +541,8 @@ export const handleModeToggle = (
   } else {
     // 切换到整体模式
     console.log("返回整体模式，退出指针锁定并重置状态");
+    // 将所有吊顶和吊顶板隐藏
+    allSuspendedCeilingVisibleToggle?.(suspendedCeilingList, false);
     // 将所有吊灯隐藏
     allCeilingLampsVisibleToggle?.(lampList, lampSwitchList, false);
     // 重置移动状态

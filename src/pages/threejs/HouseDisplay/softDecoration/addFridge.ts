@@ -17,7 +17,7 @@ import {
   WALL_THICKNESS,
   WALL_10_POSITION_Z,
   WALL_34_POSITION_X,
-} from "./addHouseStructure";
+} from "../hardDecoration/addHouseStructure";
 
 const FRIDGE_POSITON = new Vector3(
   WALL_34_POSITION_X + 3,
@@ -25,7 +25,7 @@ const FRIDGE_POSITON = new Vector3(
   WALL_10_POSITION_Z + WALL_THICKNESS / 2,
 ); // 冰箱的位置
 const OPEN_OR_CLOSE_DURATION = 800; // 开/关门动画总时长
-const FRIDGE_COLOR = 0xabb1b7; // 冰箱的颜色,星迹灰
+const FRIDGE_COLOR = 0xbcc2c8; // 冰箱的颜色,星迹灰
 const FRIDGE_WIDTH = 0.892; // 冰箱的总宽
 const FRIDGE_HEIGHT = 1.91; // 冰箱的总高
 const FRIDGE_THICKNESS = 0.6; // 冰箱的总厚度

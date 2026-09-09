@@ -14,7 +14,7 @@ import {
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import addVase from "./addVase";
 import { generateEllipticalTorusGeometry } from "../utils";
-import { WALL_10_POSITION_X, WALL_58_POSITION_Z } from "./addHouseStructure";
+import { WALL_10_POSITION_X, WALL_58_POSITION_Z } from "../hardDecoration/addHouseStructure";
 
 const TEA_TABLE_POSITION = new Vector3(
   WALL_10_POSITION_X - 0.1,

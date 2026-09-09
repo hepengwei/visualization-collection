@@ -29,7 +29,7 @@ import {
   WALL_55_POSITION_X,
   WALL_55_POSITION_Z,
   WALL_51_POSITION_Z,
-} from "./addHouseStructure";
+} from "../hardDecoration/addHouseStructure";
 
 const TABLE_POSITION = new Vector3(
   WALL_34_POSITION_X,

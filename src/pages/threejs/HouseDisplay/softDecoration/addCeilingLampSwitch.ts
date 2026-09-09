@@ -14,7 +14,7 @@ import {
   Object3D,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
-import { ceilingLampSwitchStatusToggle } from "./addCeilingLamp";
+import { ceilingLampSwitchStatusToggle } from "../softDecoration/addCeilingLamp";
 import {
   WALL_THICKNESS,
   WALL_20_WIDTH,
@@ -31,16 +31,16 @@ import {
   WALL_20_POSITION_Z,
   WALL_55_POSITION_Z,
   WALL_73_POSITION_Z,
-} from "./addHouseStructure";
-import { BOARD_THICKNESS } from "./addSideboard";
+} from "../hardDecoration/addHouseStructure";
+import { BOARD_THICKNESS } from "../hardDecoration/addSideboard";
 
+const SWITCH_POSITION_HEIGHT = 1.8; // 开关的位置高度
 const SWITCH_WIDTH = 0.25; // 开关的宽
 const SWITCH_HEIGHT = 0.2; // 开关的高
 const SWITCH_BACK_BOX_THICKNESS = 0.006; // 开关的底盒厚度
 const SWITCH_FACE_BOX_THICKNESS = 0.002; // 开关的面板厚度
 const SWITCH_BUTTON_THICKNESS = 0.015; // 开关按钮的厚度
 const SWITCH_BUTTON_FACE_THICKNESS = 0.006; // 开关按钮上面的厚度
-const SWITCH_POSITION_HEIGHT = 2; // 开关的位置高度
 const switchConfigList = [
   {
     name: "客厅吊灯开关",

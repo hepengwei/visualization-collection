@@ -1,11 +1,11 @@
 import {
+  Scene,
   PlaneGeometry,
   CircleGeometry,
   BoxGeometry,
   CylinderGeometry,
   SphereGeometry,
   ExtrudeGeometry,
-  MeshBasicMaterial,
   MeshStandardMaterial,
   MeshPhysicalMaterial,
   Mesh,
@@ -26,6 +26,8 @@ import {
 import { ParametricGeometry } from "three/examples/jsm/geometries/ParametricGeometry.js";
 import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils";
 import type { AssetManager } from "hooks/threejs/useInitialize";
+
+const WALL_COLOR = 0xf4f3ef; // 珍珠白乳胶漆颜色
 
 // 初始化资源管理器，将所有公共的几何体和部分公共材质预先创建并存到资源管理器中
 export const initAssetManager = (assetManager: AssetManager) => {
@@ -65,6 +67,14 @@ export const initAssetManager = (assetManager: AssetManager) => {
     "completelyInvisibleMaterial",
     completelyInvisibleMaterial,
   );
+  // 墙体材质
+  const wallMaterial = new MeshStandardMaterial({
+    color: WALL_COLOR,
+    roughness: 0.85, // 乳胶漆的粗糙度，有轻微漫反射
+    metalness: 0, // 完全不反射金属光泽
+    envMapIntensity: 0.3,
+  });
+  assetManager.materials.set("wallMaterial", wallMaterial);
   // 创建铝合金包边材质
   const aluminiumAlloyFrameMaterial = new MeshStandardMaterial({
     color: 0xc0c0c8,
@@ -86,14 +96,17 @@ export const initAssetManager = (assetManager: AssetManager) => {
 
   // 创建不同颜色的实木木板材质
   const woodBoardLightMaterial = makeWoodBoardMaterial(0xebe9e4); // 灰白色柜身
-  const woodBoardDarkMaterial = makeWoodBoardMaterial(0x676a70); // 深灰色置物区
+  const woodBoardDarkMaterial = makeWoodBoardMaterial(0x787b81); // 深灰色置物区
   assetManager.materials.set("woodBoardLightMaterial", woodBoardLightMaterial);
   assetManager.materials.set("woodBoardDarkMaterial", woodBoardDarkMaterial);
 
   // 创建白色面板材质
-  const whitePanelMaterial = new MeshBasicMaterial({
+  const whitePanelMaterial = new MeshPhysicalMaterial({
     color: "0xffffff",
     side: FrontSide,
+    polygonOffset: true, // 启用深度偏移，防止与地砖产生Z-fighting闪烁
+    polygonOffsetFactor: 0.1,
+    polygonOffsetUnits: 0.1,
   });
   assetManager.materials.set("whitePanelMaterial", whitePanelMaterial);
 };
@@ -481,13 +494,15 @@ export const addLightingStrip = (
   x: number,
   y: number,
   z: number,
+  rotation = new Vector3(Math.PI / 2, 0, 0), // 默认面向地面
+  intensity = 2 * Math.PI,
 ) => {
   const planeGeometry = assetManager.geometries.get("planeGeometry");
   const whitePanelMaterial = assetManager.materials.get("whitePanelMaterial");
   const lightingStrip = new Mesh(planeGeometry, whitePanelMaterial);
   lightingStrip.scale.set(w, h);
   lightingStrip.position.set(x, y, z);
-  lightingStrip.rotation.x = Math.PI / 2; // 面向地面
+  lightingStrip.rotation.set(rotation.x, rotation.y, rotation.z);
   lightingStrip.layers.enable(1); // 为了让灯带的光能够单独增强
   parent.add(lightingStrip);
   // 添加发光灯带的光源
@@ -496,9 +511,10 @@ export const addLightingStrip = (
     w,
     h,
     x,
-    y - 0.01,
+    rotation.x < 0 ? y + 0.01 : y - 0.01,
     z,
-    new Vector3(-Math.PI / 2, 0, 0),
+    new Vector3(-rotation.x, rotation.y, rotation.z),
+    intensity,
   );
 };
 
@@ -514,7 +530,7 @@ export const addRectAreaLight = (
   intensity = 2 * Math.PI,
 ) => {
   const light = new RectAreaLight(
-    0xffffff, // 颜色（可以随视频平均色动态改）
+    0xfff0dd, // 暖白，微微偏黄
     intensity, //  第二个参数intensity在v0.155版本后必须要乘以Math.PI
     w,
     h,
@@ -577,24 +593,27 @@ export const addRoundLight = (
   parent.add(light.target);
 };
 
-// 创建并添加木板
+// 创建并添加木板或吊顶板
 export const addBoard = (
-  parent: Group,
+  parent: Group | Scene,
   assetManager: AssetManager,
-  mat: MeshPhysicalMaterial,
+  mat: MeshPhysicalMaterial | MeshStandardMaterial,
   w: number,
   h: number,
   d: number,
   x: number,
   y: number,
   z: number,
-) => {
-  if (!mat) return;
+  visible = true,
+): Mesh | null => {
+  if (!mat) return null;
   const boxGeometry = assetManager.geometries.get("boxGeometry");
   const m = new Mesh(boxGeometry, mat);
   m.scale.set(w, h, d);
   m.position.set(x, y, z);
   m.castShadow = true;
   m.receiveShadow = true;
+  m.visible = visible;
   parent.add(m);
+  return m;
 };
