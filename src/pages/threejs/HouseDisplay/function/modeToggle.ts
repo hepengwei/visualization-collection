@@ -23,7 +23,7 @@ import { PointerLockControls } from "three/examples/jsm/controls/PointerLockCont
 import {
   CEILING_POSITION_Y,
   CEILING_INIT_POSITION_Y,
-} from "../goods/addCeiling";
+} from "../hardDecoration/addCeiling";
 
 export type ViewMode = "overview" | "roaming";
 

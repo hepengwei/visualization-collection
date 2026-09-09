@@ -31,21 +31,21 @@ import {
   handleModeToggle
 } from './function/modeToggle';
 import addLighting from "./function/addLighting";
-import addHouseStructure from './goods/addHouseStructure';
-import { addDoor, onClickDoor, doorAnimationRender } from "./goods/addDoor";
-import { addGroundGlassDoor, onClickGroundGlassDoor, groundGlassDoorAnimationRender } from './goods/addGroundGlassDoor';
-import add3dModel from "./goods/add3dModel";
-import addCeiling from "./goods/addCeiling";
-import { addCeilingLamp, allCeilingLampsVisibleToggle, dynamicOptimizationLampLightRender } from './goods/addCeilingLamp';
-import { onClickCeilingLampSwitch } from './goods/addCeilingLampSwitch';
-import { onClickTVScreen } from './goods/addTVScreen';
-import { onClickPhoneScreen } from './goods/addPhoneScreen';
+import addHouseStructure from './hardDecoration/addHouseStructure';
+import { addDoor, onClickDoor, doorAnimationRender } from "./hardDecoration/addDoor";
+import { addGroundGlassDoor, onClickGroundGlassDoor, groundGlassDoorAnimationRender } from './hardDecoration/addGroundGlassDoor';
+import add3dModel from "./softDecoration/add3dModel";
+import addCeiling from "./hardDecoration/addCeiling";
+import addSideboard from './hardDecoration/addSideboard';
+import addShoeCabinet from './hardDecoration/addShoeCabinet';
+import { addCeilingLamp, allCeilingLampsVisibleToggle, dynamicOptimizationLampLightRender } from './softDecoration/addCeilingLamp';
+import { onClickCeilingLampSwitch } from './softDecoration/addCeilingLampSwitch';
+import { onClickTVScreen } from './softDecoration/addTVScreen';
+import { onClickPhoneScreen } from './softDecoration/addPhoneScreen';
 import { addCrosshair, resizeCrosshair, crosshairRender } from './function/addCrosshair';
-import addTeaTable from './goods/addTeaTable';
-import { addCurtain, onClickCurtain, curtainAnimationRender } from "./goods/addCurtain";
-import { addFridge, onClickFridgeDoor, fridgeDoorAnimationRender } from "./goods/addFridge";
-import addSideboard from './goods/addSideboard';
-import addShoeCabinet from './goods/addShoeCabinet';
+import addTeaTable from './softDecoration/addTeaTable';
+import { addCurtain, onClickCurtain, curtainAnimationRender } from "./softDecoration/addCurtain";
+import { addFridge, onClickFridgeDoor, fridgeDoorAnimationRender } from "./softDecoration/addFridge";
 import styles from "./index.module.scss";
 
 export type SwitchStatus = 'ON' | 'OFF';
@@ -160,7 +160,7 @@ const HouseDisplay = () => {
         assetManager,
         mouseRaycasterIntersectObjectsRef,
         pointerControlsIntersetObjectsRef,
-        false,
+        true,
       );
 
       // 添加房门
@@ -194,6 +194,21 @@ const HouseDisplay = () => {
 
       // 添加天花板（初始隐藏在天空中）
       addCeiling(scene, assetManager, ceilingRef);
+
+      // 添加餐边柜
+      addSideboard(
+        scene,
+        assetManager,
+        mouseRaycasterIntersectObjectsRef,
+        pointerControlsIntersetObjectsRef,
+      )
+
+      // 添加鞋柜
+      addShoeCabinet(
+        scene,
+        assetManager,
+        pointerControlsIntersetObjectsRef,
+      )
 
       // 添加所有房间吊灯
       addCeilingLamp(
@@ -249,21 +264,6 @@ const HouseDisplay = () => {
         mouseRaycasterIntersectObjectsRef,
         pointerControlsIntersetObjectsRef
       );
-
-      // 添加餐边柜
-      addSideboard(
-        scene,
-        assetManager,
-        mouseRaycasterIntersectObjectsRef,
-        pointerControlsIntersetObjectsRef,
-      )
-
-      // 添加鞋柜
-      addShoeCabinet(
-        scene,
-        assetManager,
-        pointerControlsIntersetObjectsRef,
-      )
 
       // 启用双后处理器架构
       useDualComposer(

@@ -19,7 +19,10 @@ import { getEaseProgress } from "../utils";
 import {
   WALL_THICKNESS,
   WALL_2_WIDTH,
+  WALL_3_WIDTH,
+  WALL_36_WIDTH,
   WALL_42_WIDTH,
+  WALL_45_WIDTH,
   WALL_2_POSITION_X,
   WALL_35_POSITION_X,
   WALL_52_POSITION_X,
@@ -31,7 +34,7 @@ import {
   WALL_49_POSITION_Z,
   WALL_51_POSITION_Z,
   WALL_55_POSITION_Z,
-} from "./addHouseStructure";
+} from "../hardDecoration/addHouseStructure";
 
 type CurtainType = "voile" | "cloth";
 
@@ -51,7 +54,7 @@ const curtainConfigs = [
       curtainHeight: 4, // 窗帘高度
       expandedWidth:
         (WALL_49_POSITION_Z - WALL_9_POSITION_Z - WALL_THICKNESS) / 2, // 窗帘单片半边完全展开后的宽度
-      stackedWidth: 1, // 窗帘单片半边完全收起后的宽度
+      stackedWidth: WALL_45_WIDTH - 0.3, // 窗帘单片半边完全收起后的宽度
       animationDuration: 1400, // 开/关窗帘动画总时长
     },
     curtainType: "voile",
@@ -69,7 +72,7 @@ const curtainConfigs = [
       isAnimating: false,
       curtainHeight: 4,
       expandedWidth: (WALL_2_WIDTH * 2 + WALL_42_WIDTH) / 2,
-      stackedWidth: 0.4,
+      stackedWidth: WALL_2_WIDTH,
       animationDuration: 1000,
     },
     curtainType: "voile",
@@ -86,8 +89,8 @@ const curtainConfigs = [
       switchStatus: "ON",
       isAnimating: false,
       curtainHeight: 4,
-      expandedWidth: 2.3,
-      stackedWidth: 0.4,
+      expandedWidth: (WALL_2_WIDTH * 2 + WALL_3_WIDTH) / 2,
+      stackedWidth: WALL_2_WIDTH,
       animationDuration: 900,
     },
     curtainType: "cloth",
@@ -104,8 +107,8 @@ const curtainConfigs = [
       switchStatus: "ON",
       isAnimating: false,
       curtainHeight: 4,
-      expandedWidth: 1.7,
-      stackedWidth: 0.4,
+      expandedWidth: (WALL_2_WIDTH * 2 + WALL_36_WIDTH) / 2,
+      stackedWidth: WALL_2_WIDTH,
       animationDuration: 700,
     },
     curtainType: "cloth",
@@ -126,7 +129,7 @@ const curtainConfigs = [
       curtainHeight: 4,
       expandedWidth:
         (WALL_51_POSITION_Z - WALL_55_POSITION_Z - WALL_THICKNESS) / 2,
-      stackedWidth: 0.5,
+      stackedWidth: WALL_2_WIDTH,
       animationDuration: 1000,
     },
     curtainType: "cloth",

@@ -20,12 +20,12 @@ import {
   Object3D,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
-import { WALL_HEIGHT } from "./addHouseStructure";
+import { WALL_HEIGHT } from "../hardDecoration/addHouseStructure";
 import type { ViewMode } from "../function/modeToggle";
 import {
   addCeilingLampSwitch,
   ceilingLampSwitchToggle,
-} from "./addCeilingLampSwitch";
+} from "../softDecoration/addCeilingLampSwitch";
 import {
   WALL_1_POSITION_X,
   WALL_10_POSITION_X,
@@ -42,7 +42,7 @@ import {
   WALL_53_POSITION_Z,
   WALL_58_POSITION_Z,
   WALL_67_POSITION_Z,
-} from "./addHouseStructure";
+} from "../hardDecoration/addHouseStructure";
 
 const LAMP_RADIUS = 0.9; // 灯的半径
 const LAMP_THICKNESS = 0.12; // 灯的厚度

@@ -11,8 +11,6 @@ import {
   CanvasTexture,
   SpriteMaterial,
   Sprite,
-  TextureLoader,
-  RepeatWrapping,
   MeshPhysicalMaterial,
   SRGBColorSpace,
   InstancedMesh,
@@ -21,11 +19,6 @@ import {
   Group,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
-// 导入大理石贴图
-import marbleBaseColorImg from "images/threejs/marbleFloor/marble_basecolor.png";
-import marbleNormalImg from "images/threejs/marbleFloor/marble_normal.png";
-import marbleRoughnessImg from "images/threejs/marbleFloor/marble_roughness.png";
-import marbleHeightImg from "images/threejs/marbleFloor/marble_height.png";
 
 type SkirtingLineType = "front" | "back" | "double" | "all"; // 如果是竖墙，则"front"为左， "back"为右
 
@@ -71,7 +64,7 @@ const WALL_2_POSITION_Z =
   WALL_1_POSITION_Z + WALL_THICKNESS / 2 + WALL_2_WIDTH / 2;
 export const WALL_1_POSITION_X =
   WALL_2_POSITION_X - WALL_THICKNESS / 2 + WALL_1_WIDTH / 2;
-const WALL_3_WIDTH = 3.6;
+export const WALL_3_WIDTH = 3.6;
 export const WALL_3_POSITION_Z =
   WALL_2_POSITION_Z + WALL_2_WIDTH / 2 + WALL_3_WIDTH / 2;
 const WALL_5_POSITION_Z =
@@ -160,7 +153,7 @@ export const WALL_33_POSITION_X =
 export const WALL_34_POSITION_X = WALL_33_POSITION_X - WALL_THICKNESS;
 export const WALL_35_POSITION_X =
   WALL_33_POSITION_X + WALL_33_WIDTH / 2 - WALL_THICKNESS / 2;
-const WALL_36_WIDTH =
+export const WALL_36_WIDTH =
   WALL_10_POSITION_Z - WALL_1_POSITION_Z - WALL_2_WIDTH * 2 - WALL_6_WIDTH;
 export const WALL_36_POSITION_Z =
   WALL_2_POSITION_Z + WALL_2_WIDTH / 2 + WALL_36_WIDTH / 2;
@@ -181,7 +174,7 @@ export const WALL_42_POSITION_Z =
   WALL_41_POSITION_Z + WALL_2_WIDTH / 2 + WALL_42_WIDTH / 2;
 const WALL_44_POSITION_Z =
   WALL_42_POSITION_Z + WALL_42_WIDTH / 2 + WALL_2_WIDTH / 2;
-const WALL_45_WIDTH = 1.6;
+export const WALL_45_WIDTH = 1.6;
 const WALL_45_POSITION_Z =
   WALL_6_POSITION_Z + WALL_39_WIDTH / 2 + WALL_45_WIDTH / 2;
 const WALL_46_WIDTH = 8.2;
@@ -231,7 +224,7 @@ const WALL_59_POSITION_X =
 const WALL_60_WIDTH = WALL_59_WIDTH + WALL_THICKNESS;
 const WALL_60_POSITION_X =
   WALL_59_POSITION_X - WALL_THICKNESS / 2 + WALL_60_WIDTH / 2;
-const WALL_60_POSITION_Z =
+export const WALL_60_POSITION_Z =
   WALL_51_POSITION_Z + WALL_59_WIDTH / 2 + WALL_THICKNESS / 2;
 const WALL_61_POSITION_Z =
   WALL_51_POSITION_Z - WALL_59_WIDTH / 2 - WALL_THICKNESS / 2;
@@ -1648,28 +1641,6 @@ const addGlassWindow = (
 
 // 创建并添加大理石地板
 const addMarbleFloor = (scene: Scene, assetManager: AssetManager) => {
-  // 加载大理石地板贴图
-  const textureLoader = new TextureLoader();
-  const marbleBaseColor = textureLoader.load(marbleBaseColorImg);
-  assetManager.textures.set("marbleBaseColor", marbleBaseColor);
-  marbleBaseColor.colorSpace = SRGBColorSpace;
-  const marbleNormal = textureLoader.load(marbleNormalImg);
-  assetManager.textures.set("marbleNormal", marbleNormal);
-  const marbleRoughness = textureLoader.load(marbleRoughnessImg);
-  assetManager.textures.set("marbleRoughness", marbleRoughness);
-  const marbleHeight = textureLoader.load(marbleHeightImg);
-  assetManager.textures.set("marbleHeight", marbleHeight);
-
-  // 设置贴图重复（每块砖一次完整贴图）
-  [marbleBaseColor, marbleNormal, marbleRoughness, marbleHeight].forEach(
-    (texture) => {
-      texture.wrapS = RepeatWrapping;
-      texture.wrapT = RepeatWrapping;
-      texture.needsUpdate = true;
-      texture.repeat.set(1, 1);
-    },
-  );
-
   // 计算需要多少块砖
   const tilesX = Math.ceil(FLOOR_WIDTH / (TILE_SIZE + GAP_SIZE));
   const tilesZ = Math.ceil(FLOOR_DEPTH / (TILE_SIZE + GAP_SIZE));
@@ -1677,17 +1648,12 @@ const addMarbleFloor = (scene: Scene, assetManager: AssetManager) => {
   const planeGeometry = assetManager.geometries.get("planeGeometry");
   // 创建地砖材质
   const tileMaterial = new MeshPhysicalMaterial({
-    map: marbleBaseColor,
-    normalMap: marbleNormal,
-    roughnessMap: marbleRoughness,
-    displacementMap: marbleHeight,
-    displacementScale: 0.05,
-    roughness: 0.15, // 亮光砖，低粗糙度
-    metalness: 0.1, // 轻微金属感
-    clearcoat: 0.5, // 清漆层，增加光泽
-    clearcoatRoughness: 0.1, // 清漆层粗糙度
-    reflectivity: 0.8, // 反射率
-    envMapIntensity: 1.2,
+    color: 0xf5f5f5, // 白色微偏冷
+    metalness: 0.0, // 瓷砖是非金属
+    roughness: 0.08, // 亮光砖，低粗糙度，一般 0.05~0.15
+    envMapIntensity: 1.0, // 环境贴图反射强度
+    clearcoat: 1.0, // 釉面清漆层，增加光泽
+    clearcoatRoughness: 0.03, // 釉面清漆层粗糙度
     side: DoubleSide,
   });
   assetManager.materials.set("tileMaterial", tileMaterial);
@@ -1724,12 +1690,15 @@ const addMarbleFloor = (scene: Scene, assetManager: AssetManager) => {
     color: 0xffffff, // 白色缝隙
     roughness: 0.8,
     metalness: 0,
+    polygonOffset: true, // 启用深度偏移，防止与地砖产生Z-fighting闪烁
+    polygonOffsetFactor: 1,
+    polygonOffsetUnits: 1,
   });
   assetManager.materials.set("gapFloorMaterial", gapFloorMaterial);
   const gapFloor = new Mesh(planeGeometry, gapFloorMaterial);
   gapFloor.scale.set(FLOOR_WIDTH, FLOOR_DEPTH);
   gapFloor.rotation.x = -Math.PI / 2;
-  gapFloor.position.y = -0.001; // 略低于地砖，作为缝隙
+  gapFloor.position.y = -0.01; // 低于地砖，作为缝隙（加大间距防止Z-fighting）
   gapFloor.receiveShadow = true;
   scene.add(gapFloor);
 };

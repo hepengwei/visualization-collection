@@ -38,9 +38,9 @@ const doorConfigs = [
   // 主卧厕所门
   {
     positon: new Vector3(
-      WALL_13_POSITION_X + WALL_THICKNESS / 2 + FRAME_DEPTH / 2,
+      WALL_13_POSITION_X + WALL_THICKNESS / 2 + FRAME_DEPTH / 2 - 0.02,
       0,
-      WALL_14_POSITION_Z - 0.01 / 2,
+      WALL_14_POSITION_Z,
     ),
     rotationY: -Math.PI / 2,
     customParams: {
@@ -53,7 +53,7 @@ const doorConfigs = [
     positon: new Vector3(
       WALL_24_POSITION_X,
       0,
-      WALL_20_POSITION_Z - WALL_THICKNESS / 2 - FRAME_DEPTH / 2,
+      WALL_20_POSITION_Z - WALL_THICKNESS / 2 - FRAME_DEPTH / 2 + 0.02,
     ),
     customParams: {
       switchStatus: "OFF",
@@ -131,8 +131,6 @@ const createGroundGlassDoor = (
 
   /** 磨砂玻璃门包边部分*/
   const frameGroup = new Group();
-  frameGroup.castShadow = true;
-  frameGroup.receiveShadow = true;
 
   // 左包边
   const leftJamb = new Mesh(boxGeometry, aluminiumAlloyFrameMaterial);
@@ -142,6 +140,8 @@ const createGroundGlassDoor = (
     GROUND_GLASS_HEIGHT / 2,
     0,
   );
+  leftJamb.castShadow = true;
+  leftJamb.receiveShadow = true;
   frameGroup.add(leftJamb);
 
   // 右包边
@@ -152,6 +152,8 @@ const createGroundGlassDoor = (
     GROUND_GLASS_HEIGHT / 2,
     0,
   );
+  rightJamb.castShadow = true;
+  rightJamb.receiveShadow = true;
   frameGroup.add(rightJamb);
 
   // 上包边
@@ -162,6 +164,8 @@ const createGroundGlassDoor = (
     GROUND_GLASS_THICKNESS,
   );
   headerMesh.position.set(0, GROUND_GLASS_HEIGHT + FRAME_DEPTH / 2, 0);
+  headerMesh.castShadow = true;
+  headerMesh.receiveShadow = true;
   frameGroup.add(headerMesh);
   groundGlassDoorGroup.add(frameGroup);
 

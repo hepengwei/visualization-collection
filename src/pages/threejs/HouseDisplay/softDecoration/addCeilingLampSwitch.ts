@@ -14,7 +14,7 @@ import {
   Object3D,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
-import { ceilingLampSwitchStatusToggle } from "./addCeilingLamp";
+import { ceilingLampSwitchStatusToggle } from "../softDecoration/addCeilingLamp";
 import {
   WALL_THICKNESS,
   WALL_20_WIDTH,
@@ -31,8 +31,8 @@ import {
   WALL_20_POSITION_Z,
   WALL_55_POSITION_Z,
   WALL_73_POSITION_Z,
-} from "./addHouseStructure";
-import { BOARD_THICKNESS } from "./addSideboard";
+} from "../hardDecoration/addHouseStructure";
+import { BOARD_THICKNESS } from "../hardDecoration/addSideboard";
 
 const SWITCH_WIDTH = 0.25; // 开关的宽
 const SWITCH_HEIGHT = 0.2; // 开关的高

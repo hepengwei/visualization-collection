@@ -86,7 +86,7 @@ export const initAssetManager = (assetManager: AssetManager) => {
 
   // 创建不同颜色的实木木板材质
   const woodBoardLightMaterial = makeWoodBoardMaterial(0xebe9e4); // 灰白色柜身
-  const woodBoardDarkMaterial = makeWoodBoardMaterial(0x676a70); // 深灰色置物区
+  const woodBoardDarkMaterial = makeWoodBoardMaterial(0x787b81); // 深灰色置物区
   assetManager.materials.set("woodBoardLightMaterial", woodBoardLightMaterial);
   assetManager.materials.set("woodBoardDarkMaterial", woodBoardDarkMaterial);
 

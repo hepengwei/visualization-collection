@@ -13,7 +13,7 @@ import {
   DoubleSide,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
-import addVase from "./addVase";
+import addVase from "../softDecoration/addVase";
 import {
   addBoard,
   addLightingStrip,
