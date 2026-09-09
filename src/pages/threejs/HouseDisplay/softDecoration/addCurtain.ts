@@ -38,6 +38,7 @@ import {
 
 type CurtainType = "voile" | "cloth";
 
+export const CURTAIN_DEPTH = 0.3; // 窗帘总深度
 const whiteVoileDoublicationWidth = 0.06; // 窗帘半边展开后重合多出的宽度
 const curtainConfigs = [
   // 客厅窗帘

@@ -22,15 +22,16 @@ import type { AssetManager } from "hooks/threejs/useInitialize";
 
 type SkirtingLineType = "front" | "back" | "double" | "all"; // 如果是竖墙，则"front"为左， "back"为右
 
-export const WALL_HEIGHT = 4; // 墙体高度
+export const SUSPENDED_CEILING_HEIGHT = 0.4; // 吊顶总高度
+export const SIDEBOARD_DEPTH = 0.62; // 餐边柜的总深度
+export const WALL_HEIGHT = 3.8; // 墙体高度
 export const WALL_THICKNESS = 0.3; // 墙体厚度
-export const BEAM_HEIGHT = 1; // 门框上方横梁的墙体高度
-export const BEAM_POSITION_Y = WALL_HEIGHT - BEAM_HEIGHT / 2; // 门框上方横梁的墙体y位置
 const TALL_GRADE_BEAM_HEIGHT = 1.5; // 高地梁的墙体高度
 const TALL_GRADE_BEAM_POSITION_Y = TALL_GRADE_BEAM_HEIGHT / 2; // 高地梁的墙体y位置
 const SHORT_GRADE_BEAM_HEIGHT = 0.3; // 矮地梁的墙体高度
 const SHORT_GRADE_BEAM_POSITION_Y = SHORT_GRADE_BEAM_HEIGHT / 2; // 矮地梁的墙体y位置
-const WALL_COLOR = 0xf4f3ef; // 珍珠白乳胶漆颜色
+export const BEAM_HEIGHT = SUSPENDED_CEILING_HEIGHT + SHORT_GRADE_BEAM_HEIGHT; // 门框上方横梁的墙体高度
+export const BEAM_POSITION_Y = WALL_HEIGHT - BEAM_HEIGHT / 2; // 门框上方横梁的墙体y位置
 const WALL_LABEL_SIZE = 1.5; // 墙体标签的大小
 const WALL_LABEL_COLOR = "#FFFF00"; // 墙体标签的颜色
 const SKIRTING_LINE_HEIGHT = 0.1; // 墙体踢脚线高度
@@ -208,7 +209,8 @@ export const WALL_55_POSITION_X =
   WALL_52_POSITION_X - WALL_THICKNESS / 2 + WALL_51_WIDTH / 2;
 export const WALL_55_POSITION_Z =
   WALL_54_POSITION_Z - WALL_2_WIDTH / 2 - WALL_THICKNESS / 2;
-const WALL_56_POSITION_X = WALL_52_POSITION_X + WALL_7_WIDTH - WALL_THICKNESS;
+export const WALL_56_POSITION_X =
+  WALL_52_POSITION_X + WALL_7_WIDTH - WALL_THICKNESS;
 const WALL_56_POSITION_Z =
   WALL_55_POSITION_Z - WALL_THICKNESS / 2 - WALL_2_WIDTH / 2;
 const WALL_57_POSITION_Z =
@@ -218,7 +220,7 @@ const WALL_58_WIDTH =
 export const WALL_58_POSITION_Z =
   WALL_57_POSITION_Z + WALL_7_WIDTH / 2 + WALL_58_WIDTH / 2;
 const WALL_59_WIDTH =
-  WALL_51_POSITION_Z - WALL_55_POSITION_Z - WALL_THICKNESS * 2;
+  WALL_51_POSITION_Z - WALL_55_POSITION_Z - WALL_THICKNESS * 4;
 const WALL_59_POSITION_X =
   WALL_51_POSITION_X + WALL_51_WIDTH / 2 + WALL_THICKNESS / 2;
 const WALL_60_WIDTH = WALL_59_WIDTH + WALL_THICKNESS;
@@ -240,7 +242,7 @@ const WALL_65_POSITION_X =
   WALL_64_POSITION_X - WALL_64_WIDTH / 2 + WALL_2_WIDTH;
 const WALL_65_POSITION_Z =
   WALL_61_POSITION_Z - WALL_THICKNESS / 2 - WALL_65_WIDTH / 2;
-const WALL_66_POSITION_X =
+export const WALL_66_POSITION_X =
   WALL_64_POSITION_X + WALL_64_WIDTH / 2 + WALL_THICKNESS / 2;
 const WALL_66_POSITION_Z =
   WALL_55_POSITION_Z - WALL_THICKNESS / 2 + WALL_7_WIDTH / 2;
@@ -262,7 +264,8 @@ const WALL_69_POSITION_X =
 export const WALL_70_WIDTH = WALL_7_WIDTH + WALL_THICKNESS;
 const WALL_70_POSITION_X =
   WALL_68_POSITION_X + WALL_68_WIDTH / 2 + WALL_70_WIDTH / 2;
-const WALL_71_WIDTH = WALL_61_POSITION_Z - WALL_67_POSITION_Z - WALL_THICKNESS;
+const WALL_71_WIDTH =
+  WALL_61_POSITION_Z - WALL_67_POSITION_Z - WALL_THICKNESS * 2;
 const WALL_71_POSITION_X =
   WALL_70_POSITION_X + WALL_70_WIDTH / 2 - WALL_THICKNESS / 2;
 const WALL_71_POSITION_Z =
@@ -306,10 +309,9 @@ const WALL_80_POSITION_X =
   WALL_71_POSITION_X - WALL_THICKNESS / 2 + WALL_80_WIDTH / 2;
 const WALL_80_POSITION_Z =
   WALL_71_POSITION_Z + WALL_71_WIDTH / 2 + WALL_THICKNESS / 2;
-console.log(444444444, WALL_35_POSITION_X, WALL_60_POSITION_Z);
 
 // 所有墙体的尺寸和位置
-const wallList: (
+const wallInfoList: (
   | [
       number,
       number,
@@ -951,7 +953,7 @@ const wallList: (
     WALL_71_POSITION_X,
     WALL_1_POSITION_Y,
     WALL_71_POSITION_Z,
-    "all",
+    "double",
   ],
   [
     WALL_THICKNESS,
@@ -1188,14 +1190,7 @@ const addAllWall = (
   showWallLabel: boolean,
 ) => {
   const boxGeometry = assetManager.geometries.get("boxGeometry");
-  // 墙体材质
-  const wallMaterial = new MeshStandardMaterial({
-    color: WALL_COLOR,
-    roughness: 0.85, // 乳胶漆的粗糙度，有轻微漫反射
-    metalness: 0, // 完全不反射金属光泽
-    envMapIntensity: 0.3,
-  });
-  assetManager.materials.set("wallMaterial", wallMaterial);
+  const wallMaterial = assetManager.materials.get("wallMaterial");
   //  踢脚线材质
   const skirtingLineMaterial = new MeshStandardMaterial({
     color: SKIRTING_LINE_COLOR,
@@ -1219,7 +1214,7 @@ const addAllWall = (
   const instancedMesh = new InstancedMesh(
     boxGeometry,
     wallMaterial,
-    wallList.length,
+    wallInfoList.length,
   );
   instancedMesh.name = "墙体";
   // 将墙体加入鼠标射线检测是为了防止隔墙高亮了可交互的物体
@@ -1231,7 +1226,7 @@ const addAllWall = (
 
   // 添加所有的墙体
   const dummy = new Object3D();
-  wallList.forEach(
+  wallInfoList.forEach(
     (
       item:
         | [
@@ -1691,8 +1686,8 @@ const addMarbleFloor = (scene: Scene, assetManager: AssetManager) => {
     roughness: 0.8,
     metalness: 0,
     polygonOffset: true, // 启用深度偏移，防止与地砖产生Z-fighting闪烁
-    polygonOffsetFactor: 1,
-    polygonOffsetUnits: 1,
+    polygonOffsetFactor: 0.1,
+    polygonOffsetUnits: 0.1,
   });
   assetManager.materials.set("gapFloorMaterial", gapFloorMaterial);
   const gapFloor = new Mesh(planeGeometry, gapFloorMaterial);

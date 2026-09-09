@@ -6,6 +6,8 @@ import { Scene, MeshPhysicalMaterial, Group, Vector3, Object3D } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import { addBoard, addLightingStrip } from "../utils";
 import {
+  WALL_HEIGHT,
+  SUSPENDED_CEILING_HEIGHT,
   WALL_THICKNESS,
   WALL_72_POSITION_X,
   WALL_72_POSITION_Z,
@@ -19,12 +21,12 @@ const SHOE_CABINET_POSITON = new Vector3(
 const CHEST_COL_COUNT = 4; // 柜子的列数,保证为偶数
 const SHOE_CABINET_WIDTH = 2.6; // 鞋柜柜体的总宽
 const CHEST_GAP = 0.012; // 柜子之间的缝隙
-const SHOE_CABINET_HEIGHT = 4; // 鞋柜的总高
+const SHOE_CABINET_HEIGHT = WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT; // 鞋柜的总高
 const SHOE_CABINET_DEPTH = 0.62; // 鞋柜的总深度（不包含左右两边多出的部分）
 const BOARD_THICKNESS = 0.03; // 木板的厚度
 const BOARD_COATING_THICKNESS = 0.002; // 木板深灰色涂层的厚度
 const CHEST_DOOR_THICKNESS = 0.01; // 柜门和抽屉门的厚度
-const TOP_CHEST_HEIGHT = 1.2; // 第一层柜子的高度
+const TOP_CHEST_HEIGHT = 0.9; // 第一层柜子的高度
 const STORAGE_AREA_HEIGHT = 0.7; // 第二层置物区的高度（空白，深灰）
 const PUT_SHOE_AREA_HEIGHT = 0.3; // 第五和六层的摆鞋区的高度（空白，深灰）
 const LIGHTING_STRIP_HEIGHT = 0.04; // 发光灯带的高

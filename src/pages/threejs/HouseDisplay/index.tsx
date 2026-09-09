@@ -32,13 +32,14 @@ import {
 } from './function/modeToggle';
 import addLighting from "./function/addLighting";
 import addHouseStructure from './hardDecoration/addHouseStructure';
+import addSuspendedCeiling from './hardDecoration/addSuspendedCeiling';
 import { addDoor, onClickDoor, doorAnimationRender } from "./hardDecoration/addDoor";
 import { addGroundGlassDoor, onClickGroundGlassDoor, groundGlassDoorAnimationRender } from './hardDecoration/addGroundGlassDoor';
 import add3dModel from "./softDecoration/add3dModel";
 import addCeiling from "./hardDecoration/addCeiling";
 import addSideboard from './hardDecoration/addSideboard';
 import addShoeCabinet from './hardDecoration/addShoeCabinet';
-import { addCeilingLamp, allCeilingLampsVisibleToggle, dynamicOptimizationLampLightRender } from './softDecoration/addCeilingLamp';
+import { addCeilingLamp, dynamicOptimizationLampLightRender } from './softDecoration/addCeilingLamp';
 import { onClickCeilingLampSwitch } from './softDecoration/addCeilingLampSwitch';
 import { onClickTVScreen } from './softDecoration/addTVScreen';
 import { onClickPhoneScreen } from './softDecoration/addPhoneScreen';
@@ -72,6 +73,7 @@ const HouseDisplay = () => {
   const outlinePassRef = useRef<OutlinePass | null>(null);
   const pointerControlsIntersetObjectsRef = useRef<Object3D[]>([]); // 第一人称控制器可接受的碰撞检测对象列表
   const ceilingRef = useRef<Mesh | null>(null); // 房屋天花板
+  const suspendedCeilingListRef = useRef<(Group | Mesh)[]>([]); // 所有的吊顶和吊顶板
   const doorListRef = useRef<Mesh[]>([]); // 所有房门的列表
   const groundGlassDoorListRef = useRef<Group[]>([]); // 所有磨砂玻璃门的列表
   const lampListRef = useRef<Group[]>([]); // 所有吊灯的列表
@@ -160,8 +162,11 @@ const HouseDisplay = () => {
         assetManager,
         mouseRaycasterIntersectObjectsRef,
         pointerControlsIntersetObjectsRef,
-        true,
+        false,
       );
+
+      // 添加吊顶
+      addSuspendedCeiling(scene, assetManager, suspendedCeilingListRef);
 
       // 添加房门
       addDoor(
@@ -230,9 +235,9 @@ const HouseDisplay = () => {
         viewModeRef,
         orbitControlsRef,
         animationStartTimeRef,
+        suspendedCeilingListRef.current,
         lampListRef.current,
         lampSwitchListRef.current,
-        allCeilingLampsVisibleToggle,
       );
 
       // 添加鼠标准星
@@ -294,9 +299,9 @@ const HouseDisplay = () => {
       ceilingRef,
       animationStartTimeRef,
       animationDurationRef,
+      suspendedCeilingListRef.current,
       lampListRef.current,
       lampSwitchListRef.current,
-      allCeilingLampsVisibleToggle
     );
 
     // 房门开/关动画过程渲染
@@ -436,9 +441,9 @@ const HouseDisplay = () => {
             viewModeRef,
             orbitControlsRef,
             animationStartTimeRef,
+            suspendedCeilingListRef.current,
             lampListRef.current,
             lampSwitchListRef.current,
-            allCeilingLampsVisibleToggle
           )
         }
         tabIndex={-1}
