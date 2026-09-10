@@ -21,7 +21,7 @@ import {
 } from "./addHouseStructure";
 import { SUSPENDED_CEILING_HEIGHT, SIDEBOARD_DEPTH } from "./addHouseStructure";
 import { CURTAIN_DEPTH } from "../softDecoration/addCurtain";
-import { addLightingStrip, addBoard } from "../utils";
+import { addLightingStrip, addBoard, addLightingRoundLight } from "../utils";
 
 type SuspendedCeilingType = "front" | "back" | "left" | "right";
 
@@ -32,6 +32,7 @@ const LIGHT_STRIP_WIDTH = 0.1; // 灯带的宽度
 const HOLE_HEIGHT = SUSPENDED_CEILING_HEIGHT - SINGLE_SKIN_PANEL_THICKNESS * 2; // 吊顶的洞高度
 const HOLE_DEPTH =
   SUSPENDED_CEILING_DEPTH - SINGLE_SKIN_PANEL_DEPTH_GAP - LIGHT_STRIP_WIDTH; // 吊顶的洞深度
+const DOWNLIGHT_RADIUS = 0.05; // 筒灯的半径
 // 所有吊顶的尺寸和位置
 const length1 = WALL_55_POSITION_Z - WALL_10_POSITION_Z - WALL_THICKNESS;
 const length2 = WALL_66_POSITION_X - WALL_56_POSITION_X;
@@ -45,6 +46,7 @@ const suspendedCeilingInfoList: [
   number,
   number,
   SuspendedCeilingType,
+  number,
 ][] = [
   // 客厅
   [
@@ -53,6 +55,7 @@ const suspendedCeilingInfoList: [
     WALL_HEIGHT,
     WALL_10_POSITION_Z + WALL_THICKNESS / 2 + length1 / 2,
     "left",
+    2,
   ],
   [
     length2,
@@ -60,6 +63,7 @@ const suspendedCeilingInfoList: [
     WALL_HEIGHT,
     WALL_10_POSITION_Z + WALL_THICKNESS / 2,
     "back",
+    3,
   ],
   [
     length2,
@@ -67,6 +71,7 @@ const suspendedCeilingInfoList: [
     WALL_HEIGHT,
     WALL_55_POSITION_Z - WALL_THICKNESS / 2,
     "front",
+    3,
   ],
   [
     length1,
@@ -74,6 +79,7 @@ const suspendedCeilingInfoList: [
     WALL_HEIGHT,
     WALL_10_POSITION_Z + WALL_THICKNESS / 2 + length1 / 2,
     "right",
+    2,
   ],
   // 餐厅
   [
@@ -82,6 +88,7 @@ const suspendedCeilingInfoList: [
     WALL_HEIGHT,
     WALL_10_POSITION_Z + WALL_THICKNESS / 2 + SIDEBOARD_DEPTH + length3 / 2,
     "left",
+    2,
   ],
   [
     length4,
@@ -89,14 +96,23 @@ const suspendedCeilingInfoList: [
     WALL_HEIGHT,
     WALL_10_POSITION_Z + WALL_THICKNESS / 2 + SIDEBOARD_DEPTH,
     "back",
+    3,
   ],
-  [length4, x1, WALL_HEIGHT, WALL_73_POSITION_Z - WALL_THICKNESS / 2, "front"],
+  [
+    length4,
+    x1,
+    WALL_HEIGHT,
+    WALL_73_POSITION_Z - WALL_THICKNESS / 2,
+    "front",
+    3,
+  ],
   [
     length3,
     WALL_35_POSITION_X - WALL_THICKNESS / 2 - CURTAIN_DEPTH,
     WALL_HEIGHT,
     WALL_10_POSITION_Z + WALL_THICKNESS / 2 + SIDEBOARD_DEPTH + length3 / 2,
     "right",
+    2,
   ],
 ];
 // 所有空余地方吊顶板的尺寸和位置
@@ -112,6 +128,7 @@ const suspendedCeilingBoardInfoList: [
   number,
   number,
   number,
+  number?,
 ][] = [
   [
     width2,
@@ -119,6 +136,7 @@ const suspendedCeilingBoardInfoList: [
     WALL_66_POSITION_X + WALL_THICKNESS / 2 + width2 / 2,
     suspendedCeilingBoardPositionY,
     WALL_10_POSITION_Z + WALL_THICKNESS / 2 + length5 / 2,
+    3,
   ],
   [
     length4,
@@ -133,6 +151,7 @@ const suspendedCeilingBoardInfoList: [
     WALL_11_POSITION_X + WALL_THICKNESS / 2 + width3 / 2,
     suspendedCeilingBoardPositionY,
     WALL_10_POSITION_Z + WALL_THICKNESS / 2 - length6 / 2,
+    2,
   ],
 ];
 
@@ -143,7 +162,7 @@ const addSuspendedCeiling = (
 ) => {
   // 创建并添加所有吊顶
   suspendedCeilingInfoList.forEach(
-    (item: [number, number, number, number, SuspendedCeilingType]) => {
+    (item: [number, number, number, number, SuspendedCeilingType, number]) => {
       addSingleSuspendedCeiling(
         scene,
         assetManager,
@@ -153,6 +172,7 @@ const addSuspendedCeiling = (
         item[2],
         item[3],
         item[4],
+        item[5],
       );
     },
   );
@@ -160,7 +180,7 @@ const addSuspendedCeiling = (
   // 创建并添加其他空出位置的吊顶板
   const wallMaterial = assetManager.materials.get("wallMaterial");
   suspendedCeilingBoardInfoList.forEach(
-    (item: [number, number, number, number, number]) => {
+    (item: [number, number, number, number, number, number?]) => {
       const suspendedCeilingBoard = addBoard(
         scene,
         assetManager,
@@ -194,6 +214,7 @@ const addSingleSuspendedCeiling = (
   y: number,
   z: number,
   suspendedCeilingType: SuspendedCeilingType,
+  downlightNum: number,
 ) => {
   const boxGeometry = assetManager.geometries.get("boxGeometry");
   const wallMaterial = assetManager.materials.get("wallMaterial");
@@ -250,7 +271,7 @@ const addSingleSuspendedCeiling = (
       break;
   }
 
-  // 创建并添加灯带（光朝上，避免穿透吊顶照亮地板）
+  // 创建并添加灯带
   addLightingStrip(
     suspendedCeilingGroup,
     assetManager,
@@ -262,6 +283,21 @@ const addSingleSuspendedCeiling = (
     new Vector3(-Math.PI / 2, 0, 0), // 面向天花板
     0.3 * Math.PI,
   );
+
+  const gap = length / downlightNum;
+  let positionX = -length / 2 + gap / 2;
+  for (let i = 0; i < downlightNum; i++) {
+    // 创建并添加筒灯
+    addLightingRoundLight(
+      suspendedCeilingGroup,
+      assetManager,
+      DOWNLIGHT_RADIUS,
+      positionX,
+      -SUSPENDED_CEILING_HEIGHT - 0.01,
+      (SUSPENDED_CEILING_DEPTH - SINGLE_SKIN_PANEL_DEPTH_GAP) / 2,
+    );
+    positionX += gap;
+  }
 };
 
 // 切换所有吊顶和吊顶板的显示/隐藏

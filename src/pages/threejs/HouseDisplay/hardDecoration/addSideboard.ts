@@ -696,7 +696,7 @@ const createSideboard = (assetManager: AssetManager) => {
     decorativeBafflePlate,
     assetManager,
     GLASS_WIDTH / 2,
-    GLASS_WIDTH / 2, 
+    GLASS_WIDTH / 2,
     DECORATIVE_BAFFLE_PLATE_THICKNESS,
     -DECORATIVE_BAFFLE_BACK_PLATE_WIDTH - GLASS_WIDTH * 2,
     height,
