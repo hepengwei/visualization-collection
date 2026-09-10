@@ -47,6 +47,7 @@ import { addCrosshair, resizeCrosshair, crosshairRender } from './function/addCr
 import addTeaTable from './softDecoration/addTeaTable';
 import { addCurtain, onClickCurtain, curtainAnimationRender } from "./softDecoration/addCurtain";
 import { addFridge, onClickFridgeDoor, fridgeDoorAnimationRender } from "./softDecoration/addFridge";
+import addGlassWhiteboard from "./softDecoration/addGlassWhiteboard";
 import styles from "./index.module.scss";
 
 export type SwitchStatus = 'ON' | 'OFF';
@@ -269,6 +270,9 @@ const HouseDisplay = () => {
         mouseRaycasterIntersectObjectsRef,
         pointerControlsIntersetObjectsRef
       );
+
+      // 添加哑光钢化玻璃白板
+      addGlassWhiteboard(scene, renderer, assetManager, pointerControlsIntersetObjectsRef);
 
       // 启用双后处理器架构
       useDualComposer(

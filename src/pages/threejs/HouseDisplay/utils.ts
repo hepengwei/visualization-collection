@@ -89,7 +89,7 @@ export const initAssetManager = (assetManager: AssetManager) => {
   const whiteAluminumMaterial = new MeshStandardMaterial({
     color: 0xf2f5f8,
     metalness: 0.9, // 金属度，0.85~1.0
-    roughness: 0.7, // 哑光工业铝
+    roughness: 0.6, // 哑光工业铝
     envMapIntensity: 1.0, // 有 scene.environment 时才有效果
   });
   assetManager.materials.set("whiteAluminumMaterial", whiteAluminumMaterial);
@@ -100,15 +100,31 @@ export const initAssetManager = (assetManager: AssetManager) => {
   assetManager.materials.set("woodBoardLightMaterial", woodBoardLightMaterial);
   assetManager.materials.set("woodBoardDarkMaterial", woodBoardDarkMaterial);
 
-  // 创建白色面板材质
+  // 创建白色面板材质（不受光影响）
   const whitePanelMaterial = new MeshPhysicalMaterial({
-    color: "0xffffff",
+    color: 0xffffff,
+    emissive: 0xffffff, // 自发光颜色
+    emissiveIntensity: 1.0, // 自发光强度，使其不受环境光影响变灰
+    roughness: 0.5,
+    metalness: 0.0,
     side: FrontSide,
     polygonOffset: true, // 启用深度偏移，防止与地砖产生Z-fighting闪烁
     polygonOffsetFactor: 0.1,
     polygonOffsetUnits: 0.1,
   });
   assetManager.materials.set("whitePanelMaterial", whitePanelMaterial);
+
+  // 创建白色面板材质（受光影响）
+  const whitePanelMaterial2 = new MeshStandardMaterial({
+    color: 0xffffff,
+    roughness: 0.3,
+    metalness: 0.0,
+    side: FrontSide,
+    polygonOffset: true, // 启用深度偏移，防止与地砖产生Z-fighting闪烁
+    polygonOffsetFactor: 0.1,
+    polygonOffsetUnits: 0.1,
+  });
+  assetManager.materials.set("whitePanelMaterial2", whitePanelMaterial2);
 };
 
 // 创建实木木板材质
@@ -377,6 +393,45 @@ export const generateRoughnessMap = (size = 1024) => {
 };
 
 /**
+ * @description: 生成四周为圆角的立方体
+ * @param {number} width 立方体的宽度
+ * @param {number} height 立方体的高度
+ * @param {number} depth 立方体的深度
+ *  @param {number} radius 圆角半径
+ * @return {ExtrudeGeometry}
+ */
+export const generateRoundedBoxGeometry = (
+  width: number,
+  height: number,
+  depth: number,
+  radius: number,
+) => {
+  const shape = new Shape();
+  const w = width / 2,
+    h = height / 2;
+  shape.moveTo(-w + radius, -h);
+  shape.lineTo(w - radius, -h);
+  shape.quadraticCurveTo(w, -h, w, -h + radius);
+  shape.lineTo(w, h - radius);
+  shape.quadraticCurveTo(w, h, w - radius, h);
+  shape.lineTo(-w + radius, h);
+  shape.quadraticCurveTo(-w, h, -w, h - radius);
+  shape.lineTo(-w, -h + radius);
+  shape.quadraticCurveTo(-w, -h, -w + radius, -h);
+
+  const geo = new ExtrudeGeometry(shape, {
+    depth,
+    bevelEnabled: true,
+    bevelThickness: 0.002,
+    bevelSize: 0.002,
+    bevelSegments: 4,
+    curveSegments: 12,
+  });
+  geo.center(); // 居中，使 z 从 -boardD/2 ~ boardD/2
+  return geo;
+};
+
+/**
  * @description: 生成椭圆形的圆环几何体
  * @param {number} longRadius 椭圆长轴半径
  * @param {number} shortRadius 椭圆短轴半径
@@ -552,18 +607,30 @@ export const addLightingRoundLight = (
   x: number,
   y: number,
   z: number,
-  distance: number,
+  distance?: number,
 ) => {
   const circleGeometry = assetManager.geometries.get("circleGeometry");
+  const whiteAluminumMaterial = assetManager.materials.get(
+    "whiteAluminumMaterial",
+  );
   const whitePanelMaterial = assetManager.materials.get("whitePanelMaterial");
-  const roundLight = new Mesh(circleGeometry, whitePanelMaterial);
-  roundLight.scale.set(radius, radius);
-  roundLight.position.set(x, y, z);
-  roundLight.rotation.x = Math.PI / 2; // 面向地面
-  roundLight.layers.enable(1); // 为了让灯带的光能够单独增强
-  parent.add(roundLight);
-  // 添加发光灯带的光源
-  addRoundLight(parent, x, y - 0.01, z, -x, 0, z, distance);
+  const roundLightGroup = new Group();
+  const outerCircle = new Mesh(circleGeometry, whiteAluminumMaterial);
+  outerCircle.scale.set(radius, radius);
+  roundLightGroup.add(outerCircle);
+  const innerCircle = new Mesh(circleGeometry, whitePanelMaterial);
+  innerCircle.scale.set(radius * 0.86, radius * 0.86);
+  innerCircle.position.set(0, 0, 0.001);
+  roundLightGroup.add(innerCircle);
+  roundLightGroup.position.set(x, y, z);
+  roundLightGroup.rotation.x = Math.PI / 2; // 面向地面
+  roundLightGroup.layers.enable(1); // 为了让灯带的光能够单独增强
+  parent.add(roundLightGroup);
+
+  if (distance) {
+    // 添加发光灯带的光源
+    addRoundLight(parent, x, y - 0.01, z, -x, 0, z, distance);
+  }
 };
 
 // 添加圆筒形光源
