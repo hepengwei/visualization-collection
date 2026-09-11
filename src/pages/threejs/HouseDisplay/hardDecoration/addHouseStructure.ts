@@ -24,7 +24,7 @@ type SkirtingLineType = "front" | "back" | "double" | "all"; // 如果是竖墙�
 
 export const SUSPENDED_CEILING_HEIGHT = 0.4; // 吊顶总高度
 export const SIDEBOARD_DEPTH = 0.62; // 餐边柜的总深度
-export const WALL_HEIGHT = 3.8; // 墙体高度
+export const WALL_HEIGHT = 3.6; // 墙体高度
 export const WALL_THICKNESS = 0.3; // 墙体厚度
 const TALL_GRADE_BEAM_HEIGHT = 1.5; // 高地梁的墙体高度
 const TALL_GRADE_BEAM_POSITION_Y = TALL_GRADE_BEAM_HEIGHT / 2; // 高地梁的墙体y位置
@@ -1686,8 +1686,8 @@ const addMarbleFloor = (scene: Scene, assetManager: AssetManager) => {
     roughness: 0.8,
     metalness: 0,
     polygonOffset: true, // 启用深度偏移，防止与地砖产生Z-fighting闪烁
-    polygonOffsetFactor: 0.1,
-    polygonOffsetUnits: 0.1,
+    polygonOffsetFactor: 1,
+    polygonOffsetUnits: 1,
   });
   assetManager.materials.set("gapFloorMaterial", gapFloorMaterial);
   const gapFloor = new Mesh(planeGeometry, gapFloorMaterial);

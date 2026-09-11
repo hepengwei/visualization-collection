@@ -30,7 +30,7 @@ const diceBevelRadius = 1.4; // 骰子的棱的曲面半径
 const maxDiceNum = 10; // 最多骰子数量
 const g = 420; // 重力加速度
 const restitution = 0.36; // 物理世界的反弹系数
-const cameraInitPosition = { x: 0, y: 40, z: 120 }; // 相机位置
+const cameraInitPosition = new Vector3(0, 40, 250); // 相机位置
 const floorY = -60; // 地板的y位置
 const maxDistance = 1000; // 轨道控制器的最远距离
 
@@ -261,11 +261,7 @@ const ThrowDice = () => {
   ) => {
     if (containerRef.current) {
       scene.background = new Color('#224141');
-      camera.position.set(
-        cameraInitPosition.x,
-        cameraInitPosition.y,
-        cameraInitPosition.z
-      );
+      camera.position.copy(cameraInitPosition);
       camera.lookAt(0, 0, 0);
       renderer.setClearColor('#224141');
 

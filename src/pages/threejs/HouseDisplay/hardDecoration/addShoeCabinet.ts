@@ -26,9 +26,10 @@ const SHOE_CABINET_HEIGHT = WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT; // 鞋柜的
 const BOARD_THICKNESS = 0.03; // 木板的厚度
 const BOARD_COATING_THICKNESS = 0.002; // 木板深灰色涂层的厚度
 const CHEST_DOOR_THICKNESS = 0.01; // 柜门和抽屉门的厚度
-const TOP_CHEST_HEIGHT = 0.9; // 第一层柜子的高度
-const STORAGE_AREA_HEIGHT = 0.7; // 第二层置物区的高度（空白，深灰）
-const PUT_SHOE_AREA_HEIGHT = 0.3; // 第五和六层的摆鞋区的高度（空白，深灰）
+const TOP_CHEST_HEIGHT = 0.8; // 第一层柜子的高度
+const STORAGE_AREA_HEIGHT = 0.6; // 第二层置物区的高度（空白，深灰）
+const PUT_SHOE_AREA_HEIGHT = 0.15; // 第五层的摆鞋区的高度（空白，深灰）
+const PUT_SHOE_AREA_HEIGHT2 = 0.25; // 第六层的摆鞋区的高度（空白，深灰）
 const LIGHTING_STRIP_HEIGHT = 0.04; // 发光灯带的高
 // 抽屉的宽度
 const DRAWER_WIDTH =
@@ -36,7 +37,7 @@ const DRAWER_WIDTH =
     BOARD_THICKNESS * 2 -
     CHEST_GAP * (CHEST_COL_COUNT / 2 + 1)) /
   (CHEST_COL_COUNT / 2);
-const DRAWER_HEIGHT = 0.3; // 抽屉的高度
+const DRAWER_HEIGHT = 0.25; // 抽屉的高度
 // 最下面柜子的高度
 const BOTTOM_CHEST_HEIGHT =
   SHOE_CABINET_HEIGHT -
@@ -51,7 +52,8 @@ const BOTTOM_CHEST_HEIGHT =
   DRAWER_HEIGHT -
   CHEST_GAP -
   BOARD_THICKNESS -
-  PUT_SHOE_AREA_HEIGHT * 2 -
+  PUT_SHOE_AREA_HEIGHT -
+  PUT_SHOE_AREA_HEIGHT2 -
   BOARD_THICKNESS * 2 -
   CHEST_GAP * 2;
 // 柜子宽度
@@ -311,7 +313,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
     BOARD_THICKNESS,
     SHOE_CABINET_DEPTH - BOARD_THICKNESS,
     0,
-    PUT_SHOE_AREA_HEIGHT + BOARD_THICKNESS / 2,
+    PUT_SHOE_AREA_HEIGHT2 + BOARD_THICKNESS / 2,
     (SHOE_CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 第四层横板上面的深灰色涂层
@@ -323,7 +325,8 @@ const createShoeCabinet = (assetManager: AssetManager) => {
     BOARD_COATING_THICKNESS,
     SHOE_CABINET_DEPTH - BOARD_THICKNESS,
     0,
-    PUT_SHOE_AREA_HEIGHT * 2 +
+    PUT_SHOE_AREA_HEIGHT2 +
+      PUT_SHOE_AREA_HEIGHT +
       BOARD_THICKNESS * 2 +
       BOARD_COATING_THICKNESS / 2,
     (SHOE_CABINET_DEPTH + BOARD_THICKNESS) / 2,
@@ -393,7 +396,8 @@ const createShoeCabinet = (assetManager: AssetManager) => {
       BOTTOM_CHEST_HEIGHT,
       CHEST_DOOR_THICKNESS,
       x,
-      PUT_SHOE_AREA_HEIGHT * 2 +
+      PUT_SHOE_AREA_HEIGHT2 +
+        PUT_SHOE_AREA_HEIGHT +
         BOARD_THICKNESS * 2 +
         CHEST_GAP +
         BOTTOM_CHEST_HEIGHT / 2,
@@ -424,7 +428,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
     SHOE_CABINET_WIDTH - BOARD_THICKNESS * 2,
     LIGHTING_STRIP_HEIGHT,
     0,
-    PUT_SHOE_AREA_HEIGHT * 2 + BOARD_THICKNESS - 0.001,
+    PUT_SHOE_AREA_HEIGHT2 + PUT_SHOE_AREA_HEIGHT + BOARD_THICKNESS - 0.001,
     BOARD_THICKNESS + LIGHTING_STRIP_HEIGHT / 2 + 0.1,
   );
   addLightingStrip(
@@ -433,7 +437,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
     SHOE_CABINET_WIDTH - BOARD_THICKNESS * 2,
     LIGHTING_STRIP_HEIGHT,
     0,
-    PUT_SHOE_AREA_HEIGHT - 0.001,
+    PUT_SHOE_AREA_HEIGHT2 - 0.001,
     BOARD_THICKNESS + LIGHTING_STRIP_HEIGHT / 2 + 0.1,
   );
 

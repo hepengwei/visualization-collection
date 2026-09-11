@@ -34,7 +34,7 @@ import {
 } from "../hardDecoration/addHouseStructure";
 import { BOARD_THICKNESS } from "../hardDecoration/addSideboard";
 
-const SWITCH_POSITION_HEIGHT = 1.8; // 开关的位置高度
+const SWITCH_POSITION_HEIGHT = 1.65; // 开关的位置高度
 const SWITCH_WIDTH = 0.25; // 开关的宽
 const SWITCH_HEIGHT = 0.2; // 开关的高
 const SWITCH_BACK_BOX_THICKNESS = 0.006; // 开关的底盒厚度

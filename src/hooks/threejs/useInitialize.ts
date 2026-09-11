@@ -73,7 +73,7 @@ const useInitialize = (
 
       // 创建相机
       const camera = new PerspectiveCamera(
-        75,
+        55,
         clientWidth / clientHeight,
         0.01,
         1000,

@@ -112,7 +112,7 @@ const CarShow = () => {
   ) => {
     if (containerRef.current) {
       scene.background = new Color("#ddd");
-      camera.position.set(0, 2, 4);
+      camera.position.set(0, 2, 6);
       renderer.setClearColor("#000");
 
       const controls = new OrbitControls(camera, renderer.domElement);

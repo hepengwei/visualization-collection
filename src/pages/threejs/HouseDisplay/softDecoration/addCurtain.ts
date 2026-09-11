@@ -17,6 +17,7 @@ import {
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import { getEaseProgress } from "../utils";
 import {
+  WALL_HEIGHT,
   WALL_THICKNESS,
   WALL_2_WIDTH,
   WALL_3_WIDTH,
@@ -52,7 +53,7 @@ const curtainConfigs = [
     customParams: {
       switchStatus: "OFF", // 窗帘的打开/关闭状态，窗帘打开时单片半边是完全收起的，窗帘关闭时单片半边是完全展开的
       isAnimating: false, // 窗帘是否在打开/关闭动画中
-      curtainHeight: 4, // 窗帘高度
+      curtainHeight: WALL_HEIGHT, // 窗帘高度
       expandedWidth:
         (WALL_49_POSITION_Z - WALL_9_POSITION_Z - WALL_THICKNESS) / 2, // 窗帘单片半边完全展开后的宽度
       stackedWidth: WALL_45_WIDTH - 0.3, // 窗帘单片半边完全收起后的宽度
@@ -71,7 +72,7 @@ const curtainConfigs = [
     customParams: {
       switchStatus: "ON",
       isAnimating: false,
-      curtainHeight: 4,
+      curtainHeight: WALL_HEIGHT,
       expandedWidth: (WALL_2_WIDTH * 2 + WALL_42_WIDTH) / 2,
       stackedWidth: WALL_2_WIDTH,
       animationDuration: 1000,
@@ -89,7 +90,7 @@ const curtainConfigs = [
     customParams: {
       switchStatus: "ON",
       isAnimating: false,
-      curtainHeight: 4,
+      curtainHeight: WALL_HEIGHT,
       expandedWidth: (WALL_2_WIDTH * 2 + WALL_3_WIDTH) / 2,
       stackedWidth: WALL_2_WIDTH,
       animationDuration: 900,
@@ -107,7 +108,7 @@ const curtainConfigs = [
     customParams: {
       switchStatus: "ON",
       isAnimating: false,
-      curtainHeight: 4,
+      curtainHeight: WALL_HEIGHT,
       expandedWidth: (WALL_2_WIDTH * 2 + WALL_36_WIDTH) / 2,
       stackedWidth: WALL_2_WIDTH,
       animationDuration: 700,
@@ -127,7 +128,7 @@ const curtainConfigs = [
     customParams: {
       switchStatus: "ON",
       isAnimating: false,
-      curtainHeight: 4,
+      curtainHeight: WALL_HEIGHT,
       expandedWidth:
         (WALL_51_POSITION_Z - WALL_55_POSITION_Z - WALL_THICKNESS) / 2,
       stackedWidth: WALL_2_WIDTH,

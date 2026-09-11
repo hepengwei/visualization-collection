@@ -49,7 +49,7 @@ import aperture from "images/threejs/aperture.png";
 import lightColumn from "images/threejs/lightColumn.png";
 import styles from "./index.module.scss";
 
-const cameraInitPosition = { x: 0, y: 20, z: 110 }; // 相机初始位置
+const cameraInitPosition = new Vector3(0, 20, 170); // 相机初始位置
 const earthRadius = 50; // 地球半径
 const lightColumnStartColor = 0xe4007f; // 起始地址的光柱颜色
 const lightColumnEndColor = 0xffffff; // 结束地址的光柱颜色
@@ -376,11 +376,7 @@ const EarthDisplay = () => {
       resourceManagerRef.current = new ResourceManager(resourceList, () => {
         // 添加背景图
         scene.background = new TextureLoader().load(pageBg);
-        camera.position.set(
-          cameraInitPosition.x,
-          cameraInitPosition.y,
-          cameraInitPosition.z
-        );
+        camera.position.copy(cameraInitPosition);
 
         createStarrySky(scene);
         createEarthObj(scene);
