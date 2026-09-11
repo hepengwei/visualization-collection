@@ -9,7 +9,7 @@ const addLighting = (scene: Scene) => {
   scene.add(ambientLight);
 
   // 主太阳光 - 从左上方（南面）斜照下来，模拟自然阳光（进一步增加强度）
-  const sunLight = new DirectionalLight(0xfffae3, 0.7 * Math.PI); // 暖色调阳光，第二个参数intensity在v0.155版本后必须要乘以Math.PI
+  const sunLight = new DirectionalLight(0xfffae3, 0.6 * Math.PI); // 暖色调阳光，第二个参数intensity在v0.155版本后必须要乘以Math.PI
   sunLight.position.set(-24, 25, 12); // 从左上方照射（左边为南面）（0.8倍缩放）
   sunLight.castShadow = true;
   sunLight.shadow.mapSize.set(1024, 1024);
@@ -24,7 +24,7 @@ const addLighting = (scene: Scene) => {
   scene.add(sunLight.target);
 
   // 辅助光 - 从右侧补光，模拟天空散射光（进一步增加强度）
-  const skyLight = new DirectionalLight(0xb0d4f1, 0.3 * Math.PI); // 天空蓝色调，第二个参数intensity在v0.155版本后必须要乘以Math.PI
+  const skyLight = new DirectionalLight(0xb0d4f1, 0.2 * Math.PI); // 天空蓝色调，第二个参数intensity在v0.155版本后必须要乘以Math.PI
   skyLight.position.set(16, 15, -8);
   skyLight.castShadow = true;
   skyLight.shadow.mapSize.set(1024, 1024);

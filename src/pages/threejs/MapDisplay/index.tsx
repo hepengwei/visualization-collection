@@ -6,7 +6,6 @@ import React, {
   useLayoutEffect,
   useCallback,
   useState,
-  useEffect,
 } from "react";
 import { useIntl } from "react-intl";
 import { AppstoreOutlined } from "@ant-design/icons";
@@ -40,8 +39,8 @@ import topBg from "images/threejs/topBg.png";
 import shine from "images/threejs/shine.png";
 import styles from "./index.module.scss";
 
-const cameraInitPosition = { x: 0, y: -20, z: 80 }; // 相机初始位置
-const mapInitPosition = { x: 0, y: 6, z: 0 }; // 地图初始位置
+const cameraInitPosition = new Vector3(0, -20, 130); // 相机初始位置
+const mapInitPosition = new Vector3(0, 6, 0); // 地图初始位置
 const mapDepth = 6; // 地图板块深度
 const mapColor = "#008170"; // 地图表面颜色
 const mapSideColor = "#1AACAC"; // 地图侧面颜色
@@ -172,7 +171,7 @@ const MapDisplay = () => {
         map.add(province);
       }
     );
-    map.position.set(mapInitPosition.x, mapInitPosition.y, mapInitPosition.z);
+    map.position.copy(mapInitPosition);
 
     scene.add(map);
     mapRef.current = map;
@@ -219,11 +218,7 @@ const MapDisplay = () => {
     if (containerRef.current) {
       // 添加背景图
       scene.background = new TextureLoader().load(pageBg);
-      camera.position.set(
-        cameraInitPosition.x,
-        cameraInitPosition.y,
-        cameraInitPosition.z
-      );
+      camera.position.copy(cameraInitPosition);
 
       const controls = new OrbitControls(camera, renderer.domElement);
       controlsRef.current = controls;

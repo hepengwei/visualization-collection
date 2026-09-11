@@ -12,6 +12,7 @@ import {
   Color,
   DirectionalLight,
   Group,
+  Vector3,
 } from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
@@ -29,7 +30,7 @@ const cubeBevelRadius = 1.6; // 每个小块的棱的曲面半径
 const cubeMargin = 0.4; // 每个小块的间距
 const rotatePIDuration = 1.5; // 魔方其中一面旋转180度所需的时间，单位秒
 const rotateInterval = 1500; // 魔方其中一面旋转的时间间隔
-const cameraInitPosition = { x: 20, y: 50, z: 50 };
+const cameraInitPosition = new Vector3(20, 50, 100);
 const lightInitPositionList = [
   { x: 100, y: 100, z: -100, intensity: 1 },
   { x: -100, y: 100, z: -100, intensity: 1 },
@@ -205,11 +206,7 @@ const RubiksCube = () => {
   ) => {
     if (containerRef.current) {
       scene.background = new Color("#121212");
-      camera.position.set(
-        cameraInitPosition.x,
-        cameraInitPosition.y,
-        cameraInitPosition.z
-      );
+      camera.position.copy(cameraInitPosition);
       camera.lookAt(0, 0, 0);
       renderer.setClearColor("#121212");
 

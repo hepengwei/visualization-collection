@@ -51,21 +51,21 @@ const AppPageFrame = () => {
 
       // 创建并添加3个飞行器模型
       loadGlb("./public/model/spaceStation.glb").then((gltf: GLTF) => {
-        gltf.scene.scale.set(0.15, 0.15, 0.15);
-        gltf.scene.position.set(5, 0, 0);
+        gltf.scene.scale.set(0.1, 0.1, 0.1);
+        gltf.scene.position.set(4, 0, 0);
         scene.add(gltf.scene);
         gltfList.current.push(gltf);
       });
       loadGlb("./public/model/spaceStation2.glb").then((gltf: GLTF) => {
-        gltf.scene.scale.set(1, 1, 1);
-        gltf.scene.position.set(5, -20, 0);
+        gltf.scene.scale.set(0.7, 0.7, 0.7);
+        gltf.scene.position.set(4, -20, 0);
         gltf.scene.rotation.set(0, initRotateY[1], 0);
         scene.add(gltf.scene);
         gltfList.current.push(gltf);
       });
       loadGlb("./public/model/spaceStation3.glb").then((gltf: GLTF) => {
-        gltf.scene.scale.set(0.18, 0.18, 0.18);
-        gltf.scene.position.set(5, -40, 0);
+        gltf.scene.scale.set(0.12, 0.12, 0.12);
+        gltf.scene.position.set(4, -40, 0);
         scene.add(gltf.scene);
         gltfList.current.push(gltf);
       });

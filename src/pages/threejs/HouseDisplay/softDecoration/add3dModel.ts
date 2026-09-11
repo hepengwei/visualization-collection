@@ -33,7 +33,7 @@ import {
 
 const TABLE_POSITION = new Vector3(
   WALL_34_POSITION_X,
-  0.8,
+  0.7,
   WALL_42_POSITION_Z + 0.2,
 );
 const PHONE_POSITION = new Vector3(-0.23, 0.1, -0.12); // 手机位置
@@ -287,7 +287,7 @@ const loadTable = (
       });
 
       table.position.copy(TABLE_POSITION);
-      table.scale.set(4.2, 4.2, 4.2);
+      table.scale.set(4, 4, 4);
       scene.add(table);
 
       // 加载手机

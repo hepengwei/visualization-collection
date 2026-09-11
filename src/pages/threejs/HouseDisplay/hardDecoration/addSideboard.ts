@@ -41,10 +41,10 @@ const CHEST_GAP = 0.012; // 柜子之间的缝隙
 const SIDEBOARD_HEIGHT = WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT; // 餐边柜的总高
 const BOARD_COATING_THICKNESS = 0.002; // 木板深灰色涂层的厚度
 const CHEST_DOOR_THICKNESS = 0.01; // 柜门和抽屉门的厚度
-const TOP_CHEST_HEIGHT = 0.95; // 第一层柜子的高度
-const TOP_STORAGE_AREA_HEIGHT = 0.3; // 第二层暗格置物区的高度（空白，深灰）
+const TOP_CHEST_HEIGHT = 0.9; // 第一层柜子的高度
+const TOP_STORAGE_AREA_HEIGHT = 0.2; // 第二层暗格置物区的高度（空白，深灰）
 const TOP_STORAGE_AREA_DEPTH = 0.46; // 第二层暗格置物区的深度
-const STORAGE_AREA_HEIGHT = 0.6; // 第三层置物区的高度（空白，深灰）
+const STORAGE_AREA_HEIGHT = 0.55; // 第三层置物区的高度（空白，深灰）
 const LIGHTING_STRIP_HEIGHT = 0.04; // 发光灯带的高
 // 第四层抽屉的宽度
 const DRAWER_WIDTH =
@@ -52,7 +52,7 @@ const DRAWER_WIDTH =
     BOARD_THICKNESS * 2 -
     CHEST_GAP * (CHEST_COL_COUNT / 2 + 1)) /
   (CHEST_COL_COUNT / 2);
-const DRAWER_HEIGHT = 0.3; // 第四层抽屉的高度
+const DRAWER_HEIGHT = 0.25; // 第四层抽屉的高度
 // 第五层最下面柜子的高度
 const BOTTOM_CHEST_HEIGHT =
   SIDEBOARD_HEIGHT -
@@ -82,8 +82,8 @@ const SECRET_COMPARTENT_WIDTH =
   (CHEST_COL_COUNT / 2);
 const DECORATIVE_BAFFLE_PLATE_THICKNESS = 0.2; // 装饰挡板的厚度
 const DECORATIVE_BAFFLE_BACK_PLATE_WIDTH = SIDEBOARD_DEPTH - BOARD_THICKNESS; // 装饰挡板的背板宽度
-const DECORATIVE_BAFFLE_PLATE_TOP_HEIGHT = 1; // 装饰挡板上方高度
-const DECORATIVE_BAFFLE_PLATE_MIDDLE_HEIGHT = 1.6; // 装饰挡板中间高度
+const DECORATIVE_BAFFLE_PLATE_TOP_HEIGHT = 0.8; // 装饰挡板上方高度
+const DECORATIVE_BAFFLE_PLATE_MIDDLE_HEIGHT = 1.4; // 装饰挡板中间高度
 // 装饰挡板下方高度
 const DECORATIVE_BAFFLE_PLATE_BOTTOM_HEIGHT =
   SIDEBOARD_HEIGHT -
