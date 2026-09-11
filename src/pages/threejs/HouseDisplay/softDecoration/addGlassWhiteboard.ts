@@ -138,8 +138,8 @@ const createWritingTexture = (renderer: WebGLRenderer) => {
   // 透明底色（重要：让笔迹仅显示在有墨处）
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  const fontHeight1 = 80;
-  const fontHeight2 = 60;
+  const fontHeight1 = 90;
+  const fontHeight2 = 70;
   const initX1 = 360;
 
   writeText(ctx, "好好学习，天天向上", initX1, 600, 160, "#c0392b");
@@ -147,7 +147,7 @@ const createWritingTexture = (renderer: WebGLRenderer) => {
   let currentY1 = 900;
   ctx.strokeStyle = "#1a1a2e";
   ctx.beginPath();
-  writeText(ctx, "To-Do List", initX1, currentY1, 52);
+  writeText(ctx, "To-Do List", initX1, currentY1, 80);
   ctx.beginPath();
   currentY1 += 20;
   ctx.moveTo(initX1, currentY1);
@@ -155,27 +155,27 @@ const createWritingTexture = (renderer: WebGLRenderer) => {
   ctx.stroke();
 
   currentY1 += 90;
-  writeText(ctx, "☐ 买菜 — 鸡蛋 / 牛奶 / 面包", initX1, currentY1, 38);
+  writeText(ctx, "☐ 买菜 — 鸡蛋 / 牛奶 / 面包", initX1, currentY1, 60);
   currentY1 += fontHeight1;
-  writeText(ctx, "☐ 接孩子放学 17:30", initX1, currentY1, 38);
+  writeText(ctx, "☐ 接孩子放学 17:30", initX1, currentY1, 60);
   currentY1 += fontHeight1;
-  writeText(ctx, "☐ 交水电费", initX1, currentY1, 38);
+  writeText(ctx, "☐ 交水电费", initX1, currentY1, 60);
   currentY1 += fontHeight1;
-  writeText(ctx, "☐ 预约周末看电影", initX1, currentY1, 38);
+  writeText(ctx, "☐ 预约周末看电影", initX1, currentY1, 60);
 
   currentY1 += 230;
-  writeText(ctx, "Shopping", initX1, currentY1, 46);
+  writeText(ctx, "Shopping", initX1, currentY1, 70);
   ctx.beginPath();
   currentY1 += 20;
   ctx.moveTo(initX1, currentY1);
   ctx.lineTo(initX1 + 260, currentY1);
   ctx.stroke();
   currentY1 += fontHeight1;
-  writeText(ctx, "• 咖啡豆", initX1, currentY1, 34);
+  writeText(ctx, "• 咖啡豆", initX1, currentY1, 56);
   currentY1 += fontHeight2;
-  writeText(ctx, "• 猫粮", initX1, currentY1, 34);
+  writeText(ctx, "• 猫粮", initX1, currentY1, 56);
   currentY1 += fontHeight2;
-  writeText(ctx, "• 打印纸", initX1, currentY1, 34);
+  writeText(ctx, "• 打印纸", initX1, currentY1, 56);
 
   const initX2 = 1500;
   const initY2 = 1100;

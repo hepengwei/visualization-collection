@@ -85,12 +85,9 @@ export const addFridge = (
   });
   assetManager.materials.set("fridgeGlassMaterial", fridgeGlassMaterial);
 
-  const fridge = createFridge(
-    assetManager,
-    fridgeDoorListRef,
-    mouseRaycasterIntersectObjectsRef,
-  );
+  const fridge = createFridge(assetManager, fridgeDoorListRef);
   pointerControlsIntersetObjectsRef.current.push(fridge);
+  mouseRaycasterIntersectObjectsRef.current.push(fridge);
   fridge.scale.set(1.6, 1.6, 1.6);
   fridge.position.copy(FRIDGE_POSITON);
   scene.add(fridge);
@@ -100,7 +97,6 @@ export const addFridge = (
 const createFridge = (
   assetManager: AssetManager,
   fridgeDoorListRef: MutableRefObject<Group[]>,
-  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   const boxGeometry = assetManager.geometries.get("boxGeometry");
   const fridgeOuterShellMaterial = assetManager.materials.get(
@@ -118,6 +114,7 @@ const createFridge = (
   const fridgeGlassMaterial = assetManager.materials.get("fridgeGlassMaterial");
 
   const fridgeGroup = new Group();
+  fridgeGroup.name = "冰箱";
 
   /** 外壳部分*/
   // 左外壳
@@ -192,7 +189,6 @@ const createFridge = (
     FRIDGE_THICKNESS - FRIDGE_DOOR_THICKNESS / 2,
   );
   fridgeDoorListRef.current.push(topDoubleDoor);
-  mouseRaycasterIntersectObjectsRef.current.push(topDoubleDoor);
   fridgeGroup.add(topDoubleDoor);
   // 下半部分的双开门
   const bottomDoubleDoor = createDoubleDoor(assetManager, BOTTOM_DOOR_HEIGHT);
@@ -203,7 +199,6 @@ const createFridge = (
     FRIDGE_THICKNESS - FRIDGE_DOOR_THICKNESS / 2,
   );
   fridgeDoorListRef.current.push(bottomDoubleDoor);
-  mouseRaycasterIntersectObjectsRef.current.push(bottomDoubleDoor);
   fridgeGroup.add(bottomDoubleDoor);
 
   /**中间和下方的铝合金厚隔板*/
