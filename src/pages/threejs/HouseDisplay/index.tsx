@@ -13,7 +13,6 @@ import {
   Raycaster,
 } from "three";
 import Stats from 'stats.js';
-import { CSS2DRenderer, CSS2DObject } from "three/examples/jsm/renderers/CSS2DRenderer";
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js';
 import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
@@ -43,7 +42,7 @@ import { addCeilingLamp, dynamicOptimizationLampLightRender } from './softDecora
 import { onClickCeilingLampSwitch } from './softDecoration/addCeilingLampSwitch';
 import { onClickTVScreen } from './softDecoration/addTVScreen';
 import { onClickPhoneScreen } from './softDecoration/addPhoneScreen';
-import { addCrosshair, resizeCrosshair, crosshairRender } from './function/addCrosshair';
+import { addCrosshair, crosshairRender } from './function/addCrosshair';
 import addTeaTable from './softDecoration/addTeaTable';
 import { addCurtain, onClickCurtain, curtainAnimationRender } from "./softDecoration/addCurtain";
 import { addFridge, onClickFridgeDoor, fridgeDoorAnimationRender } from "./softDecoration/addFridge";
@@ -79,9 +78,7 @@ const HouseDisplay = () => {
   const groundGlassDoorListRef = useRef<Group[]>([]); // 所有磨砂玻璃门的列表
   const lampListRef = useRef<Group[]>([]); // 所有吊灯的列表
   const lampSwitchListRef = useRef<Group[]>([]); // 所有吊灯开关的列表
-  const labelRendererRef = useRef<CSS2DRenderer | null>(null); // 鼠标准星渲染器
   const raycasterRef = useRef<Raycaster | null>(null); // 鼠标准星射线
-  const reticleRef = useRef<CSS2DObject | null>(null); // 鼠标准星对象
   const mouseRaycasterIntersectObjectsRef = useRef<Object3D[]>([]); // 鼠标射线可接受的检测对象列表
   const mouseRaycasterIntersectedRef = useRef<Object3D | null>(null); // 当前鼠标射线命中的物体
   const curtainListRef = useRef<Group[]>([]); // 所有窗帘的列表
@@ -242,13 +239,7 @@ const HouseDisplay = () => {
       );
 
       // 添加鼠标准星
-      addCrosshair(
-        scene,
-        containerRef.current,
-        labelRendererRef,
-        raycasterRef,
-        reticleRef,
-      );
+      addCrosshair(containerRef.current, raycasterRef);
 
       // 添加茶几
       addTeaTable(scene, assetManager);
@@ -333,16 +324,14 @@ const HouseDisplay = () => {
 
     // 鼠标准星渲染
     crosshairRender(
-      scene,
       camera,
-      labelRendererRef.current,
+      containerRef.current,
       raycasterRef.current,
-      reticleRef.current,
       viewModeRef,
       mousePositionRef,
       mouseRaycasterIntersectObjectsRef,
       outlinePassRef.current,
-      mouseRaycasterIntersectedRef
+      mouseRaycasterIntersectedRef,
     );
 
     // Bloom效果渲染
@@ -387,8 +376,6 @@ const HouseDisplay = () => {
 
   useLayoutEffect(() => {
     resize();
-    // 同时调整 labelRenderer 的大小
-    resizeCrosshair(containerRef.current, labelRendererRef.current);
   }, [menuWidth]);
 
   useEffect(() => {
@@ -469,9 +456,6 @@ const HouseDisplay = () => {
           ? '空格切换模式'
           : isPointerLocked ? 'WASD移动 | 鼠标转动视角 | ESC解锁鼠标 | 空格切换模式' : '点击屏幕解锁鼠标 | 空格切换模式'}
       </div>
-
-      {/* 准星 - 在漫游模式下固定在屏幕中心，否则跟随鼠标 */}
-      <div className={`${styles.crosshair} ${viewMode === 'roaming' ? styles.centered : ''}`} />
       <video
         ref={tvVideoRef}
         id="tvVideo"
