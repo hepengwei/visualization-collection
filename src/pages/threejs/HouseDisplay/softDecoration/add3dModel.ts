@@ -33,8 +33,8 @@ import {
 
 const TABLE_POSITION = new Vector3(
   WALL_34_POSITION_X,
-  0.65,
-  WALL_42_POSITION_Z + 0.2,
+  0.6,
+  WALL_42_POSITION_Z + 0.25,
 );
 const PHONE_POSITION = new Vector3(-0.23, 0.1, -0.12); // 手机位置
 const VASE_POSITION = new Vector3(0, 0.1, 0); // 花瓶位置
@@ -291,7 +291,7 @@ const loadTable = (
       });
 
       table.position.copy(TABLE_POSITION);
-      table.scale.set(3.6, 3.6, 3.6);
+      table.scale.set(3.4, 3.4, 3.4);
       scene.add(table);
 
       // 加载手机
@@ -344,9 +344,9 @@ const loadPhone = (
 
       phone.position.copy(PHONE_POSITION);
       phone.scale.set(
-        0.4 / table.scale.x,
-        0.4 / table.scale.y,
-        0.4 / table.scale.z,
+        0.3 / table.scale.x,
+        0.3 / table.scale.y,
+        0.3 / table.scale.z,
       );
       phone.rotation.x = -Math.PI / 2;
       phone.rotation.z = -(Math.PI * 3) / 4;

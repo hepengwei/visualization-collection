@@ -33,7 +33,7 @@ const GROUND_GLASS_HEIGHT =
   BEAM_POSITION_Y - BEAM_HEIGHT / 2 - FRAME_DEPTH + 0.01; // 磨砂玻璃的高
 const HANDLE_POSITION_Y = 1.5; // 门把手高度
 const HALF_GROUND_GLASS_WIDTH = GROUND_GLASS_WIDTH / 2;
-const MOVE_DISTANCE = FRAME_DEPTH + GROUND_GLASS_WIDTH - 0.2; // 磨砂玻璃门可移动的距离
+const MOVE_DISTANCE = FRAME_DEPTH + GROUND_GLASS_WIDTH - 0.1; // 磨砂玻璃门可移动的距离
 const doorConfigs = [
   // 主卧厕所门
   {

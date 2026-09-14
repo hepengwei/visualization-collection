@@ -44,8 +44,8 @@ import {
   WALL_67_POSITION_Z,
 } from "../hardDecoration/addHouseStructure";
 
-const LAMP_RADIUS = 0.9; // 灯的半径
-const LAMP_THICKNESS = 0.12; // 灯的厚度
+const LAMP_RADIUS = 0.65; // 灯的半径
+const LAMP_THICKNESS = 0.1; // 灯的厚度
 const DYNAMIC_OPTIMIZATION_LAMP_COUNT = 2; // 动态优化吊灯时亮灯的个数
 const ceilingLampY = WALL_HEIGHT - LAMP_THICKNESS / 2 - 0.02;
 const lampConfigList = [
@@ -106,7 +106,7 @@ const lampConfigList = [
       WALL_HEIGHT - LAMP_THICKNESS / 2 - 0.02,
       WALL_19_POSITION_Z,
     ),
-    scale: new Vector3(0.6, 0.6, 0.6),
+    scale: new Vector3(0.5, 0.5, 0.5),
   },
   {
     name: "主卧厕所吊灯",
@@ -115,7 +115,7 @@ const lampConfigList = [
       WALL_HEIGHT - LAMP_THICKNESS / 2 - 0.02,
       WALL_19_POSITION_Z,
     ),
-    scale: new Vector3(0.6, 0.6, 0.6),
+    scale: new Vector3(0.5, 0.5, 0.5),
   },
 ];
 let dynamicOptimizationlampList: Group[] = []; // 动态优化吊灯的列表（动态显示隐藏光源，提高性能）
