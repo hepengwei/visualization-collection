@@ -33,7 +33,7 @@ import {
 
 const TABLE_POSITION = new Vector3(
   WALL_34_POSITION_X,
-  0.7,
+  0.65,
   WALL_42_POSITION_Z + 0.2,
 );
 const PHONE_POSITION = new Vector3(-0.23, 0.1, -0.12); // 手机位置
@@ -100,7 +100,7 @@ const loadTelevisionWall = (
       });
 
       tvWall.position.set(
-        WALL_55_POSITION_X + 0.8,
+        WALL_55_POSITION_X + 0.5,
         1,
         WALL_55_POSITION_Z - 0.4,
       );
@@ -157,11 +157,11 @@ const loadSofa = (scene: Scene, gltfLoader: GLTFLoader) => {
       });
 
       sofa.position.set(
-        WALL_10_POSITION_X - 0.6,
+        WALL_10_POSITION_X - 0.8,
         0.56,
-        WALL_10_POSITION_Z + 1.6,
+        WALL_10_POSITION_Z + 1.4,
       );
-      sofa.scale.set(5, 3.6, 3.6);
+      sofa.scale.set(5, 3.6, 3.2);
       scene.add(sofa);
     },
     (progress) => {
@@ -211,8 +211,8 @@ const loadBeds = (
         }
       });
 
-      bed1.position.set(WALL_1_POSITION_X - 1, 0.9, WALL_1_POSITION_Z + 2.3);
-      bed1.scale.set(4.2, 4.2, 4.2);
+      bed1.position.set(WALL_1_POSITION_X - 1.2, 0.75, WALL_1_POSITION_Z + 1.9);
+      bed1.scale.set(3.6, 3.6, 3.6);
       bed1.rotation.y = -Math.PI / 2;
       scene.add(bed1);
 
@@ -227,8 +227,12 @@ const loadBeds = (
         }
       });
 
-      bed2.position.set(WALL_33_POSITION_X - 0.1, 0.78, WALL_1_POSITION_Z + 2.3);
-      bed2.scale.set(4.2, 3.6, 4);
+      bed2.position.set(
+        WALL_33_POSITION_X - 0.1,
+        0.72,
+        WALL_1_POSITION_Z + 1.8,
+      );
+      bed2.scale.set(3.4, 3.4, 3.4);
       bed2.rotation.y = -Math.PI / 2;
       scene.add(bed2);
 
@@ -243,11 +247,11 @@ const loadBeds = (
       });
 
       bed3.position.set(
-        WALL_55_POSITION_X - 1.3,
-        0.9,
-        WALL_51_POSITION_Z - 2.3,
+        WALL_55_POSITION_X - 1.2,
+        0.72,
+        WALL_51_POSITION_Z - 1.9,
       );
-      bed3.scale.set(4.2, 4.2, 4.2);
+      bed3.scale.set(3.4, 3.4, 3.4);
       bed3.rotation.y = Math.PI / 2; // 向右旋转90度
       scene.add(bed3);
     },
@@ -287,7 +291,7 @@ const loadTable = (
       });
 
       table.position.copy(TABLE_POSITION);
-      table.scale.set(4, 4, 4);
+      table.scale.set(3.6, 3.6, 3.6);
       scene.add(table);
 
       // 加载手机

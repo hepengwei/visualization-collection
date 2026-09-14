@@ -27,11 +27,11 @@ import {
 
 const OPEN_OR_CLOSE_DOOR_DURATION = 800; // 开/关门动画总时长
 const GROUND_GLASS_THICKNESS = 0.04; // 磨砂玻璃的厚度
-const FRAME_DEPTH = 0.1; // 包边的厚度
+const FRAME_DEPTH = 0.04; // 包边的厚度
 const GROUND_GLASS_WIDTH = WALL_14_WIDTH - FRAME_DEPTH * 2 + 0.01; // 磨砂玻璃的宽
 const GROUND_GLASS_HEIGHT =
   BEAM_POSITION_Y - BEAM_HEIGHT / 2 - FRAME_DEPTH + 0.01; // 磨砂玻璃的高
-const HANDLE_POSITION_Y = 1.8; // 门把手高度
+const HANDLE_POSITION_Y = 1.5; // 门把手高度
 const HALF_GROUND_GLASS_WIDTH = GROUND_GLASS_WIDTH / 2;
 const MOVE_DISTANCE = FRAME_DEPTH + GROUND_GLASS_WIDTH - 0.2; // 磨砂玻璃门可移动的距离
 const doorConfigs = [
@@ -183,7 +183,7 @@ const createGroundGlassDoor = (
 
   /** 门把手部分*/
   const doorknob = createDoorknob(assetManager);
-  doorknob.position.set(HALF_GROUND_GLASS_WIDTH - 0.1, HANDLE_POSITION_Y, 0);
+  doorknob.position.set(HALF_GROUND_GLASS_WIDTH - 0.04, HANDLE_POSITION_Y, 0);
   groundGlassDoorGroup.add(doorknob);
 
   return groundGlassDoorGroup;

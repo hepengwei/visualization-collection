@@ -26,7 +26,7 @@ import { addLightingStrip, addBoard, addLightingRoundLight } from "../utils";
 type SuspendedCeilingType = "front" | "back" | "left" | "right";
 
 export const SUSPENDED_CEILING_DEPTH = 0.5; // 吊顶总深度
-const SINGLE_SKIN_PANEL_THICKNESS = 0.05; // 单层板厚度
+const SINGLE_SKIN_PANEL_THICKNESS = 0.04; // 单层板厚度
 const SINGLE_SKIN_PANEL_DEPTH_GAP = 0.06; // 单层板深度的间隔
 const LIGHT_STRIP_WIDTH = 0.1; // 灯带的宽度
 const HOLE_HEIGHT = SUSPENDED_CEILING_HEIGHT - SINGLE_SKIN_PANEL_THICKNESS * 2; // 吊顶的洞高度

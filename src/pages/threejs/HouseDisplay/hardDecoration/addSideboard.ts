@@ -31,12 +31,12 @@ import { SIDEBOARD_DEPTH, SUSPENDED_CEILING_HEIGHT } from "./addHouseStructure";
 export const BOARD_THICKNESS = 0.03; // 木板的厚度
 // 餐边柜的位置
 const SIDEBOARD_POSITON = new Vector3(
-  WALL_34_POSITION_X - 1.4,
+  WALL_34_POSITION_X - 1,
   0,
   WALL_10_POSITION_Z + WALL_THICKNESS / 2,
 );
-const CHEST_COL_COUNT = 8; // 柜子的列数,保证为偶数
-const SIDEBOARD_WIDTH = 6; // 餐边柜柜体的总宽（不包含左右两边多出的部分）
+const CHEST_COL_COUNT = 6; // 柜子的列数,保证为偶数
+const SIDEBOARD_WIDTH = 4; // 餐边柜柜体的总宽（不包含左右两边多出的部分）
 const CHEST_GAP = 0.012; // 柜子之间的缝隙
 const SIDEBOARD_HEIGHT = WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT; // 餐边柜的总高
 const BOARD_COATING_THICKNESS = 0.002; // 木板深灰色涂层的厚度

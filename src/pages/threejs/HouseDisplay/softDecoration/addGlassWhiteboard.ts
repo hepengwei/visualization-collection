@@ -140,7 +140,7 @@ const createWritingTexture = (renderer: WebGLRenderer) => {
 
   const fontHeight1 = 90;
   const fontHeight2 = 70;
-  const initX1 = 360;
+  const initX1 = 220;
 
   writeText(ctx, "好好学习，天天向上", initX1, 600, 160, "#c0392b");
 
@@ -177,8 +177,8 @@ const createWritingTexture = (renderer: WebGLRenderer) => {
   currentY1 += fontHeight2;
   writeText(ctx, "• 打印纸", initX1, currentY1, 56);
 
-  const initX2 = 1500;
-  const initY2 = 1100;
+  const initX2 = 1280;
+  const initY2 = 1200;
   let currentY2 = initY2;
   // 右侧随手涂鸦（用黑+深蓝粗线，确保在磨砂玻璃上清晰可见）
   ctx.lineWidth = 10;
@@ -233,7 +233,7 @@ const createWritingTexture = (renderer: WebGLRenderer) => {
   ctx.strokeStyle = "#c0392b";
   ctx.lineWidth = 6;
   ctx.beginPath();
-  for (let x = initX2 + 150; x < 1950; x += 8) {
+  for (let x = initX2 + 150; x < initX2 + 450; x += 8) {
     const y = initY2 - 100 + Math.sin((x - 1750) * 0.05) * 40;
     if (x === initX2 + 150) ctx.moveTo(x, y);
     else ctx.lineTo(x, y);

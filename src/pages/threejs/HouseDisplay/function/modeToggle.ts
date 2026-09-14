@@ -24,6 +24,10 @@ import {
   CEILING_POSITION_Y,
   CEILING_INIT_POSITION_Y,
 } from "../hardDecoration/addCeiling";
+import {
+  WALL_69_POSITION_X,
+  WALL_55_POSITION_Z,
+} from "../hardDecoration/addHouseStructure";
 import { allSuspendedCeilingVisibleToggle } from "../hardDecoration/addSuspendedCeiling";
 import { allCeilingLampsVisibleToggle } from "../softDecoration/addCeilingLamp";
 
@@ -33,14 +37,14 @@ export type ViewMode = "overview" | "roaming";
 const ROAMING_CONFIG = {
   cameraHeight: 2.2, // 相机离地板的高度（米）
   moveSpeed: 3, // WASD移动速度
-  collisionDistance: 0.5, // 碰撞检测距离（米）
+  collisionDistance: 0.2, // 碰撞检测距离（米）
 };
 
 // 开始漫游模式时相机的位置
 const startRoamingCameraPosition = new Vector3(
-  2.5,
+  WALL_69_POSITION_X,
   ROAMING_CONFIG.cameraHeight,
-  3.2,
+  WALL_55_POSITION_Z,
 );
 
 // 第一人称控制器移动速度
