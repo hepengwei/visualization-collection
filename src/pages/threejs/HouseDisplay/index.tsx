@@ -36,11 +36,12 @@ import { addDoor, onClickDoor, doorAnimationRender } from "./hardDecoration/addD
 import { addGroundGlassDoor, onClickGroundGlassDoor, groundGlassDoorAnimationRender } from './hardDecoration/addGroundGlassDoor';
 import add3dModel from "./softDecoration/add3dModel";
 import addCeiling from "./hardDecoration/addCeiling";
+import addTVBackground from './hardDecoration/addTVBackground';
+import { addTV, onClickTVScreen } from './softDecoration/addTV';
 import addSideboard from './hardDecoration/addSideboard';
 import addShoeCabinet from './hardDecoration/addShoeCabinet';
 import { addCeilingLamp, dynamicOptimizationLampLightRender } from './softDecoration/addCeilingLamp';
 import { onClickCeilingLampSwitch } from './softDecoration/addCeilingLampSwitch';
-import { onClickTVScreen } from './softDecoration/addTVScreen';
 import { onClickPhoneScreen } from './softDecoration/addPhoneScreen';
 import { addCrosshair, crosshairRender } from './function/addCrosshair';
 import addTeaTable from './softDecoration/addTeaTable';
@@ -55,7 +56,7 @@ export type SwitchStatus = 'ON' | 'OFF';
 const showStats = false;
 
 // 初始相机位置
-const initialCameraPosition = new Vector3(0, 32, 0);
+const initialCameraPosition = new Vector3(0, 28, 0);
 const initialCameraTarget = new Vector3(0, 0, 0);
 
 const HouseDisplay = () => {
@@ -158,8 +159,8 @@ const HouseDisplay = () => {
       addHouseStructure(
         scene,
         assetManager,
-        mouseRaycasterIntersectObjectsRef,
         pointerControlsIntersetObjectsRef,
+        mouseRaycasterIntersectObjectsRef,
         false,
       );
 
@@ -171,8 +172,8 @@ const HouseDisplay = () => {
         scene,
         assetManager,
         doorListRef,
-        mouseRaycasterIntersectObjectsRef,
         pointerControlsIntersetObjectsRef,
+        mouseRaycasterIntersectObjectsRef,
       );
 
       // 添加磨砂玻璃门
@@ -180,8 +181,8 @@ const HouseDisplay = () => {
         scene,
         assetManager,
         groundGlassDoorListRef,
-        mouseRaycasterIntersectObjectsRef,
         pointerControlsIntersetObjectsRef,
+        mouseRaycasterIntersectObjectsRef,
       )
 
       // 加载并显示电视墙、沙发、床等模型
@@ -190,20 +191,34 @@ const HouseDisplay = () => {
         assetManager,
         tvVideoRef.current,
         tvScreenRef,
-        phoneVideoRef.current,
-        phoneScreenRef,
         mouseRaycasterIntersectObjectsRef,
       );
 
       // 添加天花板（初始隐藏在天空中）
       addCeiling(scene, assetManager, ceilingRef);
 
+      // 添加电视背景
+      addTVBackground(
+        scene,
+        assetManager,
+        pointerControlsIntersetObjectsRef,
+      )
+
+      // 添加电视
+      addTV(
+        scene,
+        assetManager,
+        pointerControlsIntersetObjectsRef,
+        mouseRaycasterIntersectObjectsRef,
+        tvVideoRef.current,
+      )
+
       // 添加餐边柜
       addSideboard(
         scene,
         assetManager,
-        mouseRaycasterIntersectObjectsRef,
         pointerControlsIntersetObjectsRef,
+        mouseRaycasterIntersectObjectsRef,
       )
 
       // 添加鞋柜
@@ -249,8 +264,8 @@ const HouseDisplay = () => {
         scene,
         assetManager,
         curtainListRef,
-        mouseRaycasterIntersectObjectsRef,
         pointerControlsIntersetObjectsRef,
+        mouseRaycasterIntersectObjectsRef,
       );
 
       // 添加冰箱
@@ -258,8 +273,8 @@ const HouseDisplay = () => {
         scene,
         assetManager,
         fridgeDoorListRef,
+        pointerControlsIntersetObjectsRef,
         mouseRaycasterIntersectObjectsRef,
-        pointerControlsIntersetObjectsRef
       );
 
       // 添加哑光钢化玻璃白板

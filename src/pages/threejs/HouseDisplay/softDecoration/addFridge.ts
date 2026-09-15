@@ -20,7 +20,7 @@ import {
 } from "../hardDecoration/addHouseStructure";
 
 const FRIDGE_POSITON = new Vector3(
-  WALL_34_POSITION_X + 3,
+  WALL_34_POSITION_X + 2.2,
   0,
   WALL_10_POSITION_Z + WALL_THICKNESS / 2,
 ); // 冰箱的位置
@@ -44,8 +44,8 @@ export const addFridge = (
   scene: Scene,
   assetManager: AssetManager,
   fridgeDoorListRef: MutableRefObject<Group[]>,
-  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
   pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
+  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   // 冰箱外壳材质
   const fridgeOuterShellMaterial = new MeshStandardMaterial({
@@ -88,7 +88,7 @@ export const addFridge = (
   const fridge = createFridge(assetManager, fridgeDoorListRef);
   pointerControlsIntersetObjectsRef.current.push(fridge);
   mouseRaycasterIntersectObjectsRef.current.push(fridge);
-  fridge.scale.set(1.6, 1.6, 1.6);
+  fridge.scale.set(1.3, 1.3, 1.3);
   fridge.position.copy(FRIDGE_POSITON);
   scene.add(fridge);
 };

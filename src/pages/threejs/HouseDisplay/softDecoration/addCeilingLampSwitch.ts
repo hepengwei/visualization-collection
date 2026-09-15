@@ -53,7 +53,7 @@ const switchConfigList = [
   {
     name: "餐厅吊灯开关",
     position: new Vector3(
-      WALL_28_POSITION_X + WALL_THICKNESS / 2 + 0.5,
+      WALL_28_POSITION_X + WALL_THICKNESS / 2 + 0.6,
       SWITCH_POSITION_HEIGHT,
       WALL_10_POSITION_Z + WALL_THICKNESS / 2 + BOARD_THICKNESS,
     ),

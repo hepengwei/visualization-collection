@@ -15,7 +15,7 @@ import {
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import addVase from "../softDecoration/addVase";
 import {
-  addBoard,
+  addBox,
   addLightingStrip,
   addRectAreaLight,
   addLightingRoundLight,
@@ -31,12 +31,12 @@ import { SIDEBOARD_DEPTH, SUSPENDED_CEILING_HEIGHT } from "./addHouseStructure";
 export const BOARD_THICKNESS = 0.03; // 木板的厚度
 // 餐边柜的位置
 const SIDEBOARD_POSITON = new Vector3(
-  WALL_34_POSITION_X - 1.4,
+  WALL_34_POSITION_X - 1,
   0,
   WALL_10_POSITION_Z + WALL_THICKNESS / 2,
 );
-const CHEST_COL_COUNT = 8; // 柜子的列数,保证为偶数
-const SIDEBOARD_WIDTH = 6; // 餐边柜柜体的总宽（不包含左右两边多出的部分）
+const CHEST_COL_COUNT = 6; // 柜子的列数,保证为偶数
+const SIDEBOARD_WIDTH = 4; // 餐边柜柜体的总宽（不包含左右两边多出的部分）
 const CHEST_GAP = 0.012; // 柜子之间的缝隙
 const SIDEBOARD_HEIGHT = WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT; // 餐边柜的总高
 const BOARD_COATING_THICKNESS = 0.002; // 木板深灰色涂层的厚度
@@ -96,8 +96,8 @@ const GLASS_THICKNESS = 0.06; // 装饰挡板中间玻璃厚度
 const addSideboard = (
   scene: Scene,
   assetManager: AssetManager,
-  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
   pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
+  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   // 艺术玻璃材质
   const frostedArtGlassMaterial = new MeshPhysicalMaterial({
@@ -130,8 +130,8 @@ const addSideboard = (
 
   const sideboard = createSideboard(assetManager);
   sideboard.name = "餐边柜";
-  mouseRaycasterIntersectObjectsRef.current.push(sideboard);
   pointerControlsIntersetObjectsRef.current.push(sideboard);
+  mouseRaycasterIntersectObjectsRef.current.push(sideboard);
   sideboard.position.copy(SIDEBOARD_POSITON);
   scene.add(sideboard);
 };
@@ -156,7 +156,7 @@ const createSideboard = (assetManager: AssetManager) => {
 
   /** 外壳部分*/
   // 左板
-  addBoard(
+  addBox(
     sideboardGroup,
     assetManager,
     woodBoardLightMaterial,
@@ -168,7 +168,7 @@ const createSideboard = (assetManager: AssetManager) => {
     (SIDEBOARD_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 左板右面的深灰色涂层
-  addBoard(
+  addBox(
     sideboardGroup,
     assetManager,
     woodBoardDarkMaterial,
@@ -180,7 +180,7 @@ const createSideboard = (assetManager: AssetManager) => {
     (SIDEBOARD_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 右板
-  addBoard(
+  addBox(
     sideboardGroup,
     assetManager,
     woodBoardLightMaterial,
@@ -192,7 +192,7 @@ const createSideboard = (assetManager: AssetManager) => {
     (SIDEBOARD_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 右板左面的深灰色涂层
-  addBoard(
+  addBox(
     sideboardGroup,
     assetManager,
     woodBoardDarkMaterial,
@@ -204,7 +204,7 @@ const createSideboard = (assetManager: AssetManager) => {
     (SIDEBOARD_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 顶板
-  addBoard(
+  addBox(
     sideboardGroup,
     assetManager,
     woodBoardLightMaterial,
@@ -216,7 +216,7 @@ const createSideboard = (assetManager: AssetManager) => {
     (SIDEBOARD_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 顶板底面的深灰色涂层
-  addBoard(
+  addBox(
     sideboardGroup,
     assetManager,
     woodBoardDarkMaterial,
@@ -228,7 +228,7 @@ const createSideboard = (assetManager: AssetManager) => {
     (TOP_STORAGE_AREA_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 底板
-  addBoard(
+  addBox(
     sideboardGroup,
     assetManager,
     woodBoardLightMaterial,
@@ -240,7 +240,7 @@ const createSideboard = (assetManager: AssetManager) => {
     (SIDEBOARD_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 底板上面的深灰色涂层
-  addBoard(
+  addBox(
     sideboardGroup,
     assetManager,
     woodBoardDarkMaterial,
@@ -252,7 +252,7 @@ const createSideboard = (assetManager: AssetManager) => {
     (SIDEBOARD_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 背板
-  addBoard(
+  addBox(
     sideboardGroup,
     assetManager,
     woodBoardDarkMaterial,
@@ -265,7 +265,7 @@ const createSideboard = (assetManager: AssetManager) => {
   );
 
   /**餐边柜里面每层横向隔板*/
-  addBoard(
+  addBox(
     sideboardGroup,
     assetManager,
     woodBoardDarkMaterial,
@@ -281,7 +281,7 @@ const createSideboard = (assetManager: AssetManager) => {
       BOARD_THICKNESS / 2,
     (TOP_STORAGE_AREA_DEPTH + BOARD_THICKNESS) / 2,
   );
-  addBoard(
+  addBox(
     sideboardGroup,
     assetManager,
     woodBoardDarkMaterial,
@@ -299,7 +299,7 @@ const createSideboard = (assetManager: AssetManager) => {
       BOARD_THICKNESS / 2,
     (TOP_STORAGE_AREA_DEPTH + BOARD_THICKNESS) / 2,
   );
-  addBoard(
+  addBox(
     sideboardGroup,
     assetManager,
     woodBoardDarkMaterial,
@@ -319,7 +319,7 @@ const createSideboard = (assetManager: AssetManager) => {
       BOARD_THICKNESS / 2,
     (SIDEBOARD_DEPTH + BOARD_THICKNESS) / 2,
   );
-  addBoard(
+  addBox(
     sideboardGroup,
     assetManager,
     woodBoardLightMaterial,
@@ -343,7 +343,7 @@ const createSideboard = (assetManager: AssetManager) => {
     (SIDEBOARD_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 第四层横板上面的深灰色涂层
-  addBoard(
+  addBox(
     sideboardGroup,
     assetManager,
     woodBoardDarkMaterial,
@@ -373,7 +373,7 @@ const createSideboard = (assetManager: AssetManager) => {
     if (i > 0) {
       x += i * (CHEST_GAP + CHEST_WIDTH);
     }
-    addBoard(
+    addBox(
       sideboardGroup,
       assetManager,
       woodBoardLightMaterial,
@@ -396,7 +396,7 @@ const createSideboard = (assetManager: AssetManager) => {
     if (i > 0) {
       x += i * (SECRET_COMPARTENT_WIDTH + BOARD_THICKNESS);
     }
-    addBoard(
+    addBox(
       sideboardGroup,
       assetManager,
       woodBoardDarkMaterial,
@@ -456,7 +456,7 @@ const createSideboard = (assetManager: AssetManager) => {
     if (i > 0) {
       x += i * (CHEST_GAP + DRAWER_WIDTH);
     }
-    addBoard(
+    addBox(
       sideboardGroup,
       assetManager,
       woodBoardLightMaterial,
@@ -481,7 +481,7 @@ const createSideboard = (assetManager: AssetManager) => {
     if (i > 0) {
       x += i * (CHEST_GAP + CHEST_WIDTH);
     }
-    addBoard(
+    addBox(
       sideboardGroup,
       assetManager,
       woodBoardLightMaterial,
@@ -502,7 +502,7 @@ const createSideboard = (assetManager: AssetManager) => {
   decorativeBafflePlate.position.set(-SIDEBOARD_WIDTH / 2, 0, 0);
   sideboardGroup.add(decorativeBafflePlate);
   // 装饰挡板背板
-  addBoard(
+  addBox(
     decorativeBafflePlate,
     assetManager,
     woodBoardLightMaterial,
@@ -515,7 +515,7 @@ const createSideboard = (assetManager: AssetManager) => {
   );
   // 装饰挡板右上方竖板
   const width = DECORATIVE_BAFFLE_PLATE_THICKNESS - BOARD_THICKNESS;
-  addBoard(
+  addBox(
     decorativeBafflePlate,
     assetManager,
     woodBoardLightMaterial,
@@ -527,7 +527,7 @@ const createSideboard = (assetManager: AssetManager) => {
     (SIDEBOARD_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 装饰挡板右下方竖板
-  addBoard(
+  addBox(
     decorativeBafflePlate,
     assetManager,
     woodBoardLightMaterial,
@@ -539,7 +539,7 @@ const createSideboard = (assetManager: AssetManager) => {
     (SIDEBOARD_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 装饰挡板上方横板
-  addBoard(
+  addBox(
     decorativeBafflePlate,
     assetManager,
     woodBoardLightMaterial,
@@ -551,7 +551,7 @@ const createSideboard = (assetManager: AssetManager) => {
     BOARD_THICKNESS + width / 2,
   );
   // 装饰挡板下方横板
-  addBoard(
+  addBox(
     decorativeBafflePlate,
     assetManager,
     woodBoardLightMaterial,
@@ -587,7 +587,7 @@ const createSideboard = (assetManager: AssetManager) => {
     new Vector3(Math.PI / 2, 0, Math.PI / 2),
   );
   // 装饰挡板玻璃的右边
-  addBoard(
+  addBox(
     decorativeBafflePlate,
     assetManager,
     woodBoardLightMaterial,
@@ -600,7 +600,7 @@ const createSideboard = (assetManager: AssetManager) => {
   );
   // 装饰挡板玻璃的上边
   const height = (SIDEBOARD_HEIGHT - GLASS_HEIGHT) / 2;
-  addBoard(
+  addBox(
     decorativeBafflePlate,
     assetManager,
     woodBoardLightMaterial,
@@ -612,7 +612,7 @@ const createSideboard = (assetManager: AssetManager) => {
     DECORATIVE_BAFFLE_PLATE_THICKNESS / 2,
   );
   // 装饰挡板玻璃的下边
-  addBoard(
+  addBox(
     decorativeBafflePlate,
     assetManager,
     woodBoardLightMaterial,
@@ -624,7 +624,7 @@ const createSideboard = (assetManager: AssetManager) => {
     DECORATIVE_BAFFLE_PLATE_THICKNESS / 2,
   );
   // 装饰挡板玻璃的左边
-  addBoard(
+  addBox(
     decorativeBafflePlate,
     assetManager,
     woodBoardLightMaterial,

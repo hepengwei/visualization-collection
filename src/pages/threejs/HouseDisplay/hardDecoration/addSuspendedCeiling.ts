@@ -21,12 +21,12 @@ import {
 } from "./addHouseStructure";
 import { SUSPENDED_CEILING_HEIGHT, SIDEBOARD_DEPTH } from "./addHouseStructure";
 import { CURTAIN_DEPTH } from "../softDecoration/addCurtain";
-import { addLightingStrip, addBoard, addLightingRoundLight } from "../utils";
+import { addLightingStrip, addBox, addLightingRoundLight } from "../utils";
 
 type SuspendedCeilingType = "front" | "back" | "left" | "right";
 
 export const SUSPENDED_CEILING_DEPTH = 0.5; // 吊顶总深度
-const SINGLE_SKIN_PANEL_THICKNESS = 0.05; // 单层板厚度
+const SINGLE_SKIN_PANEL_THICKNESS = 0.04; // 单层板厚度
 const SINGLE_SKIN_PANEL_DEPTH_GAP = 0.06; // 单层板深度的间隔
 const LIGHT_STRIP_WIDTH = 0.1; // 灯带的宽度
 const HOLE_HEIGHT = SUSPENDED_CEILING_HEIGHT - SINGLE_SKIN_PANEL_THICKNESS * 2; // 吊顶的洞高度
@@ -63,7 +63,7 @@ const suspendedCeilingInfoList: [
     WALL_HEIGHT,
     WALL_10_POSITION_Z + WALL_THICKNESS / 2,
     "back",
-    3,
+    4,
   ],
   [
     length2,
@@ -71,7 +71,7 @@ const suspendedCeilingInfoList: [
     WALL_HEIGHT,
     WALL_55_POSITION_Z - WALL_THICKNESS / 2,
     "front",
-    3,
+    4,
   ],
   [
     length1,
@@ -181,7 +181,7 @@ const addSuspendedCeiling = (
   const wallMaterial = assetManager.materials.get("wallMaterial");
   suspendedCeilingBoardInfoList.forEach(
     (item: [number, number, number, number, number, number?]) => {
-      const suspendedCeilingBoard = addBoard(
+      const suspendedCeilingBoard = addBox(
         scene,
         assetManager,
         wallMaterial as MeshStandardMaterial,

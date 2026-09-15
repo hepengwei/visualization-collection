@@ -15,7 +15,6 @@ import {
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
-import { addTVScreen } from "./addTVScreen";
 import { addPhoneScreen } from "./addPhoneScreen";
 import addVase from "./addVase";
 import {
@@ -33,8 +32,8 @@ import {
 
 const TABLE_POSITION = new Vector3(
   WALL_34_POSITION_X,
-  0.7,
-  WALL_42_POSITION_Z + 0.2,
+  0.6,
+  WALL_42_POSITION_Z + 0.25,
 );
 const PHONE_POSITION = new Vector3(-0.23, 0.1, -0.12); // 手机位置
 const VASE_POSITION = new Vector3(0, 0.1, 0); // 花瓶位置
@@ -42,24 +41,12 @@ const VASE_POSITION = new Vector3(0, 0.1, 0); // 花瓶位置
 const add3dModel = (
   scene: Scene,
   assetManager: AssetManager,
-  tvVideo: HTMLVideoElement | null,
-  tvScreenRef: MutableRefObject<Mesh | null>,
   phoneVideo: HTMLVideoElement | null,
   phoneScreenRef: MutableRefObject<Mesh | null>,
   mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   const gltfLoader = new GLTFLoader();
   gltfLoader.setCrossOrigin("anonymous");
-
-  // 加载电视墙
-  loadTelevisionWall(
-    scene,
-    gltfLoader,
-    assetManager,
-    tvVideo,
-    tvScreenRef,
-    mouseRaycasterIntersectObjectsRef,
-  );
 
   // 加载沙发
   loadSofa(scene, gltfLoader);
@@ -75,55 +62,6 @@ const add3dModel = (
     phoneVideo,
     phoneScreenRef,
     mouseRaycasterIntersectObjectsRef,
-  );
-};
-
-// 加载电视墙
-const loadTelevisionWall = (
-  scene: Scene,
-  gltfLoader: GLTFLoader,
-  assetManager: AssetManager,
-  video: HTMLVideoElement | null,
-  tvScreenRef: MutableRefObject<Mesh | null>,
-  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
-) => {
-  gltfLoader.load(
-    "./public/model/televisionWalls.glb",
-    (gltf: GLTF) => {
-      const tvWall = gltf.scene;
-
-      // 遍历模型
-      tvWall.traverse((child: any) => {
-        if (child.isMesh) {
-          child.name = "电视墙";
-        }
-      });
-
-      tvWall.position.set(
-        WALL_55_POSITION_X + 0.8,
-        1,
-        WALL_55_POSITION_Z - 0.4,
-      );
-      tvWall.scale.set(4.6, 4.6, 4.6);
-      tvWall.rotation.y = Math.PI;
-      scene.add(tvWall);
-
-      // 添加电视屏幕，播放视频
-      const tvScreen: Mesh | null = addTVScreen(tvWall, assetManager, video);
-      if (tvScreen) {
-        tvScreenRef.current = tvScreen;
-        mouseRaycasterIntersectObjectsRef.current.push(tvScreen);
-      }
-    },
-    (progress) => {
-      console.log(
-        "电视墙加载进度:",
-        ((progress.loaded / progress.total) * 100).toFixed(2) + "%",
-      );
-    },
-    (error) => {
-      console.error("电视墙模型加载失败:", error);
-    },
   );
 };
 
@@ -157,11 +95,11 @@ const loadSofa = (scene: Scene, gltfLoader: GLTFLoader) => {
       });
 
       sofa.position.set(
-        WALL_10_POSITION_X - 0.6,
-        0.56,
-        WALL_10_POSITION_Z + 1.6,
+        WALL_10_POSITION_X - 0.8,
+        0.54,
+        WALL_10_POSITION_Z + 1.4,
       );
-      sofa.scale.set(5, 3.6, 3.6);
+      sofa.scale.set(5, 3.6, 3.2);
       scene.add(sofa);
     },
     (progress) => {
@@ -211,8 +149,8 @@ const loadBeds = (
         }
       });
 
-      bed1.position.set(WALL_1_POSITION_X - 1, 0.9, WALL_1_POSITION_Z + 2.3);
-      bed1.scale.set(4.2, 4.2, 4.2);
+      bed1.position.set(WALL_1_POSITION_X - 1.2, 0.75, WALL_1_POSITION_Z + 1.9);
+      bed1.scale.set(3.6, 3.6, 3.6);
       bed1.rotation.y = -Math.PI / 2;
       scene.add(bed1);
 
@@ -227,8 +165,12 @@ const loadBeds = (
         }
       });
 
-      bed2.position.set(WALL_33_POSITION_X - 0.1, 0.78, WALL_1_POSITION_Z + 2.3);
-      bed2.scale.set(4.2, 3.6, 4);
+      bed2.position.set(
+        WALL_33_POSITION_X - 0.1,
+        0.72,
+        WALL_1_POSITION_Z + 1.8,
+      );
+      bed2.scale.set(3.4, 3.4, 3.4);
       bed2.rotation.y = -Math.PI / 2;
       scene.add(bed2);
 
@@ -243,11 +185,11 @@ const loadBeds = (
       });
 
       bed3.position.set(
-        WALL_55_POSITION_X - 1.3,
-        0.9,
-        WALL_51_POSITION_Z - 2.3,
+        WALL_55_POSITION_X - 1.2,
+        0.72,
+        WALL_51_POSITION_Z - 1.9,
       );
-      bed3.scale.set(4.2, 4.2, 4.2);
+      bed3.scale.set(3.4, 3.4, 3.4);
       bed3.rotation.y = Math.PI / 2; // 向右旋转90度
       scene.add(bed3);
     },
@@ -287,7 +229,7 @@ const loadTable = (
       });
 
       table.position.copy(TABLE_POSITION);
-      table.scale.set(4, 4, 4);
+      table.scale.set(3.4, 3.4, 3.4);
       scene.add(table);
 
       // 加载手机
@@ -340,9 +282,9 @@ const loadPhone = (
 
       phone.position.copy(PHONE_POSITION);
       phone.scale.set(
-        0.4 / table.scale.x,
-        0.4 / table.scale.y,
-        0.4 / table.scale.z,
+        0.3 / table.scale.x,
+        0.3 / table.scale.y,
+        0.3 / table.scale.z,
       );
       phone.rotation.x = -Math.PI / 2;
       phone.rotation.z = -(Math.PI * 3) / 4;

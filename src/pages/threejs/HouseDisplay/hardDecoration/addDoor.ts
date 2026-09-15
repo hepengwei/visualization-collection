@@ -46,7 +46,7 @@ const DOOR_HEIGHT = BEAM_POSITION_Y - BEAM_HEIGHT / 2 - FRAME_TRIM_WIDTH; // 门
 const DOORKNOB_CYLINDER_RADIUS = 0.012; // 门把手圆柱半径
 const DOORKNOB_CYLINDER_LONG = 0.2; // 门把手圆柱长度
 const DOORKNOB_SPHERE_RADIUS = 0.026; // 门把手圆球半径
-const HANDLE_POSITION_Y = 1.8; // 门把手高度
+const HANDLE_POSITION_Y = 1.5; // 门把手高度
 const HINGE_WIDTH = 0.01; // 合页总厚度（两叶之和）
 const HINGE_HEIGHT = 0.14; // 合页高度（Y方向）
 const HINGE_THICKNESS = DOOR_THICKNESS * 0.7; // 合页深度（Z方向）= 门扇厚度的70%，不突出前后表面
@@ -92,8 +92,8 @@ export const addDoor = (
   scene: Scene,
   assetManager: AssetManager,
   doorListRef: MutableRefObject<Mesh[]>,
-  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
   pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
+  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   // 实木门材质
   const colorMap = generateColorMap(DOOR_COLOR, 512);

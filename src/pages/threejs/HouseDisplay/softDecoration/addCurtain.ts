@@ -23,7 +23,6 @@ import {
   WALL_3_WIDTH,
   WALL_36_WIDTH,
   WALL_42_WIDTH,
-  WALL_45_WIDTH,
   WALL_2_POSITION_X,
   WALL_35_POSITION_X,
   WALL_52_POSITION_X,
@@ -56,7 +55,7 @@ const curtainConfigs = [
       curtainHeight: WALL_HEIGHT, // 窗帘高度
       expandedWidth:
         (WALL_49_POSITION_Z - WALL_9_POSITION_Z - WALL_THICKNESS) / 2, // 窗帘单片半边完全展开后的宽度
-      stackedWidth: WALL_45_WIDTH - 0.3, // 窗帘单片半边完全收起后的宽度
+      stackedWidth: WALL_2_WIDTH, // 窗帘单片半边完全收起后的宽度
       animationDuration: 1400, // 开/关窗帘动画总时长
     },
     curtainType: "voile",
@@ -142,8 +141,8 @@ export const addCurtain = (
   scene: Scene,
   assetManager: AssetManager,
   curtainListRef: MutableRefObject<Group[]>,
-  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
   pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
+  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   // 白纱材质
   const whiteVoileMaterial = new MeshLambertMaterial({

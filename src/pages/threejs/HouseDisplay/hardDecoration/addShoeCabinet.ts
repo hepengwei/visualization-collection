@@ -4,7 +4,7 @@
 import { MutableRefObject } from "react";
 import { Scene, MeshPhysicalMaterial, Group, Vector3, Object3D } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
-import { addBoard, addLightingStrip } from "../utils";
+import { addBox, addLightingStrip } from "../utils";
 import {
   WALL_HEIGHT,
   SUSPENDED_CEILING_HEIGHT,
@@ -20,7 +20,7 @@ const SHOE_CABINET_POSITON = new Vector3(
   WALL_72_POSITION_Z - WALL_THICKNESS / 2 + 0.14,
 ); // 鞋柜的位置
 const CHEST_COL_COUNT = 4; // 柜子的列数,保证为偶数
-const SHOE_CABINET_WIDTH = 2.6; // 鞋柜柜体的总宽
+const SHOE_CABINET_WIDTH = 1.93; // 鞋柜柜体的总宽
 const CHEST_GAP = 0.012; // 柜子之间的缝隙
 const SHOE_CABINET_HEIGHT = WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT; // 鞋柜的总高
 const BOARD_THICKNESS = 0.03; // 木板的厚度
@@ -91,7 +91,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
 
   /** 外壳部分*/
   // 左板
-  addBoard(
+  addBox(
     shoeCabinetGroup,
     assetManager,
     woodBoardLightMaterial,
@@ -103,7 +103,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
     (SHOE_CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 左板右面的深灰色涂层
-  addBoard(
+  addBox(
     shoeCabinetGroup,
     assetManager,
     woodBoardDarkMaterial,
@@ -115,7 +115,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
     (SHOE_CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 右板
-  addBoard(
+  addBox(
     shoeCabinetGroup,
     assetManager,
     woodBoardLightMaterial,
@@ -127,7 +127,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
     (SHOE_CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 右板左面的深灰色涂层
-  addBoard(
+  addBox(
     shoeCabinetGroup,
     assetManager,
     woodBoardDarkMaterial,
@@ -139,7 +139,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
     (SHOE_CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 顶板
-  addBoard(
+  addBox(
     shoeCabinetGroup,
     assetManager,
     woodBoardLightMaterial,
@@ -151,7 +151,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
     (SHOE_CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 顶板底面的深灰色涂层
-  addBoard(
+  addBox(
     shoeCabinetGroup,
     assetManager,
     woodBoardDarkMaterial,
@@ -163,7 +163,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
     (SHOE_CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 背板
-  addBoard(
+  addBox(
     shoeCabinetGroup,
     assetManager,
     woodBoardDarkMaterial,
@@ -176,7 +176,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
   );
 
   /**鞋柜里面每层横向隔板*/
-  addBoard(
+  addBox(
     shoeCabinetGroup,
     assetManager,
     woodBoardDarkMaterial,
@@ -192,7 +192,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
       BOARD_THICKNESS / 2,
     (SHOE_CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
-  addBoard(
+  addBox(
     shoeCabinetGroup,
     assetManager,
     woodBoardDarkMaterial,
@@ -210,7 +210,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
       BOARD_THICKNESS / 2,
     (SHOE_CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
-  addBoard(
+  addBox(
     shoeCabinetGroup,
     assetManager,
     woodBoardLightMaterial,
@@ -233,7 +233,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
     (SHOE_CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 第三层横板上面的深灰色涂层
-  addBoard(
+  addBox(
     shoeCabinetGroup,
     assetManager,
     woodBoardDarkMaterial,
@@ -256,7 +256,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
     (SHOE_CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 第三层横板下面的深灰色涂层
-  addBoard(
+  addBox(
     shoeCabinetGroup,
     assetManager,
     woodBoardDarkMaterial,
@@ -279,7 +279,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
       BOARD_COATING_THICKNESS / 2,
     (SHOE_CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
-  addBoard(
+  addBox(
     shoeCabinetGroup,
     assetManager,
     woodBoardLightMaterial,
@@ -305,7 +305,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
       BOARD_THICKNESS / 2,
     (SHOE_CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
-  addBoard(
+  addBox(
     shoeCabinetGroup,
     assetManager,
     woodBoardDarkMaterial,
@@ -317,7 +317,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
     (SHOE_CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 第四层横板上面的深灰色涂层
-  addBoard(
+  addBox(
     shoeCabinetGroup,
     assetManager,
     woodBoardDarkMaterial,
@@ -339,7 +339,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
     if (i > 0) {
       x += i * (CHEST_GAP + CHEST_WIDTH);
     }
-    addBoard(
+    addBox(
       shoeCabinetGroup,
       assetManager,
       woodBoardLightMaterial,
@@ -359,7 +359,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
     if (i > 0) {
       x += i * (CHEST_GAP + DRAWER_WIDTH);
     }
-    addBoard(
+    addBox(
       shoeCabinetGroup,
       assetManager,
       woodBoardLightMaterial,
@@ -388,7 +388,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
     if (i > 0) {
       x += i * (CHEST_GAP + CHEST_WIDTH);
     }
-    addBoard(
+    addBox(
       shoeCabinetGroup,
       assetManager,
       woodBoardLightMaterial,

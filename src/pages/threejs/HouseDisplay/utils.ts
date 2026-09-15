@@ -120,11 +120,31 @@ export const initAssetManager = (assetManager: AssetManager) => {
     roughness: 0.3,
     metalness: 0.0,
     side: FrontSide,
-    polygonOffset: true, // 启用深度偏移，防止与地砖产生Z-fighting闪烁
+    polygonOffset: true, // 启用深度偏移，防止产生Z-fighting闪烁
     polygonOffsetFactor: 0.1,
     polygonOffsetUnits: 0.1,
   });
   assetManager.materials.set("whitePanelMaterial2", whitePanelMaterial2);
+
+  // 创建黑色玻璃材质
+  const blackGlassMaterial = new MeshPhysicalMaterial({
+    color: 0x0a0a0c, // 极深灰黑，不要纯黑
+    metalness: 0.0, // 玻璃是非金属
+    roughness: 0.2, // 玻璃表面很光滑
+    transparent: true,
+    opacity: 0.75, // 透明度，越小越透明
+    depthWrite: false, // 半透明薄片防深度排序问题
+    thickness: 0.3, // 玻璃厚度，影响折射和焦散感
+    clearcoat: 1.0, // 玻璃表面清漆层
+    clearcoatRoughness: 0.2, // 很光滑
+    reflectivity: 0.5, // 反射强度
+    envMapIntensity: 1.2, // 黑色玻璃反射环境很明显
+    side: DoubleSide, // 双面可见
+    polygonOffset: true, // 启用深度偏移，防止产生Z-fighting闪烁
+    polygonOffsetFactor: 0.5,
+    polygonOffsetUnits: 0.5,
+  });
+  assetManager.materials.set("blackGlassMaterial", blackGlassMaterial);
 };
 
 // 创建实木木板材质
@@ -137,6 +157,7 @@ export const makeWoodBoardMaterial = (color: ColorRepresentation) => {
     sheenRoughness: 0.6,
     clearcoat: 0.25, // 轻微漆面
     clearcoatRoughness: 0.3,
+    envMapIntensity: 0.2, // 木板反射要弱
     flatShading: true, // 关键：每个面用独立法线，光照一致
   });
 };
@@ -660,8 +681,8 @@ export const addRoundLight = (
   parent.add(light.target);
 };
 
-// 创建并添加木板或吊顶板
-export const addBoard = (
+// 创建并添加立方体
+export const addBox = (
   parent: Group | Scene,
   assetManager: AssetManager,
   mat: MeshPhysicalMaterial | MeshStandardMaterial,
@@ -681,6 +702,28 @@ export const addBoard = (
   m.castShadow = true;
   m.receiveShadow = true;
   m.visible = visible;
+  parent.add(m);
+  return m;
+};
+
+// 创建并添加平面
+export const addPlane = (
+  parent: Group | Scene,
+  assetManager: AssetManager,
+  mat: MeshPhysicalMaterial | MeshStandardMaterial,
+  w: number,
+  h: number,
+  x: number,
+  y: number,
+  z: number,
+  rotation = new Vector3(0, 0, 0),
+): Mesh | null => {
+  if (!mat) return null;
+  const planeGeometry = assetManager.geometries.get("planeGeometry");
+  const m = new Mesh(planeGeometry, mat);
+  m.scale.set(w, h);
+  m.position.set(x, y, z);
+  m.rotation.set(rotation.x, rotation.y, rotation.z);
   parent.add(m);
   return m;
 };
