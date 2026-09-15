@@ -363,7 +363,8 @@ const createSideboard = (assetManager: AssetManager) => {
       BOARD_THICKNESS -
       DRAWER_HEIGHT -
       CHEST_GAP -
-      BOARD_COATING_THICKNESS / 2,
+      BOARD_COATING_THICKNESS / 2 +
+      0.01,
     (SIDEBOARD_DEPTH + BOARD_THICKNESS) / 2,
   );
 

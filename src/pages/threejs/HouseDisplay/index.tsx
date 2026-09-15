@@ -56,7 +56,7 @@ export type SwitchStatus = 'ON' | 'OFF';
 const showStats = false;
 
 // 初始相机位置
-const initialCameraPosition = new Vector3(0, 28, 0);
+const initialCameraPosition = new Vector3(0, 26, 0);
 const initialCameraTarget = new Vector3(0, 0, 0);
 
 const HouseDisplay = () => {
@@ -68,7 +68,6 @@ const HouseDisplay = () => {
   const mainComposerRef = useRef<EffectComposer | null>(null);
   const bloomComposerRef = useRef<EffectComposer | null>(null);
   const tvVideoRef = useRef<HTMLVideoElement>(null); // 电视屏幕播放的视频
-  const tvScreenRef = useRef<Mesh | null>(null); // 电视屏幕
   const phoneVideoRef = useRef<HTMLVideoElement>(null); // 手机屏幕播放的视频
   const phoneScreenRef = useRef<Mesh | null>(null); // 手机屏幕
   const outlinePassRef = useRef<OutlinePass | null>(null);
@@ -189,8 +188,8 @@ const HouseDisplay = () => {
       add3dModel(
         scene,
         assetManager,
-        tvVideoRef.current,
-        tvScreenRef,
+        phoneVideoRef.current,
+        phoneScreenRef,
         mouseRaycasterIntersectObjectsRef,
       );
 

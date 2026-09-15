@@ -342,13 +342,14 @@ const createUniformLightTexture = () => {
 };
 
 // 创建并添加吊灯的光源
-const addLampLight = (lampGroup: Group, intensity = 2.2 * Math.PI) => {
+const addLampLight = (lampGroup: Group, intensity = 1.5 * Math.PI) => {
   const lightColor = kelvinToColor(4000); // 色温，值越大颜色越冷
   const light = new PointLight(lightColor, intensity, 30, 1.2);
   light.position.set(0, -LAMP_THICKNESS / 2 - 0.02, 0);
   light.castShadow = true;
   light.shadow.mapSize.set(512, 512);
   light.shadow.bias = -0.0005;
+  light.shadow.normalBias = 0.03;
   light.shadow.camera.near = 0.1;
   light.shadow.camera.far = 10;
 

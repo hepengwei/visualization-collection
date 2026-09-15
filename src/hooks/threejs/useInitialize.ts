@@ -7,6 +7,7 @@ import {
   BufferGeometry,
   Texture,
   Material,
+  PCFSoftShadowMap,
 } from "three";
 import { disposeThreeJsScene } from "utils/threejsUtil";
 
@@ -73,7 +74,7 @@ const useInitialize = (
 
       // 创建相机
       const camera = new PerspectiveCamera(
-        55,
+        60,
         clientWidth / clientHeight,
         0.01,
         1000,
@@ -88,6 +89,7 @@ const useInitialize = (
       const pixelRatio = Math.min(window.devicePixelRatio, 2); // 别超过 2
       renderer.setPixelRatio(pixelRatio);
       renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = PCFSoftShadowMap;
       renderer.outputColorSpace = SRGBColorSpace;
 
       // 将Canvas插入到页面

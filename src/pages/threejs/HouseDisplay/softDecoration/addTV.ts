@@ -154,7 +154,7 @@ const createTVScreen = (
 const createTVLight = () => {
   const light = new RectAreaLight(
     0xffffff, // 颜色（可以随视频平均色动态改）
-    1.5 * Math.PI, //  第二个参数intensity在v0.155版本后必须要乘以Math.PI
+    1 * Math.PI, //  第二个参数intensity在v0.155版本后必须要乘以Math.PI
     TV_WIDTH - TV_SCREEN_PANDDING,
     TV_HEIGHT - TV_SCREEN_PANDDING,
   );
@@ -167,7 +167,7 @@ const createTVLight = () => {
 const createTVProjection = (videoTexture: VideoTexture) => {
   const projection = new SpotLight(
     0xffffff,
-    3 * Math.PI, // 第二个参数intensity在v0.155版本后必须要乘以Math.PI
+    1.5 * Math.PI, // 第二个参数intensity在v0.155版本后必须要乘以Math.PI
     10, // distance
     Math.PI / 8, // angle
     0.5, // penumbra（边缘柔化）

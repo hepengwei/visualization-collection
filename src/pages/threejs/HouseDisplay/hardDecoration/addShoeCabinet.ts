@@ -251,8 +251,7 @@ const createShoeCabinet = (assetManager: AssetManager) => {
       BOARD_THICKNESS -
       CHEST_GAP -
       DRAWER_HEIGHT -
-      CHEST_GAP -
-      BOARD_COATING_THICKNESS / 2,
+      CHEST_GAP,
     (SHOE_CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 第三层横板下面的深灰色涂层

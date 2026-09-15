@@ -108,7 +108,7 @@ export const initAssetManager = (assetManager: AssetManager) => {
     roughness: 0.5,
     metalness: 0.0,
     side: FrontSide,
-    polygonOffset: true, // 启用深度偏移，防止与地砖产生Z-fighting闪烁
+    polygonOffset: true, // 启用深度偏移，防止产生Z-fighting闪烁
     polygonOffsetFactor: 0.1,
     polygonOffsetUnits: 0.1,
   });
@@ -132,7 +132,7 @@ export const initAssetManager = (assetManager: AssetManager) => {
     metalness: 0.0, // 玻璃是非金属
     roughness: 0.2, // 玻璃表面很光滑
     transparent: true,
-    opacity: 0.75, // 透明度，越小越透明
+    opacity: 0.8, // 透明度，越小越透明
     depthWrite: false, // 半透明薄片防深度排序问题
     thickness: 0.3, // 玻璃厚度，影响折射和焦散感
     clearcoat: 1.0, // 玻璃表面清漆层
@@ -141,8 +141,8 @@ export const initAssetManager = (assetManager: AssetManager) => {
     envMapIntensity: 1.2, // 黑色玻璃反射环境很明显
     side: DoubleSide, // 双面可见
     polygonOffset: true, // 启用深度偏移，防止产生Z-fighting闪烁
-    polygonOffsetFactor: 0.5,
-    polygonOffsetUnits: 0.5,
+    polygonOffsetFactor: 0.8,
+    polygonOffsetUnits: 0.8,
   });
   assetManager.materials.set("blackGlassMaterial", blackGlassMaterial);
 };
@@ -159,6 +159,9 @@ export const makeWoodBoardMaterial = (color: ColorRepresentation) => {
     clearcoatRoughness: 0.3,
     envMapIntensity: 0.2, // 木板反射要弱
     flatShading: true, // 关键：每个面用独立法线，光照一致
+    polygonOffset: true, // 启用深度偏移，防止产生Z-fighting闪烁
+    polygonOffsetFactor: 0.2,
+    polygonOffsetUnits: 0.2,
   });
 };
 
