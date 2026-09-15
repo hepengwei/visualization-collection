@@ -446,26 +446,26 @@ export const dynamicOptimizationLampLightRender = (
           }
         }
       }
-      distanceInfoList.forEach(
-        (item: { lamp: Group; dist: number }, index: number) => {
-          if (index < DYNAMIC_OPTIMIZATION_LAMP_COUNT) {
-            // @ts-ignore
-            if (item.lamp.switchStatus === "ON") {
-              item.lamp.traverse((child) => {
-                if (child instanceof PointLight) {
-                  child.visible = true;
-                }
-              });
-            }
-          } else {
+    });
+    distanceInfoList.forEach(
+      (item: { lamp: Group; dist: number }, index: number) => {
+        if (index < DYNAMIC_OPTIMIZATION_LAMP_COUNT) {
+          // @ts-ignore
+          if (item.lamp.switchStatus === "ON") {
             item.lamp.traverse((child) => {
               if (child instanceof PointLight) {
-                child.visible = false;
+                child.visible = true;
               }
             });
           }
-        },
-      );
-    });
+        } else {
+          item.lamp.traverse((child) => {
+            if (child instanceof PointLight) {
+              child.visible = false;
+            }
+          });
+        }
+      },
+    );
   }
 };
