@@ -140,7 +140,7 @@ const createWritingTexture = (renderer: WebGLRenderer) => {
 
   const fontHeight1 = 90;
   const fontHeight2 = 70;
-  const initX1 = 220;
+  const initX1 = 180;
 
   writeText(ctx, "好好学习，天天向上", initX1, 600, 160, "#c0392b");
 
@@ -177,7 +177,7 @@ const createWritingTexture = (renderer: WebGLRenderer) => {
   currentY1 += fontHeight2;
   writeText(ctx, "• 打印纸", initX1, currentY1, 56);
 
-  const initX2 = 1280;
+  const initX2 = 1180;
   const initY2 = 1200;
   let currentY2 = initY2;
   // 右侧随手涂鸦（用黑+深蓝粗线，确保在磨砂玻璃上清晰可见）

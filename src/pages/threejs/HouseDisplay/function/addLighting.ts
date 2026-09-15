@@ -9,17 +9,18 @@ const addLighting = (scene: Scene) => {
   scene.add(ambientLight);
 
   // 主太阳光 - 从左上方（南面）斜照下来，模拟自然阳光（进一步增加强度）
-  const sunLight = new DirectionalLight(0xfffae3, 0.6 * Math.PI); // 暖色调阳光，第二个参数intensity在v0.155版本后必须要乘以Math.PI
+  const sunLight = new DirectionalLight(0xfffae3, 0.5 * Math.PI); // 暖色调阳光，第二个参数intensity在v0.155版本后必须要乘以Math.PI
   sunLight.position.set(-24, 25, 12); // 从左上方照射（左边为南面）（0.8倍缩放）
   sunLight.castShadow = true;
-  sunLight.shadow.mapSize.set(1024, 1024);
-  sunLight.shadow.camera.left = -24;
-  sunLight.shadow.camera.right = 24;
-  sunLight.shadow.camera.top = 24;
-  sunLight.shadow.camera.bottom = -24;
+  sunLight.shadow.mapSize.set(2048, 2048);
+  sunLight.shadow.camera.left = -12;
+  sunLight.shadow.camera.right = 12;
+  sunLight.shadow.camera.top = 12;
+  sunLight.shadow.camera.bottom = -12;
   sunLight.shadow.camera.near = 0.5;
   sunLight.shadow.camera.far = 100;
   sunLight.shadow.bias = -0.0001;
+  sunLight.shadow.normalBias = 0.03;
   scene.add(sunLight);
   scene.add(sunLight.target);
 
@@ -28,13 +29,14 @@ const addLighting = (scene: Scene) => {
   skyLight.position.set(16, 15, -8);
   skyLight.castShadow = true;
   skyLight.shadow.mapSize.set(1024, 1024);
-  skyLight.shadow.camera.left = -24;
-  skyLight.shadow.camera.right = 24;
-  skyLight.shadow.camera.top = 24;
-  skyLight.shadow.camera.bottom = -24;
+  skyLight.shadow.camera.left = -12;
+  skyLight.shadow.camera.right = 12;
+  skyLight.shadow.camera.top = 12;
+  skyLight.shadow.camera.bottom = -12;
   skyLight.shadow.camera.near = 0.5;
   skyLight.shadow.camera.far = 100;
   skyLight.shadow.bias = -0.0001;
+  skyLight.shadow.normalBias = 0.03;
   scene.add(skyLight);
   scene.add(skyLight.target);
 
