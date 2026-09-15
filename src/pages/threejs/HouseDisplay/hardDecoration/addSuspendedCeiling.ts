@@ -21,7 +21,7 @@ import {
 } from "./addHouseStructure";
 import { SUSPENDED_CEILING_HEIGHT, SIDEBOARD_DEPTH } from "./addHouseStructure";
 import { CURTAIN_DEPTH } from "../softDecoration/addCurtain";
-import { addLightingStrip, addBoard, addLightingRoundLight } from "../utils";
+import { addLightingStrip, addBox, addLightingRoundLight } from "../utils";
 
 type SuspendedCeilingType = "front" | "back" | "left" | "right";
 
@@ -63,7 +63,7 @@ const suspendedCeilingInfoList: [
     WALL_HEIGHT,
     WALL_10_POSITION_Z + WALL_THICKNESS / 2,
     "back",
-    3,
+    4,
   ],
   [
     length2,
@@ -71,7 +71,7 @@ const suspendedCeilingInfoList: [
     WALL_HEIGHT,
     WALL_55_POSITION_Z - WALL_THICKNESS / 2,
     "front",
-    3,
+    4,
   ],
   [
     length1,
@@ -181,7 +181,7 @@ const addSuspendedCeiling = (
   const wallMaterial = assetManager.materials.get("wallMaterial");
   suspendedCeilingBoardInfoList.forEach(
     (item: [number, number, number, number, number, number?]) => {
-      const suspendedCeilingBoard = addBoard(
+      const suspendedCeilingBoard = addBox(
         scene,
         assetManager,
         wallMaterial as MeshStandardMaterial,

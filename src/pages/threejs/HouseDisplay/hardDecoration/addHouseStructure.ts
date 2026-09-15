@@ -48,7 +48,7 @@ const NON_FLOOR_TO_CEILING_GLASS_POSITION_Y =
   TALL_GRADE_BEAM_HEIGHT + NON_FLOOR_TO_CEILING_GLASS_HEIGHT / 2; // 非落地玻璃的y位置
 const ALUMINIUM_ALLOY_FRAME_HEIGHT = 0.05; // 玻璃铝合金包边高度
 const ALUMINIUM_ALLOY_FRAME_THICKNESS = 0.12; // 玻璃铝合金包边厚度
-const PASS_EDGE_BINDING_HEIGHT = 0.1; // 垭口包边高度
+export const PASS_EDGE_BINDING_HEIGHT = 0.1; // 垭口包边高度
 const PASS_EDGE_BINDING_THICKNESS = 0.02; // 垭口包边厚度
 
 // 所有墙体参数
@@ -204,18 +204,22 @@ export const WALL_53_POSITION_Z =
   WALL_52_POSITION_Z - WALL_7_WIDTH / 2 - WALL_53_WIDTH / 2;
 const WALL_54_POSITION_Z =
   WALL_53_POSITION_Z - WALL_53_WIDTH / 2 - WALL_2_WIDTH / 2;
-const WALL_55_WIDTH = WALL_51_WIDTH - WALL_THICKNESS;
+export const WALL_55_WIDTH = WALL_51_WIDTH - WALL_THICKNESS;
 export const WALL_55_POSITION_X =
   WALL_52_POSITION_X - WALL_THICKNESS / 2 + WALL_55_WIDTH / 2;
 export const WALL_55_POSITION_Z =
   WALL_54_POSITION_Z - WALL_2_WIDTH / 2 - WALL_THICKNESS / 2;
+export const WALL_56_WIDTH = 0.5;
 export const WALL_56_POSITION_X = WALL_52_POSITION_X + WALL_THICKNESS * 2;
 const WALL_56_POSITION_Z =
-  WALL_55_POSITION_Z - WALL_THICKNESS / 2 - WALL_2_WIDTH / 2;
+  WALL_55_POSITION_Z - WALL_THICKNESS / 2 - WALL_56_WIDTH / 2;
 const WALL_57_POSITION_Z =
   WALL_10_POSITION_Z + WALL_THICKNESS / 2 + WALL_7_WIDTH / 2;
 const WALL_58_WIDTH =
-  WALL_56_POSITION_Z - WALL_2_WIDTH / 2 - WALL_57_POSITION_Z - WALL_7_WIDTH / 2;
+  WALL_56_POSITION_Z -
+  WALL_56_WIDTH / 2 -
+  WALL_57_POSITION_Z -
+  WALL_7_WIDTH / 2;
 export const WALL_58_POSITION_Z =
   WALL_57_POSITION_Z + WALL_7_WIDTH / 2 + WALL_58_WIDTH / 2;
 const WALL_59_WIDTH =
@@ -820,7 +824,7 @@ const wallInfoList: (
   [
     WALL_THICKNESS,
     WALL_HEIGHT,
-    WALL_2_WIDTH,
+    WALL_56_WIDTH,
     WALL_56_POSITION_X,
     WALL_1_POSITION_Y,
     WALL_56_POSITION_Z,
@@ -1161,8 +1165,8 @@ const passEdgeBindingList = [
 const addHouseStructure = (
   scene: Scene,
   assetManager: AssetManager,
-  mouseRaycasterIntersectObjectsRef: RefObject<Object3D[]>,
   pointerControlsIntersetObjectsRef: RefObject<Object3D[]>,
+  mouseRaycasterIntersectObjectsRef: RefObject<Object3D[]>,
   showWallLabel = false,
 ) => {
   // 创建并添加大理石地板
@@ -1172,8 +1176,8 @@ const addHouseStructure = (
   addAllWall(
     scene,
     assetManager,
-    mouseRaycasterIntersectObjectsRef,
     pointerControlsIntersetObjectsRef,
+    mouseRaycasterIntersectObjectsRef,
     showWallLabel,
   );
 
@@ -1181,8 +1185,8 @@ const addHouseStructure = (
   addPassEdgeBinding(
     scene,
     assetManager,
-    mouseRaycasterIntersectObjectsRef,
     pointerControlsIntersetObjectsRef,
+    mouseRaycasterIntersectObjectsRef,
   );
 };
 
@@ -1190,8 +1194,8 @@ const addHouseStructure = (
 const addAllWall = (
   scene: Scene,
   assetManager: AssetManager,
-  mouseRaycasterIntersectObjectsRef: RefObject<Object3D[]>,
   pointerControlsIntersetObjectsRef: RefObject<Object3D[]>,
+  mouseRaycasterIntersectObjectsRef: RefObject<Object3D[]>,
   showWallLabel: boolean,
 ) => {
   const boxGeometry = assetManager.geometries.get("boxGeometry");
@@ -1270,8 +1274,8 @@ const addAllWall = (
     addGlassWindow(
       scene,
       assetManager,
-      mouseRaycasterIntersectObjectsRef,
       pointerControlsIntersetObjectsRef,
+      mouseRaycasterIntersectObjectsRef,
       item[0],
       item[1],
       item[2],
@@ -1516,8 +1520,8 @@ const addWallLabel = (
 const addGlassWindow = (
   scene: Scene,
   assetManager: AssetManager,
-  mouseRaycasterIntersectObjectsRef: RefObject<Object3D[]>,
   pointerControlsIntersetObjectsRef: RefObject<Object3D[]>,
+  mouseRaycasterIntersectObjectsRef: RefObject<Object3D[]>,
   width: number,
   height: number,
   depth: number,
@@ -1533,9 +1537,9 @@ const addGlassWindow = (
   const glassWindow = new Mesh(boxGeometry, glassMaterial);
   glassWindow.name = "玻璃窗";
   glassWindow.scale.set(width, height, depth);
+  pointerControlsIntersetObjectsRef.current?.push(glassWindow);
   // 将玻璃窗加入鼠标射线检测是为了防止隔玻璃高亮了可交互的物体
   mouseRaycasterIntersectObjectsRef.current?.push(glassWindow);
-  pointerControlsIntersetObjectsRef.current?.push(glassWindow);
   glassWindowGroup.add(glassWindow);
 
   // 添加玻璃窗铝合金包边
@@ -1712,8 +1716,8 @@ const addMarbleFloor = (scene: Scene, assetManager: AssetManager) => {
 const addPassEdgeBinding = (
   scene: Scene,
   assetManager: AssetManager,
-  mouseRaycasterIntersectObjectsRef: RefObject<Object3D[]>,
   pointerControlsIntersetObjectsRef: RefObject<Object3D[]>,
+  mouseRaycasterIntersectObjectsRef: RefObject<Object3D[]>,
 ) => {
   const boxGeometry = assetManager.geometries.get("boxGeometry");
   const skirtingLineMaterial = assetManager.materials.get(

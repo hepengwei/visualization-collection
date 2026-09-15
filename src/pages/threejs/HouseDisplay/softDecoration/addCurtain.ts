@@ -141,8 +141,8 @@ export const addCurtain = (
   scene: Scene,
   assetManager: AssetManager,
   curtainListRef: MutableRefObject<Group[]>,
-  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
   pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
+  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   // 白纱材质
   const whiteVoileMaterial = new MeshLambertMaterial({

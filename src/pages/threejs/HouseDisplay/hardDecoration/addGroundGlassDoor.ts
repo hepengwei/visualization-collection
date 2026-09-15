@@ -66,8 +66,8 @@ export const addGroundGlassDoor = (
   scene: Scene,
   assetManager: AssetManager,
   groundGlassDoorListRef: MutableRefObject<Group[]>,
-  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
   pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
+  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   // 磨砂玻璃材质
   const groundGlassMaterial = new MeshPhysicalMaterial({
@@ -107,8 +107,8 @@ export const addGroundGlassDoor = (
       }
     }
     groundGlassDoorListRef.current.push(groundGlassDoor);
-    mouseRaycasterIntersectObjectsRef.current.push(groundGlassDoor);
     pointerControlsIntersetObjectsRef.current.push(groundGlassDoor);
+    mouseRaycasterIntersectObjectsRef.current.push(groundGlassDoor);
     scene.add(groundGlassDoor);
   });
 };

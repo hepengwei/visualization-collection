@@ -92,8 +92,8 @@ export const addDoor = (
   scene: Scene,
   assetManager: AssetManager,
   doorListRef: MutableRefObject<Mesh[]>,
-  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
   pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
+  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   // 实木门材质
   const colorMap = generateColorMap(DOOR_COLOR, 512);

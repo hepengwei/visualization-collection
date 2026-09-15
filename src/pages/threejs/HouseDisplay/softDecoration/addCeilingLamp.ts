@@ -63,7 +63,7 @@ const lampConfigList = [
     position: new Vector3(
       WALL_34_POSITION_X,
       ceilingLampY,
-      WALL_42_POSITION_Z + 0.5,
+      WALL_42_POSITION_Z + 0.45,
     ),
     noNeedDynamicOptimization: true,
   },

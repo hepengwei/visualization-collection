@@ -15,7 +15,6 @@ import {
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import type { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
-import { addTVScreen } from "./addTVScreen";
 import { addPhoneScreen } from "./addPhoneScreen";
 import addVase from "./addVase";
 import {
@@ -42,24 +41,12 @@ const VASE_POSITION = new Vector3(0, 0.1, 0); // 花瓶位置
 const add3dModel = (
   scene: Scene,
   assetManager: AssetManager,
-  tvVideo: HTMLVideoElement | null,
-  tvScreenRef: MutableRefObject<Mesh | null>,
   phoneVideo: HTMLVideoElement | null,
   phoneScreenRef: MutableRefObject<Mesh | null>,
   mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   const gltfLoader = new GLTFLoader();
   gltfLoader.setCrossOrigin("anonymous");
-
-  // 加载电视墙
-  loadTelevisionWall(
-    scene,
-    gltfLoader,
-    assetManager,
-    tvVideo,
-    tvScreenRef,
-    mouseRaycasterIntersectObjectsRef,
-  );
 
   // 加载沙发
   loadSofa(scene, gltfLoader);
@@ -75,55 +62,6 @@ const add3dModel = (
     phoneVideo,
     phoneScreenRef,
     mouseRaycasterIntersectObjectsRef,
-  );
-};
-
-// 加载电视墙
-const loadTelevisionWall = (
-  scene: Scene,
-  gltfLoader: GLTFLoader,
-  assetManager: AssetManager,
-  video: HTMLVideoElement | null,
-  tvScreenRef: MutableRefObject<Mesh | null>,
-  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
-) => {
-  gltfLoader.load(
-    "./public/model/televisionWalls.glb",
-    (gltf: GLTF) => {
-      const tvWall = gltf.scene;
-
-      // 遍历模型
-      tvWall.traverse((child: any) => {
-        if (child.isMesh) {
-          child.name = "电视墙";
-        }
-      });
-
-      tvWall.position.set(
-        WALL_55_POSITION_X + 0.5,
-        1,
-        WALL_55_POSITION_Z - 0.4,
-      );
-      tvWall.scale.set(4.6, 4.6, 4.6);
-      tvWall.rotation.y = Math.PI;
-      scene.add(tvWall);
-
-      // 添加电视屏幕，播放视频
-      const tvScreen: Mesh | null = addTVScreen(tvWall, assetManager, video);
-      if (tvScreen) {
-        tvScreenRef.current = tvScreen;
-        mouseRaycasterIntersectObjectsRef.current.push(tvScreen);
-      }
-    },
-    (progress) => {
-      console.log(
-        "电视墙加载进度:",
-        ((progress.loaded / progress.total) * 100).toFixed(2) + "%",
-      );
-    },
-    (error) => {
-      console.error("电视墙模型加载失败:", error);
-    },
   );
 };
 
@@ -158,7 +96,7 @@ const loadSofa = (scene: Scene, gltfLoader: GLTFLoader) => {
 
       sofa.position.set(
         WALL_10_POSITION_X - 0.8,
-        0.56,
+        0.54,
         WALL_10_POSITION_Z + 1.4,
       );
       sofa.scale.set(5, 3.6, 3.2);

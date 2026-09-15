@@ -19,7 +19,7 @@ import { WALL_10_POSITION_X, WALL_58_POSITION_Z } from "../hardDecoration/addHou
 const TEA_TABLE_POSITION = new Vector3(
   WALL_10_POSITION_X - 0.1,
   0.025,
-  WALL_58_POSITION_Z - 0.8,
+  WALL_58_POSITION_Z - 0.3,
 ); // 茶几位置
 const PANEL_LONG_RIDIUS = 1.8; // 茶几桌面的长半径
 const PANEL_SHORT_RIDIUS = 1.2; // 茶几桌面的短半径
@@ -42,7 +42,7 @@ const addTeaTable = (scene: Scene, assetManager: AssetManager) => {
   teaTableGroup.name = "茶几";
   teaTableGroup.castShadow = true;
   teaTableGroup.receiveShadow = true;
-  teaTableGroup.scale.set(0.7, 0.7, 0.7);
+  teaTableGroup.scale.set(0.6, 0.6, 0.6);
 
   // 圆柱体
   const cylinderGeometry = assetManager.geometries.get("cylinderGeometry");
