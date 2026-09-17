@@ -40,7 +40,7 @@ const GLASS_WHITEBOARD_THICKNESS = 0.01; // 玻璃白板的总厚度
 const GLASS_WHITEBOARD_BG_THICKNESS = 0.002; // 玻璃白板的背景白板的厚度
 const GLASS_THICKNESS =
   GLASS_WHITEBOARD_THICKNESS - GLASS_WHITEBOARD_BG_THICKNESS;
-const GLASS_WHITEBOARD_RADIUS = 0.1; // 圆角半径
+const GLASS_WHITEBOARD_RADIUS = 0.06; // 圆角半径
 const GLASS_WHITEBOARD_POSITION = new Vector3(
   WALL_72_POSITION_X -
     WALL_THICKNESS / 2 -
@@ -64,9 +64,8 @@ const addGlassWhiteboard = (
     color: 0xfafaf7,
     metalness: 0.0,
     roughness: 0.4, // 哑光磨砂
-    transmission: 0.6, // 玻璃透射
-    thickness: 0.012,
-    ior: 1.52,
+    transparent: true,
+    opacity: 0.6,
     clearcoat: 0.6, // 钢化表面清漆层
     clearcoatRoughness: 0.2,
     attenuationColor: new Color(0xe8f0ff),

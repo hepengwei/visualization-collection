@@ -25,6 +25,7 @@ const addVase = (
   parent: Object3D,
   assetManager: AssetManager,
   positon: Vector3,
+  scale?: Vector3,
 ) => {
   const vaseGroup = new Group();
   vaseGroup.name = "花瓶";
@@ -108,11 +109,20 @@ const addVase = (
   }
 
   vaseGroup.position.copy(positon);
-  vaseGroup.scale.set(
-    1 / parent.scale.x,
-    1 / parent.scale.y,
-    1 / parent.scale.z,
-  );
+  if (scale) {
+    vaseGroup.scale.set(
+      scale.x / parent.scale.x,
+      scale.y / parent.scale.y,
+      scale.z / parent.scale.z,
+    );
+  } else {
+    vaseGroup.scale.set(
+      1 / parent.scale.x,
+      1 / parent.scale.y,
+      1 / parent.scale.z,
+    );
+  }
+
   parent.add(vaseGroup);
 };
 

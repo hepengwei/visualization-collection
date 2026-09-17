@@ -129,8 +129,6 @@ const loadBeds = (
     sheen: 1.0, // 边缘柔光强度 0~1
     sheenRoughness: 0.6, // 绒光粗糙度
     sheenColor: new Color(0xffffff),
-    // 薄纱可加
-    transmission: 0.0, // 0.1~0.3 做纱巾
   });
   assetManager.materials.set("blueBedMaterial", blueBedMaterial);
 

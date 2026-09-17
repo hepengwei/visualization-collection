@@ -11,6 +11,7 @@ import {
   Object3D,
   Group,
   Raycaster,
+  RectAreaLight,
 } from "three";
 import Stats from 'stats.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
@@ -48,6 +49,8 @@ import addTeaTable from './softDecoration/addTeaTable';
 import { addCurtain, onClickCurtain, curtainAnimationRender } from "./softDecoration/addCurtain";
 import { addFridge, onClickFridgeDoor, fridgeDoorAnimationRender } from "./softDecoration/addFridge";
 import addGlassWhiteboard from "./softDecoration/addGlassWhiteboard";
+import addDecorateBackgroundPanel from './softDecoration/addDecorateBackgroundPanel';
+import { dynamicOptimizationLightingStripRender } from './function/dynamicOptimizationLightingStripRender';
 import styles from "./index.module.scss";
 
 export type SwitchStatus = 'ON' | 'OFF';
@@ -83,6 +86,7 @@ const HouseDisplay = () => {
   const mouseRaycasterIntersectedRef = useRef<Object3D | null>(null); // 当前鼠标射线命中的物体
   const curtainListRef = useRef<Group[]>([]); // 所有窗帘的列表
   const fridgeDoorListRef = useRef<Group[]>([]); // 冰箱门的列表
+  const lightingStripLightMapRef = useRef<Record<string, RectAreaLight[]>>({}); // 所有要进行动态控制的灯带的光(按不同的物件划分不同的数组)
   const statsRef1 = useRef<Stats | null>(null);
   const statsRef2 = useRef<Stats | null>(null);
   const statsRef3 = useRef<Stats | null>(null);
@@ -201,6 +205,7 @@ const HouseDisplay = () => {
         scene,
         assetManager,
         pointerControlsIntersetObjectsRef,
+        lightingStripLightMapRef,
       )
 
       // 添加电视
@@ -218,6 +223,7 @@ const HouseDisplay = () => {
         assetManager,
         pointerControlsIntersetObjectsRef,
         mouseRaycasterIntersectObjectsRef,
+        lightingStripLightMapRef,
       )
 
       // 添加鞋柜
@@ -225,6 +231,7 @@ const HouseDisplay = () => {
         scene,
         assetManager,
         pointerControlsIntersetObjectsRef,
+        lightingStripLightMapRef,
       )
 
       // 添加所有房间吊灯
@@ -250,6 +257,7 @@ const HouseDisplay = () => {
         suspendedCeilingListRef.current,
         lampListRef.current,
         lampSwitchListRef.current,
+        lightingStripLightMapRef.current,
       );
 
       // 添加鼠标准星
@@ -278,6 +286,9 @@ const HouseDisplay = () => {
 
       // 添加哑光钢化玻璃白板
       addGlassWhiteboard(scene, renderer, assetManager, pointerControlsIntersetObjectsRef);
+
+      // 添加装饰背景板
+      addDecorateBackgroundPanel(scene, assetManager, pointerControlsIntersetObjectsRef, lightingStripLightMapRef);
 
       // 启用双后处理器架构
       useDualComposer(
@@ -330,11 +341,14 @@ const HouseDisplay = () => {
       orbitControlsRef.current.update();
     }
 
-    // 漫游模式下第一人称控制器和摄像机移动过程渲染
+    // 漫游模式下第一人称控制器和相机移动过程渲染
     pointerControlsMoveRender(camera, animatingRef, viewModeRef, pointerControlsRef, pointerControlsIntersetObjectsRef.current, prevTimeRef)
 
-    // 漫游模式下，实时计算距离摄像机最近的n个吊灯，打开吊灯光源，其他则关闭（客厅和餐厅吊灯除外）
+    // 漫游模式下，实时计算距离相机最近的n个吊灯，打开吊灯光源，其他则关闭（客厅和餐厅吊灯除外）
     dynamicOptimizationLampLightRender(camera, animatingRef, viewModeRef);
+
+    // 漫游模式下，根据相机位置实时计算，打开或关闭灯带光源
+    dynamicOptimizationLightingStripRender(lightingStripLightMapRef.current, camera, animatingRef, viewModeRef);
 
     // 鼠标准星渲染
     crosshairRender(
@@ -449,6 +463,7 @@ const HouseDisplay = () => {
             suspendedCeilingListRef.current,
             lampListRef.current,
             lampSwitchListRef.current,
+            lightingStripLightMapRef.current,
           )
         }
         tabIndex={-1}

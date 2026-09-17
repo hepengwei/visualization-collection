@@ -162,8 +162,6 @@ export const addCurtain = (
     color: 0x6b7280, // 藏青色
     roughness: 0.85, // 布料不是镜子，给高粗糙
     metalness: 0.0, // 织物非金属
-    transmission: 0, // 0 = 完全不透明
-    transparent: false,
     // —— 布料质感灵魂：sheen 模拟经纬微纤维边缘光 ——
     sheen: 1.0, // 开到 1，绒布/棉布都靠它
     sheenRoughness: 0.9, // 越大越哑光蓬松，越小越像缎面

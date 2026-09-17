@@ -17,6 +17,7 @@ import {
   Object3D,
   Group,
   Mesh,
+  RectAreaLight,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls";
@@ -30,6 +31,7 @@ import {
 } from "../hardDecoration/addHouseStructure";
 import { allSuspendedCeilingVisibleToggle } from "../hardDecoration/addSuspendedCeiling";
 import { allCeilingLampsVisibleToggle } from "../softDecoration/addCeilingLamp";
+import { hideAllLightingStripLight } from "./dynamicOptimizationLightingStripRender";
 
 export type ViewMode = "overview" | "roaming";
 
@@ -209,6 +211,7 @@ export const initModeToggle = (
   suspendedCeilingList: (Group | Mesh)[],
   lampList: Group[],
   lampSwitchList: Group[],
+  lightingStripLightMap: Record<string, RectAreaLight[]>,
 ) => {
   // ===== 第一人称控制器(用于漫游模式) =====
   // 使用容器元素而不是renderer.domElement，避免与OrbitControls冲突
@@ -267,6 +270,7 @@ export const initModeToggle = (
           suspendedCeilingList,
           lampList,
           lampSwitchList,
+          lightingStripLightMap,
         );
         break;
     }
@@ -514,6 +518,7 @@ export const handleModeToggle = (
   suspendedCeilingList: (Group | Mesh)[],
   lampList: Group[],
   lampSwitchList: Group[],
+  lightingStripLightMap: Record<string, RectAreaLight[]>,
 ) => {
   e?.currentTarget?.blur(); // 点击后立即失焦，避免按下空格或回车键时触发点击事件（由于HTML标准的可访问性特性的存在）
   e?.stopPropagation(); // 阻止事件冒泡
@@ -546,6 +551,8 @@ export const handleModeToggle = (
     allSuspendedCeilingVisibleToggle?.(suspendedCeilingList, false);
     // 将所有吊灯隐藏
     allCeilingLampsVisibleToggle?.(lampList, lampSwitchList, false);
+    // 将所有灯带的光源隐藏(装饰背景板除外)
+    hideAllLightingStripLight(lightingStripLightMap);
     // 重置移动状态
     moveState = {
       forward: false,

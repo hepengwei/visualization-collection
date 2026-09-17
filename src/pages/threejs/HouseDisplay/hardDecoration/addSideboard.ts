@@ -11,6 +11,7 @@ import {
   Object3D,
   Color,
   DoubleSide,
+  RectAreaLight,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import addVase from "../softDecoration/addVase";
@@ -27,6 +28,7 @@ import {
   WALL_34_POSITION_X,
 } from "./addHouseStructure";
 import { SIDEBOARD_DEPTH, SUSPENDED_CEILING_HEIGHT } from "./addHouseStructure";
+import { RECEIVE_SELF_KEY } from "constants/common";
 
 export const BOARD_THICKNESS = 0.03; // 木板的厚度
 // 餐边柜的位置
@@ -98,6 +100,7 @@ const addSideboard = (
   assetManager: AssetManager,
   pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
   mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
+  lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
 ) => {
   // 艺术玻璃材质
   const frostedArtGlassMaterial = new MeshPhysicalMaterial({
@@ -105,7 +108,7 @@ const addSideboard = (
     metalness: 0.0,
     roughness: 0.35,
     // —— 半透明核心 ——
-    transmission: 0.85,
+    transmission: 0.85, // 这个必须要
     thickness: 0.9,
     ior: 1.52,
     attenuationColor: new Color(0x4f9bd9),
@@ -128,7 +131,7 @@ const addSideboard = (
     frostedArtGlassMaterial,
   );
 
-  const sideboard = createSideboard(assetManager);
+  const sideboard = createSideboard(assetManager, lightingStripLightMapRef);
   sideboard.name = "餐边柜";
   pointerControlsIntersetObjectsRef.current.push(sideboard);
   mouseRaycasterIntersectObjectsRef.current.push(sideboard);
@@ -137,7 +140,10 @@ const addSideboard = (
 };
 
 // 创建餐边柜
-const createSideboard = (assetManager: AssetManager) => {
+const createSideboard = (
+  assetManager: AssetManager,
+  lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
+) => {
   const boxGeometry = assetManager.geometries.get("boxGeometry");
   // 灰白色木板材质
   const woodBoardLightMaterial = assetManager.materials.get(
@@ -417,7 +423,8 @@ const createSideboard = (assetManager: AssetManager) => {
   }
 
   /**第二层和第三层置物区添加发光灯带*/
-  addLightingStrip(
+  const lightList: RectAreaLight[] = [];
+  const light1 = addLightingStrip(
     sideboardGroup,
     assetManager,
     SIDEBOARD_WIDTH - BOARD_THICKNESS * 2,
@@ -431,8 +438,10 @@ const createSideboard = (assetManager: AssetManager) => {
       BOARD_THICKNESS -
       0.001,
     BOARD_THICKNESS + LIGHTING_STRIP_HEIGHT / 2 + 0.1,
+    false,
   );
-  addLightingStrip(
+  light1 && lightList.push(light1);
+  const light2 = addLightingStrip(
     sideboardGroup,
     assetManager,
     SIDEBOARD_WIDTH - BOARD_THICKNESS * 2,
@@ -448,7 +457,10 @@ const createSideboard = (assetManager: AssetManager) => {
       BOARD_THICKNESS -
       0.001,
     BOARD_THICKNESS + LIGHTING_STRIP_HEIGHT / 2 + 0.1,
+    false,
   );
+  light2 && lightList.push(light2);
+  lightingStripLightMapRef.current.sideboard = lightList;
 
   /**第四层抽屉门*/
   for (let i = 0; i < CHEST_COL_COUNT / 2; i++) {

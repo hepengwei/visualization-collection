@@ -118,7 +118,7 @@ const lampConfigList = [
     scale: new Vector3(0.5, 0.5, 0.5),
   },
 ];
-let dynamicOptimizationlampList: Group[] = []; // 动态优化吊灯的列表（动态显示隐藏光源，提高性能）
+let dynamicOptimizationLampList: Group[] = []; // 动态优化吊灯的列表（动态显示隐藏光源，提高性能）
 
 export const addCeilingLamp = (
   scene: Scene,
@@ -127,7 +127,7 @@ export const addCeilingLamp = (
   lampSwitchListRef: MutableRefObject<Group[]>,
   mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
-  dynamicOptimizationlampList = [];
+  dynamicOptimizationLampList = [];
 
   // 吊灯底部圆环平面
   const ceilingLampRingGeometry = new RingGeometry(
@@ -220,7 +220,7 @@ export const addCeilingLamp = (
     }
     lampListRef.current.push(lamp);
     if (!noNeedDynamicOptimization) {
-      dynamicOptimizationlampList.push(lamp);
+      dynamicOptimizationLampList.push(lamp);
     }
     scene.add(lamp);
   });
@@ -342,9 +342,9 @@ const createUniformLightTexture = () => {
 };
 
 // 创建并添加吊灯的光源
-const addLampLight = (lampGroup: Group, intensity = 1.5 * Math.PI) => {
+const addLampLight = (lampGroup: Group, intensity = 1.8 * Math.PI) => {
   const lightColor = kelvinToColor(4000); // 色温，值越大颜色越冷
-  const light = new PointLight(lightColor, intensity, 30, 1.2);
+  const light = new PointLight(lightColor, intensity, 10, 1.2);
   light.position.set(0, -LAMP_THICKNESS / 2 - 0.02, 0);
   light.castShadow = true;
   light.shadow.mapSize.set(512, 512);
@@ -421,7 +421,7 @@ export const ceilingLampSwitchStatusToggle = (
   });
 };
 
-// 漫游模式下，实时计算距离摄像机最近的n个吊灯，打开吊灯光源，其他则关闭（客厅和餐厅吊灯除外）
+// 漫游模式下，实时计算距离相机最近的n个吊灯，打开吊灯光源，其他则关闭（客厅和餐厅吊灯除外）
 // 为了解决如果当前场景中参与阴影计算的光源太多，则模型会不显示的问题，提高性能
 export const dynamicOptimizationLampLightRender = (
   camera: PerspectiveCamera,
@@ -431,7 +431,7 @@ export const dynamicOptimizationLampLightRender = (
   if (viewModeRef.current === "roaming" && !animatingRef.current) {
     const cameraPos = camera.position;
     const distanceInfoList: { lamp: Group; dist: number }[] = [];
-    dynamicOptimizationlampList.forEach((lamp: Group) => {
+    dynamicOptimizationLampList.forEach((lamp: Group) => {
       const lampPos = lamp.position;
       const dist = cameraPos.distanceTo(lampPos);
       if (distanceInfoList.length === 0) {

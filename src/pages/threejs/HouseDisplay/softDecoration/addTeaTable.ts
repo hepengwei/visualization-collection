@@ -14,7 +14,10 @@ import {
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import addVase from "./addVase";
 import { generateEllipticalTorusGeometry } from "../utils";
-import { WALL_10_POSITION_X, WALL_58_POSITION_Z } from "../hardDecoration/addHouseStructure";
+import {
+  WALL_10_POSITION_X,
+  WALL_58_POSITION_Z,
+} from "../hardDecoration/addHouseStructure";
 
 const TEA_TABLE_POSITION = new Vector3(
   WALL_10_POSITION_X - 0.1,
@@ -93,9 +96,6 @@ const addTeaTable = (scene: Scene, assetManager: AssetManager) => {
     color: 0xffffff,
     roughness: 0.03,
     metalness: 0,
-    transmission: 0.92,
-    thickness: 0.8,
-    ior: 1.5,
     transparent: true,
     opacity: 0.25,
   });
