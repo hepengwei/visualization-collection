@@ -10,6 +10,7 @@ import {
   Vector3,
   Object3D,
   FrontSide,
+  RectAreaLight,
 } from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
 import type { AssetManager } from "hooks/threejs/useInitialize";
@@ -61,18 +62,25 @@ const addTVBackground = (
   scene: Scene,
   assetManager: AssetManager,
   pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
+  lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
 ) => {
-  const TVBackground = createTVBackground(assetManager);
-  TVBackground.name = "电视背景";
-  pointerControlsIntersetObjectsRef.current.push(TVBackground);
-  TVBackground.rotation.y = Math.PI;
-  TVBackground.position.copy(TV_BACKGROUND_POSITON);
-  scene.add(TVBackground);
+  const tvBackground = createTVBackground(
+    assetManager,
+    lightingStripLightMapRef,
+  );
+  tvBackground.name = "电视背景";
+  pointerControlsIntersetObjectsRef.current.push(tvBackground);
+  tvBackground.rotation.y = Math.PI;
+  tvBackground.position.copy(TV_BACKGROUND_POSITON);
+  scene.add(tvBackground);
 };
 
 // 创建电视背景
-const createTVBackground = (assetManager: AssetManager) => {
-  const TVBackgroundGroup = new Group();
+const createTVBackground = (
+  assetManager: AssetManager,
+  lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
+) => {
+  const tvBackgroundGroup = new Group();
   // 木格栅
   const woodenGrating = createWoodenGrating(assetManager);
   woodenGrating.position.set(
@@ -80,15 +88,18 @@ const createTVBackground = (assetManager: AssetManager) => {
     TV_BACKGROUND_HEIGHT / 2,
     PROTUBERANT_WOODEN_STRIP_DEPTH / 2,
   );
-  TVBackgroundGroup.add(woodenGrating);
+  tvBackgroundGroup.add(woodenGrating);
   // 右边柜
-  const rightCabinet = createRightCabinet(assetManager);
+  const rightCabinet = createRightCabinet(
+    assetManager,
+    lightingStripLightMapRef,
+  );
   rightCabinet.position.set(
     TV_BACKGROUND_WIDTH / 2 - RIGHT_CABINET_WIDTH / 2,
     TV_BACKGROUND_HEIGHT / 2,
     TV_BACKGROUND_DEPTH / 2,
   );
-  TVBackgroundGroup.add(rightCabinet);
+  tvBackgroundGroup.add(rightCabinet);
   // 落地柜
   const baseCabinet = createBaseCabinet(assetManager);
   baseCabinet.position.set(
@@ -96,9 +107,9 @@ const createTVBackground = (assetManager: AssetManager) => {
     BASE_CABINET_HEIGHT / 2,
     TV_BACKGROUND_DEPTH / 2,
   );
-  TVBackgroundGroup.add(baseCabinet);
+  tvBackgroundGroup.add(baseCabinet);
 
-  return TVBackgroundGroup;
+  return tvBackgroundGroup;
 };
 
 // 创建木格栅
@@ -152,7 +163,10 @@ const createWoodenGrating = (assetManager: AssetManager) => {
 };
 
 // 创建右边柜
-const createRightCabinet = (assetManager: AssetManager) => {
+const createRightCabinet = (
+  assetManager: AssetManager,
+  lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
+) => {
   // 灰白色木板材质
   const woodBoardLightMaterial = assetManager.materials.get(
     "woodBoardLightMaterial",
@@ -205,6 +219,7 @@ const createRightCabinet = (assetManager: AssetManager) => {
   );
 
   // 所有横板(包括顶板和底板)
+  const lightList: RectAreaLight[] = [];
   for (let i = 0; i < CHEST_COUNT + 1; i++) {
     const y =
       TV_BACKGROUND_HEIGHT / 2 -
@@ -223,7 +238,7 @@ const createRightCabinet = (assetManager: AssetManager) => {
     );
     if (i < CHEST_COUNT) {
       // 添加灯带
-      addLightingStrip(
+      const light = addLightingStrip(
         rightCabinetGroup,
         assetManager,
         RIGHT_CABINET_WIDTH - BOARD_THICKNESS * 2,
@@ -234,11 +249,14 @@ const createRightCabinet = (assetManager: AssetManager) => {
           BOARD_THICKNESS +
           LIGHTING_STRIP_HEIGHT / 2 +
           0.1,
+        false,
         undefined,
-        0 * Math.PI,
+        2 * Math.PI,
       );
+      light && lightList.push(light);
     }
   }
+  lightingStripLightMapRef.current.tvBackground = lightList;
 
   // 黑色玻璃门
   addBox(

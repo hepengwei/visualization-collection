@@ -280,6 +280,7 @@ const addSingleSuspendedCeiling = (
     0,
     -HOLE_HEIGHT + 0.02,
     HOLE_DEPTH + LIGHT_STRIP_WIDTH / 2,
+    true,
     new Vector3(-Math.PI / 2, 0, 0), // 面向天花板
     0.3 * Math.PI,
   );

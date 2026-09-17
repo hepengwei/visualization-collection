@@ -2,7 +2,14 @@
  * 添加鞋柜
  */
 import { MutableRefObject } from "react";
-import { Scene, MeshPhysicalMaterial, Group, Vector3, Object3D } from "three";
+import {
+  Scene,
+  MeshPhysicalMaterial,
+  Group,
+  Vector3,
+  Object3D,
+  RectAreaLight,
+} from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import { addBox, addLightingStrip } from "../utils";
 import {
@@ -67,8 +74,9 @@ const addShoeCabinet = (
   scene: Scene,
   assetManager: AssetManager,
   pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
+  lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
 ) => {
-  const shoeCabinet = createShoeCabinet(assetManager);
+  const shoeCabinet = createShoeCabinet(assetManager, lightingStripLightMapRef);
   shoeCabinet.name = "鞋柜";
   pointerControlsIntersetObjectsRef.current.push(shoeCabinet);
   shoeCabinet.rotation.y = -Math.PI / 2;
@@ -77,7 +85,10 @@ const addShoeCabinet = (
 };
 
 // 创建鞋柜
-const createShoeCabinet = (assetManager: AssetManager) => {
+const createShoeCabinet = (
+  assetManager: AssetManager,
+  lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
+) => {
   // 灰白色木板材质
   const woodBoardLightMaterial = assetManager.materials.get(
     "woodBoardLightMaterial",
@@ -405,7 +416,8 @@ const createShoeCabinet = (assetManager: AssetManager) => {
   }
 
   /**第二层置物区添加发光灯带*/
-  addLightingStrip(
+  const lightList: RectAreaLight[] = [];
+  const light1 = addLightingStrip(
     shoeCabinetGroup,
     assetManager,
     SHOE_CABINET_WIDTH - BOARD_THICKNESS * 2,
@@ -419,9 +431,11 @@ const createShoeCabinet = (assetManager: AssetManager) => {
       BOARD_THICKNESS -
       0.001,
     BOARD_THICKNESS + LIGHTING_STRIP_HEIGHT / 2 + 0.1,
+    false,
   );
+  light1 && lightList.push(light1);
   /**第五层和第六层鞋区添加发光灯带*/
-  addLightingStrip(
+  const light2 = addLightingStrip(
     shoeCabinetGroup,
     assetManager,
     SHOE_CABINET_WIDTH - BOARD_THICKNESS * 2,
@@ -429,8 +443,10 @@ const createShoeCabinet = (assetManager: AssetManager) => {
     0,
     PUT_SHOE_AREA_HEIGHT2 + PUT_SHOE_AREA_HEIGHT + BOARD_THICKNESS - 0.001,
     BOARD_THICKNESS + LIGHTING_STRIP_HEIGHT / 2 + 0.1,
+    false,
   );
-  addLightingStrip(
+  light2 && lightList.push(light2);
+  const light3 = addLightingStrip(
     shoeCabinetGroup,
     assetManager,
     SHOE_CABINET_WIDTH - BOARD_THICKNESS * 2,
@@ -438,7 +454,10 @@ const createShoeCabinet = (assetManager: AssetManager) => {
     0,
     PUT_SHOE_AREA_HEIGHT2 - 0.001,
     BOARD_THICKNESS + LIGHTING_STRIP_HEIGHT / 2 + 0.1,
+    false,
   );
+  light3 && lightList.push(light3);
+  lightingStripLightMapRef.current.shoeCabinet = lightList;
 
   return shoeCabinetGroup;
 };

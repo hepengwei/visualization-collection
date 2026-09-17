@@ -655,8 +655,9 @@ export const addLightingStrip = (
   x: number,
   y: number,
   z: number,
+  lightVisible = true, // 灯光默认显示还是隐藏
   rotation = new Vector3(Math.PI / 2, 0, 0), // 默认面向地面
-  intensity = 0,
+  intensity = 1.5 * Math.PI,
 ) => {
   const planeGeometry = assetManager.geometries.get("planeGeometry");
   const whitePanelMaterial = assetManager.materials.get("whitePanelMaterial");
@@ -668,13 +669,14 @@ export const addLightingStrip = (
   parent.add(lightingStrip);
   if (intensity > 0) {
     // 添加发光灯带的光源
-    addRectAreaLight(
+    return addRectAreaLight(
       parent,
       w,
       h,
       x,
       rotation.x < 0 ? y + 0.01 : y - 0.01,
       z,
+      lightVisible,
       new Vector3(-rotation.x, rotation.y, rotation.z),
       intensity,
     );
@@ -689,6 +691,7 @@ export const addRectAreaLight = (
   x: number,
   y: number,
   z: number,
+  visible: boolean = true,
   rotation?: Vector3,
   intensity = 1.5 * Math.PI,
 ) => {
@@ -704,7 +707,9 @@ export const addRectAreaLight = (
     light.rotation.y = rotation.y;
     light.rotation.z = rotation.z;
   }
+  light.visible = visible;
   parent.add(light);
+  return light;
 };
 
 // 创建并添加圆形射灯
@@ -886,6 +891,7 @@ export const addCircleLightingStrip = (
     new Euler(rotation.x, rotation.y, rotation.z),
   );
 
+  const lightList: RectAreaLight[] = [];
   for (let i = 0; i < count; i++) {
     const t = (i + 0.5) / count;
     const p = curve.getPointAt(t);
@@ -915,8 +921,11 @@ export const addCircleLightingStrip = (
     const combinedMatrix = meshRotMatrix.clone().multiply(lightRotMatrix);
     light.quaternion.setFromRotationMatrix(combinedMatrix);
 
+    lightList.push(light);
     parent.add(light);
   }
+
+  return lightList;
 };
 
 //  根据CatmullRomCurve3这个3D曲线来构建一条曲面刚体

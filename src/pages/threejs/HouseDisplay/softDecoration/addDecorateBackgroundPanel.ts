@@ -9,7 +9,7 @@ import {
   Group,
   Vector3,
   Object3D,
-  FrontSide,
+  RectAreaLight,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import {
@@ -57,8 +57,12 @@ const addDecorateBackgroundPanel = (
   scene: Scene,
   assetManager: AssetManager,
   pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
+  lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
 ) => {
-  const decorateBackgroundPanel = createDecorateBackgroundPanel(assetManager);
+  const decorateBackgroundPanel = createDecorateBackgroundPanel(
+    assetManager,
+    lightingStripLightMapRef,
+  );
   pointerControlsIntersetObjectsRef.current.push(decorateBackgroundPanel);
   decorateBackgroundPanel.position.copy(TV_BACKGROUND_POSITON);
   scene.add(decorateBackgroundPanel);
@@ -80,7 +84,10 @@ const addDecorateBackgroundPanel = (
 };
 
 // 创建装饰背景板
-const createDecorateBackgroundPanel = (assetManager: AssetManager) => {
+const createDecorateBackgroundPanel = (
+  assetManager: AssetManager,
+  lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
+) => {
   // 灰白色木板材质
   const woodBoardLightMaterial = assetManager.materials.get(
     "woodBoardLightMaterial",
@@ -339,15 +346,24 @@ const createDecorateBackgroundPanel = (assetManager: AssetManager) => {
   );
 
   // 添加发光灯带
-  addAllLightingStrip(decorateBackgroundPanelGroup, assetManager);
+  addAllLightingStrip(
+    decorateBackgroundPanelGroup,
+    assetManager,
+    lightingStripLightMapRef,
+  );
 
   return decorateBackgroundPanelGroup;
 };
 
 // 添加发光灯带
-const z = BACK_PANEL_THICKNESS + MIDDLE_PANEL_THICKNESS / 2;
-const addAllLightingStrip = (parent: Group, assetManager: AssetManager) => {
-  addCircleLightingStrip(
+const addAllLightingStrip = (
+  parent: Group,
+  assetManager: AssetManager,
+  lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
+) => {
+  let lightList: RectAreaLight[] = [];
+  const z = BACK_PANEL_THICKNESS + MIDDLE_PANEL_THICKNESS / 2;
+  const lightList1 = addCircleLightingStrip(
     parent,
     assetManager,
     LEFT_TOP_RADIUS - LIGHTING_STRIP_GAP + 0.01,
@@ -360,9 +376,10 @@ const addAllLightingStrip = (parent: Group, assetManager: AssetManager) => {
     -1,
     new Vector3(0, 0, Math.PI),
   );
+  lightList = lightList.concat(lightList1);
   const width1 =
     PANEL_WIDTH - LEFT_TOP_RADIUS - (LEFT_OR_RIGHT_WIDTH - LIGHTING_STRIP_GAP);
-  addLightingStrip(
+  const light1 = addLightingStrip(
     parent,
     assetManager,
     width1,
@@ -370,11 +387,13 @@ const addAllLightingStrip = (parent: Group, assetManager: AssetManager) => {
     -PANEL_WIDTH / 2 + LEFT_TOP_RADIUS + width1 / 2,
     PANEL_HEIGHT / 2 - (LEFT_TOP_RADIUS - LIGHTING_STRIP_GAP) - 0.01,
     z,
+    true,
     new Vector3(Math.PI / 2, 0, 0),
     0.6 * Math.PI,
   );
+  light1 && lightList.push(light1);
   const radius = RIGHT_TOP_RADIUS + LIGHTING_STRIP_GAP - 0.01;
-  addCircleLightingStrip(
+  const lightList2 = addCircleLightingStrip(
     parent,
     assetManager,
     radius,
@@ -387,13 +406,14 @@ const addAllLightingStrip = (parent: Group, assetManager: AssetManager) => {
     3,
     Math.PI / 2,
   );
+  lightList = lightList.concat(lightList2);
   const height =
     PANEL_HEIGHT -
     LEFT_TOP_RADIUS -
     RIGHT_TOP_RADIUS -
     LEFT_OR_RIGHT_WIDTH -
     BOTTOM_RADIUS;
-  addLightingStrip(
+  const light2 = addLightingStrip(
     parent,
     assetManager,
     height,
@@ -401,11 +421,13 @@ const addAllLightingStrip = (parent: Group, assetManager: AssetManager) => {
     PANEL_WIDTH / 2 - LEFT_OR_RIGHT_WIDTH + LIGHTING_STRIP_GAP - 0.01,
     PANEL_HEIGHT / 2 - LEFT_TOP_RADIUS - RIGHT_TOP_RADIUS - height / 2,
     z,
+    true,
     new Vector3(Math.PI / 2, Math.PI / 2, 0),
     0.6 * Math.PI,
   );
+  light2 && lightList.push(light2);
   const radius2 = BOTTOM_RADIUS + LIGHTING_STRIP_GAP - 0.01;
-  addCircleLightingStrip(
+  const lightList3 = addCircleLightingStrip(
     parent,
     assetManager,
     radius2,
@@ -421,7 +443,8 @@ const addAllLightingStrip = (parent: Group, assetManager: AssetManager) => {
     1,
     new Vector3(0, 0, Math.PI),
   );
-  addLightingStrip(
+  lightList = lightList.concat(lightList3);
+  const light3 = addLightingStrip(
     parent,
     assetManager,
     WOOD_PANEL_MARGIN_BOTTOM,
@@ -429,9 +452,12 @@ const addAllLightingStrip = (parent: Group, assetManager: AssetManager) => {
     -PANEL_WIDTH / 2 + LEFT_OR_RIGHT_WIDTH - LIGHTING_STRIP_GAP + 0.01,
     -PANEL_HEIGHT / 2 + PANEL_WIDTH / 2 + WOOD_PANEL_MARGIN_BOTTOM / 2,
     z,
+    true,
     new Vector3(Math.PI / 2, -Math.PI / 2, 0),
     0.6 * Math.PI,
   );
+  light3 && lightList.push(light3);
+  lightingStripLightMapRef.current.decorateBackgroundPanel = lightList;
 };
 
 export default addDecorateBackgroundPanel;
