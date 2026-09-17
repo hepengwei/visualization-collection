@@ -22,6 +22,11 @@ import {
   Group,
   RectAreaLight,
   SpotLight,
+  CatmullRomCurve3,
+  BufferGeometry,
+  Float32BufferAttribute,
+  Matrix4,
+  Euler,
 } from "three";
 import { ParametricGeometry } from "three/examples/jsm/geometries/ParametricGeometry.js";
 import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils";
@@ -515,8 +520,6 @@ export const generateCurvedSurfaceRightAngledTriangularPrismGeometry = (
     curveSegments: 64, // 圆弧细分（越高越平滑）
   });
 
-  // 先转为索引几何体，让顶点可以共享
-  geometry = geometry.toNonIndexed(); // ExtrudeGeometry是非索引几何体
   // 合并重复顶点 → 顶点共享 → 法线可跨三角形平均
   geometry = mergeVertices(geometry, 1e-4);
   geometry.computeVertexNormals();
@@ -530,15 +533,11 @@ export const generateCurvedSurfaceRightAngledTriangularPrismGeometry = (
  * @param {number} depth 半圆柱深度
  * @return {ExtrudeGeometry}
  */
-export const generateHalfCylinderGeometry = (
-  radius: number,
-  depth: number,
-  segments = 64,
-) => {
+export const generateHalfCylinderGeometry = (radius: number, depth: number) => {
   const shape = new Shape();
   shape.moveTo(0, 0);
   shape.lineTo(radius, 0);
-  // 内曲面（四分之一圆）
+  // 半圆
   shape.absarc(
     0, // 圆心 x
     0, // 圆心 y
@@ -555,8 +554,91 @@ export const generateHalfCylinderGeometry = (
     curveSegments: 64, // 圆弧细分（越高越平滑）
   });
 
-  // 先转为索引几何体，让顶点可以共享
-  geometry = geometry.toNonIndexed(); // ExtrudeGeometry是非索引几何体
+  // 合并重复顶点 → 顶点共享 → 法线可跨三角形平均
+  geometry = mergeVertices(geometry, 1e-4);
+  geometry.computeVertexNormals();
+
+  return geometry;
+};
+
+/**
+ * @description: 生成四分之一圆柱几何体
+ * @param {number} radius 圆半径
+ * @param {number} depth 四分之一圆柱深度
+ * @return {ExtrudeGeometry}
+ */
+export const generateQuarterCylinderGeometry = (
+  radius: number,
+  depth: number,
+) => {
+  const shape = new Shape();
+  shape.moveTo(0, 0);
+  shape.lineTo(radius, 0);
+  // 四分之一圆
+  shape.absarc(
+    0, // 圆心 x
+    0, // 圆心 y
+    radius, // 半径
+    0, // 起始角度
+    Math.PI / 2, // 结束角度
+    false, // 逆时针
+  );
+  shape.lineTo(0, 0);
+
+  let geometry: any = new ExtrudeGeometry(shape, {
+    depth,
+    bevelEnabled: false, // 关掉倒角，否则两端会变圆边
+    curveSegments: 32, // 圆弧细分（越高越平滑）
+  });
+
+  // 合并重复顶点 → 顶点共享 → 法线可跨三角形平均
+  geometry = mergeVertices(geometry, 1e-4);
+  geometry.computeVertexNormals();
+
+  return geometry;
+};
+
+/**
+ * @description: 生成半圆环柱几何体
+ * @param {number} outerRadius 外圆半径
+ * @param {number} innerRadius 内圆半径
+ * @param {number} depth 半圆环柱深度
+ * @return {ExtrudeGeometry}
+ */
+export const generateHalfCircularRingCylinderGeometry = (
+  outerRadius: number,
+  innerRadius: number,
+  depth: number,
+) => {
+  const shape = new Shape();
+  shape.moveTo(innerRadius, 0);
+  shape.lineTo(outerRadius, 0);
+  // 外半圆
+  shape.absarc(
+    0, // 圆心 x
+    0, // 圆心 y
+    outerRadius, // 半径
+    0, // 起始角度
+    Math.PI, // 结束角度
+    false, // 逆时针
+  );
+  shape.lineTo(-innerRadius, 0);
+  // 内半圆
+  shape.absarc(
+    0, // 圆心 x
+    0, // 圆心 y
+    innerRadius, // 半径
+    Math.PI, // 起始角度
+    0, // 结束角度
+    true, // 顺时针
+  );
+
+  let geometry: any = new ExtrudeGeometry(shape, {
+    depth,
+    bevelEnabled: false, // 关掉倒角，否则两端会变圆边
+    curveSegments: 64, // 圆弧细分（越高越平滑）
+  });
+
   // 合并重复顶点 → 顶点共享 → 法线可跨三角形平均
   geometry = mergeVertices(geometry, 1e-4);
   geometry.computeVertexNormals();
@@ -574,7 +656,7 @@ export const addLightingStrip = (
   y: number,
   z: number,
   rotation = new Vector3(Math.PI / 2, 0, 0), // 默认面向地面
-  intensity = 2 * Math.PI,
+  intensity = 0,
 ) => {
   const planeGeometry = assetManager.geometries.get("planeGeometry");
   const whitePanelMaterial = assetManager.materials.get("whitePanelMaterial");
@@ -584,17 +666,19 @@ export const addLightingStrip = (
   lightingStrip.rotation.set(rotation.x, rotation.y, rotation.z);
   lightingStrip.layers.enable(1); // 为了让灯带的光能够单独增强
   parent.add(lightingStrip);
-  // 添加发光灯带的光源
-  addRectAreaLight(
-    parent,
-    w,
-    h,
-    x,
-    rotation.x < 0 ? y + 0.01 : y - 0.01,
-    z,
-    new Vector3(-rotation.x, rotation.y, rotation.z),
-    intensity,
-  );
+  if (intensity > 0) {
+    // 添加发光灯带的光源
+    addRectAreaLight(
+      parent,
+      w,
+      h,
+      x,
+      rotation.x < 0 ? y + 0.01 : y - 0.01,
+      z,
+      new Vector3(-rotation.x, rotation.y, rotation.z),
+      intensity,
+    );
+  }
 };
 
 // 添加矩形平面光源
@@ -606,7 +690,7 @@ export const addRectAreaLight = (
   y: number,
   z: number,
   rotation?: Vector3,
-  intensity = 2 * Math.PI,
+  intensity = 1.5 * Math.PI,
 ) => {
   const light = new RectAreaLight(
     0xfff0dd, // 暖白，微微偏黄
@@ -623,7 +707,7 @@ export const addRectAreaLight = (
   parent.add(light);
 };
 
-// 创建并添加圆形筒灯
+// 创建并添加圆形射灯
 export const addLightingRoundLight = (
   parent: Group,
   assetManager: AssetManager,
@@ -652,12 +736,12 @@ export const addLightingRoundLight = (
   parent.add(roundLightGroup);
 
   if (distance) {
-    // 添加发光灯带的光源
+    // 添加圆形射灯光源
     addRoundLight(parent, x, y - 0.01, z, -x, 0, z, distance);
   }
 };
 
-// 添加圆筒形光源
+// 添加圆形射灯光源
 export const addRoundLight = (
   parent: Group,
   x: number,
@@ -667,7 +751,7 @@ export const addRoundLight = (
   ty: number,
   tz: number,
   distance: number,
-  intensity = 1 * Math.PI,
+  intensity = 0.8 * Math.PI,
 ) => {
   const light = new SpotLight(
     0xffffff, // 颜色（可以随视频平均色动态改）
@@ -678,6 +762,11 @@ export const addRoundLight = (
     1, // decay
   );
   light.castShadow = true;
+  light.shadow.mapSize.set(512, 512);
+  light.shadow.bias = -0.0005;
+  light.shadow.normalBias = 0.03;
+  light.shadow.camera.near = 0.1;
+  light.shadow.camera.far = distance;
   light.position.set(x, y, z);
   light.target.position.set(tx, ty, tz);
   parent.add(light);
@@ -686,7 +775,7 @@ export const addRoundLight = (
 
 // 创建并添加立方体
 export const addBox = (
-  parent: Group | Scene,
+  parent: Group | Mesh | Scene,
   assetManager: AssetManager,
   mat: MeshPhysicalMaterial | MeshStandardMaterial,
   w: number,
@@ -696,6 +785,7 @@ export const addBox = (
   y: number,
   z: number,
   visible = true,
+  receiveShadow = true,
 ): Mesh | null => {
   if (!mat) return null;
   const boxGeometry = assetManager.geometries.get("boxGeometry");
@@ -703,7 +793,7 @@ export const addBox = (
   m.scale.set(w, h, d);
   m.position.set(x, y, z);
   m.castShadow = true;
-  m.receiveShadow = true;
+  m.receiveShadow = receiveShadow;
   m.visible = visible;
   parent.add(m);
   return m;
@@ -711,7 +801,7 @@ export const addBox = (
 
 // 创建并添加平面
 export const addPlane = (
-  parent: Group | Scene,
+  parent: Group | Mesh | Scene,
   assetManager: AssetManager,
   mat: MeshPhysicalMaterial | MeshStandardMaterial,
   w: number,
@@ -729,4 +819,138 @@ export const addPlane = (
   m.rotation.set(rotation.x, rotation.y, rotation.z);
   parent.add(m);
   return m;
+};
+
+// 创建并添加圆柱体
+export const addCylinder = (
+  parent: Group | Mesh | Scene,
+  assetManager: AssetManager,
+  mat: MeshPhysicalMaterial | MeshStandardMaterial,
+  radius: number,
+  depth: number,
+  x: number,
+  y: number,
+  z: number,
+  rotation = new Vector3(0, 0, 0),
+  receiveShadow = true,
+): Mesh | null => {
+  if (!mat) return null;
+  const cylinderGeometry = assetManager.geometries.get("cylinderGeometry");
+  const m = new Mesh(cylinderGeometry, mat);
+  m.scale.set(radius, depth, radius);
+  m.position.set(x, y, z);
+  m.rotation.set(rotation.x, rotation.y, rotation.z);
+  m.receiveShadow = receiveShadow;
+  parent.add(m);
+  return m;
+};
+
+// 创建圆曲面发光灯带(完全使用RectAreaLight平面光实现，不卡顿)
+export const addCircleLightingStrip = (
+  parent: Group,
+  assetManager: AssetManager,
+  radius: number,
+  w: number,
+  x: number,
+  y: number,
+  z: number,
+  count: number = 3, // 在灯带上取多少个点
+  angle: number = Math.PI, // 默认为半圆
+  fwdSign: 1 | -1 = 1, // 默认内侧
+  rotation = new Vector3(0, 0, 0), // 默认在z=0的同一平面
+  intensity = 0.4 * Math.PI,
+) => {
+  const curvePoints = [];
+  for (let i = 0; i <= count; i++) {
+    const currentAngle = angle * (i / count); // 默认为0 → π
+    curvePoints.push(
+      new Vector3(
+        Math.cos(currentAngle) * radius, // X
+        Math.sin(currentAngle) * radius, // Y
+        0, // Z = 0，同一平面
+      ),
+    );
+  }
+  const curve = new CatmullRomCurve3(curvePoints);
+
+  const stripGeometry = buildRibbon(curve, count, w, fwdSign);
+  const whitePanelMaterial = assetManager.materials.get("whitePanelMaterial");
+  const lightingStrip = new Mesh(stripGeometry, whitePanelMaterial);
+  lightingStrip.position.set(x, y, z);
+  lightingStrip.rotation.set(rotation.x, rotation.y, rotation.z);
+  lightingStrip.layers.enable(1); // 为了让灯带的光能够单独增强
+  parent.add(lightingStrip);
+
+  // 计算 mesh 的旋转矩阵，用于将灯光从局部空间转换到世界空间
+  const meshRotMatrix = new Matrix4().makeRotationFromEuler(
+    new Euler(rotation.x, rotation.y, rotation.z),
+  );
+
+  for (let i = 0; i < count; i++) {
+    const t = (i + 0.5) / count;
+    const p = curve.getPointAt(t);
+    const tan = curve.getTangentAt(t).normalize();
+    const fwd = new Vector3(p.x, p.y, 0).normalize();
+    const side = new Vector3().crossVectors(fwd, tan).normalize();
+    const light = new RectAreaLight(
+      0xfff0dd,
+      intensity,
+      curve.getLength() / count,
+      w,
+    );
+
+    // 在曲线局部空间计算位置，再旋转到世界方向，最后平移到 mesh 的世界位置
+    const localPos = p
+      .clone()
+      .add(fwd.clone().multiplyScalar(fwdSign > 0 ? -0.01 : 0.01));
+    light.position
+      .copy(localPos.applyMatrix4(meshRotMatrix))
+      .add(new Vector3(x, y, z));
+
+    // RectAreaLight 沿局部 -Z 发射
+    // 朝内(fwdSign>0): 发射方向 = -fwd(朝面板中心) → 基准 Z = fwd
+    // 朝外(fwdSign<0): 发射方向 = fwd(朝面板外侧) → 基准 Z = -fwd
+    const basisZ = fwdSign > 0 ? fwd : fwd.clone().negate();
+    const lightRotMatrix = new Matrix4().makeBasis(tan, side, basisZ);
+    const combinedMatrix = meshRotMatrix.clone().multiply(lightRotMatrix);
+    light.quaternion.setFromRotationMatrix(combinedMatrix);
+
+    parent.add(light);
+  }
+};
+
+//  根据CatmullRomCurve3这个3D曲线来构建一条曲面刚体
+const buildRibbon = (
+  curve: CatmullRomCurve3,
+  count: number,
+  width: number, // 扁平带的宽度
+  fwdSign: 1 | -1 = 1, // 默认内侧
+) => {
+  const pts = curve.getSpacedPoints(count);
+  const halfW = width / 2;
+  const pos = [];
+  const idx = [];
+  for (let i = 0; i <= count; i++) {
+    const t = i / count;
+    const p = pts[i];
+    const tan = curve.getTangentAt(t).normalize();
+    const fwd = new Vector3(p.x, p.y, 0).normalize().multiplyScalar(fwdSign);
+    const side = new Vector3().crossVectors(fwd, tan).normalize();
+
+    const a = p.clone().add(side.clone().multiplyScalar(-halfW));
+    const b = p.clone().add(side.clone().multiplyScalar(halfW));
+    pos.push(a.x, a.y, a.z, b.x, b.y, b.z);
+  }
+  for (let i = 0; i < count; i++) {
+    const a = i * 2,
+      b = i * 2 + 1,
+      c = (i + 1) * 2,
+      d = (i + 1) * 2 + 1;
+    idx.push(a, b, d, a, d, c);
+  }
+  const geo = new BufferGeometry();
+  geo.setAttribute("position", new Float32BufferAttribute(pos, 3));
+  geo.setIndex(idx);
+  geo.computeVertexNormals();
+  return geo;
 };

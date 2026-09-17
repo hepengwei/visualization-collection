@@ -235,7 +235,7 @@ const createRightCabinet = (assetManager: AssetManager) => {
           LIGHTING_STRIP_HEIGHT / 2 +
           0.1,
         undefined,
-        5 * Math.PI,
+        0 * Math.PI,
       );
     }
   }

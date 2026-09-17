@@ -105,7 +105,7 @@ const addSideboard = (
     metalness: 0.0,
     roughness: 0.35,
     // —— 半透明核心 ——
-    transmission: 0.85,
+    transmission: 0.85, // 这个必须要
     thickness: 0.9,
     ior: 1.52,
     attenuationColor: new Color(0x4f9bd9),

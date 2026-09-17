@@ -74,13 +74,10 @@ export const addGroundGlassDoor = (
     color: 0xeaf2ff,
     roughness: 0.75, // 高粗糙度 = 磨砂
     metalness: 0.0,
-    transmission: 0.75, // 透射/玻璃感
-    thickness: 0.05,
-    ior: 1.45,
-    clearcoat: 0.3,
-    clearcoatRoughness: 0.6,
     transparent: true,
     opacity: 0.9,
+    clearcoat: 0.3,
+    clearcoatRoughness: 0.6,
     depthWrite: false, // 透明物体不写深度，避免遮挡后面的透明物体
     alphaTest: 0.5, // 设置alphaTest阈值，让半透明物体也能投射阴影
     envMapIntensity: 0.6,
