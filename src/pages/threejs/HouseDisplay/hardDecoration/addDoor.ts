@@ -22,6 +22,7 @@ import {
   getEaseProgress,
 } from "../utils";
 import {
+  WALL_THICKNESS,
   BEAM_HEIGHT,
   BEAM_POSITION_Y,
   WALL_22_WIDTH,
@@ -35,12 +36,11 @@ import {
 type HandlePosition = "left" | "right";
 
 const OPEN_OR_CLOSE_DURATION = 800; // 开/关门动画总时长
-const DOOR_COLOR = new Color(235, 235, 245); // 门扇的颜色
-const FRAME_COLOR = 0xc5c1bd; // 门框的颜色
+const DOOR_COLOR = new Color(130, 140, 148); // 门扇的颜色
 const DOOR_THICKNESS = 0.04; // 门扇的厚度
 const TOP_GAP = 0.004; // 门和门框上方的缝隙
-const FRAME_TRIM_WIDTH = 0.1; // 门框左右竖框的宽
-const FRAME_THICKNESS = 0.1; // 门框的厚度
+const FRAME_TRIM_WIDTH = 0.08; // 门框左右竖框的宽
+const FRAME_THICKNESS = WALL_THICKNESS; // 门框的厚度
 const DOOR_WIDTH = WALL_22_WIDTH - FRAME_TRIM_WIDTH * 2; // 门扇的宽
 const DOOR_HEIGHT = BEAM_POSITION_Y - BEAM_HEIGHT / 2 - FRAME_TRIM_WIDTH; // 门扇的高
 const DOORKNOB_CYLINDER_RADIUS = 0.012; // 门把手圆柱半径
@@ -58,7 +58,7 @@ const doorConfigs = [
     positon: new Vector3(WALL_11_POSITION_X, 0, WALL_22_POSITION_Z),
     rotationY: Math.PI / 2,
     customParams: {
-      openDoorMaxAngle: (Math.PI * 20) / 36,
+      openDoorMaxAngle: (Math.PI * 19) / 36,
       switchStatus: "ON",
       isAnimating: false,
       handlePosition: "right",
@@ -69,7 +69,7 @@ const doorConfigs = [
     positon: new Vector3(WALL_28_POSITION_X, 0, WALL_22_POSITION_Z),
     rotationY: -Math.PI / 2,
     customParams: {
-      openDoorMaxAngle: -(Math.PI * 20) / 36,
+      openDoorMaxAngle: -(Math.PI * 19) / 36,
       switchStatus: "OFF",
       isAnimating: false,
       handlePosition: "left",
@@ -80,7 +80,7 @@ const doorConfigs = [
     positon: new Vector3(WALL_63_POSITION_X, 0, WALL_55_POSITION_Z),
     rotationY: Math.PI,
     customParams: {
-      openDoorMaxAngle: (Math.PI * 21) / 36,
+      openDoorMaxAngle: (Math.PI * 20) / 36,
       switchStatus: "OFF",
       isAnimating: false,
       handlePosition: "right",
@@ -115,12 +115,12 @@ export const addDoor = (
   assetManager.materials.set("woodDoorMaterial", woodDoorMaterial);
 
   // 门框材质
-  const doorFrameMaterial = new MeshStandardMaterial({
-    color: FRAME_COLOR,
-    roughness: 0.6,
-    metalness: 0.0,
-  });
-  assetManager.materials.set("doorFrameMaterial", doorFrameMaterial);
+  // const doorFrameMaterial = new MeshStandardMaterial({
+  //   color: FRAME_COLOR,
+  //   roughness: 0.6,
+  //   metalness: 0.0,
+  // });
+  // assetManager.materials.set("doorFrameMaterial", doorFrameMaterial);
 
   // 合页材质 — 深色青铜/铸铁（欧式复古感）
   const hingeMaterial = new MeshStandardMaterial({
@@ -156,7 +156,9 @@ const createDoor = (
 ) => {
   const boxGeometry = assetManager.geometries.get("boxGeometry");
   const woodDoorMaterial = assetManager.materials.get("woodDoorMaterial");
-  const doorFrameMaterial = assetManager.materials.get("doorFrameMaterial");
+  const woodBoardDarkMaterial = assetManager.materials.get(
+    "woodBoardDarkMaterial",
+  );
 
   const doorGroup = new Group();
   doorGroup.name = "房门";
@@ -165,7 +167,7 @@ const createDoor = (
   const frameGroup = new Group();
 
   // 左竖框
-  const leftJamb = new Mesh(boxGeometry, doorFrameMaterial);
+  const leftJamb = new Mesh(boxGeometry, woodBoardDarkMaterial);
   leftJamb.scale.set(FRAME_TRIM_WIDTH, OPENING_HEIGHT, FRAME_THICKNESS);
   leftJamb.position.set(
     -HALF_DOOR_WIDTH - FRAME_TRIM_WIDTH / 2,
@@ -175,7 +177,7 @@ const createDoor = (
   frameGroup.add(leftJamb);
 
   // 右竖框
-  const rightJamb = new Mesh(boxGeometry, doorFrameMaterial);
+  const rightJamb = new Mesh(boxGeometry, woodBoardDarkMaterial);
   rightJamb.scale.set(FRAME_TRIM_WIDTH, OPENING_HEIGHT, FRAME_THICKNESS);
   rightJamb.position.set(
     HALF_DOOR_WIDTH + FRAME_TRIM_WIDTH / 2,
@@ -186,7 +188,7 @@ const createDoor = (
 
   // 上方横框
   const HEADER_H = FRAME_TRIM_WIDTH;
-  const headerMesh = new Mesh(boxGeometry, doorFrameMaterial);
+  const headerMesh = new Mesh(boxGeometry, woodBoardDarkMaterial);
   headerMesh.scale.set(
     DOOR_WIDTH + FRAME_TRIM_WIDTH * 2,
     HEADER_H,

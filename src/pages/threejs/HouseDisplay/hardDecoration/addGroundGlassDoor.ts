@@ -117,8 +117,8 @@ const createGroundGlassDoor = (
 ) => {
   const boxGeometry = assetManager.geometries.get("boxGeometry");
   const groundGlassMaterial = assetManager.materials.get("groundGlassMaterial");
-  const aluminiumAlloyFrameMaterial = assetManager.materials.get(
-    "aluminiumAlloyFrameMaterial",
+  const aluminiumAlloyMaterial = assetManager.materials.get(
+    "aluminiumAlloyMaterial",
   );
 
   const groundGlassDoorGroup = new Group();
@@ -130,7 +130,7 @@ const createGroundGlassDoor = (
   const frameGroup = new Group();
 
   // 左包边
-  const leftJamb = new Mesh(boxGeometry, aluminiumAlloyFrameMaterial);
+  const leftJamb = new Mesh(boxGeometry, aluminiumAlloyMaterial);
   leftJamb.scale.set(FRAME_DEPTH, GROUND_GLASS_HEIGHT, GROUND_GLASS_THICKNESS);
   leftJamb.position.set(
     -HALF_GROUND_GLASS_WIDTH - FRAME_DEPTH / 2,
@@ -142,7 +142,7 @@ const createGroundGlassDoor = (
   frameGroup.add(leftJamb);
 
   // 右包边
-  const rightJamb = new Mesh(boxGeometry, aluminiumAlloyFrameMaterial);
+  const rightJamb = new Mesh(boxGeometry, aluminiumAlloyMaterial);
   rightJamb.scale.set(FRAME_DEPTH, GROUND_GLASS_HEIGHT, GROUND_GLASS_THICKNESS);
   rightJamb.position.set(
     HALF_GROUND_GLASS_WIDTH + FRAME_DEPTH / 2,
@@ -154,7 +154,7 @@ const createGroundGlassDoor = (
   frameGroup.add(rightJamb);
 
   // 上包边
-  const headerMesh = new Mesh(boxGeometry, aluminiumAlloyFrameMaterial);
+  const headerMesh = new Mesh(boxGeometry, aluminiumAlloyMaterial);
   headerMesh.scale.set(
     GROUND_GLASS_WIDTH + FRAME_DEPTH * 2,
     FRAME_DEPTH,

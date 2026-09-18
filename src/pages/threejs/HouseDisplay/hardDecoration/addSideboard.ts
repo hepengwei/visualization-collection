@@ -39,7 +39,7 @@ const SIDEBOARD_POSITON = new Vector3(
 );
 const CHEST_COL_COUNT = 6; // 柜子的列数,保证为偶数
 const SIDEBOARD_WIDTH = 4; // 餐边柜柜体的总宽（不包含左右两边多出的部分）
-const CHEST_GAP = 0.012; // 柜子之间的缝隙
+const CHEST_GAP = 0.01; // 柜子之间的缝隙
 const SIDEBOARD_HEIGHT = WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT; // 餐边柜的总高
 const BOARD_COATING_THICKNESS = 0.002; // 木板深灰色涂层的厚度
 const CHEST_DOOR_THICKNESS = 0.01; // 柜门和抽屉门的厚度
@@ -82,7 +82,7 @@ const SECRET_COMPARTENT_WIDTH =
     BOARD_THICKNESS * 2 -
     BOARD_THICKNESS * (CHEST_COL_COUNT / 2 - 1)) /
   (CHEST_COL_COUNT / 2);
-const DECORATIVE_BAFFLE_PLATE_THICKNESS = 0.2; // 装饰挡板的厚度
+const DECORATIVE_BAFFLE_PLATE_THICKNESS = 0.16; // 装饰挡板的厚度
 const DECORATIVE_BAFFLE_BACK_PLATE_WIDTH = SIDEBOARD_DEPTH - BOARD_THICKNESS; // 装饰挡板的背板宽度
 const DECORATIVE_BAFFLE_PLATE_TOP_HEIGHT = 0.8; // 装饰挡板上方高度
 const DECORATIVE_BAFFLE_PLATE_MIDDLE_HEIGHT = 1.4; // 装饰挡板中间高度
