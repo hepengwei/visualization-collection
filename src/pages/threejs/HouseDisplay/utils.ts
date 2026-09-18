@@ -33,6 +33,11 @@ import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 
 const WALL_COLOR = 0xf4f3ef; // 珍珠白乳胶漆颜色
+export const WOOD_LIGHT_COLOR = 0xfffaf0; // 浅色木头
+export const WOOD_DARK_COLOR = 0x828c94; // 深色木头
+// export const WOOD_DARK_COLOR = 0xb6a093; // 深色木头
+const WOOD_LIGHT_YELLOW_COLOR = 0xfffaf0; // 浅黄白色木头
+export const ALUMINIUM_ALLOY_COLOR = 0xbfc3c7; // 铝合金颜色
 
 // 初始化资源管理器，将所有公共的几何体和部分公共材质预先创建并存到资源管理器中
 export const initAssetManager = (assetManager: AssetManager) => {
@@ -80,15 +85,15 @@ export const initAssetManager = (assetManager: AssetManager) => {
     envMapIntensity: 0.3,
   });
   assetManager.materials.set("wallMaterial", wallMaterial);
-  // 创建铝合金包边材质
-  const aluminiumAlloyFrameMaterial = new MeshStandardMaterial({
-    color: 0xc0c0c8,
+  // 创建铝合金材质
+  const aluminiumAlloyMaterial = new MeshStandardMaterial({
+    color: ALUMINIUM_ALLOY_COLOR,
+    metalness: 0.8,
     roughness: 0.3,
-    metalness: 0.9,
   });
   assetManager.materials.set(
-    "aluminiumAlloyFrameMaterial",
-    aluminiumAlloyFrameMaterial,
+    "aluminiumAlloyMaterial",
+    aluminiumAlloyMaterial,
   );
   // 创建哑光工业铝材质
   const whiteAluminumMaterial = new MeshStandardMaterial({
@@ -100,10 +105,17 @@ export const initAssetManager = (assetManager: AssetManager) => {
   assetManager.materials.set("whiteAluminumMaterial", whiteAluminumMaterial);
 
   // 创建不同颜色的实木木板材质
-  const woodBoardLightMaterial = makeWoodBoardMaterial(0xebe9e4); // 灰白色柜身
-  const woodBoardDarkMaterial = makeWoodBoardMaterial(0x727c84); // 深灰色置物区
+  const woodBoardLightMaterial = makeWoodBoardMaterial(WOOD_LIGHT_COLOR); // 灰白色
+  const woodBoardDarkMaterial = makeWoodBoardMaterial(WOOD_DARK_COLOR); // 深色
+  const woodBoardLightYellowMaterial = makeWoodBoardMaterial(
+    WOOD_LIGHT_YELLOW_COLOR,
+  ); // 浅黄白色
   assetManager.materials.set("woodBoardLightMaterial", woodBoardLightMaterial);
   assetManager.materials.set("woodBoardDarkMaterial", woodBoardDarkMaterial);
+  assetManager.materials.set(
+    "woodBoardLightYellowMaterial",
+    woodBoardLightYellowMaterial,
+  );
 
   // 创建白色面板材质（不受光影响）
   const whitePanelMaterial = new MeshPhysicalMaterial({
@@ -137,7 +149,7 @@ export const initAssetManager = (assetManager: AssetManager) => {
     metalness: 0.0, // 玻璃是非金属
     roughness: 0.2, // 玻璃表面很光滑
     transparent: true,
-    opacity: 0.8, // 透明度，越小越透明
+    opacity: 0.7, // 透明度，越小越透明
     depthWrite: false, // 半透明薄片防深度排序问题
     thickness: 0.3, // 玻璃厚度，影响折射和焦散感
     clearcoat: 1.0, // 玻璃表面清漆层
@@ -146,8 +158,8 @@ export const initAssetManager = (assetManager: AssetManager) => {
     envMapIntensity: 1.2, // 黑色玻璃反射环境很明显
     side: DoubleSide, // 双面可见
     polygonOffset: true, // 启用深度偏移，防止产生Z-fighting闪烁
-    polygonOffsetFactor: 0.8,
-    polygonOffsetUnits: 0.8,
+    polygonOffsetFactor: 1,
+    polygonOffsetUnits: 1,
   });
   assetManager.materials.set("blackGlassMaterial", blackGlassMaterial);
 };
@@ -156,17 +168,17 @@ export const initAssetManager = (assetManager: AssetManager) => {
 export const makeWoodBoardMaterial = (color: ColorRepresentation) => {
   return new MeshPhysicalMaterial({
     color: new Color(color),
-    roughness: 0.62,
+    roughness: 0.3,
     metalness: 0.0,
-    sheen: 0.25,
-    sheenRoughness: 0.6,
-    clearcoat: 0.25, // 轻微漆面
-    clearcoatRoughness: 0.3,
+    sheen: 0.1,
+    sheenRoughness: 0.5,
+    clearcoat: 0.2, // 轻微漆面
+    clearcoatRoughness: 0.4,
     envMapIntensity: 0.2, // 木板反射要弱
     flatShading: true, // 关键：每个面用独立法线，光照一致
     polygonOffset: true, // 启用深度偏移，防止产生Z-fighting闪烁
-    polygonOffsetFactor: 0.2,
-    polygonOffsetUnits: 0.2,
+    polygonOffsetFactor: 0.5,
+    polygonOffsetUnits: 0.5,
   });
 };
 

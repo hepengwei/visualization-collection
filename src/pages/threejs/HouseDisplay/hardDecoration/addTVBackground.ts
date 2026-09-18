@@ -11,10 +11,11 @@ import {
   Object3D,
   FrontSide,
   RectAreaLight,
+  Color,
 } from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
 import type { AssetManager } from "hooks/threejs/useInitialize";
-import { addBox, addPlane, addLightingStrip } from "../utils";
+import { addBox, addPlane, addLightingStrip, WOOD_DARK_COLOR } from "../utils";
 import {
   WALL_HEIGHT,
   WALL_THICKNESS,
@@ -280,10 +281,17 @@ const createBaseCabinet = (assetManager: AssetManager) => {
   const woodBoardDarkMaterial = assetManager.materials.get(
     "woodBoardDarkMaterial",
   ) as MeshPhysicalMaterial;
-  // 创建深黑色面板材质（不受光影响）
+  // 根据木头的深色创建更深颜色面板材质（不受光影响）
+  const color = new Color(WOOD_DARK_COLOR);
+  color.offsetHSL(
+    0, // h 不变
+    0, // s 不变
+    -48 / 255, // 亮度调暗
+  );
+  const newColor = color.getHex();
   const blackPanelMaterial = new MeshPhysicalMaterial({
-    color: 0x323c44,
-    emissive: 0x323c44, // 自发光颜色
+    color: newColor,
+    emissive: newColor, // 自发光颜色
     emissiveIntensity: 1.0, // 自发光强度，使其不受环境光影响变灰
     roughness: 0.5,
     metalness: 0.0,

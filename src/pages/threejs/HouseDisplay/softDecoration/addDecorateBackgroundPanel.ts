@@ -35,7 +35,7 @@ import addVase from "../softDecoration/addVase";
 
 // 装饰背景板的位置
 const TV_BACKGROUND_POSITON = new Vector3(
-  WALL_19_POSITION_X - 0.2,
+  WALL_19_POSITION_X - 0.1,
   (WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT) / 2,
   WALL_20_POSITION_Z + WALL_THICKNESS / 2,
 );
@@ -89,8 +89,8 @@ const createDecorateBackgroundPanel = (
   lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
 ) => {
   // 灰白色木板材质
-  const woodBoardLightMaterial = assetManager.materials.get(
-    "woodBoardLightMaterial",
+  const woodBoardLightYellowMaterial = assetManager.materials.get(
+    "woodBoardLightYellowMaterial",
   ) as MeshPhysicalMaterial;
   // 深灰色木板材质
   const woodBoardDarkMaterial = assetManager.materials.get(
@@ -102,7 +102,7 @@ const createDecorateBackgroundPanel = (
   addBox(
     decorateBackgroundPanelGroup,
     assetManager,
-    woodBoardLightMaterial,
+    woodBoardLightYellowMaterial,
     PANEL_WIDTH,
     PANEL_HEIGHT - PANEL_WIDTH / 2,
     BACK_PANEL_THICKNESS,
@@ -114,7 +114,7 @@ const createDecorateBackgroundPanel = (
     PANEL_WIDTH / 2,
     BACK_PANEL_THICKNESS,
   );
-  const box1 = new Mesh(halfCylinderGeometry, woodBoardLightMaterial);
+  const box1 = new Mesh(halfCylinderGeometry, woodBoardLightYellowMaterial);
   box1.rotation.z = Math.PI;
   box1.position.set(0, -PANEL_HEIGHT / 2 + PANEL_WIDTH / 2, 0);
   box1.receiveShadow = true;
@@ -124,7 +124,7 @@ const createDecorateBackgroundPanel = (
     LEFT_TOP_RADIUS - LIGHTING_STRIP_GAP,
     MIDDLE_PANEL_THICKNESS,
   );
-  const box2 = new Mesh(quarterCylinderGeometry1, woodBoardLightMaterial);
+  const box2 = new Mesh(quarterCylinderGeometry1, woodBoardLightYellowMaterial);
   box2.rotation.z = Math.PI;
   box2.position.set(
     -PANEL_WIDTH / 2 + LEFT_TOP_RADIUS,
@@ -138,7 +138,7 @@ const createDecorateBackgroundPanel = (
   addBox(
     decorateBackgroundPanelGroup,
     assetManager,
-    woodBoardLightMaterial,
+    woodBoardLightYellowMaterial,
     width1,
     LEFT_TOP_RADIUS - LIGHTING_STRIP_GAP,
     MIDDLE_PANEL_THICKNESS,
@@ -149,7 +149,7 @@ const createDecorateBackgroundPanel = (
   addBox(
     decorateBackgroundPanelGroup,
     assetManager,
-    woodBoardLightMaterial,
+    woodBoardLightYellowMaterial,
     LEFT_OR_RIGHT_WIDTH - LIGHTING_STRIP_GAP,
     PANEL_HEIGHT - PANEL_WIDTH / 2,
     MIDDLE_PANEL_THICKNESS,
@@ -164,7 +164,7 @@ const createDecorateBackgroundPanel = (
     );
   const box3 = new Mesh(
     curvedSurfaceRightAngledTriangularPrismGeometry1,
-    woodBoardLightMaterial,
+    woodBoardLightYellowMaterial,
   );
   box3.rotation.z = Math.PI;
   box3.position.set(
@@ -182,7 +182,7 @@ const createDecorateBackgroundPanel = (
     );
   const box4 = new Mesh(
     generateHalfCircularRingCylinderGeometry1,
-    woodBoardLightMaterial,
+    woodBoardLightYellowMaterial,
   );
   box4.rotation.z = Math.PI;
   box4.position.set(
@@ -195,7 +195,7 @@ const createDecorateBackgroundPanel = (
   addBox(
     decorateBackgroundPanelGroup,
     assetManager,
-    woodBoardLightMaterial,
+    woodBoardLightYellowMaterial,
     LEFT_OR_RIGHT_WIDTH - LIGHTING_STRIP_GAP,
     WOOD_PANEL_MARGIN_BOTTOM,
     MIDDLE_PANEL_THICKNESS,
@@ -211,7 +211,7 @@ const createDecorateBackgroundPanel = (
     LEFT_TOP_RADIUS,
     FRONT_PANEL_THICKNESS,
   );
-  const box5 = new Mesh(quarterCylinderGeometry2, woodBoardLightMaterial);
+  const box5 = new Mesh(quarterCylinderGeometry2, woodBoardLightYellowMaterial);
   box5.rotation.z = Math.PI;
   box5.position.set(
     -PANEL_WIDTH / 2 + LEFT_TOP_RADIUS,
@@ -224,7 +224,7 @@ const createDecorateBackgroundPanel = (
   addBox(
     decorateBackgroundPanelGroup,
     assetManager,
-    woodBoardLightMaterial,
+    woodBoardLightYellowMaterial,
     width2,
     LEFT_TOP_RADIUS,
     FRONT_PANEL_THICKNESS,
@@ -235,7 +235,7 @@ const createDecorateBackgroundPanel = (
   addBox(
     decorateBackgroundPanelGroup,
     assetManager,
-    woodBoardLightMaterial,
+    woodBoardLightYellowMaterial,
     LEFT_OR_RIGHT_WIDTH,
     PANEL_HEIGHT - PANEL_WIDTH / 2,
     FRONT_PANEL_THICKNESS,
@@ -250,7 +250,7 @@ const createDecorateBackgroundPanel = (
     );
   const box6 = new Mesh(
     curvedSurfaceRightAngledTriangularPrismGeometry2,
-    woodBoardLightMaterial,
+    woodBoardLightYellowMaterial,
   );
   box6.rotation.z = Math.PI;
   box6.position.set(
@@ -268,7 +268,7 @@ const createDecorateBackgroundPanel = (
     );
   const box7 = new Mesh(
     generateHalfCircularRingCylinderGeometry2,
-    woodBoardLightMaterial,
+    woodBoardLightYellowMaterial,
   );
   box7.rotation.z = Math.PI;
   box7.position.set(
@@ -281,7 +281,7 @@ const createDecorateBackgroundPanel = (
   addBox(
     decorateBackgroundPanelGroup,
     assetManager,
-    woodBoardLightMaterial,
+    woodBoardLightYellowMaterial,
     LEFT_OR_RIGHT_WIDTH,
     WOOD_PANEL_MARGIN_BOTTOM,
     FRONT_PANEL_THICKNESS,

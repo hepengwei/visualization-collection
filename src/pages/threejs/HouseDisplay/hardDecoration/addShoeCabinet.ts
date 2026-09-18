@@ -28,7 +28,7 @@ const SHOE_CABINET_POSITON = new Vector3(
 ); // 鞋柜的位置
 const CHEST_COL_COUNT = 4; // 柜子的列数,保证为偶数
 const SHOE_CABINET_WIDTH = 1.93; // 鞋柜柜体的总宽
-const CHEST_GAP = 0.012; // 柜子之间的缝隙
+const CHEST_GAP = 0.006; // 柜子之间的缝隙
 const SHOE_CABINET_HEIGHT = WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT; // 鞋柜的总高
 const BOARD_THICKNESS = 0.03; // 木板的厚度
 const BOARD_COATING_THICKNESS = 0.002; // 木板深灰色涂层的厚度

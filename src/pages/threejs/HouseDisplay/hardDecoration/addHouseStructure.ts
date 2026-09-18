@@ -19,10 +19,11 @@ import {
   Group,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
+import { ALUMINIUM_ALLOY_COLOR } from "../utils";
 
 type SkirtingLineType = "front" | "back" | "double" | "all"; // 如果是竖墙，则"front"为左， "back"为右
 
-export const SUSPENDED_CEILING_HEIGHT = 0.4; // 吊顶总高度
+export const SUSPENDED_CEILING_HEIGHT = 0.35; // 吊顶总高度
 export const SIDEBOARD_DEPTH = 0.62; // 餐边柜的总深度
 export const WALL_HEIGHT = 3.6; // 墙体高度
 export const WALL_THICKNESS = 0.3; // 墙体厚度
@@ -34,9 +35,8 @@ export const BEAM_HEIGHT = SUSPENDED_CEILING_HEIGHT + SHORT_GRADE_BEAM_HEIGHT; /
 export const BEAM_POSITION_Y = WALL_HEIGHT - BEAM_HEIGHT / 2; // 门框上方横梁的墙体y位置
 const WALL_LABEL_SIZE = 1.5; // 墙体标签的大小
 const WALL_LABEL_COLOR = "#FFFF00"; // 墙体标签的颜色
-export const SKIRTING_LINE_HEIGHT = 0.1; // 墙体踢脚线高度
-const SKIRTING_LINE_THICKNESS = 0.02; // 墙体踢脚线厚度
-const SKIRTING_LINE_COLOR = 0xbfc3c7; // 墙体踢脚线的颜色
+export const SKIRTING_LINE_HEIGHT = 0.08; // 墙体踢脚线高度
+const SKIRTING_LINE_THICKNESS = 0.016; // 墙体踢脚线厚度
 const GLASS_THICKNESS = 0.1; // 玻璃厚度
 const FLOOR_TO_CEILING_GLASS_HEIGHT =
   WALL_HEIGHT - SHORT_GRADE_BEAM_HEIGHT - BEAM_HEIGHT; // 落地玻璃的高度
@@ -48,8 +48,8 @@ const NON_FLOOR_TO_CEILING_GLASS_POSITION_Y =
   TALL_GRADE_BEAM_HEIGHT + NON_FLOOR_TO_CEILING_GLASS_HEIGHT / 2; // 非落地玻璃的y位置
 const ALUMINIUM_ALLOY_FRAME_HEIGHT = 0.05; // 玻璃铝合金包边高度
 const ALUMINIUM_ALLOY_FRAME_THICKNESS = 0.12; // 玻璃铝合金包边厚度
-export const PASS_EDGE_BINDING_HEIGHT = 0.1; // 垭口包边高度
-const PASS_EDGE_BINDING_THICKNESS = 0.02; // 垭口包边厚度
+export const PASS_EDGE_BINDING_HEIGHT = 0.08; // 垭口包边高度
+const PASS_EDGE_BINDING_THICKNESS = 0.016; // 垭口包边厚度
 
 // 所有墙体参数
 const WALL_1_WIDTH = 10;
@@ -172,7 +172,7 @@ const WALL_44_POSITION_Z =
   WALL_42_POSITION_Z + WALL_42_WIDTH / 2 + WALL_2_WIDTH / 2;
 const WALL_45_POSITION_Z =
   WALL_6_POSITION_Z + WALL_39_WIDTH / 2 + WALL_2_WIDTH / 2;
-const WALL_46_WIDTH = 8.8;
+const WALL_46_WIDTH = 9.2;
 export const WALL_46_POSITION_Z =
   WALL_45_POSITION_Z + WALL_2_WIDTH / 2 + WALL_46_WIDTH / 2;
 const WALL_48_POSITION_Z =
@@ -187,7 +187,7 @@ const WALL_50_POSITION_X =
   WALL_49_POSITION_X + WALL_49_WIDTH / 2 - WALL_THICKNESS / 2;
 const WALL_50_POSITION_Z =
   WALL_49_POSITION_Z + WALL_THICKNESS / 2 + WALL_50_WIDTH / 2;
-export const WALL_51_WIDTH = 6.4;
+export const WALL_51_WIDTH = 6.8;
 const WALL_51_POSITION_X =
   WALL_50_POSITION_X + WALL_THICKNESS / 2 + WALL_51_WIDTH / 2;
 export const WALL_51_POSITION_Z =
@@ -196,7 +196,7 @@ export const WALL_52_POSITION_X =
   WALL_50_POSITION_X + WALL_THICKNESS / 2 + WALL_7_WIDTH + 0.2;
 const WALL_52_POSITION_Z =
   WALL_51_POSITION_Z - WALL_THICKNESS / 2 - WALL_7_WIDTH / 2;
-export const WALL_53_WIDTH = 3.4;
+export const WALL_53_WIDTH = 3.8;
 export const WALL_53_POSITION_Z =
   WALL_52_POSITION_Z - WALL_7_WIDTH / 2 - WALL_53_WIDTH / 2;
 const WALL_54_POSITION_Z =
@@ -234,7 +234,7 @@ const WALL_62_POSITION_X =
   WALL_60_POSITION_X + WALL_60_WIDTH / 2 - WALL_THICKNESS / 2;
 export const WALL_63_POSITION_X =
   WALL_55_POSITION_X + WALL_55_WIDTH / 2 + WALL_22_WIDTH / 2;
-const WALL_64_WIDTH = WALL_60_WIDTH / 2;
+const WALL_64_WIDTH = WALL_60_WIDTH / 2 - WALL_THICKNESS / 2;
 const WALL_64_POSITION_X =
   WALL_63_POSITION_X + WALL_22_WIDTH / 2 + WALL_64_WIDTH / 2;
 const WALL_65_WIDTH = WALL_61_POSITION_Z - WALL_55_POSITION_Z - WALL_THICKNESS;
@@ -435,7 +435,7 @@ const wallInfoList: (
     WALL_12_POSITION_X,
     WALL_1_POSITION_Y,
     WALL_1_POSITION_Z,
-    "double",
+    "all",
   ],
   [
     WALL_THICKNESS,
@@ -487,7 +487,7 @@ const wallInfoList: (
     WALL_18_POSITION_X,
     WALL_1_POSITION_Y,
     WALL_1_POSITION_Z,
-    "double",
+    "all",
   ],
   [
     WALL_THICKNESS,
@@ -1197,14 +1197,6 @@ const addAllWall = (
 ) => {
   const boxGeometry = assetManager.geometries.get("boxGeometry");
   const wallMaterial = assetManager.materials.get("wallMaterial");
-  //  踢脚线材质
-  const skirtingLineMaterial = new MeshStandardMaterial({
-    color: SKIRTING_LINE_COLOR,
-    metalness: 0.8, // 金属感
-    roughness: 0.3, // 拉丝阳极氧化，别给到 0 否则变镜子
-    envMapIntensity: 1.0, // 需要场景里有 envMap 才出反射
-  });
-  assetManager.materials.set("skirtingLineMaterial", skirtingLineMaterial);
   // 玻璃材质
   const glassMaterial = new MeshStandardMaterial({
     color: 0x87ceeb,
@@ -1325,15 +1317,15 @@ const addSkirtingLine = (
   skirtingLineType: SkirtingLineType,
 ) => {
   const boxGeometry = assetManager.geometries.get("boxGeometry");
-  const skirtingLineMaterial = assetManager.materials.get(
-    "skirtingLineMaterial",
+  const aluminiumAlloyMaterial = assetManager.materials.get(
+    "aluminiumAlloyMaterial",
   );
   const { x: width, y: height, z: depth } = dummy.scale;
   const { x, y, z } = dummy.position;
   if (width > depth) {
     // 横墙
     if (skirtingLineType === "front") {
-      const frontSkirtingLine = new Mesh(boxGeometry, skirtingLineMaterial);
+      const frontSkirtingLine = new Mesh(boxGeometry, aluminiumAlloyMaterial);
       frontSkirtingLine.scale.set(
         width,
         SKIRTING_LINE_HEIGHT,
@@ -1346,7 +1338,7 @@ const addSkirtingLine = (
       );
       scene.add(frontSkirtingLine);
     } else {
-      const backSkirtingLine = new Mesh(boxGeometry, skirtingLineMaterial);
+      const backSkirtingLine = new Mesh(boxGeometry, aluminiumAlloyMaterial);
       backSkirtingLine.scale.set(
         width,
         SKIRTING_LINE_HEIGHT,
@@ -1360,7 +1352,7 @@ const addSkirtingLine = (
       scene.add(backSkirtingLine);
     }
     if (["double", "all"].includes(skirtingLineType)) {
-      const frontSkirtingLine = new Mesh(boxGeometry, skirtingLineMaterial);
+      const frontSkirtingLine = new Mesh(boxGeometry, aluminiumAlloyMaterial);
       frontSkirtingLine.scale.set(
         width,
         SKIRTING_LINE_HEIGHT,
@@ -1373,7 +1365,7 @@ const addSkirtingLine = (
       );
       scene.add(frontSkirtingLine);
       if (skirtingLineType === "all") {
-        const leftSkirtingLine = new Mesh(boxGeometry, skirtingLineMaterial);
+        const leftSkirtingLine = new Mesh(boxGeometry, aluminiumAlloyMaterial);
         leftSkirtingLine.scale.set(
           SKIRTING_LINE_THICKNESS,
           SKIRTING_LINE_HEIGHT,
@@ -1385,7 +1377,7 @@ const addSkirtingLine = (
           z,
         );
         scene.add(leftSkirtingLine);
-        const rightSkirtingLine = new Mesh(boxGeometry, skirtingLineMaterial);
+        const rightSkirtingLine = new Mesh(boxGeometry, aluminiumAlloyMaterial);
         rightSkirtingLine.scale.set(
           SKIRTING_LINE_THICKNESS,
           SKIRTING_LINE_HEIGHT,
@@ -1402,7 +1394,7 @@ const addSkirtingLine = (
   } else {
     // 竖墙
     if (skirtingLineType === "front") {
-      const frontSkirtingLine = new Mesh(boxGeometry, skirtingLineMaterial);
+      const frontSkirtingLine = new Mesh(boxGeometry, aluminiumAlloyMaterial);
       frontSkirtingLine.scale.set(
         SKIRTING_LINE_THICKNESS,
         SKIRTING_LINE_HEIGHT,
@@ -1415,7 +1407,7 @@ const addSkirtingLine = (
       );
       scene.add(frontSkirtingLine);
     } else {
-      const backSkirtingLine = new Mesh(boxGeometry, skirtingLineMaterial);
+      const backSkirtingLine = new Mesh(boxGeometry, aluminiumAlloyMaterial);
       backSkirtingLine.scale.set(
         SKIRTING_LINE_THICKNESS,
         SKIRTING_LINE_HEIGHT,
@@ -1429,7 +1421,7 @@ const addSkirtingLine = (
       scene.add(backSkirtingLine);
     }
     if (["double", "all"].includes(skirtingLineType)) {
-      const frontSkirtingLine = new Mesh(boxGeometry, skirtingLineMaterial);
+      const frontSkirtingLine = new Mesh(boxGeometry, aluminiumAlloyMaterial);
       frontSkirtingLine.scale.set(
         SKIRTING_LINE_THICKNESS,
         SKIRTING_LINE_HEIGHT,
@@ -1442,7 +1434,7 @@ const addSkirtingLine = (
       );
       scene.add(frontSkirtingLine);
       if (skirtingLineType === "all") {
-        const leftSkirtingLine = new Mesh(boxGeometry, skirtingLineMaterial);
+        const leftSkirtingLine = new Mesh(boxGeometry, aluminiumAlloyMaterial);
         leftSkirtingLine.scale.set(
           width + SKIRTING_LINE_THICKNESS * 2,
           SKIRTING_LINE_HEIGHT,
@@ -1454,7 +1446,7 @@ const addSkirtingLine = (
           z - (depth + SKIRTING_LINE_THICKNESS) / 2,
         );
         scene.add(leftSkirtingLine);
-        const rightSkirtingLine = new Mesh(boxGeometry, skirtingLineMaterial);
+        const rightSkirtingLine = new Mesh(boxGeometry, aluminiumAlloyMaterial);
         rightSkirtingLine.scale.set(
           width + SKIRTING_LINE_THICKNESS * 2,
           SKIRTING_LINE_HEIGHT,
@@ -1540,24 +1532,18 @@ const addGlassWindow = (
   glassWindowGroup.add(glassWindow);
 
   // 添加玻璃窗铝合金包边
-  const aluminiumAlloyFrameMaterial = assetManager.materials.get(
-    "aluminiumAlloyFrameMaterial",
+  const aluminiumAlloyMaterial = assetManager.materials.get(
+    "aluminiumAlloyMaterial",
   );
-  const topAluminiumAlloyFrame = new Mesh(
-    boxGeometry,
-    aluminiumAlloyFrameMaterial,
-  );
+  const topAluminiumAlloyFrame = new Mesh(boxGeometry, aluminiumAlloyMaterial);
   const bottomAluminiumAlloyFrame = new Mesh(
     boxGeometry,
-    aluminiumAlloyFrameMaterial,
+    aluminiumAlloyMaterial,
   );
-  const leftAluminiumAlloyFrame = new Mesh(
-    boxGeometry,
-    aluminiumAlloyFrameMaterial,
-  );
+  const leftAluminiumAlloyFrame = new Mesh(boxGeometry, aluminiumAlloyMaterial);
   const rightAluminiumAlloyFrame = new Mesh(
     boxGeometry,
-    aluminiumAlloyFrameMaterial,
+    aluminiumAlloyMaterial,
   );
   if (width > depth) {
     // 横向玻璃
@@ -1717,12 +1703,12 @@ const addPassEdgeBinding = (
   mouseRaycasterIntersectObjectsRef: RefObject<Object3D[]>,
 ) => {
   const boxGeometry = assetManager.geometries.get("boxGeometry");
-  const skirtingLineMaterial = assetManager.materials.get(
-    "skirtingLineMaterial",
+  const aluminiumAlloyMaterial = assetManager.materials.get(
+    "aluminiumAlloyMaterial",
   );
 
   passEdgeBindingList.forEach((item: number[]) => {
-    const passEdgeBinding = new Mesh(boxGeometry, skirtingLineMaterial);
+    const passEdgeBinding = new Mesh(boxGeometry, aluminiumAlloyMaterial);
     passEdgeBinding.name = "垭口包边";
     passEdgeBinding.scale.set(item[0], item[1], item[2]);
     passEdgeBinding.position.set(item[3], item[4], item[5]);
