@@ -28,7 +28,6 @@ import {
   WALL_34_POSITION_X,
 } from "./addHouseStructure";
 import { SIDEBOARD_DEPTH, SUSPENDED_CEILING_HEIGHT } from "./addHouseStructure";
-import { RECEIVE_SELF_KEY } from "constants/common";
 
 export const BOARD_THICKNESS = 0.03; // 木板的厚度
 // 餐边柜的位置
@@ -45,7 +44,7 @@ const BOARD_COATING_THICKNESS = 0.002; // 木板深灰色涂层的厚度
 const CHEST_DOOR_THICKNESS = 0.01; // 柜门和抽屉门的厚度
 const TOP_CHEST_HEIGHT = 0.9; // 第一层柜子的高度
 const TOP_STORAGE_AREA_HEIGHT = 0.2; // 第二层暗格置物区的高度（空白，深灰）
-const TOP_STORAGE_AREA_DEPTH = 0.46; // 第二层暗格置物区的深度
+const TOP_STORAGE_AREA_DEPTH = SIDEBOARD_DEPTH - 0.16; // 第二层暗格置物区的深度
 const STORAGE_AREA_HEIGHT = 0.55; // 第三层置物区的高度（空白，深灰）
 const LIGHTING_STRIP_HEIGHT = 0.04; // 发光灯带的高
 // 第四层抽屉的宽度
@@ -389,7 +388,7 @@ const createSideboard = (
       CHEST_DOOR_THICKNESS,
       x,
       SIDEBOARD_HEIGHT - BOARD_THICKNESS - CHEST_GAP - TOP_CHEST_HEIGHT / 2,
-      TOP_STORAGE_AREA_DEPTH - BOARD_THICKNESS / 2,
+      TOP_STORAGE_AREA_DEPTH - CHEST_DOOR_THICKNESS / 2,
     );
   }
 
@@ -484,7 +483,7 @@ const createSideboard = (
         BOARD_THICKNESS +
         CHEST_GAP +
         DRAWER_HEIGHT / 2,
-      SIDEBOARD_DEPTH - BOARD_THICKNESS / 2,
+      SIDEBOARD_DEPTH - CHEST_DOOR_THICKNESS / 2,
     );
   }
 
@@ -503,7 +502,7 @@ const createSideboard = (
       CHEST_DOOR_THICKNESS,
       x,
       BOARD_THICKNESS + CHEST_GAP + BOTTOM_CHEST_HEIGHT / 2,
-      SIDEBOARD_DEPTH - BOARD_THICKNESS / 2,
+      SIDEBOARD_DEPTH - CHEST_DOOR_THICKNESS / 2,
     );
   }
 
@@ -762,19 +761,21 @@ const createSideboard = (
     decorativeBafflePlate,
     RectAreaLigthWidth,
     GLASS_HEIGHT,
-    -DECORATIVE_BAFFLE_BACK_PLATE_WIDTH - GLASS_WIDTH * 2 + 0.01,
+    leftPositionX,
     SIDEBOARD_HEIGHT / 2,
     RectAreaLigthWidth / 2,
+    true,
     new Vector3(0, -Math.PI / 2, 0),
   );
-  // // 玻璃后面的右边灯光
+  // 玻璃后面的右边灯光
   addRectAreaLight(
     decorativeBafflePlate,
     RectAreaLigthWidth,
     GLASS_HEIGHT,
-    -DECORATIVE_BAFFLE_BACK_PLATE_WIDTH - GLASS_WIDTH - 0.01,
+    rightPositionX,
     SIDEBOARD_HEIGHT / 2,
     RectAreaLigthWidth / 2,
+    true,
     new Vector3(0, Math.PI / 2, 0),
   );
 

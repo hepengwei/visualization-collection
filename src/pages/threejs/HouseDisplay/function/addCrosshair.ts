@@ -85,7 +85,7 @@ export const crosshairRender = (
         // 将墙体、玻璃窗等加入鼠标射线检测是为了防止隔着这些物体高亮了可交互的物体
         if (
           namedObj.name &&
-          !["墙体", "玻璃窗", "垭口包边", "餐边柜", "冰箱"].includes(
+          !["墙体", "玻璃窗", "垭口包边", "餐边柜", "冰箱", "客厅柜"].includes(
             namedObj.name,
           )
         ) {

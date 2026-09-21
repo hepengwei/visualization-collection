@@ -11,11 +11,10 @@ import {
   Object3D,
   FrontSide,
   RectAreaLight,
-  Color,
 } from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
 import type { AssetManager } from "hooks/threejs/useInitialize";
-import { addBox, addPlane, addLightingStrip, WOOD_DARK_COLOR } from "../utils";
+import { addBox, addPlane, addLightingStrip } from "../utils";
 import {
   WALL_HEIGHT,
   WALL_THICKNESS,
@@ -277,21 +276,17 @@ const createRightCabinet = (
 
 // 创建落地柜
 const createBaseCabinet = (assetManager: AssetManager) => {
+  // 灰白色木板材质
+  const woodBoardLightMaterial = assetManager.materials.get(
+    "woodBoardLightMaterial",
+  ) as MeshPhysicalMaterial;
   // 深灰色木板材质
   const woodBoardDarkMaterial = assetManager.materials.get(
     "woodBoardDarkMaterial",
   ) as MeshPhysicalMaterial;
-  // 根据木头的深色创建更深颜色面板材质（不受光影响）
-  const color = new Color(WOOD_DARK_COLOR);
-  color.offsetHSL(
-    0, // h 不变
-    0, // s 不变
-    -48 / 255, // 亮度调暗
-  );
-  const newColor = color.getHex();
   const blackPanelMaterial = new MeshPhysicalMaterial({
-    color: newColor,
-    emissive: newColor, // 自发光颜色
+    color: 0x555555,
+    emissive: 0x555555, // 自发光颜色
     emissiveIntensity: 1.0, // 自发光强度，使其不受环境光影响变灰
     roughness: 0.5,
     metalness: 0.0,
@@ -307,7 +302,7 @@ const createBaseCabinet = (assetManager: AssetManager) => {
   addBox(
     baseCabinetGroup,
     assetManager,
-    woodBoardDarkMaterial,
+    woodBoardLightMaterial,
     BASE_CABINET_WIDTH,
     BASE_CABINET_HEIGHT - BASE_CABINET_TOP_THICKNESS / 2,
     TV_BACKGROUND_DEPTH,
@@ -331,16 +326,16 @@ const createBaseCabinet = (assetManager: AssetManager) => {
   );
   baseCabinetGroup.add(topBoard);
 
-  addPlane(
-    baseCabinetGroup,
-    assetManager,
-    blackPanelMaterial,
-    BASE_CABINET_WIDTH,
-    CHEST_GAP,
-    0,
-    BASE_CABINET_HEIGHT / 2 - BASE_CABINET_TOP_THICKNESS / 2 - CHEST_GAP / 2,
-    TV_BACKGROUND_DEPTH / 2 + 0.01,
-  );
+  // addPlane(
+  //   baseCabinetGroup,
+  //   assetManager,
+  //   blackPanelMaterial,
+  //   BASE_CABINET_WIDTH,
+  //   CHEST_GAP / 2,  
+  //   0,
+  //   BASE_CABINET_HEIGHT / 2 - BASE_CABINET_TOP_THICKNESS / 2 - CHEST_GAP / 4,
+  //   TV_BACKGROUND_DEPTH / 2 + 0.01,
+  // );
 
   // 所有抽屉竖线
   for (let i = 1; i < DRAWER_COUNT; i++) {

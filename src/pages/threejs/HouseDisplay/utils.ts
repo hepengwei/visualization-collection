@@ -34,10 +34,11 @@ import type { AssetManager } from "hooks/threejs/useInitialize";
 
 const WALL_COLOR = 0xf4f3ef; // 珍珠白乳胶漆颜色
 export const WOOD_LIGHT_COLOR = 0xfffaf0; // 浅色木头
-export const WOOD_DARK_COLOR = 0x828c94; // 深色木头
-// export const WOOD_DARK_COLOR = 0xb6a093; // 深色木头
+export const WOOD_DARK_COLOR = 0x848e96; // 深色木头
+// export const WOOD_DARK_COLOR = 0xb5b3af; // 深色木头
 const WOOD_LIGHT_YELLOW_COLOR = 0xfffaf0; // 浅黄白色木头
 export const ALUMINIUM_ALLOY_COLOR = 0xbfc3c7; // 铝合金颜色
+export const DOOR_COLOR = new Color(130, 140, 148); // 门扇的颜色
 
 // 初始化资源管理器，将所有公共的几何体和部分公共材质预先创建并存到资源管理器中
 export const initAssetManager = (assetManager: AssetManager) => {
@@ -91,10 +92,7 @@ export const initAssetManager = (assetManager: AssetManager) => {
     metalness: 0.8,
     roughness: 0.3,
   });
-  assetManager.materials.set(
-    "aluminiumAlloyMaterial",
-    aluminiumAlloyMaterial,
-  );
+  assetManager.materials.set("aluminiumAlloyMaterial", aluminiumAlloyMaterial);
   // 创建哑光工业铝材质
   const whiteAluminumMaterial = new MeshStandardMaterial({
     color: 0xf2f5f8,
