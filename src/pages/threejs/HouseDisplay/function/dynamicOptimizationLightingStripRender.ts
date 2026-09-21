@@ -7,8 +7,10 @@ import { PerspectiveCamera, RectAreaLight } from "three";
 import type { ViewMode } from "../function/modeToggle";
 import {
   WALL_THICKNESS,
+  WALL_11_POSITION_X,
   WALL_55_POSITION_X,
   WALL_72_POSITION_X,
+  WALL_58_POSITION_Z,
 } from "../hardDecoration/addHouseStructure";
 import { SHOE_CABINET_DEPTH } from "../hardDecoration/addShoeCabinet";
 
@@ -27,13 +29,19 @@ export const dynamicOptimizationLightingStripRender = (
     let openLightFieldList = [];
     if (cameraPos.x < WALL_55_POSITION_X) {
       openLightFieldList = ["tvBackground"];
+    } else if (cameraPos.x < WALL_11_POSITION_X) {
+      openLightFieldList = ["livingRoomCabinet", "shoeCabinet"];
     } else if (
       cameraPos.x >
       WALL_72_POSITION_X - WALL_THICKNESS / 2 - SHOE_CABINET_DEPTH
     ) {
       openLightFieldList = ["sideboard"];
     } else {
-      openLightFieldList = ["decorateBackgroundPanel", "shoeCabinet"];
+      if (cameraPos.z < WALL_58_POSITION_Z) {
+        openLightFieldList = ["decorateBackgroundPanel", "livingRoomCabinet"];
+      } else {
+        openLightFieldList = ["decorateBackgroundPanel", "shoeCabinet"];
+      }
     }
     // 先将要隐藏的光源隐藏
     Object.keys(lightingStripLightMap).forEach((key: string) => {

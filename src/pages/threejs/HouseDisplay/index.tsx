@@ -50,6 +50,7 @@ import { addCurtain, onClickCurtain, curtainAnimationRender } from "./softDecora
 import { addFridge, onClickFridgeDoor, fridgeDoorAnimationRender } from "./softDecoration/addFridge";
 import addGlassWhiteboard from "./softDecoration/addGlassWhiteboard";
 import addDecorateBackgroundPanel from './softDecoration/addDecorateBackgroundPanel';
+import addLivingRoomCabinet from './hardDecoration/addLivingRoomCabinet';
 import { dynamicOptimizationLightingStripRender } from './function/dynamicOptimizationLightingStripRender';
 import styles from "./index.module.scss";
 
@@ -197,7 +198,7 @@ const HouseDisplay = () => {
         mouseRaycasterIntersectObjectsRef,
       );
 
-      // 添加天花板（初始隐藏在天空中）
+      // 添加天花板（初始隐藏在天空上方）
       addCeiling(scene, assetManager, ceilingRef);
 
       // 添加电视背景
@@ -289,6 +290,15 @@ const HouseDisplay = () => {
 
       // 添加装饰背景板
       addDecorateBackgroundPanel(scene, assetManager, pointerControlsIntersetObjectsRef, lightingStripLightMapRef);
+
+      // 添加客厅柜
+      addLivingRoomCabinet(
+        scene,
+        assetManager,
+        pointerControlsIntersetObjectsRef,
+        mouseRaycasterIntersectObjectsRef,
+        lightingStripLightMapRef
+      );
 
       // 启用双后处理器架构
       useDualComposer(

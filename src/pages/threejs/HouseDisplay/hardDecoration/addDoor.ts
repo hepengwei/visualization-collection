@@ -7,7 +7,6 @@ import {
   SphereGeometry,
   MeshStandardMaterial,
   Mesh,
-  Color,
   Group,
   Vector3,
   Vector2,
@@ -20,6 +19,7 @@ import {
   generateNormalMap,
   generateRoughnessMap,
   getEaseProgress,
+  DOOR_COLOR,
 } from "../utils";
 import {
   WALL_THICKNESS,
@@ -36,7 +36,6 @@ import {
 type HandlePosition = "left" | "right";
 
 const OPEN_OR_CLOSE_DURATION = 800; // 开/关门动画总时长
-const DOOR_COLOR = new Color(130, 140, 148); // 门扇的颜色
 const DOOR_THICKNESS = 0.04; // 门扇的厚度
 const TOP_GAP = 0.004; // 门和门框上方的缝隙
 const FRAME_TRIM_WIDTH = 0.08; // 门框左右竖框的宽
