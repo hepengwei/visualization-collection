@@ -32,6 +32,7 @@ import {
   WALL_20_POSITION_Z,
 } from "../hardDecoration/addHouseStructure";
 import addVase from "../softDecoration/addVase";
+import { LIGHT_GROUP_FIELD } from "../function/dynamicOptimizationLightingStripRender";
 
 // 装饰背景板的位置
 const TV_BACKGROUND_POSITON = new Vector3(
@@ -457,7 +458,7 @@ const addAllLightingStrip = (
     0.6 * Math.PI,
   );
   light3 && lightList.push(light3);
-  lightingStripLightMapRef.current.decorateBackgroundPanel = lightList;
+  lightingStripLightMapRef.current[LIGHT_GROUP_FIELD.DECORATE_BACKGROUND_PANEL] = lightList;
 };
 
 export default addDecorateBackgroundPanel;

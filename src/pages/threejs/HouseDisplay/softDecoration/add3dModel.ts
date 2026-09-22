@@ -164,7 +164,7 @@ const loadBeds = (
       });
 
       bed2.position.set(
-        WALL_33_POSITION_X - 0.1,
+        WALL_33_POSITION_X - 0.15,
         0.72,
         WALL_1_POSITION_Z + 1.8,
       );

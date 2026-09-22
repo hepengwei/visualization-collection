@@ -19,15 +19,15 @@ import {
   Group,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
-import { ALUMINIUM_ALLOY_COLOR } from "../utils";
 
 type SkirtingLineType = "front" | "back" | "double" | "all"; // 如果是竖墙，则"front"为左， "back"为右
 
 export const SUSPENDED_CEILING_HEIGHT = 0.35; // 吊顶总高度
 export const SIDEBOARD_DEPTH = 0.62; // 餐边柜的总深度
+export const WARDROBE_DEPTH = 0.78; // 衣柜的总深度
 export const WALL_HEIGHT = 3.6; // 墙体高度
 export const WALL_THICKNESS = 0.3; // 墙体厚度
-const TALL_GRADE_BEAM_HEIGHT = 1.3; // 高地梁的墙体高度
+export const TALL_GRADE_BEAM_HEIGHT = 1.3; // 高地梁的墙体高度
 const TALL_GRADE_BEAM_POSITION_Y = TALL_GRADE_BEAM_HEIGHT / 2; // 高地梁的墙体y位置
 const SHORT_GRADE_BEAM_HEIGHT = 0.2; // 矮地梁的墙体高度
 const SHORT_GRADE_BEAM_POSITION_Y = SHORT_GRADE_BEAM_HEIGHT / 2; // 矮地梁的墙体y位置
@@ -108,7 +108,7 @@ const WALL_17_POSITION_X =
 const WALL_18_WIDTH = 0.02;
 const WALL_18_POSITION_X =
   WALL_17_POSITION_X + WALL_17_WIDTH / 2 + WALL_18_WIDTH / 2;
-const WALL_19_WIDTH = WALL_13_WIDTH + WALL_14_WIDTH;
+export const WALL_19_WIDTH = WALL_13_WIDTH + WALL_14_WIDTH;
 export const WALL_19_POSITION_X =
   WALL_17_POSITION_X + WALL_17_WIDTH / 2 - WALL_THICKNESS / 2;
 export const WALL_19_POSITION_Z =
@@ -118,7 +118,7 @@ export const WALL_20_POSITION_X =
   WALL_13_POSITION_X + WALL_20_WIDTH / 2 - WALL_THICKNESS / 2;
 export const WALL_20_POSITION_Z =
   WALL_19_POSITION_Z + WALL_THICKNESS / 2 + WALL_19_WIDTH / 2;
-const WALL_21_WIDTH = 0.1;
+export const WALL_21_WIDTH = 0.1;
 const WALL_21_POSITION_Z =
   WALL_20_POSITION_Z + WALL_THICKNESS / 2 + WALL_21_WIDTH / 2;
 export const WALL_22_WIDTH =
@@ -238,7 +238,7 @@ const WALL_64_WIDTH = WALL_60_WIDTH / 2 - WALL_THICKNESS / 2;
 export const WALL_64_POSITION_X =
   WALL_63_POSITION_X + WALL_22_WIDTH / 2 + WALL_64_WIDTH / 2;
 const WALL_65_WIDTH = WALL_61_POSITION_Z - WALL_55_POSITION_Z - WALL_THICKNESS;
-const WALL_65_POSITION_X = WALL_64_POSITION_X - WALL_64_WIDTH / 2 + 0.4;
+export const WALL_65_POSITION_X = WALL_64_POSITION_X - WALL_64_WIDTH / 2 + 0.4;
 const WALL_65_POSITION_Z =
   WALL_61_POSITION_Z - WALL_THICKNESS / 2 - WALL_65_WIDTH / 2;
 const WALL_66_WIDTH = WALL_THICKNESS * 3;

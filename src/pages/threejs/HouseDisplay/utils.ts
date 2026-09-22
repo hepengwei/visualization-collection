@@ -656,6 +656,127 @@ export const generateHalfCircularRingCylinderGeometry = (
   return geometry;
 };
 
+/**
+ * @description: 生成“圆角立方体的一角”几何体
+ * @param {number} size 正方形边长
+ * @param {number} radius 圆角半径
+ * @return {BufferGeometry}
+ */
+export const generateRoundedBoxCornerGeometry = (radius = 1) => {
+  const seg = 12;
+
+  const vertices = [];
+  const normals = [];
+  const uvs = [];
+  const indices = [];
+
+  // 球面参数化：只取第一象限（八分之一球面）
+  for (let i = 0; i <= seg; i++) {
+    const phi = (Math.PI / 2) * (i / seg); // 极角 [0, π/2]
+
+    for (let j = 0; j <= seg; j++) {
+      const theta = (Math.PI / 2) * (j / seg); // 方位角 [0, π/2]
+
+      // 球面坐标
+      const x = radius * Math.sin(phi) * Math.cos(theta);
+      const y = radius * Math.sin(phi) * Math.sin(theta);
+      const z = radius * Math.cos(phi);
+
+      // 法线（单位球面方向）
+      const nx = Math.sin(phi) * Math.cos(theta);
+      const ny = Math.sin(phi) * Math.sin(theta);
+      const nz = Math.cos(phi);
+
+      vertices.push(x, y, z);
+      normals.push(nx, ny, nz);
+      uvs.push(i / seg, j / seg);
+    }
+  }
+
+  // 索引（标准 grid）
+  for (let i = 0; i < seg; i++) {
+    for (let j = 0; j < seg; j++) {
+      const a = i * (seg + 1) + j;
+      const b = i * (seg + 1) + j + 1;
+      const c = (i + 1) * (seg + 1) + j;
+      const d = (i + 1) * (seg + 1) + j + 1;
+
+      indices.push(a, c, b);
+      indices.push(b, c, d);
+    }
+  }
+
+  // ===============================
+  // 用 3 个扇面把球面“切”成封闭体
+  // ===============================
+
+  // 扇面 1：XY 平面（z = 0）
+  const fan1 = vertices.length / 3;
+
+  // 圆心
+  vertices.push(0, 0, 0);
+  normals.push(0, 0, -1);
+  uvs.push(0.5, 0.5);
+
+  // 圆弧上的点
+  for (let i = 0; i <= seg; i++) {
+    const a = (Math.PI / 2) * (i / seg);
+    vertices.push(radius * Math.cos(a), radius * Math.sin(a), 0);
+    normals.push(0, 0, -1);
+    uvs.push(0.5 + 0.5 * Math.cos(a), 0.5 + 0.5 * Math.sin(a));
+  }
+
+  // 三角形扇
+  for (let i = 0; i < seg; i++) {
+    indices.push(fan1, fan1 + 1 + i + 1, fan1 + 1 + i);
+  }
+
+  // 扇面 2：YZ 平面（x = 0）
+  const fan2 = vertices.length / 3;
+
+  vertices.push(0, 0, 0);
+  normals.push(-1, 0, 0);
+  uvs.push(0.5, 0.5);
+
+  for (let i = 0; i <= seg; i++) {
+    const a = (Math.PI / 2) * (i / seg);
+    vertices.push(0, radius * Math.sin(a), radius * Math.cos(a));
+    normals.push(-1, 0, 0);
+    uvs.push(0.5 + 0.5 * Math.cos(a), 0.5 + 0.5 * Math.sin(a));
+  }
+
+  for (let i = 0; i < seg; i++) {
+    indices.push(fan2, fan2 + 1 + i, fan2 + 1 + i + 1);
+  }
+
+  // 扇面 3：ZX 平面（y = 0）
+  const fan3 = vertices.length / 3;
+
+  vertices.push(0, 0, 0);
+  normals.push(0, -1, 0);
+  uvs.push(0.5, 0.5);
+
+  for (let i = 0; i <= seg; i++) {
+    const a = (Math.PI / 2) * (i / seg);
+    vertices.push(radius * Math.cos(a), 0, radius * Math.sin(a));
+    normals.push(0, -1, 0);
+    uvs.push(0.5 + 0.5 * Math.cos(a), 0.5 + 0.5 * Math.sin(a));
+  }
+
+  for (let i = 0; i < seg; i++) {
+    indices.push(fan3, fan3 + 1 + i, fan3 + 1 + i + 1);
+  }
+
+  const geometry = new BufferGeometry();
+  geometry.setAttribute("position", new Float32BufferAttribute(vertices, 3));
+  geometry.setAttribute("normal", new Float32BufferAttribute(normals, 3));
+  geometry.setAttribute("uv", new Float32BufferAttribute(uvs, 2));
+  geometry.setIndex(indices);
+  geometry.computeVertexNormals();
+
+  return geometry;
+};
+
 // 创建并添加发光灯带
 export const addLightingStrip = (
   parent: Group,

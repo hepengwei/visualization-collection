@@ -24,6 +24,7 @@ import {
   WALL_55_POSITION_X,
   WALL_55_POSITION_Z,
 } from "./addHouseStructure";
+import { LIGHT_GROUP_FIELD } from "../function/dynamicOptimizationLightingStripRender";
 
 const TV_BACKGROUND_WIDTH = WALL_55_WIDTH - WALL_THICKNESS * 3; // 电视背景的总宽度
 const TV_BACKGROUND_DEPTH = WALL_56_WIDTH; // 电视背景的总深度(不包括黑色玻璃门)
@@ -256,7 +257,7 @@ const createRightCabinet = (
       light && lightList.push(light);
     }
   }
-  lightingStripLightMapRef.current.tvBackground = lightList;
+  lightingStripLightMapRef.current[LIGHT_GROUP_FIELD.TV_BACKGROUND] = lightList;
 
   // 黑色玻璃门
   addBox(
@@ -331,7 +332,7 @@ const createBaseCabinet = (assetManager: AssetManager) => {
   //   assetManager,
   //   blackPanelMaterial,
   //   BASE_CABINET_WIDTH,
-  //   CHEST_GAP / 2,  
+  //   CHEST_GAP / 2,
   //   0,
   //   BASE_CABINET_HEIGHT / 2 - BASE_CABINET_TOP_THICKNESS / 2 - CHEST_GAP / 4,
   //   TV_BACKGROUND_DEPTH / 2 + 0.01,

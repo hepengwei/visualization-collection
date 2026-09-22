@@ -28,6 +28,7 @@ import {
   WALL_34_POSITION_X,
 } from "./addHouseStructure";
 import { SIDEBOARD_DEPTH, SUSPENDED_CEILING_HEIGHT } from "./addHouseStructure";
+import { LIGHT_GROUP_FIELD } from "../function/dynamicOptimizationLightingStripRender";
 
 export const BOARD_THICKNESS = 0.03; // 木板的厚度
 // 餐边柜的位置
@@ -459,7 +460,7 @@ const createSideboard = (
     false,
   );
   light2 && lightList.push(light2);
-  lightingStripLightMapRef.current.sideboard = lightList;
+  lightingStripLightMapRef.current[LIGHT_GROUP_FIELD.SIDEBOARD] = lightList;
 
   /**第四层抽屉门*/
   for (let i = 0; i < CHEST_COL_COUNT / 2; i++) {

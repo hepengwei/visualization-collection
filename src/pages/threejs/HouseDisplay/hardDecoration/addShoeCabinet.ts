@@ -19,6 +19,7 @@ import {
   WALL_72_POSITION_X,
   WALL_72_POSITION_Z,
 } from "./addHouseStructure";
+import { LIGHT_GROUP_FIELD } from "../function/dynamicOptimizationLightingStripRender";
 
 export const SHOE_CABINET_DEPTH = 0.62; // 鞋柜的总深度
 const SHOE_CABINET_POSITON = new Vector3(
@@ -457,7 +458,7 @@ const createShoeCabinet = (
     false,
   );
   light3 && lightList.push(light3);
-  lightingStripLightMapRef.current.shoeCabinet = lightList;
+  lightingStripLightMapRef.current[LIGHT_GROUP_FIELD.SHOE_CABINET] = lightList;
 
   return shoeCabinetGroup;
 };
