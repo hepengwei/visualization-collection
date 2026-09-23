@@ -185,7 +185,6 @@ export const addCeilingLampSwitch = (
 
 // 创建开关
 const createSwitch = (assetManager: AssetManager, switchStatus = "OFF") => {
-  const switchGroup = new Group();
   const boxGeometry = assetManager.geometries.get("boxGeometry");
   const switchBackBoxMaterial = assetManager.materials.get(
     "switchBackBoxMaterial",
@@ -202,6 +201,8 @@ const createSwitch = (assetManager: AssetManager, switchStatus = "OFF") => {
   const switchButtonFaceMaterial = assetManager.materials.get(
     "switchButtonFaceMaterial",
   );
+
+  const switchGroup = new Group();
 
   // 创建并添加开关的底盒
   const backBox = new Mesh(boxGeometry, switchBackBoxMaterial);
