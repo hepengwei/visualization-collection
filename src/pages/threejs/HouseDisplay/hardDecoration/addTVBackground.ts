@@ -14,7 +14,7 @@ import {
 } from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
 import type { AssetManager } from "hooks/threejs/useInitialize";
-import { addBox, addPlane, addLightingStrip } from "../utils";
+import { LIGHT_STRIP_HEIGHT, addBox, addPlane, addLightStrip } from "../utils";
 import {
   WALL_HEIGHT,
   WALL_THICKNESS,
@@ -43,13 +43,12 @@ const WOODEN_GRATING_BACK_DEPTH = 0.01; // 深色背板的深度
 const PROTUBERANT_WOODEN_STRIP_WIDTH = 0.02; // 凸起木条的宽度
 const PROTUBERANT_WOODEN_STRIP_DEPTH = 0.02; // 凸起木条的深度
 const PROTUBERANT_WOODEN_STRIP_GAP = 0.01; // 凸起木条的间距
-const PROTUBERANT_WOODEN_STRIP_COUNT = 30; // 凸起木条的列数
+const PROTUBERANT_WOODEN_STRIP_COUNT = 25; // 凸起木条的列数
 const WOODEN_GRATING_WIDTH =
   PROTUBERANT_WOODEN_STRIP_WIDTH * PROTUBERANT_WOODEN_STRIP_COUNT +
   PROTUBERANT_WOODEN_STRIP_GAP * (PROTUBERANT_WOODEN_STRIP_COUNT - 1);
-const LIGHTING_STRIP_HEIGHT = 0.04; // 发光灯带的高
 // 右边柜
-const RIGHT_CABINET_WIDTH = 0.8; // 右边柜的宽度
+const RIGHT_CABINET_WIDTH = 0.6; // 右边柜的宽度
 const CHEST_COUNT = 5; // 右边柜子格数
 const GLASS_THICKNESS = 0.02; // 黑色玻璃厚度
 // 落地柜
@@ -239,16 +238,16 @@ const createRightCabinet = (
     );
     if (i < CHEST_COUNT) {
       // 添加灯带
-      const light = addLightingStrip(
+      const light = addLightStrip(
         rightCabinetGroup,
         assetManager,
         RIGHT_CABINET_WIDTH - BOARD_THICKNESS * 2,
-        LIGHTING_STRIP_HEIGHT,
+        LIGHT_STRIP_HEIGHT,
         0,
         y - BOARD_THICKNESS / 2 - 0.001,
         -TV_BACKGROUND_DEPTH / 2 +
           BOARD_THICKNESS +
-          LIGHTING_STRIP_HEIGHT / 2 +
+          LIGHT_STRIP_HEIGHT / 2 +
           0.1,
         false,
         undefined,
@@ -286,8 +285,8 @@ const createBaseCabinet = (assetManager: AssetManager) => {
     "woodBoardDarkMaterial",
   ) as MeshPhysicalMaterial;
   const blackPanelMaterial = new MeshPhysicalMaterial({
-    color: 0x555555,
-    emissive: 0x555555, // 自发光颜色
+    color: 0x666666,
+    emissive: 0x666666, // 自发光颜色
     emissiveIntensity: 1.0, // 自发光强度，使其不受环境光影响变灰
     roughness: 0.5,
     metalness: 0.0,

@@ -21,7 +21,7 @@ import {
   generateCurvedSurfaceRightAngledTriangularPrismGeometry,
   generateHalfCircularRingCylinderGeometry,
   generateRoundedBoxGeometry,
-  addLightingStrip,
+  addLightStrip,
   addCircleLightingStrip,
 } from "../utils";
 import {
@@ -36,7 +36,7 @@ import { LIGHT_GROUP_FIELD } from "../function/dynamicOptimizationLightingStripR
 
 // 装饰背景板的位置
 const TV_BACKGROUND_POSITON = new Vector3(
-  WALL_19_POSITION_X - 0.1,
+  WALL_19_POSITION_X,
   (WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT) / 2,
   WALL_20_POSITION_Z + WALL_THICKNESS / 2,
 );
@@ -380,7 +380,7 @@ const addAllLightingStrip = (
   lightList = lightList.concat(lightList1);
   const width1 =
     PANEL_WIDTH - LEFT_TOP_RADIUS - (LEFT_OR_RIGHT_WIDTH - LIGHTING_STRIP_GAP);
-  const light1 = addLightingStrip(
+  const light1 = addLightStrip(
     parent,
     assetManager,
     width1,
@@ -414,7 +414,7 @@ const addAllLightingStrip = (
     RIGHT_TOP_RADIUS -
     LEFT_OR_RIGHT_WIDTH -
     BOTTOM_RADIUS;
-  const light2 = addLightingStrip(
+  const light2 = addLightStrip(
     parent,
     assetManager,
     height,
@@ -423,7 +423,7 @@ const addAllLightingStrip = (
     PANEL_HEIGHT / 2 - LEFT_TOP_RADIUS - RIGHT_TOP_RADIUS - height / 2,
     z,
     true,
-    new Vector3(Math.PI / 2, Math.PI / 2, 0),
+    new Vector3(Math.PI / 2, -Math.PI / 2, 0),
     0.6 * Math.PI,
   );
   light2 && lightList.push(light2);
@@ -445,7 +445,7 @@ const addAllLightingStrip = (
     new Vector3(0, 0, Math.PI),
   );
   lightList = lightList.concat(lightList3);
-  const light3 = addLightingStrip(
+  const light3 = addLightStrip(
     parent,
     assetManager,
     WOOD_PANEL_MARGIN_BOTTOM,
@@ -458,7 +458,9 @@ const addAllLightingStrip = (
     0.6 * Math.PI,
   );
   light3 && lightList.push(light3);
-  lightingStripLightMapRef.current[LIGHT_GROUP_FIELD.DECORATE_BACKGROUND_PANEL] = lightList;
+  lightingStripLightMapRef.current[
+    LIGHT_GROUP_FIELD.DECORATE_BACKGROUND_PANEL
+  ] = lightList;
 };
 
 export default addDecorateBackgroundPanel;

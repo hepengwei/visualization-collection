@@ -19,8 +19,9 @@ import {
   WALL_34_POSITION_X,
 } from "../hardDecoration/addHouseStructure";
 
+// 冰箱位置
 const FRIDGE_POSITON = new Vector3(
-  WALL_34_POSITION_X + 2.2,
+  WALL_34_POSITION_X + 2,
   0,
   WALL_10_POSITION_Z + WALL_THICKNESS / 2,
 ); // 冰箱的位置

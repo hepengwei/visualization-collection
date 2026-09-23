@@ -11,7 +11,7 @@ import {
   RectAreaLight,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
-import { addBox, addLightingStrip } from "../utils";
+import { LIGHT_STRIP_HEIGHT, addBox, addLightStrip } from "../utils";
 import {
   WALL_HEIGHT,
   SUSPENDED_CEILING_HEIGHT,
@@ -28,7 +28,7 @@ const SHOE_CABINET_POSITON = new Vector3(
   WALL_72_POSITION_Z - WALL_THICKNESS / 2 + 0.14,
 ); // 鞋柜的位置
 const CHEST_COL_COUNT = 4; // 柜子的列数,保证为偶数
-const SHOE_CABINET_WIDTH = 1.93; // 鞋柜柜体的总宽
+const SHOE_CABINET_WIDTH = 1.68; // 鞋柜柜体的总宽
 const CHEST_GAP = 0.006; // 柜子之间的缝隙
 const SHOE_CABINET_HEIGHT = WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT; // 鞋柜的总高
 const BOARD_THICKNESS = 0.03; // 木板的厚度
@@ -38,7 +38,6 @@ const TOP_CHEST_HEIGHT = 0.8; // 第一层柜子的高度
 const STORAGE_AREA_HEIGHT = 0.6; // 第二层置物区的高度（空白，深灰）
 const PUT_SHOE_AREA_HEIGHT = 0.15; // 第五层的摆鞋区的高度（空白，深灰）
 const PUT_SHOE_AREA_HEIGHT2 = 0.25; // 第六层的摆鞋区的高度（空白，深灰）
-const LIGHTING_STRIP_HEIGHT = 0.04; // 发光灯带的高
 // 抽屉的宽度
 const DRAWER_WIDTH =
   (SHOE_CABINET_WIDTH -
@@ -418,11 +417,11 @@ const createShoeCabinet = (
 
   /**第二层置物区添加发光灯带*/
   const lightList: RectAreaLight[] = [];
-  const light1 = addLightingStrip(
+  const light1 = addLightStrip(
     shoeCabinetGroup,
     assetManager,
     SHOE_CABINET_WIDTH - BOARD_THICKNESS * 2,
-    LIGHTING_STRIP_HEIGHT,
+    LIGHT_STRIP_HEIGHT,
     0,
     SHOE_CABINET_HEIGHT -
       BOARD_THICKNESS -
@@ -431,30 +430,30 @@ const createShoeCabinet = (
       CHEST_GAP -
       BOARD_THICKNESS -
       0.001,
-    BOARD_THICKNESS + LIGHTING_STRIP_HEIGHT / 2 + 0.1,
+    BOARD_THICKNESS + LIGHT_STRIP_HEIGHT / 2 + 0.1,
     false,
   );
   light1 && lightList.push(light1);
   /**第五层和第六层鞋区添加发光灯带*/
-  const light2 = addLightingStrip(
+  const light2 = addLightStrip(
     shoeCabinetGroup,
     assetManager,
     SHOE_CABINET_WIDTH - BOARD_THICKNESS * 2,
-    LIGHTING_STRIP_HEIGHT,
+    LIGHT_STRIP_HEIGHT,
     0,
     PUT_SHOE_AREA_HEIGHT2 + PUT_SHOE_AREA_HEIGHT + BOARD_THICKNESS - 0.001,
-    BOARD_THICKNESS + LIGHTING_STRIP_HEIGHT / 2 + 0.1,
+    BOARD_THICKNESS + LIGHT_STRIP_HEIGHT / 2 + 0.1,
     false,
   );
   light2 && lightList.push(light2);
-  const light3 = addLightingStrip(
+  const light3 = addLightStrip(
     shoeCabinetGroup,
     assetManager,
     SHOE_CABINET_WIDTH - BOARD_THICKNESS * 2,
-    LIGHTING_STRIP_HEIGHT,
+    LIGHT_STRIP_HEIGHT,
     0,
     PUT_SHOE_AREA_HEIGHT2 - 0.001,
-    BOARD_THICKNESS + LIGHTING_STRIP_HEIGHT / 2 + 0.1,
+    BOARD_THICKNESS + LIGHT_STRIP_HEIGHT / 2 + 0.1,
     false,
   );
   light3 && lightList.push(light3);

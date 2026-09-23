@@ -19,15 +19,16 @@ import {
   WALL_58_POSITION_Z,
 } from "../hardDecoration/addHouseStructure";
 
+// 茶几位置
 const TEA_TABLE_POSITION = new Vector3(
-  WALL_10_POSITION_X - 0.1,
+  WALL_10_POSITION_X + 0.1,
   0.025,
-  WALL_58_POSITION_Z - 0.3,
-); // 茶几位置
+  WALL_58_POSITION_Z - 0.4,
+);
 const PANEL_LONG_RIDIUS = 1.8; // 茶几桌面的长半径
 const PANEL_SHORT_RIDIUS = 1.2; // 茶几桌面的短半径
 const PANEL_THICKNESS = 0.055; // 茶几桌面厚度
-const TEA_TABLE_LEG_LENGTH = 0.7; // 茶几桌腿长度
+const TEA_TABLE_LEG_LENGTH = 0.8; // 茶几桌腿长度
 const PANEL_TORUS_TUBE_RIDIUS = 0.012; // 茶几桌面金属圆环截面半径
 const GLASS_RADIUS = 0.85; // 下层玻璃隔板的半径
 const GLASS_PANEL_DISTANCE = 0.36; // 下层玻璃隔板与桌面的距离
@@ -45,7 +46,7 @@ const addTeaTable = (scene: Scene, assetManager: AssetManager) => {
   teaTableGroup.name = "茶几";
   teaTableGroup.castShadow = true;
   teaTableGroup.receiveShadow = true;
-  teaTableGroup.scale.set(0.6, 0.6, 0.6);
+  teaTableGroup.scale.set(0.5, 0.5, 0.5);
 
   // 圆柱体
   const cylinderGeometry = assetManager.geometries.get("cylinderGeometry");

@@ -13,8 +13,9 @@ import {
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import {
+  LIGHT_STRIP_HEIGHT,
   addBox,
-  addLightingStrip,
+  addLightStrip,
   generateQuarterCylinderGeometry,
 } from "../utils";
 import {
@@ -28,7 +29,7 @@ import { LIGHT_GROUP_FIELD } from "../function/dynamicOptimizationLightingStripR
 
 export const LIVING_ROOM_CABINET_DEPTH = 0.62; // 客厅柜的总深度
 export const BOARD_THICKNESS = 0.03; // 木板的厚度
-const ARC_BOARD_THICKNESS = 0.1; // 圆弧边木板的厚度
+const ARC_BOARD_THICKNESS = 0.08; // 圆弧边木板的厚度
 // 客厅柜的位置
 const LIVING_ROOM_CABINET_POSITON = new Vector3(
   WALL_64_POSITION_X + 0.2,
@@ -36,7 +37,7 @@ const LIVING_ROOM_CABINET_POSITON = new Vector3(
   WALL_55_POSITION_Z - WALL_THICKNESS / 2,
 );
 const CHEST_COL_COUNT = 4; // 柜子的列数,保证为偶数
-const LIVING_ROOM_CABINET_WIDTH = 2.4; // 客厅柜体的总宽（不包含左右两边多出的部分）
+const LIVING_ROOM_CABINET_WIDTH = 2; // 客厅柜体的总宽（不包含左右两边多出的部分）
 const CHEST_GAP = 0.008; // 柜子之间的缝隙
 const LIVING_ROOM_CABINET_HEIGHT = WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT; // 客厅柜的总高
 const BOARD_COATING_THICKNESS = 0.002; // 木板深灰色涂层的厚度
@@ -45,7 +46,6 @@ const TOP_CHEST_HEIGHT = 0.96; // 第一层柜子的高度
 const TOP_STORAGE_AREA_HEIGHT = 0.2; // 第二层暗格置物区的高度（空白，深灰）
 const TOP_STORAGE_AREA_DEPTH = LIVING_ROOM_CABINET_DEPTH - 0.16; // 第二层暗格置物区的深度
 const STORAGE_AREA_HEIGHT = 0.55; // 第三层置物区的高度（空白，深灰）
-const LIGHTING_STRIP_HEIGHT = 0.04; // 发光灯带的高
 // 第四层抽屉的宽度
 const DRAWER_WIDTH =
   (LIVING_ROOM_CABINET_WIDTH -
@@ -129,10 +129,10 @@ const createLivingRoomCabinet = (
     woodBoardLightMaterial,
     ARC_BOARD_THICKNESS,
     topHeight,
-    TOP_STORAGE_AREA_DEPTH,
+    TOP_STORAGE_AREA_DEPTH - ARC_BOARD_THICKNESS,
     (ARC_BOARD_THICKNESS - LIVING_ROOM_CABINET_WIDTH) / 2,
     LIVING_ROOM_CABINET_HEIGHT - topHeight / 2,
-    TOP_STORAGE_AREA_DEPTH / 2 - ARC_BOARD_THICKNESS,
+    (TOP_STORAGE_AREA_DEPTH - ARC_BOARD_THICKNESS) / 2,
   );
   // 左上四分之一圆柱
   const generateQuarterCylinderGeometry1 = generateQuarterCylinderGeometry(
@@ -173,10 +173,10 @@ const createLivingRoomCabinet = (
     woodBoardLightMaterial,
     ARC_BOARD_THICKNESS,
     topHeight,
-    TOP_STORAGE_AREA_DEPTH,
+    TOP_STORAGE_AREA_DEPTH - ARC_BOARD_THICKNESS,
     (LIVING_ROOM_CABINET_WIDTH - ARC_BOARD_THICKNESS) / 2,
     LIVING_ROOM_CABINET_HEIGHT - topHeight / 2,
-    TOP_STORAGE_AREA_DEPTH / 2 - ARC_BOARD_THICKNESS,
+    (TOP_STORAGE_AREA_DEPTH - ARC_BOARD_THICKNESS) / 2,
   );
   // 右上四分之一圆柱
   const generateQuarterCylinderGeometry2 = generateQuarterCylinderGeometry(
@@ -489,26 +489,26 @@ const createLivingRoomCabinet = (
 
   /**第二层和第三层置物区添加发光灯带*/
   const lightList: RectAreaLight[] = [];
-  const light1 = addLightingStrip(
+  const light1 = addLightStrip(
     livingRoomCabinetGroup,
     assetManager,
     LIVING_ROOM_CABINET_WIDTH - ARC_BOARD_THICKNESS * 2,
-    LIGHTING_STRIP_HEIGHT,
+    LIGHT_STRIP_HEIGHT,
     0,
     LIVING_ROOM_CABINET_HEIGHT -
       TOP_CHEST_HEIGHT -
       CHEST_GAP -
       BOARD_THICKNESS -
       0.001,
-    BOARD_THICKNESS + LIGHTING_STRIP_HEIGHT / 2 + 0.1,
+    BOARD_THICKNESS + LIGHT_STRIP_HEIGHT / 2 + 0.1,
     false,
   );
   light1 && lightList.push(light1);
-  const light2 = addLightingStrip(
+  const light2 = addLightStrip(
     livingRoomCabinetGroup,
     assetManager,
     LIVING_ROOM_CABINET_WIDTH - ARC_BOARD_THICKNESS * 2,
-    LIGHTING_STRIP_HEIGHT,
+    LIGHT_STRIP_HEIGHT,
     0,
     LIVING_ROOM_CABINET_HEIGHT -
       TOP_CHEST_HEIGHT -
@@ -517,7 +517,7 @@ const createLivingRoomCabinet = (
       TOP_STORAGE_AREA_HEIGHT -
       BOARD_THICKNESS -
       0.001,
-    BOARD_THICKNESS + LIGHTING_STRIP_HEIGHT / 2 + 0.1,
+    BOARD_THICKNESS + LIGHT_STRIP_HEIGHT / 2 + 0.1,
     false,
   );
   light2 && lightList.push(light2);

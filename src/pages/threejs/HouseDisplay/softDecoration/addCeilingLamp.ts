@@ -71,6 +71,7 @@ const lampConfigList = [
       ceilingLampY,
       WALL_3_POSITION_Z + 0.4,
     ),
+    scale: new Vector3(0.8, 0.8, 0.8),
   },
   {
     name: "儿童房吊灯",
@@ -79,6 +80,7 @@ const lampConfigList = [
       ceilingLampY,
       WALL_40_POSITION_Z - 0.1,
     ),
+    scale: new Vector3(0.7, 0.7, 0.7),
   },
   {
     name: "次卧吊灯",
@@ -87,6 +89,7 @@ const lampConfigList = [
       ceilingLampY,
       WALL_53_POSITION_Z + 0.2,
     ),
+    scale: new Vector3(0.7, 0.7, 0.7),
   },
   {
     name: "厨房吊灯",
@@ -95,6 +98,7 @@ const lampConfigList = [
       ceilingLampY,
       WALL_67_POSITION_Z - 0.6,
     ),
+    scale: new Vector3(0.5, 0.5, 0.5),
   },
   {
     name: "外厕所吊灯",

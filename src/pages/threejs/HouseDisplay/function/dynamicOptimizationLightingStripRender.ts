@@ -28,7 +28,7 @@ export const LIGHT_GROUP_FIELD = {
   DECORATE_BACKGROUND_PANEL: "decorateBackgroundPanel", // 装饰背景板
   LIVING_ROOM_CABINET: "livingRoomCabinet", // 客厅柜
   MASTER_BEDROOM: "masterBedroom", // 主卧
-  CHILDRENS_BEDROOM: "childrensBedroom", // 儿童卧室
+  KIDS_BEDROOM: "kidsBedroom", // 儿童卧室
   SECONDARY_BEDROOM: "secondaryBedroom", // 次卧
   KITCHEN: "kitchen", // 厨房
 };
@@ -64,7 +64,7 @@ export const dynamicOptimizationLightingStripRender = (
     // 儿童卧室范围
     if (x > WALL_28_POSITION_X && z < WALL_10_POSITION_Z) {
       openLighting(lightingStripLightMap, lampList, [
-        LIGHT_GROUP_FIELD.CHILDRENS_BEDROOM,
+        LIGHT_GROUP_FIELD.KIDS_BEDROOM,
       ]);
       return;
     }
@@ -79,6 +79,7 @@ export const dynamicOptimizationLightingStripRender = (
     if (x > WALL_72_POSITION_X && z > WALL_73_POSITION_Z) {
       openLighting(lightingStripLightMap, lampList, [
         LIGHT_GROUP_FIELD.KITCHEN,
+        LIGHT_GROUP_FIELD.SIDEBOARD,
       ]);
       return;
     }
@@ -171,7 +172,7 @@ const openLighting = (
           openLampNameList.push("主卧厕所吊灯");
         }
         break;
-      case LIGHT_GROUP_FIELD.CHILDRENS_BEDROOM:
+      case LIGHT_GROUP_FIELD.KIDS_BEDROOM:
         if (!openLampNameList.includes("儿童房吊灯")) {
           openLampNameList.push("儿童房吊灯");
         }

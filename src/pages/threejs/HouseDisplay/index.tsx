@@ -61,7 +61,7 @@ export type SwitchStatus = 'ON' | 'OFF';
 const showStats = false;
 
 // 初始相机位置
-const initialCameraPosition = new Vector3(0, 26, 0);
+const initialCameraPosition = new Vector3(0, 24, 0);
 const initialCameraTarget = new Vector3(0, 0, 0);
 
 const HouseDisplay = () => {
@@ -306,7 +306,6 @@ const HouseDisplay = () => {
         scene,
         assetManager,
         pointerControlsIntersetObjectsRef,
-        mouseRaycasterIntersectObjectsRef,
         lightingStripLightMapRef
       )
 

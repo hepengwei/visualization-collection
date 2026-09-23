@@ -13,10 +13,13 @@ import {
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import {
+  LIGHT_STRIP_HEIGHT,
   addBox,
+  addPlane,
   generateQuarterCylinderGeometry,
   generateCurvedSurfaceRightAngledTriangularPrismGeometry,
-  addLightingStrip,
+  addLightStrip,
+  addCircleLightingStrip,
 } from "../utils";
 import {
   WALL_HEIGHT,
@@ -27,6 +30,7 @@ import {
   WALL_19_POSITION_Z,
 } from "./addHouseStructure";
 import { WARDROBE_DEPTH, SUSPENDED_CEILING_HEIGHT } from "./addHouseStructure";
+import { LIGHT_GROUP_FIELD } from "../function/dynamicOptimizationLightingStripRender";
 
 export const BOARD_THICKNESS = 0.03; // 木板的厚度
 const ARC_BOARD_THICKNESS = 0.08; // 圆弧边木板的厚度
@@ -37,6 +41,7 @@ const KIDS_WARDROBE_POSITON = new Vector3(
   WALL_19_POSITION_Z + WALL_THICKNESS / 2 + BOARD_THICKNESS * 2,
 );
 const KIDS_WARDROBE_WIDTH = WALL_19_WIDTH + WALL_THICKNESS + WALL_21_WIDTH; // 儿童衣柜体的总宽
+const CHEST_DOOR_WIDTH = 0.64; // 柜门的宽度
 const CHEST_GAP = 0.01; // 柜子之间的缝隙
 const KIDS_WARDROBE_HEIGHT = WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT; // 儿童衣柜的总高
 const CHEST_DOOR_THICKNESS = 0.02; // 柜门和抽屉门的厚度
@@ -50,46 +55,44 @@ const LEFT_HOLLOW_OUT_HEIGHT = 1.3; // 最左边镂空的高度
 const LEFT_SMALL_RADIUS = 0.1; // 最左边柜子的小圆半径
 const LEFT_BIG_RADIUS = 0.24; // 最左边柜子的大圆半径
 
-const RIGHT_CHEST_WIDTH = 1.4; // 右面柜子的总宽
+const RIGHT_CHEST_WIDTH = 0.9; // 右面柜子的总宽
 const RIGHT_CHEST_DEPTH = 0.45; // 右面上方柜子的深度
 const RIGHT_TABLE_DEPTH = 0.8; // 右面桌子的深度
-const RIGHT_BOTTOM_STORAGE_AREA_HEIGHT = 0.4; // 右面上方柜子最下面置物格的高度(包含上下两层木板)
-
-const CHEST_DOOR_WIDTH = 0.75; // 柜门的宽度
+const RIGHT_BOTTOM_STORAGE_AREA_HEIGHT = 0.36; // 右面上方柜子最下面置物格的高度(包含上下两层木板)
+// 最右边剩余的柜门宽度
 const RIGHT_CHEST_DOOR_WIDTH =
   KIDS_WARDROBE_WIDTH -
   LEFT_CHEST_WIDTH -
   CHEST_GAP * 5 -
   CHEST_DOOR_WIDTH * 3 -
-  BOARD_THICKNESS; // 最右边剩余的柜门宽度
+  BOARD_THICKNESS;
 
 const addKidsWardrobe = (
   scene: Scene,
   assetManager: AssetManager,
   pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
-  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
   lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
 ) => {
-  const kidsWardrobe = createKidsWardrobe(
-    assetManager,
-    lightingStripLightMapRef,
-  );
+  const lightList: RectAreaLight[] = [];
+  const kidsWardrobe = createKidsWardrobe(assetManager, lightList);
   kidsWardrobe.name = "儿童衣柜";
   pointerControlsIntersetObjectsRef.current.push(kidsWardrobe);
   kidsWardrobe.rotation.y = Math.PI / 2;
   kidsWardrobe.position.copy(KIDS_WARDROBE_POSITON);
   scene.add(kidsWardrobe);
 
-  const rightTable = createRightTable(assetManager);
+  const rightTable = createRightTable(assetManager, lightList);
   rightTable.rotation.y = -Math.PI / 2;
   rightTable.position.set(KIDS_WARDROBE_WIDTH / 2, 0, WARDROBE_DEPTH);
   kidsWardrobe.add(rightTable);
+
+  lightingStripLightMapRef.current[LIGHT_GROUP_FIELD.KIDS_BEDROOM] = lightList;
 };
 
 // 创建儿童衣柜
 const createKidsWardrobe = (
   assetManager: AssetManager,
-  lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
+  lightList: RectAreaLight[],
 ) => {
   // 灰白色木板材质
   const woodBoardLightMaterial = assetManager.materials.get(
@@ -98,6 +101,10 @@ const createKidsWardrobe = (
   // 深灰色木板材质
   const woodBoardDarkMaterial = assetManager.materials.get(
     "woodBoardDarkMaterial",
+  ) as MeshPhysicalMaterial;
+  // 深色木板对应的更深的线条材质
+  const woodBoardDarkLineMaterial = assetManager.materials.get(
+    "woodBoardDarkLineMaterial",
   ) as MeshPhysicalMaterial;
 
   const kidsWardrobeGroup = new Group();
@@ -129,6 +136,19 @@ const createKidsWardrobe = (
     KIDS_WARDROBE_HEIGHT - height1 / 2,
     BOARD_THICKNESS + MIDDLE_CHEST_DEPTH / 2,
   );
+
+  const light1 = addLightStrip(
+    kidsWardrobeGroup,
+    assetManager,
+    MIDDLE_CHEST_DEPTH,
+    LIGHT_STRIP_HEIGHT,
+    -KIDS_WARDROBE_WIDTH / 2 + LEFT_CHEST_WIDTH - 0.2,
+    KIDS_WARDROBE_HEIGHT - height1 - 0.001,
+    BOARD_THICKNESS + MIDDLE_CHEST_DEPTH / 2,
+    false,
+    new Vector3(Math.PI / 2, 0, Math.PI / 2),
+  );
+  light1 && lightList.push(light1);
 
   // 左下柜体
   const depth1 = MIDDLE_CHEST_DEPTH - ARC_BOARD_THICKNESS - CHEST_GAP;
@@ -178,6 +198,22 @@ const createKidsWardrobe = (
   quarterCylinder1.castShadow = true;
   quarterCylinder1.receiveShadow = true;
   kidsWardrobeGroup.add(quarterCylinder1);
+
+  // 左下柜体所有抽屉横线
+  for (let i = 1; i < 3; i++) {
+    const y = (BOTTOM_CHEST_HEIGHT / 3) * i;
+    addPlane(
+      kidsWardrobeGroup,
+      assetManager,
+      woodBoardDarkLineMaterial,
+      depth1,
+      CHEST_GAP * 2,
+      -KIDS_WARDROBE_WIDTH / 2,
+      y,
+      BOARD_THICKNESS + depth1 / 2,
+      new Vector3(0, -Math.PI / 2, 0),
+    );
+  }
 
   // 最左边柜子的整体门板
   addBox(
@@ -440,18 +476,42 @@ const createKidsWardrobe = (
     BOARD_THICKNESS + MIDDLE_CHEST_DEPTH / 2,
   );
 
-  //   const roundedBoxCornerGeometry = generateRoundedBoxCornerGeometry(1);
-  //   const roundedBoxCorner = new Mesh(
-  //     roundedBoxCornerGeometry,
-  //     woodBoardLightMaterial,
-  //   );
-  //   kidsWardrobeGroup.add(roundedBoxCorner);
+  const light2 = addLightStrip(
+    kidsWardrobeGroup,
+    assetManager,
+    width2,
+    LIGHT_STRIP_HEIGHT,
+    KIDS_WARDROBE_WIDTH / 2 - BOARD_THICKNESS - width2 / 2,
+    KIDS_WARDROBE_HEIGHT - LEFT_HOLLOW_OUT_HEIGHT - 0.001,
+    BOARD_THICKNESS + 0.4,
+    false,
+  );
+  light2 && lightList.push(light2);
+
+  const light3 = addLightStrip(
+    kidsWardrobeGroup,
+    assetManager,
+    width2,
+    LIGHT_STRIP_HEIGHT,
+    KIDS_WARDROBE_WIDTH / 2 - BOARD_THICKNESS - width2 / 2,
+    KIDS_WARDROBE_HEIGHT -
+      LEFT_HOLLOW_OUT_HEIGHT -
+      middleHeight / 2 -
+      BOARD_THICKNESS / 2 -
+      0.001,
+    BOARD_THICKNESS + 0.4,
+    false,
+  );
+  light3 && lightList.push(light3);
 
   return kidsWardrobeGroup;
 };
 
-// 创建右面部分(书桌和柜子)
-const createRightTable = (assetManager: AssetManager) => {
+// 创建右面墙部分(书桌和柜子)
+const createRightTable = (
+  assetManager: AssetManager,
+  lightList: RectAreaLight[],
+) => {
   // 灰白色木板材质
   const woodBoardLightMaterial = assetManager.materials.get(
     "woodBoardLightMaterial",
@@ -461,20 +521,8 @@ const createRightTable = (assetManager: AssetManager) => {
     "woodBoardDarkMaterial",
   ) as MeshPhysicalMaterial;
 
+  // 注意：左下角为坐标原点
   const rightTableGroup = new Group();
-
-  // 上背板
-  addBox(
-    rightTableGroup,
-    assetManager,
-    woodBoardDarkMaterial,
-    RIGHT_CHEST_WIDTH - BOARD_THICKNESS,
-    LEFT_HOLLOW_OUT_HEIGHT,
-    BOARD_THICKNESS,
-    (RIGHT_CHEST_WIDTH - BOARD_THICKNESS) / 2,
-    KIDS_WARDROBE_HEIGHT - LEFT_HOLLOW_OUT_HEIGHT / 2,
-    BOARD_THICKNESS / 2,
-  );
 
   // 下背板
   const height2 =
@@ -605,6 +653,62 @@ const createRightTable = (assetManager: AssetManager) => {
   curvedSurfaceRightAngledTriangularPrism3.receiveShadow = true;
   rightTableGroup.add(curvedSurfaceRightAngledTriangularPrism3);
 
+  const height3 =
+    KIDS_WARDROBE_HEIGHT - LEFT_HOLLOW_OUT_HEIGHT - height2 - LEFT_BIG_RADIUS;
+  const light1 = addLightStrip(
+    rightTableGroup,
+    assetManager,
+    height3,
+    BOARD_THICKNESS,
+    0.001,
+    height2 + LEFT_BIG_RADIUS + height3 / 2,
+    BOARD_THICKNESS / 2,
+    false,
+    new Vector3(Math.PI / 2, Math.PI / 2, 0),
+    0.6 * Math.PI,
+  );
+  light1 && lightList.push(light1);
+  const lightList2 = addCircleLightingStrip(
+    rightTableGroup,
+    assetManager,
+    LEFT_BIG_RADIUS,
+    BOARD_THICKNESS,
+    LEFT_BIG_RADIUS,
+    height2 + LEFT_BIG_RADIUS,
+    BOARD_THICKNESS / 2,
+    6,
+    Math.PI / 2,
+    1,
+    new Vector3(0, 0, Math.PI),
+  );
+  lightList.push(...lightList2);
+  const light3 = addLightStrip(
+    rightTableGroup,
+    assetManager,
+    RIGHT_CHEST_WIDTH - LEFT_BIG_RADIUS,
+    BOARD_THICKNESS,
+    LEFT_BIG_RADIUS + (RIGHT_CHEST_WIDTH - LEFT_BIG_RADIUS) / 2,
+    height2 + 0.001,
+    BOARD_THICKNESS / 2,
+    false,
+    new Vector3(-Math.PI / 2, 0, 0),
+    0.6 * Math.PI,
+  );
+  light3 && lightList.push(light3);
+
+  // 上背板
+  addBox(
+    rightTableGroup,
+    assetManager,
+    woodBoardDarkMaterial,
+    RIGHT_CHEST_WIDTH - BOARD_THICKNESS,
+    LEFT_HOLLOW_OUT_HEIGHT,
+    BOARD_THICKNESS,
+    (RIGHT_CHEST_WIDTH - BOARD_THICKNESS) / 2,
+    KIDS_WARDROBE_HEIGHT - LEFT_HOLLOW_OUT_HEIGHT / 2,
+    BOARD_THICKNESS / 2,
+  );
+
   // 上方柜子横板
   const width2 = RIGHT_CHEST_WIDTH - BOARD_THICKNESS * 2;
   const depth = RIGHT_CHEST_DEPTH - BOARD_THICKNESS - CHEST_DOOR_THICKNESS;
@@ -612,6 +716,7 @@ const createRightTable = (assetManager: AssetManager) => {
     RIGHT_CHEST_WIDTH - BOARD_THICKNESS * 3 - RIGHT_BOTTOM_STORAGE_AREA_HEIGHT;
   const height =
     LEFT_HOLLOW_OUT_HEIGHT - BOARD_THICKNESS - RIGHT_BOTTOM_STORAGE_AREA_HEIGHT;
+  const x = RIGHT_BOTTOM_STORAGE_AREA_HEIGHT + BOARD_THICKNESS + width3 / 2;
   addBox(
     rightTableGroup,
     assetManager,
@@ -623,6 +728,17 @@ const createRightTable = (assetManager: AssetManager) => {
     KIDS_WARDROBE_HEIGHT - BOARD_THICKNESS / 2,
     BOARD_THICKNESS + depth / 2,
   );
+  const light4 = addLightStrip(
+    rightTableGroup,
+    assetManager,
+    width3,
+    LIGHT_STRIP_HEIGHT,
+    x,
+    KIDS_WARDROBE_HEIGHT - BOARD_THICKNESS - 0.001,
+    BOARD_THICKNESS + 0.1,
+    false,
+  );
+  light4 && lightList.push(light4);
   addBox(
     rightTableGroup,
     assetManager,
@@ -630,7 +746,7 @@ const createRightTable = (assetManager: AssetManager) => {
     width3,
     BOARD_THICKNESS,
     depth,
-    RIGHT_BOTTOM_STORAGE_AREA_HEIGHT + BOARD_THICKNESS + width3 / 2,
+    x,
     KIDS_WARDROBE_HEIGHT -
       (LEFT_HOLLOW_OUT_HEIGHT -
         BOARD_THICKNESS * 2 -
@@ -639,6 +755,23 @@ const createRightTable = (assetManager: AssetManager) => {
       (BOARD_THICKNESS * 3) / 2,
     BOARD_THICKNESS + depth / 2,
   );
+  const light5 = addLightStrip(
+    rightTableGroup,
+    assetManager,
+    width3,
+    LIGHT_STRIP_HEIGHT,
+    x,
+    KIDS_WARDROBE_HEIGHT -
+      (LEFT_HOLLOW_OUT_HEIGHT -
+        BOARD_THICKNESS * 2 -
+        RIGHT_BOTTOM_STORAGE_AREA_HEIGHT) /
+        2 -
+      BOARD_THICKNESS * 2 -
+      0.001,
+    BOARD_THICKNESS + 0.1,
+    false,
+  );
+  light5 && lightList.push(light5);
   addBox(
     rightTableGroup,
     assetManager,
@@ -652,6 +785,20 @@ const createRightTable = (assetManager: AssetManager) => {
       BOARD_THICKNESS / 2,
     BOARD_THICKNESS + depth / 2,
   );
+  const light6 = addLightStrip(
+    rightTableGroup,
+    assetManager,
+    width2,
+    LIGHT_STRIP_HEIGHT,
+    width2 / 2,
+    KIDS_WARDROBE_HEIGHT -
+      (LEFT_HOLLOW_OUT_HEIGHT - RIGHT_BOTTOM_STORAGE_AREA_HEIGHT) -
+      BOARD_THICKNESS -
+      0.001,
+    BOARD_THICKNESS + 0.1,
+    false,
+  );
+  light6 && lightList.push(light6);
   addBox(
     rightTableGroup,
     assetManager,

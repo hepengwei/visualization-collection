@@ -21,17 +21,17 @@ import {
 } from "./addHouseStructure";
 import { SUSPENDED_CEILING_HEIGHT, SIDEBOARD_DEPTH } from "./addHouseStructure";
 import { CURTAIN_DEPTH } from "../softDecoration/addCurtain";
-import { addLightingStrip, addBox, addLightingRoundLight } from "../utils";
+import { addLightStrip, addBox, addLightingRoundLight } from "../utils";
 
 type SuspendedCeilingType = "front" | "back" | "left" | "right";
 
 export const SUSPENDED_CEILING_DEPTH = 0.52; // 吊顶总深度
 const SINGLE_SKIN_PANEL_THICKNESS = 0.04; // 单层板厚度
 const SINGLE_SKIN_PANEL_DEPTH_GAP = 0.06; // 单层板深度的间隔
-const LIGHT_STRIP_WIDTH = 0.1; // 灯带的宽度
+const LIGHT_STRIP_HEIGHT = 0.1; // 灯带的宽度
 const HOLE_HEIGHT = SUSPENDED_CEILING_HEIGHT - SINGLE_SKIN_PANEL_THICKNESS * 2; // 吊顶的洞高度
 const HOLE_DEPTH =
-  SUSPENDED_CEILING_DEPTH - SINGLE_SKIN_PANEL_DEPTH_GAP - LIGHT_STRIP_WIDTH; // 吊顶的洞深度
+  SUSPENDED_CEILING_DEPTH - SINGLE_SKIN_PANEL_DEPTH_GAP - LIGHT_STRIP_HEIGHT; // 吊顶的洞深度
 const DOWNLIGHT_RADIUS = 0.05; // 筒灯的半径
 // 所有吊顶的尺寸和位置
 const length1 = WALL_55_POSITION_Z - WALL_10_POSITION_Z - WALL_THICKNESS;
@@ -272,14 +272,14 @@ const addSingleSuspendedCeiling = (
   }
 
   // 创建并添加灯带
-  addLightingStrip(
+  addLightStrip(
     suspendedCeilingGroup,
     assetManager,
     length,
-    LIGHT_STRIP_WIDTH,
+    LIGHT_STRIP_HEIGHT,
     0,
     -HOLE_HEIGHT + 0.02,
-    HOLE_DEPTH + LIGHT_STRIP_WIDTH / 2,
+    HOLE_DEPTH + LIGHT_STRIP_HEIGHT / 2,
     true,
     new Vector3(-Math.PI / 2, 0, 0), // 面向天花板
     0.3 * Math.PI,

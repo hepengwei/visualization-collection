@@ -26,10 +26,16 @@ import {
   WALL_34_POSITION_X,
   WALL_42_POSITION_Z,
   WALL_55_POSITION_X,
-  WALL_55_POSITION_Z,
   WALL_51_POSITION_Z,
 } from "../hardDecoration/addHouseStructure";
 
+// 沙发位置
+const SOFA_POSITION = new Vector3(
+  WALL_10_POSITION_X - 0.3,
+  0.53,
+  WALL_10_POSITION_Z + 1.3,
+);
+// 餐桌位置
 const TABLE_POSITION = new Vector3(
   WALL_34_POSITION_X,
   0.6,
@@ -94,12 +100,8 @@ const loadSofa = (scene: Scene, gltfLoader: GLTFLoader) => {
         }
       });
 
-      sofa.position.set(
-        WALL_10_POSITION_X - 0.8,
-        0.54,
-        WALL_10_POSITION_Z + 1.4,
-      );
-      sofa.scale.set(5, 3.6, 3.2);
+      sofa.position.copy(SOFA_POSITION);
+      sofa.scale.set(4.6, 3.6, 3);
       scene.add(sofa);
     },
     (progress) => {
@@ -147,7 +149,7 @@ const loadBeds = (
         }
       });
 
-      bed1.position.set(WALL_1_POSITION_X - 1.2, 0.75, WALL_1_POSITION_Z + 1.9);
+      bed1.position.set(WALL_1_POSITION_X - 1, 0.75, WALL_1_POSITION_Z + 1.9);
       bed1.scale.set(3.6, 3.6, 3.6);
       bed1.rotation.y = -Math.PI / 2;
       scene.add(bed1);
@@ -183,11 +185,11 @@ const loadBeds = (
       });
 
       bed3.position.set(
-        WALL_55_POSITION_X - 1.2,
-        0.72,
-        WALL_51_POSITION_Z - 1.9,
+        WALL_55_POSITION_X - 0.8,
+        0.68,
+        WALL_51_POSITION_Z - 1.83,
       );
-      bed3.scale.set(3.4, 3.4, 3.4);
+      bed3.scale.set(3.3, 3.3, 3.3);
       bed3.rotation.y = Math.PI / 2; // 向右旋转90度
       scene.add(bed3);
     },
