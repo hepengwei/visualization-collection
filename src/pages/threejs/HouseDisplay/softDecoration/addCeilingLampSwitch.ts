@@ -71,7 +71,7 @@ const switchConfigList = [
     position: new Vector3(
       WALL_28_POSITION_X + WALL_THICKNESS / 2 + 0.05,
       SWITCH_POSITION_HEIGHT,
-      WALL_20_POSITION_Z - 0.2,
+      WALL_20_POSITION_Z - 0.04,
     ),
     rotationY: Math.PI / 2,
   },

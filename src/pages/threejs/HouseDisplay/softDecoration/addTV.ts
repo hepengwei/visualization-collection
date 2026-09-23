@@ -25,12 +25,12 @@ import {
 } from "../hardDecoration/addHouseStructure";
 
 const TV_POSITION = new Vector3(
-  WALL_55_POSITION_X + 0.46,
+  WALL_55_POSITION_X + 0.44,
   1.5,
   WALL_55_POSITION_Z - WALL_THICKNESS / 2,
 );
-const TV_WIDTH = 2.28; // 电视的宽
-const TV_HEIGHT = 1.28; // 电视的高
+const TV_WIDTH = 2.05; // 电视的宽
+const TV_HEIGHT = 1.15; // 电视的高
 const TV_DEPTH = 0.2; // 电视的总深
 const TV_THICKNESS = 0.04; // 电视的厚度
 const TV_SCREEN_PANDDING = 0.04; // 电视屏幕相对电视框的内边距

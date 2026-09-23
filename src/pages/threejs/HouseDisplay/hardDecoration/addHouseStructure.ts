@@ -19,15 +19,15 @@ import {
   Group,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
-import { ALUMINIUM_ALLOY_COLOR } from "../utils";
 
 type SkirtingLineType = "front" | "back" | "double" | "all"; // 如果是竖墙，则"front"为左， "back"为右
 
-export const SUSPENDED_CEILING_HEIGHT = 0.35; // 吊顶总高度
+export const SUSPENDED_CEILING_HEIGHT = 0.3; // 吊顶总高度
 export const SIDEBOARD_DEPTH = 0.62; // 餐边柜的总深度
-export const WALL_HEIGHT = 3.6; // 墙体高度
+export const WARDROBE_DEPTH = 0.78; // 衣柜的总深度
+export const WALL_HEIGHT = 3.5; // 墙体高度
 export const WALL_THICKNESS = 0.3; // 墙体厚度
-const TALL_GRADE_BEAM_HEIGHT = 1.3; // 高地梁的墙体高度
+export const TALL_GRADE_BEAM_HEIGHT = 1.3; // 高地梁的墙体高度
 const TALL_GRADE_BEAM_POSITION_Y = TALL_GRADE_BEAM_HEIGHT / 2; // 高地梁的墙体y位置
 const SHORT_GRADE_BEAM_HEIGHT = 0.2; // 矮地梁的墙体高度
 const SHORT_GRADE_BEAM_POSITION_Y = SHORT_GRADE_BEAM_HEIGHT / 2; // 矮地梁的墙体y位置
@@ -52,16 +52,16 @@ export const PASS_EDGE_BINDING_HEIGHT = 0.08; // 垭口包边高度
 const PASS_EDGE_BINDING_THICKNESS = 0.016; // 垭口包边厚度
 
 // 所有墙体参数
-const WALL_1_WIDTH = 10;
+const WALL_1_WIDTH = 8.5;
 const WALL_1_POSITION_Y = WALL_HEIGHT / 2;
-export const WALL_1_POSITION_Z = -11;
+export const WALL_1_POSITION_Z = -10.5;
 export const WALL_2_WIDTH = 0.4;
-export const WALL_2_POSITION_X = -11.25;
+export const WALL_2_POSITION_X = -9.78;
 const WALL_2_POSITION_Z =
   WALL_1_POSITION_Z + WALL_THICKNESS / 2 + WALL_2_WIDTH / 2;
 export const WALL_1_POSITION_X =
   WALL_2_POSITION_X - WALL_THICKNESS / 2 + WALL_1_WIDTH / 2;
-export const WALL_3_WIDTH = 3;
+export const WALL_3_WIDTH = 2.5;
 export const WALL_3_POSITION_Z =
   WALL_2_POSITION_Z + WALL_2_WIDTH / 2 + WALL_3_WIDTH / 2;
 const WALL_5_POSITION_Z =
@@ -78,7 +78,7 @@ const WALL_8_POSITION_X =
   WALL_7_POSITION_X + WALL_7_WIDTH / 2 + WALL_THICKNESS / 2;
 export const WALL_9_POSITION_Z =
   WALL_6_POSITION_Z + WALL_6_WIDTH / 2 - WALL_THICKNESS / 2;
-const WALL_10_WIDTH = 9.7;
+const WALL_10_WIDTH = 8.2;
 export const WALL_10_POSITION_X =
   WALL_8_POSITION_X + WALL_THICKNESS / 2 + WALL_10_WIDTH / 2;
 export const WALL_10_POSITION_Z =
@@ -91,24 +91,24 @@ const WALL_11_POSITION_Z =
 const WALL_12_WIDTH = 0.1;
 const WALL_12_POSITION_X =
   WALL_1_POSITION_X + WALL_1_WIDTH / 2 + WALL_12_WIDTH / 2;
-const WALL_13_WIDTH = 1.8;
+const WALL_13_WIDTH = 1.6;
 export const WALL_13_POSITION_X =
   WALL_1_POSITION_X + WALL_1_WIDTH / 2 - WALL_THICKNESS / 2;
 const WALL_13_POSITION_Z =
   WALL_1_POSITION_Z + WALL_THICKNESS / 2 + WALL_13_WIDTH / 2;
-export const WALL_14_WIDTH = 1.2;
+export const WALL_14_WIDTH = 1.1;
 export const WALL_14_POSITION_Z =
   WALL_13_POSITION_Z + WALL_13_WIDTH / 2 + WALL_14_WIDTH / 2;
 export const WALL_15_WIDTH = 1;
 export const WALL_15_POSITION_X =
   WALL_12_POSITION_X + WALL_12_WIDTH / 2 + WALL_15_WIDTH / 2;
-const WALL_17_WIDTH = 1.7;
+const WALL_17_WIDTH = 1.5;
 const WALL_17_POSITION_X =
   WALL_15_POSITION_X + WALL_15_WIDTH / 2 + WALL_17_WIDTH / 2;
 const WALL_18_WIDTH = 0.02;
 const WALL_18_POSITION_X =
   WALL_17_POSITION_X + WALL_17_WIDTH / 2 + WALL_18_WIDTH / 2;
-const WALL_19_WIDTH = WALL_13_WIDTH + WALL_14_WIDTH;
+export const WALL_19_WIDTH = WALL_13_WIDTH + WALL_14_WIDTH;
 export const WALL_19_POSITION_X =
   WALL_17_POSITION_X + WALL_17_WIDTH / 2 - WALL_THICKNESS / 2;
 export const WALL_19_POSITION_Z =
@@ -118,7 +118,7 @@ export const WALL_20_POSITION_X =
   WALL_13_POSITION_X + WALL_20_WIDTH / 2 - WALL_THICKNESS / 2;
 export const WALL_20_POSITION_Z =
   WALL_19_POSITION_Z + WALL_THICKNESS / 2 + WALL_19_WIDTH / 2;
-const WALL_21_WIDTH = 0.1;
+export const WALL_21_WIDTH = 0.1;
 const WALL_21_POSITION_Z =
   WALL_20_POSITION_Z + WALL_THICKNESS / 2 + WALL_21_WIDTH / 2;
 export const WALL_22_WIDTH =
@@ -143,7 +143,7 @@ const WALL_27_POSITION_X =
 export const WALL_28_POSITION_X =
   WALL_27_POSITION_X + WALL_17_WIDTH / 2 - WALL_THICKNESS / 2;
 const WALL_29_WIDTH = WALL_THICKNESS;
-const WALL_33_WIDTH = 7.2;
+const WALL_33_WIDTH = 6.2;
 export const WALL_33_POSITION_X =
   WALL_27_POSITION_X + WALL_17_WIDTH / 2 + WALL_33_WIDTH / 2;
 export const WALL_34_POSITION_X = WALL_33_POSITION_X - WALL_THICKNESS;
@@ -172,31 +172,30 @@ const WALL_44_POSITION_Z =
   WALL_42_POSITION_Z + WALL_42_WIDTH / 2 + WALL_2_WIDTH / 2;
 const WALL_45_POSITION_Z =
   WALL_6_POSITION_Z + WALL_39_WIDTH / 2 + WALL_2_WIDTH / 2;
-const WALL_46_WIDTH = 9.2;
+const WALL_46_WIDTH = 8;
 export const WALL_46_POSITION_Z =
   WALL_45_POSITION_Z + WALL_2_WIDTH / 2 + WALL_46_WIDTH / 2;
 const WALL_48_POSITION_Z =
   WALL_46_POSITION_Z + WALL_46_WIDTH / 2 + WALL_2_WIDTH / 2;
-const WALL_49_WIDTH = WALL_7_WIDTH + WALL_THICKNESS;
+const WALL_49_WIDTH = WALL_7_WIDTH + WALL_THICKNESS + 0.1;
 const WALL_49_POSITION_X =
   WALL_2_POSITION_X - WALL_THICKNESS / 2 + WALL_49_WIDTH / 2;
 export const WALL_49_POSITION_Z =
   WALL_48_POSITION_Z + WALL_2_WIDTH / 2 + WALL_THICKNESS / 2;
-const WALL_50_WIDTH = WALL_7_WIDTH - WALL_THICKNESS / 2;
 const WALL_50_POSITION_X =
   WALL_49_POSITION_X + WALL_49_WIDTH / 2 - WALL_THICKNESS / 2;
 const WALL_50_POSITION_Z =
-  WALL_49_POSITION_Z + WALL_THICKNESS / 2 + WALL_50_WIDTH / 2;
-export const WALL_51_WIDTH = 6.8;
+  WALL_49_POSITION_Z + WALL_THICKNESS / 2 + WALL_7_WIDTH / 2;
+export const WALL_51_WIDTH = 5.2;
 const WALL_51_POSITION_X =
   WALL_50_POSITION_X + WALL_THICKNESS / 2 + WALL_51_WIDTH / 2;
 export const WALL_51_POSITION_Z =
-  WALL_50_POSITION_Z + WALL_50_WIDTH / 2 - WALL_THICKNESS / 2;
+  WALL_50_POSITION_Z + WALL_7_WIDTH / 2 - WALL_THICKNESS / 2;
 export const WALL_52_POSITION_X =
   WALL_50_POSITION_X + WALL_THICKNESS / 2 + WALL_7_WIDTH + 0.2;
 const WALL_52_POSITION_Z =
   WALL_51_POSITION_Z - WALL_THICKNESS / 2 - WALL_7_WIDTH / 2;
-export const WALL_53_WIDTH = 3.8;
+export const WALL_53_WIDTH = 3;
 export const WALL_53_POSITION_Z =
   WALL_52_POSITION_Z - WALL_7_WIDTH / 2 - WALL_53_WIDTH / 2;
 const WALL_54_POSITION_Z =
@@ -238,7 +237,7 @@ const WALL_64_WIDTH = WALL_60_WIDTH / 2 - WALL_THICKNESS / 2;
 export const WALL_64_POSITION_X =
   WALL_63_POSITION_X + WALL_22_WIDTH / 2 + WALL_64_WIDTH / 2;
 const WALL_65_WIDTH = WALL_61_POSITION_Z - WALL_55_POSITION_Z - WALL_THICKNESS;
-const WALL_65_POSITION_X = WALL_64_POSITION_X - WALL_64_WIDTH / 2 + 0.4;
+export const WALL_65_POSITION_X = WALL_64_POSITION_X - WALL_64_WIDTH / 2 + 0.4;
 const WALL_65_POSITION_Z =
   WALL_61_POSITION_Z - WALL_THICKNESS / 2 - WALL_65_WIDTH / 2;
 const WALL_66_WIDTH = WALL_THICKNESS * 3;
@@ -265,7 +264,7 @@ export const WALL_70_WIDTH = WALL_7_WIDTH + WALL_THICKNESS;
 const WALL_70_POSITION_X =
   WALL_68_POSITION_X + WALL_68_WIDTH / 2 + WALL_70_WIDTH / 2;
 const WALL_71_WIDTH =
-  WALL_61_POSITION_Z - WALL_67_POSITION_Z - WALL_THICKNESS * 4;
+  WALL_61_POSITION_Z - WALL_67_POSITION_Z - WALL_THICKNESS * 3;
 const WALL_71_POSITION_X =
   WALL_70_POSITION_X + WALL_70_WIDTH / 2 - WALL_THICKNESS / 2;
 const WALL_71_POSITION_Z =
@@ -292,7 +291,7 @@ const WALL_75_WIDTH =
   WALL_70_WIDTH / 2;
 export const WALL_75_POSITION_X =
   WALL_73_POSITION_X + WALL_70_WIDTH / 2 + WALL_75_WIDTH / 2;
-const WALL_76_WIDTH = 0.8;
+const WALL_76_WIDTH = 0.6;
 const WALL_76_POSITION_Z =
   WALL_73_POSITION_Z + WALL_THICKNESS / 2 + WALL_76_WIDTH / 2;
 const WALL_77_POSITION_Z =
@@ -314,7 +313,7 @@ const WALL_80_POSITION_Z =
 const TILE_SIZE = 1.5; // 1.5m的地砖
 const GAP_SIZE = 0.005; // 5mm的缝隙
 const FLOOR_WIDTH = WALL_35_POSITION_X - WALL_2_POSITION_X + TILE_SIZE * 6; // 地板总宽度
-const FLOOR_DEPTH = WALL_60_POSITION_Z - WALL_1_POSITION_Z + TILE_SIZE * 2; // 地板总深度
+const FLOOR_DEPTH = WALL_60_POSITION_Z - WALL_1_POSITION_Z + TILE_SIZE * 1.5; // 地板总深度
 
 // 所有墙体的尺寸和位置
 const wallInfoList: (
@@ -767,7 +766,7 @@ const wallInfoList: (
   [
     WALL_THICKNESS,
     WALL_HEIGHT,
-    WALL_50_WIDTH,
+    WALL_7_WIDTH,
     WALL_50_POSITION_X,
     WALL_1_POSITION_Y,
     WALL_50_POSITION_Z,
@@ -1637,7 +1636,7 @@ const addMarbleFloor = (scene: Scene, assetManager: AssetManager) => {
   const tileMaterial = new MeshPhysicalMaterial({
     color: 0xf5f5f5, // 白色微偏冷
     metalness: 0.0, // 瓷砖是非金属
-    roughness: 0.08, // 亮光砖，低粗糙度，一般 0.05~0.15
+    roughness: 0.05, // 亮光砖，低粗糙度
     envMapIntensity: 1.0, // 环境贴图反射强度
     clearcoat: 1.0, // 釉面清漆层，增加光泽
     clearcoatRoughness: 0.03, // 釉面清漆层粗糙度

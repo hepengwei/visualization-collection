@@ -4,7 +4,6 @@
 import { MutableRefObject } from "react";
 import {
   Scene,
-  PerspectiveCamera,
   RingGeometry,
   TorusGeometry,
   MeshBasicMaterial,
@@ -21,7 +20,6 @@ import {
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import { WALL_HEIGHT } from "../hardDecoration/addHouseStructure";
-import type { ViewMode } from "../function/modeToggle";
 import {
   addCeilingLampSwitch,
   ceilingLampSwitchToggle,
@@ -46,7 +44,6 @@ import {
 
 const LAMP_RADIUS = 0.65; // 灯的半径
 const LAMP_THICKNESS = 0.1; // 灯的厚度
-const DYNAMIC_OPTIMIZATION_LAMP_COUNT = 2; // 动态优化吊灯时亮灯的个数
 const ceilingLampY = WALL_HEIGHT - LAMP_THICKNESS / 2 - 0.02;
 const lampConfigList = [
   {
@@ -74,6 +71,7 @@ const lampConfigList = [
       ceilingLampY,
       WALL_3_POSITION_Z + 0.4,
     ),
+    scale: new Vector3(0.8, 0.8, 0.8),
   },
   {
     name: "儿童房吊灯",
@@ -82,6 +80,7 @@ const lampConfigList = [
       ceilingLampY,
       WALL_40_POSITION_Z - 0.1,
     ),
+    scale: new Vector3(0.7, 0.7, 0.7),
   },
   {
     name: "次卧吊灯",
@@ -90,6 +89,7 @@ const lampConfigList = [
       ceilingLampY,
       WALL_53_POSITION_Z + 0.2,
     ),
+    scale: new Vector3(0.7, 0.7, 0.7),
   },
   {
     name: "厨房吊灯",
@@ -98,6 +98,7 @@ const lampConfigList = [
       ceilingLampY,
       WALL_67_POSITION_Z - 0.6,
     ),
+    scale: new Vector3(0.5, 0.5, 0.5),
   },
   {
     name: "外厕所吊灯",
@@ -118,7 +119,6 @@ const lampConfigList = [
     scale: new Vector3(0.5, 0.5, 0.5),
   },
 ];
-let dynamicOptimizationLampList: Group[] = []; // 动态优化吊灯的列表（动态显示隐藏光源，提高性能）
 
 export const addCeilingLamp = (
   scene: Scene,
@@ -127,8 +127,6 @@ export const addCeilingLamp = (
   lampSwitchListRef: MutableRefObject<Group[]>,
   mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
-  dynamicOptimizationLampList = [];
-
   // 吊灯底部圆环平面
   const ceilingLampRingGeometry = new RingGeometry(
     LAMP_RADIUS * 0.96,
@@ -219,9 +217,6 @@ export const addCeilingLamp = (
       lamp.scale.copy(scale as Vector3);
     }
     lampListRef.current.push(lamp);
-    if (!noNeedDynamicOptimization) {
-      dynamicOptimizationLampList.push(lamp);
-    }
     scene.add(lamp);
   });
 
@@ -419,54 +414,4 @@ export const ceilingLampSwitchStatusToggle = (
       }
     }
   });
-};
-
-// 漫游模式下，实时计算距离相机最近的n个吊灯，打开吊灯光源，其他则关闭（客厅和餐厅吊灯除外）
-// 为了解决如果当前场景中参与阴影计算的光源太多，则模型会不显示的问题，提高性能
-export const dynamicOptimizationLampLightRender = (
-  camera: PerspectiveCamera,
-  animatingRef: MutableRefObject<boolean>,
-  viewModeRef: MutableRefObject<ViewMode>,
-) => {
-  if (viewModeRef.current === "roaming" && !animatingRef.current) {
-    const cameraPos = camera.position;
-    const distanceInfoList: { lamp: Group; dist: number }[] = [];
-    dynamicOptimizationLampList.forEach((lamp: Group) => {
-      const lampPos = lamp.position;
-      const dist = cameraPos.distanceTo(lampPos);
-      if (distanceInfoList.length === 0) {
-        distanceInfoList.push({ lamp, dist });
-      } else {
-        for (let i = 0, l = distanceInfoList.length; i < l; i++) {
-          const item = distanceInfoList[i];
-          if (dist < item.dist) {
-            distanceInfoList.splice(i, 0, { lamp, dist });
-            break;
-          } else if (i === l - 1) {
-            distanceInfoList.push({ lamp, dist });
-          }
-        }
-      }
-    });
-    distanceInfoList.forEach(
-      (item: { lamp: Group; dist: number }, index: number) => {
-        if (index < DYNAMIC_OPTIMIZATION_LAMP_COUNT) {
-          // @ts-ignore
-          if (item.lamp.switchStatus === "ON") {
-            item.lamp.traverse((child) => {
-              if (child instanceof PointLight) {
-                child.visible = true;
-              }
-            });
-          }
-        } else {
-          item.lamp.traverse((child) => {
-            if (child instanceof PointLight) {
-              child.visible = false;
-            }
-          });
-        }
-      },
-    );
-  }
 };

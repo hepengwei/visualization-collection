@@ -19,6 +19,7 @@ import { getEaseProgress } from "../utils";
 import {
   WALL_HEIGHT,
   WALL_THICKNESS,
+  TALL_GRADE_BEAM_HEIGHT,
   WALL_2_WIDTH,
   WALL_3_WIDTH,
   WALL_36_WIDTH,
@@ -100,14 +101,14 @@ const curtainConfigs = [
   {
     positon: new Vector3(
       WALL_35_POSITION_X - WALL_THICKNESS,
-      0,
+      TALL_GRADE_BEAM_HEIGHT,
       WALL_36_POSITION_Z,
     ),
     rotationY: Math.PI / 2,
     customParams: {
       switchStatus: "ON",
       isAnimating: false,
-      curtainHeight: WALL_HEIGHT,
+      curtainHeight: WALL_HEIGHT - TALL_GRADE_BEAM_HEIGHT,
       expandedWidth: (WALL_2_WIDTH * 2 + WALL_36_WIDTH) / 2,
       stackedWidth: WALL_2_WIDTH,
       animationDuration: 700,
@@ -476,7 +477,7 @@ const updateWhiteVoile = (
     nz += wind;
 
     // ---- Y：顶部贴轨道底部 ----
-    const ny = oy + position.y + curtainHeight / 2;
+    const ny = oy + curtainHeight / 2;
 
     arr[i] = nx;
     arr[i + 1] = ny;

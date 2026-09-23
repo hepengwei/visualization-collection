@@ -33,12 +33,15 @@ import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 
 const WALL_COLOR = 0xf4f3ef; // 珍珠白乳胶漆颜色
+const LIGHT_STRIP_COLOR = 0xffe8c2; // 灯带和灯光的颜色，暖黄白
 export const WOOD_LIGHT_COLOR = 0xfffaf0; // 浅色木头
-export const WOOD_DARK_COLOR = 0x848e96; // 深色木头
+export const WOOD_DARK_COLOR = 0x8c969e; // 深色木头
+export const WOOD_DARK_LINE_COLOR = 0x48525a; // 深色木头对应更深的线条颜色
 // export const WOOD_DARK_COLOR = 0xb5b3af; // 深色木头
 const WOOD_LIGHT_YELLOW_COLOR = 0xfffaf0; // 浅黄白色木头
 export const ALUMINIUM_ALLOY_COLOR = 0xbfc3c7; // 铝合金颜色
 export const DOOR_COLOR = new Color(130, 140, 148); // 门扇的颜色
+export const LIGHT_STRIP_HEIGHT = 0.034; // 发光灯带的默认高度
 
 // 初始化资源管理器，将所有公共的几何体和部分公共材质预先创建并存到资源管理器中
 export const initAssetManager = (assetManager: AssetManager) => {
@@ -115,10 +118,10 @@ export const initAssetManager = (assetManager: AssetManager) => {
     woodBoardLightYellowMaterial,
   );
 
-  // 创建白色面板材质（不受光影响）
-  const whitePanelMaterial = new MeshPhysicalMaterial({
-    color: 0xffffff,
-    emissive: 0xffffff, // 自发光颜色
+  // 创建暖黄白色面板材质（不受光影响）
+  const yellowWhitePanelMaterial = new MeshPhysicalMaterial({
+    color: LIGHT_STRIP_COLOR,
+    emissive: LIGHT_STRIP_COLOR, // 自发光颜色
     emissiveIntensity: 1.0, // 自发光强度，使其不受环境光影响变灰
     roughness: 0.5,
     metalness: 0.0,
@@ -127,11 +130,14 @@ export const initAssetManager = (assetManager: AssetManager) => {
     polygonOffsetFactor: 0.1,
     polygonOffsetUnits: 0.1,
   });
-  assetManager.materials.set("whitePanelMaterial", whitePanelMaterial);
+  assetManager.materials.set(
+    "yellowWhitePanelMaterial",
+    yellowWhitePanelMaterial,
+  );
 
-  // 创建白色面板材质（受光影响）
-  const whitePanelMaterial2 = new MeshStandardMaterial({
-    color: 0xffffff,
+  // 创建暖黄白色面板材质（受光影响）
+  const yellowWhitePanelMaterial2 = new MeshStandardMaterial({
+    color: LIGHT_STRIP_COLOR,
     roughness: 0.3,
     metalness: 0.0,
     side: FrontSide,
@@ -139,7 +145,27 @@ export const initAssetManager = (assetManager: AssetManager) => {
     polygonOffsetFactor: 0.1,
     polygonOffsetUnits: 0.1,
   });
-  assetManager.materials.set("whitePanelMaterial2", whitePanelMaterial2);
+  assetManager.materials.set(
+    "yellowWhitePanelMaterial2",
+    yellowWhitePanelMaterial2,
+  );
+
+  // 创建深色木板对应的更深的线条材质（不受光影响）
+  const woodBoardDarkLineMaterial = new MeshPhysicalMaterial({
+    color: WOOD_DARK_LINE_COLOR,
+    emissive: WOOD_DARK_LINE_COLOR, // 自发光颜色
+    emissiveIntensity: 1.0, // 自发光强度，使其不受环境光影响变灰
+    roughness: 0.5,
+    metalness: 0.0,
+    side: FrontSide,
+    polygonOffset: true, // 启用深度偏移，防止与地砖产生Z-fighting闪烁
+    polygonOffsetFactor: 0.4,
+    polygonOffsetUnits: 0.4,
+  });
+  assetManager.materials.set(
+    "woodBoardDarkLineMaterial",
+    woodBoardDarkLineMaterial,
+  );
 
   // 创建黑色玻璃材质
   const blackGlassMaterial = new MeshPhysicalMaterial({
@@ -656,8 +682,129 @@ export const generateHalfCircularRingCylinderGeometry = (
   return geometry;
 };
 
+/**
+ * @description: 生成“圆角立方体的一角”几何体
+ * @param {number} size 正方形边长
+ * @param {number} radius 圆角半径
+ * @return {BufferGeometry}
+ */
+export const generateRoundedBoxCornerGeometry = (radius = 1) => {
+  const seg = 12;
+
+  const vertices = [];
+  const normals = [];
+  const uvs = [];
+  const indices = [];
+
+  // 球面参数化：只取第一象限（八分之一球面）
+  for (let i = 0; i <= seg; i++) {
+    const phi = (Math.PI / 2) * (i / seg); // 极角 [0, π/2]
+
+    for (let j = 0; j <= seg; j++) {
+      const theta = (Math.PI / 2) * (j / seg); // 方位角 [0, π/2]
+
+      // 球面坐标
+      const x = radius * Math.sin(phi) * Math.cos(theta);
+      const y = radius * Math.sin(phi) * Math.sin(theta);
+      const z = radius * Math.cos(phi);
+
+      // 法线（单位球面方向）
+      const nx = Math.sin(phi) * Math.cos(theta);
+      const ny = Math.sin(phi) * Math.sin(theta);
+      const nz = Math.cos(phi);
+
+      vertices.push(x, y, z);
+      normals.push(nx, ny, nz);
+      uvs.push(i / seg, j / seg);
+    }
+  }
+
+  // 索引（标准 grid）
+  for (let i = 0; i < seg; i++) {
+    for (let j = 0; j < seg; j++) {
+      const a = i * (seg + 1) + j;
+      const b = i * (seg + 1) + j + 1;
+      const c = (i + 1) * (seg + 1) + j;
+      const d = (i + 1) * (seg + 1) + j + 1;
+
+      indices.push(a, c, b);
+      indices.push(b, c, d);
+    }
+  }
+
+  // ===============================
+  // 用 3 个扇面把球面“切”成封闭体
+  // ===============================
+
+  // 扇面 1：XY 平面（z = 0）
+  const fan1 = vertices.length / 3;
+
+  // 圆心
+  vertices.push(0, 0, 0);
+  normals.push(0, 0, -1);
+  uvs.push(0.5, 0.5);
+
+  // 圆弧上的点
+  for (let i = 0; i <= seg; i++) {
+    const a = (Math.PI / 2) * (i / seg);
+    vertices.push(radius * Math.cos(a), radius * Math.sin(a), 0);
+    normals.push(0, 0, -1);
+    uvs.push(0.5 + 0.5 * Math.cos(a), 0.5 + 0.5 * Math.sin(a));
+  }
+
+  // 三角形扇
+  for (let i = 0; i < seg; i++) {
+    indices.push(fan1, fan1 + 1 + i + 1, fan1 + 1 + i);
+  }
+
+  // 扇面 2：YZ 平面（x = 0）
+  const fan2 = vertices.length / 3;
+
+  vertices.push(0, 0, 0);
+  normals.push(-1, 0, 0);
+  uvs.push(0.5, 0.5);
+
+  for (let i = 0; i <= seg; i++) {
+    const a = (Math.PI / 2) * (i / seg);
+    vertices.push(0, radius * Math.sin(a), radius * Math.cos(a));
+    normals.push(-1, 0, 0);
+    uvs.push(0.5 + 0.5 * Math.cos(a), 0.5 + 0.5 * Math.sin(a));
+  }
+
+  for (let i = 0; i < seg; i++) {
+    indices.push(fan2, fan2 + 1 + i, fan2 + 1 + i + 1);
+  }
+
+  // 扇面 3：ZX 平面（y = 0）
+  const fan3 = vertices.length / 3;
+
+  vertices.push(0, 0, 0);
+  normals.push(0, -1, 0);
+  uvs.push(0.5, 0.5);
+
+  for (let i = 0; i <= seg; i++) {
+    const a = (Math.PI / 2) * (i / seg);
+    vertices.push(radius * Math.cos(a), 0, radius * Math.sin(a));
+    normals.push(0, -1, 0);
+    uvs.push(0.5 + 0.5 * Math.cos(a), 0.5 + 0.5 * Math.sin(a));
+  }
+
+  for (let i = 0; i < seg; i++) {
+    indices.push(fan3, fan3 + 1 + i, fan3 + 1 + i + 1);
+  }
+
+  const geometry = new BufferGeometry();
+  geometry.setAttribute("position", new Float32BufferAttribute(vertices, 3));
+  geometry.setAttribute("normal", new Float32BufferAttribute(normals, 3));
+  geometry.setAttribute("uv", new Float32BufferAttribute(uvs, 2));
+  geometry.setIndex(indices);
+  geometry.computeVertexNormals();
+
+  return geometry;
+};
+
 // 创建并添加发光灯带
-export const addLightingStrip = (
+export const addLightStrip = (
   parent: Group,
   assetManager: AssetManager,
   w: number,
@@ -670,8 +817,10 @@ export const addLightingStrip = (
   intensity = 1.5 * Math.PI,
 ) => {
   const planeGeometry = assetManager.geometries.get("planeGeometry");
-  const whitePanelMaterial = assetManager.materials.get("whitePanelMaterial");
-  const lightingStrip = new Mesh(planeGeometry, whitePanelMaterial);
+  const yellowWhitePanelMaterial = assetManager.materials.get(
+    "yellowWhitePanelMaterial",
+  );
+  const lightingStrip = new Mesh(planeGeometry, yellowWhitePanelMaterial);
   lightingStrip.scale.set(w, h);
   lightingStrip.position.set(x, y, z);
   lightingStrip.rotation.set(rotation.x, rotation.y, rotation.z);
@@ -679,7 +828,7 @@ export const addLightingStrip = (
   parent.add(lightingStrip);
   if (intensity > 0) {
     // 添加发光灯带的光源
-    return addRectAreaLight(
+    return addRectAreaLighting(
       parent,
       w,
       h,
@@ -687,14 +836,14 @@ export const addLightingStrip = (
       rotation.x < 0 ? y + 0.01 : y - 0.01,
       z,
       lightVisible,
-      new Vector3(-rotation.x, rotation.y, rotation.z),
+      new Vector3(-rotation.x, -rotation.y, rotation.z),
       intensity,
     );
   }
 };
 
 // 添加矩形平面光源
-export const addRectAreaLight = (
+export const addRectAreaLighting = (
   parent: Group,
   w: number,
   h: number,
@@ -706,7 +855,7 @@ export const addRectAreaLight = (
   intensity = 1.5 * Math.PI,
 ) => {
   const light = new RectAreaLight(
-    0xfff0dd, // 暖白，微微偏黄
+    LIGHT_STRIP_COLOR, // 暖黄白
     intensity, //  第二个参数intensity在v0.155版本后必须要乘以Math.PI
     w,
     h,
@@ -736,12 +885,14 @@ export const addLightingRoundLight = (
   const whiteAluminumMaterial = assetManager.materials.get(
     "whiteAluminumMaterial",
   );
-  const whitePanelMaterial = assetManager.materials.get("whitePanelMaterial");
+  const yellowWhitePanelMaterial = assetManager.materials.get(
+    "yellowWhitePanelMaterial",
+  );
   const roundLightGroup = new Group();
   const outerCircle = new Mesh(circleGeometry, whiteAluminumMaterial);
   outerCircle.scale.set(radius, radius);
   roundLightGroup.add(outerCircle);
-  const innerCircle = new Mesh(circleGeometry, whitePanelMaterial);
+  const innerCircle = new Mesh(circleGeometry, yellowWhitePanelMaterial);
   innerCircle.scale.set(radius * 0.86, radius * 0.86);
   innerCircle.position.set(0, 0, 0.001);
   roundLightGroup.add(innerCircle);
@@ -769,7 +920,7 @@ export const addRoundLight = (
   intensity = 0.8 * Math.PI,
 ) => {
   const light = new SpotLight(
-    0xffffff, // 颜色（可以随视频平均色动态改）
+    LIGHT_STRIP_COLOR, // 暖黄白
     intensity, //  第二个参数intensity在v0.155版本后必须要乘以Math.PI
     distance,
     Math.PI / 8, // angle
@@ -889,8 +1040,10 @@ export const addCircleLightingStrip = (
   const curve = new CatmullRomCurve3(curvePoints);
 
   const stripGeometry = buildRibbon(curve, count, w, fwdSign);
-  const whitePanelMaterial = assetManager.materials.get("whitePanelMaterial");
-  const lightingStrip = new Mesh(stripGeometry, whitePanelMaterial);
+  const yellowWhitePanelMaterial = assetManager.materials.get(
+    "yellowWhitePanelMaterial",
+  );
+  const lightingStrip = new Mesh(stripGeometry, yellowWhitePanelMaterial);
   lightingStrip.position.set(x, y, z);
   lightingStrip.rotation.set(rotation.x, rotation.y, rotation.z);
   lightingStrip.layers.enable(1); // 为了让灯带的光能够单独增强
@@ -909,7 +1062,7 @@ export const addCircleLightingStrip = (
     const fwd = new Vector3(p.x, p.y, 0).normalize();
     const side = new Vector3().crossVectors(fwd, tan).normalize();
     const light = new RectAreaLight(
-      0xfff0dd,
+      LIGHT_STRIP_COLOR, // 暖黄白
       intensity,
       curve.getLength() / count,
       w,

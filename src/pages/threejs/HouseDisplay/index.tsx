@@ -41,7 +41,7 @@ import addTVBackground from './hardDecoration/addTVBackground';
 import { addTV, onClickTVScreen } from './softDecoration/addTV';
 import addSideboard from './hardDecoration/addSideboard';
 import addShoeCabinet from './hardDecoration/addShoeCabinet';
-import { addCeilingLamp, dynamicOptimizationLampLightRender } from './softDecoration/addCeilingLamp';
+import { addCeilingLamp } from './softDecoration/addCeilingLamp';
 import { onClickCeilingLampSwitch } from './softDecoration/addCeilingLampSwitch';
 import { onClickPhoneScreen } from './softDecoration/addPhoneScreen';
 import { addCrosshair, crosshairRender } from './function/addCrosshair';
@@ -51,6 +51,7 @@ import { addFridge, onClickFridgeDoor, fridgeDoorAnimationRender } from "./softD
 import addGlassWhiteboard from "./softDecoration/addGlassWhiteboard";
 import addDecorateBackgroundPanel from './softDecoration/addDecorateBackgroundPanel';
 import addLivingRoomCabinet from './hardDecoration/addLivingRoomCabinet';
+import addKidsWardrobe from "./hardDecoration/addKidsWardrobe";
 import { dynamicOptimizationLightingStripRender } from './function/dynamicOptimizationLightingStripRender';
 import styles from "./index.module.scss";
 
@@ -60,7 +61,7 @@ export type SwitchStatus = 'ON' | 'OFF';
 const showStats = false;
 
 // 初始相机位置
-const initialCameraPosition = new Vector3(0, 26, 0);
+const initialCameraPosition = new Vector3(0, 24, 0);
 const initialCameraTarget = new Vector3(0, 0, 0);
 
 const HouseDisplay = () => {
@@ -300,6 +301,14 @@ const HouseDisplay = () => {
         lightingStripLightMapRef
       );
 
+      // 添加儿童衣柜
+      addKidsWardrobe(
+        scene,
+        assetManager,
+        pointerControlsIntersetObjectsRef,
+        lightingStripLightMapRef
+      )
+
       // 启用双后处理器架构
       useDualComposer(
         scene,
@@ -352,13 +361,23 @@ const HouseDisplay = () => {
     }
 
     // 漫游模式下第一人称控制器和相机移动过程渲染
-    pointerControlsMoveRender(camera, animatingRef, viewModeRef, pointerControlsRef, pointerControlsIntersetObjectsRef.current, prevTimeRef)
-
-    // 漫游模式下，实时计算距离相机最近的n个吊灯，打开吊灯光源，其他则关闭（客厅和餐厅吊灯除外）
-    dynamicOptimizationLampLightRender(camera, animatingRef, viewModeRef);
+    pointerControlsMoveRender(
+      camera,
+      animatingRef,
+      viewModeRef,
+      pointerControlsRef,
+      pointerControlsIntersetObjectsRef.current,
+      prevTimeRef
+    );
 
     // 漫游模式下，根据相机位置实时计算，打开或关闭灯带光源
-    dynamicOptimizationLightingStripRender(lightingStripLightMapRef.current, camera, animatingRef, viewModeRef);
+    dynamicOptimizationLightingStripRender(
+      camera,
+      animatingRef,
+      viewModeRef,
+      lightingStripLightMapRef.current,
+      lampListRef.current
+    );
 
     // 鼠标准星渲染
     crosshairRender(
