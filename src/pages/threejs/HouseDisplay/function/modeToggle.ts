@@ -100,7 +100,7 @@ export const useModeToggle = (
   const onMouseMove = useCallback(
     (e: any) => {
       // 只在整体模式下更新鼠标位置（用于鼠标射线检测和鼠标准星的移动）
-      if (viewModeRef.current === "overview" && containerRef.current) {
+      if (viewModeRef.current === "overview") {
         mousePositionRef.current.x = e.clientX - menuWidth;
         mousePositionRef.current.y = e.clientY - headHeight;
       }

@@ -73,7 +73,6 @@ const createTV = (
   mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
   tvVideo?: HTMLVideoElement | null,
 ) => {
-  const boxGeometry = assetManager.geometries.get("boxGeometry");
   const tvBodyMaterial = new MeshPhysicalMaterial({
     color: 0x0a0a0c, // 近黑，不要纯 0x000000，否则没层次
     metalness: 0.0, // 塑料是非金属

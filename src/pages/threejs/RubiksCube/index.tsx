@@ -25,12 +25,12 @@ import styles from "./index.module.scss";
 type WhichPlane = "front" | "back" | "top" | "bottom" | "left" | "right";
 type RotationAxis = "x" | "y" | "z" | "";
 
+const cameraInitPosition = new Vector3(20, 50, 100);
 const cubeSize = 10; // 每个小块的长宽高
 const cubeBevelRadius = 1.6; // 每个小块的棱的曲面半径
 const cubeMargin = 0.4; // 每个小块的间距
 const rotatePIDuration = 1.5; // 魔方其中一面旋转180度所需的时间，单位秒
 const rotateInterval = 1500; // 魔方其中一面旋转的时间间隔
-const cameraInitPosition = new Vector3(20, 50, 100);
 const lightInitPositionList = [
   { x: 100, y: 100, z: -100, intensity: 1 },
   { x: -100, y: 100, z: -100, intensity: 1 },

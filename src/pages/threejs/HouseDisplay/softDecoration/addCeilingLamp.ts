@@ -19,12 +19,12 @@ import {
   Object3D,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
-import { WALL_HEIGHT } from "../hardDecoration/addHouseStructure";
 import {
   addCeilingLampSwitch,
   ceilingLampSwitchToggle,
 } from "../softDecoration/addCeilingLampSwitch";
 import {
+  WALL_HEIGHT,
   WALL_1_POSITION_X,
   WALL_10_POSITION_X,
   WALL_15_POSITION_X,
@@ -44,13 +44,13 @@ import {
 
 const LAMP_RADIUS = 0.65; // 灯的半径
 const LAMP_THICKNESS = 0.1; // 灯的厚度
-const ceilingLampY = WALL_HEIGHT - LAMP_THICKNESS / 2 - 0.02;
+const CEILING_LAMP_Y = WALL_HEIGHT - LAMP_THICKNESS / 2 - 0.02;
 const lampConfigList = [
   {
     name: "客厅吊灯",
     position: new Vector3(
       WALL_10_POSITION_X + 0.8,
-      ceilingLampY,
+      CEILING_LAMP_Y,
       WALL_58_POSITION_Z - 0.2,
     ),
     noNeedDynamicOptimization: true,
@@ -59,7 +59,7 @@ const lampConfigList = [
     name: "餐厅吊灯",
     position: new Vector3(
       WALL_34_POSITION_X,
-      ceilingLampY,
+      CEILING_LAMP_Y,
       WALL_42_POSITION_Z + 0.45,
     ),
     noNeedDynamicOptimization: true,
@@ -68,7 +68,7 @@ const lampConfigList = [
     name: "主卧吊灯",
     position: new Vector3(
       WALL_1_POSITION_X + 0.1,
-      ceilingLampY,
+      CEILING_LAMP_Y,
       WALL_3_POSITION_Z + 0.4,
     ),
     scale: new Vector3(0.8, 0.8, 0.8),
@@ -77,7 +77,7 @@ const lampConfigList = [
     name: "儿童房吊灯",
     position: new Vector3(
       WALL_33_POSITION_X - 0.1,
-      ceilingLampY,
+      CEILING_LAMP_Y,
       WALL_40_POSITION_Z - 0.1,
     ),
     scale: new Vector3(0.7, 0.7, 0.7),
@@ -86,7 +86,7 @@ const lampConfigList = [
     name: "次卧吊灯",
     position: new Vector3(
       WALL_55_POSITION_X - 0.4,
-      ceilingLampY,
+      CEILING_LAMP_Y,
       WALL_53_POSITION_Z + 0.2,
     ),
     scale: new Vector3(0.7, 0.7, 0.7),
@@ -95,7 +95,7 @@ const lampConfigList = [
     name: "厨房吊灯",
     position: new Vector3(
       WALL_75_POSITION_X,
-      ceilingLampY,
+      CEILING_LAMP_Y,
       WALL_67_POSITION_Z - 0.6,
     ),
     scale: new Vector3(0.5, 0.5, 0.5),
@@ -209,7 +209,7 @@ export const addCeilingLamp = (
 
   // 添加所有吊灯
   lampConfigList.forEach((item: Record<string, any>) => {
-    const { name, position, noNeedDynamicOptimization, scale } = item;
+    const { name, position, scale } = item;
     const lamp = createLamp(assetManager);
     lamp.name = name;
     lamp.position.copy(position);

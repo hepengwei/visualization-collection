@@ -454,7 +454,7 @@ const addAllLightingStrip = (
     -PANEL_HEIGHT / 2 + PANEL_WIDTH / 2 + WOOD_PANEL_MARGIN_BOTTOM / 2,
     z,
     true,
-    new Vector3(Math.PI / 2, -Math.PI / 2, 0),
+    new Vector3(Math.PI / 2, Math.PI / 2, 0),
     0.6 * Math.PI,
   );
   light3 && lightList.push(light3);
