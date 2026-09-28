@@ -58,7 +58,7 @@ const addGlassWhiteboard = (
   pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   const planeGeometry = assetManager.geometries.get("planeGeometry");
-  const yellowWhitePanelMaterial2 = assetManager.materials.get("yellowWhitePanelMaterial2");
+  const whitePanelMaterial = assetManager.materials.get("whitePanelMaterial");
   // 哑光钢化玻璃白板材质
   const glassWhiteboardMaterial = new MeshPhysicalMaterial({
     color: 0xfafaf7,
@@ -90,7 +90,7 @@ const addGlassWhiteboard = (
     GLASS_WHITEBOARD_BG_THICKNESS,
     GLASS_WHITEBOARD_RADIUS,
   );
-  const whiteBg = new Mesh(roundedBoxGeometry1, yellowWhitePanelMaterial2);
+  const whiteBg = new Mesh(roundedBoxGeometry1, whitePanelMaterial);
   whiteBg.position.set(0, 0, GLASS_WHITEBOARD_BG_THICKNESS / 2);
   glassWhiteboardGroup.add(whiteBg);
 

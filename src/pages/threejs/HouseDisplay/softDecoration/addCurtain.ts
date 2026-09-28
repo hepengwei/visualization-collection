@@ -308,13 +308,11 @@ const createCurtain = (
     leftWhiteVoile,
     switchStatus === "ON" ? 0 : 1,
     true,
-    customParams.positon,
   );
   updateWhiteVoile(
     rightWhiteVoile,
     switchStatus === "ON" ? 0 : 1,
     false,
-    customParams.positon,
   );
 
   return curtainGroup;
@@ -357,7 +355,6 @@ export const curtainAnimationRender = (curtainList: Group[]) => {
                     child as Mesh,
                     openAmt,
                     true,
-                    curtain.position,
                   );
                 } else {
                   // @ts-ignore
@@ -373,7 +370,6 @@ export const curtainAnimationRender = (curtainList: Group[]) => {
                     child as Mesh,
                     openAmt,
                     false,
-                    curtain.position,
                   );
                 } else {
                   // @ts-ignore
@@ -407,13 +403,11 @@ export const curtainAnimationRender = (curtainList: Group[]) => {
  * @param origArray  半边的所有顶点
  * @param openAmt  半边当前的的展开程度，0为完全未展开，1为完全展开
  * @param isLeft  是否是窗帘的左边半边
- * @param position 整个窗帘的位置
  */
 const updateWhiteVoile = (
   mesh: Mesh,
   openAmt: number,
   isLeft: boolean,
-  position: Vector3,
 ) => {
   // @ts-ignore
   const { curtainHeight, expandedWidth, stackedWidth } = mesh.customParams;

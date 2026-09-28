@@ -34,13 +34,12 @@ import type { AssetManager } from "hooks/threejs/useInitialize";
 
 const WALL_COLOR = 0xf4f3ef; // 珍珠白乳胶漆颜色
 const LIGHT_STRIP_COLOR = 0xffe8c2; // 灯带和灯光的颜色，暖黄白
-export const WOOD_LIGHT_COLOR = 0xfffaf0; // 浅色木头
-export const WOOD_DARK_COLOR = 0x8c969e; // 深色木头
-export const WOOD_DARK_LINE_COLOR = 0x48525a; // 深色木头对应更深的线条颜色
-// export const WOOD_DARK_COLOR = 0xb5b3af; // 深色木头
+export const WOOD_LIGHT_COLOR = 0xefebe7; // 浅色木头
+export const WOOD_DARK_COLOR = 0xa5acb7; // 深色木头(浅蓝色)
+export const WOOD_DARK_LINE_COLOR = 0x505762; // 深色木头对应更深的线条颜色
 const WOOD_LIGHT_YELLOW_COLOR = 0xfffaf0; // 浅黄白色木头
 export const ALUMINIUM_ALLOY_COLOR = 0xbfc3c7; // 铝合金颜色
-export const DOOR_COLOR = new Color(130, 140, 148); // 门扇的颜色
+export const DOOR_COLOR = new Color(165, 173, 183); // 门扇的颜色
 export const LIGHT_STRIP_HEIGHT = 0.034; // 发光灯带的默认高度
 
 // 初始化资源管理器，将所有公共的几何体和部分公共材质预先创建并存到资源管理器中
@@ -108,15 +107,32 @@ export const initAssetManager = (assetManager: AssetManager) => {
   // 创建不同颜色的实木木板材质
   const woodBoardLightMaterial = makeWoodBoardMaterial(WOOD_LIGHT_COLOR); // 灰白色
   const woodBoardDarkMaterial = makeWoodBoardMaterial(WOOD_DARK_COLOR); // 深色
+  const woodBoardMoreDarkMaterial = makeWoodBoardMaterial(WOOD_DARK_LINE_COLOR); // 比深色更深
   const woodBoardLightYellowMaterial = makeWoodBoardMaterial(
     WOOD_LIGHT_YELLOW_COLOR,
   ); // 浅黄白色
   assetManager.materials.set("woodBoardLightMaterial", woodBoardLightMaterial);
   assetManager.materials.set("woodBoardDarkMaterial", woodBoardDarkMaterial);
   assetManager.materials.set(
+    "woodBoardMoreDarkMaterial",
+    woodBoardMoreDarkMaterial,
+  );
+  assetManager.materials.set(
     "woodBoardLightYellowMaterial",
     woodBoardLightYellowMaterial,
   );
+
+  // 创建白色面板材质（受光影响）
+  const whitePanelMaterial = new MeshStandardMaterial({
+    color: 0xffffff,
+    roughness: 0.3,
+    metalness: 0.0,
+    side: FrontSide,
+    polygonOffset: true, // 启用深度偏移，防止产生Z-fighting闪烁
+    polygonOffsetFactor: 0.1,
+    polygonOffsetUnits: 0.1,
+  });
+  assetManager.materials.set("whitePanelMaterial", whitePanelMaterial);
 
   // 创建暖黄白色面板材质（不受光影响）
   const yellowWhitePanelMaterial = new MeshPhysicalMaterial({

@@ -512,10 +512,6 @@ const createRightTable = (
   assetManager: AssetManager,
   lightList: RectAreaLight[],
 ) => {
-  // 灰白色木板材质
-  const woodBoardLightMaterial = assetManager.materials.get(
-    "woodBoardLightMaterial",
-  ) as MeshPhysicalMaterial;
   // 深灰色木板材质
   const woodBoardDarkMaterial = assetManager.materials.get(
     "woodBoardDarkMaterial",
@@ -607,37 +603,37 @@ const createRightTable = (
   rightTableGroup.add(curvedSurfaceRightAngledTriangularPrism2);
 
   // 桌子右面的桌腿板
-  addBox(
-    rightTableGroup,
-    assetManager,
-    woodBoardLightMaterial,
-    ARC_BOARD_THICKNESS,
-    BOTTOM_CHEST_HEIGHT + CHEST_GAP,
-    RIGHT_TABLE_DEPTH - BOARD_THICKNESS - ARC_BOARD_THICKNESS,
-    RIGHT_CHEST_WIDTH - ARC_BOARD_THICKNESS / 2,
-    (BOTTOM_CHEST_HEIGHT + CHEST_GAP) / 2,
-    BOARD_THICKNESS +
-      (RIGHT_TABLE_DEPTH - BOARD_THICKNESS - ARC_BOARD_THICKNESS) / 2,
-  );
+  // addBox(
+  //   rightTableGroup,
+  //   assetManager,
+  //   woodBoardLightMaterial,
+  //   ARC_BOARD_THICKNESS,
+  //   BOTTOM_CHEST_HEIGHT + CHEST_GAP,
+  //   RIGHT_TABLE_DEPTH - BOARD_THICKNESS - ARC_BOARD_THICKNESS,
+  //   RIGHT_CHEST_WIDTH - ARC_BOARD_THICKNESS / 2,
+  //   (BOTTOM_CHEST_HEIGHT + CHEST_GAP) / 2,
+  //   BOARD_THICKNESS +
+  //     (RIGHT_TABLE_DEPTH - BOARD_THICKNESS - ARC_BOARD_THICKNESS) / 2,
+  // );
 
-  const quarterCylinderGeometry4 = generateQuarterCylinderGeometry(
-    ARC_BOARD_THICKNESS,
-    BOTTOM_CHEST_HEIGHT + CHEST_GAP,
-  );
-  const quarterCylinder4 = new Mesh(
-    quarterCylinderGeometry4,
-    woodBoardLightMaterial,
-  );
-  quarterCylinder4.rotation.x = -Math.PI / 2;
-  quarterCylinder4.rotation.z = -Math.PI / 2;
-  quarterCylinder4.position.set(
-    RIGHT_CHEST_WIDTH - ARC_BOARD_THICKNESS,
-    0,
-    RIGHT_TABLE_DEPTH - ARC_BOARD_THICKNESS,
-  );
-  quarterCylinder4.castShadow = true;
-  quarterCylinder4.receiveShadow = true;
-  rightTableGroup.add(quarterCylinder4);
+  // const quarterCylinderGeometry4 = generateQuarterCylinderGeometry(
+  //   ARC_BOARD_THICKNESS,
+  //   BOTTOM_CHEST_HEIGHT + CHEST_GAP,
+  // );
+  // const quarterCylinder4 = new Mesh(
+  //   quarterCylinderGeometry4,
+  //   woodBoardLightMaterial,
+  // );
+  // quarterCylinder4.rotation.x = -Math.PI / 2;
+  // quarterCylinder4.rotation.z = -Math.PI / 2;
+  // quarterCylinder4.position.set(
+  //   RIGHT_CHEST_WIDTH - ARC_BOARD_THICKNESS,
+  //   0,
+  //   RIGHT_TABLE_DEPTH - ARC_BOARD_THICKNESS,
+  // );
+  // quarterCylinder4.castShadow = true;
+  // quarterCylinder4.receiveShadow = true;
+  // rightTableGroup.add(quarterCylinder4);
 
   const curvedSurfaceRightAngledTriangularPrismGeometry3 =
     generateCurvedSurfaceRightAngledTriangularPrismGeometry(
