@@ -113,14 +113,6 @@ export const addDoor = (
   });
   assetManager.materials.set("woodDoorMaterial", woodDoorMaterial);
 
-  // 门框材质
-  // const doorFrameMaterial = new MeshStandardMaterial({
-  //   color: FRAME_COLOR,
-  //   roughness: 0.6,
-  //   metalness: 0.0,
-  // });
-  // assetManager.materials.set("doorFrameMaterial", doorFrameMaterial);
-
   // 合页材质 — 深色青铜/铸铁（欧式复古感）
   const hingeMaterial = new MeshStandardMaterial({
     color: 0x3a2e24,
@@ -173,6 +165,8 @@ const createDoor = (
     OPENING_HEIGHT / 2,
     0,
   );
+  leftJamb.receiveShadow = true;
+  leftJamb.castShadow = true;
   frameGroup.add(leftJamb);
 
   // 右竖框
@@ -183,6 +177,8 @@ const createDoor = (
     OPENING_HEIGHT / 2,
     0,
   );
+  rightJamb.receiveShadow = true;
+  rightJamb.castShadow = true;
   frameGroup.add(rightJamb);
 
   // 上方横框
@@ -194,6 +190,8 @@ const createDoor = (
     FRAME_THICKNESS,
   );
   headerMesh.position.set(0, OPENING_HEIGHT + HEADER_H / 2, 0);
+  headerMesh.receiveShadow = true;
+  headerMesh.castShadow = true;
   frameGroup.add(headerMesh);
   doorGroup.add(frameGroup);
 
@@ -226,6 +224,8 @@ const createDoor = (
     DOOR_HEIGHT / 2,
     DOOR_THICKNESS / 2,
   );
+  doorPanel.receiveShadow = true;
+  doorPanel.castShadow = true;
   doorPanelGroup.add(doorPanel);
 
   /** 门把手部分*/

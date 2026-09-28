@@ -80,7 +80,7 @@ const CHEST_WIDTH =
 const SECRET_COMPARTENT_WIDTH =
   (SIDEBOARD_WIDTH -
     BOARD_THICKNESS * 2 -
-    BOARD_THICKNESS * (CHEST_COL_COUNT / 2 - 1)) /
+    BOARD_THICKNESS * (CHEST_COL_COUNT / 2 + 1)) /
   (CHEST_COL_COUNT / 2);
 const DECORATIVE_BAFFLE_PLATE_THICKNESS = 0.14; // 装饰挡板的厚度
 const DECORATIVE_BAFFLE_BACK_PLATE_WIDTH = SIDEBOARD_DEPTH - BOARD_THICKNESS; // 装饰挡板的背板宽度
@@ -173,16 +173,24 @@ const createSideboard = (
     SIDEBOARD_HEIGHT / 2,
     (SIDEBOARD_DEPTH + BOARD_THICKNESS) / 2,
   );
-  // 左板右面的深灰色涂层
+  // 左板右下面的深灰色涂层
+  const height =
+    BOARD_THICKNESS +
+    CHEST_GAP +
+    BOTTOM_CHEST_HEIGHT +
+    CHEST_GAP +
+    BOARD_THICKNESS +
+    CHEST_GAP +
+    DRAWER_HEIGHT;
   addBox(
     sideboardGroup,
     assetManager,
     woodBoardDarkMaterial,
     BOARD_COATING_THICKNESS,
-    SIDEBOARD_HEIGHT,
+    height,
     SIDEBOARD_DEPTH - BOARD_THICKNESS,
     BOARD_THICKNESS + (BOARD_COATING_THICKNESS - SIDEBOARD_WIDTH) / 2,
-    SIDEBOARD_HEIGHT / 2,
+    height / 2,
     (SIDEBOARD_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 右板
@@ -197,16 +205,16 @@ const createSideboard = (
     SIDEBOARD_HEIGHT / 2,
     (SIDEBOARD_DEPTH + BOARD_THICKNESS) / 2,
   );
-  // 右板左面的深灰色涂层
+  // 右板左下面的深灰色涂层
   addBox(
     sideboardGroup,
     assetManager,
     woodBoardDarkMaterial,
     BOARD_COATING_THICKNESS,
-    SIDEBOARD_HEIGHT,
+    height,
     SIDEBOARD_DEPTH - BOARD_THICKNESS,
     (SIDEBOARD_WIDTH - BOARD_COATING_THICKNESS) / 2 - BOARD_THICKNESS,
-    SIDEBOARD_HEIGHT / 2,
+    height / 2,
     (SIDEBOARD_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 顶板
@@ -394,15 +402,12 @@ const createSideboard = (
   }
 
   /**第二层暗格置物区的竖向隔板*/
-  for (let i = 0; i < CHEST_COL_COUNT / 2 - 1; i++) {
-    let x =
+  for (let i = 0; i < CHEST_COL_COUNT / 2 + 1; i++) {
+    const x =
       BOARD_THICKNESS +
-      SECRET_COMPARTENT_WIDTH +
-      BOARD_THICKNESS / 2 -
+      BOARD_THICKNESS / 2 +
+      i * (SECRET_COMPARTENT_WIDTH + BOARD_THICKNESS) -
       SIDEBOARD_WIDTH / 2;
-    if (i > 0) {
-      x += i * (SECRET_COMPARTENT_WIDTH + BOARD_THICKNESS);
-    }
     addBox(
       sideboardGroup,
       assetManager,
@@ -612,16 +617,16 @@ const createSideboard = (
     DECORATIVE_BAFFLE_PLATE_THICKNESS / 2,
   );
   // 装饰挡板玻璃的上边
-  const height = (SIDEBOARD_HEIGHT - GLASS_HEIGHT) / 2;
+  const height2 = (SIDEBOARD_HEIGHT - GLASS_HEIGHT) / 2;
   addBox(
     decorativeBafflePlate,
     assetManager,
     woodBoardLightMaterial,
     GLASS_WIDTH,
-    height,
+    height2,
     DECORATIVE_BAFFLE_PLATE_THICKNESS,
     -DECORATIVE_BAFFLE_BACK_PLATE_WIDTH - GLASS_WIDTH - GLASS_WIDTH / 2,
-    SIDEBOARD_HEIGHT - height / 2,
+    SIDEBOARD_HEIGHT - height2 / 2,
     DECORATIVE_BAFFLE_PLATE_THICKNESS / 2,
   );
   // 装饰挡板玻璃的下边
@@ -630,10 +635,10 @@ const createSideboard = (
     assetManager,
     woodBoardLightMaterial,
     GLASS_WIDTH,
-    height,
+    height2,
     DECORATIVE_BAFFLE_PLATE_THICKNESS,
     -DECORATIVE_BAFFLE_BACK_PLATE_WIDTH - GLASS_WIDTH - GLASS_WIDTH / 2,
-    height / 2,
+    height2 / 2,
     DECORATIVE_BAFFLE_PLATE_THICKNESS / 2,
   );
   // 装饰挡板玻璃的左边
@@ -688,7 +693,7 @@ const createSideboard = (
     GLASS_WIDTH / 2,
     DECORATIVE_BAFFLE_PLATE_THICKNESS,
     -DECORATIVE_BAFFLE_BACK_PLATE_WIDTH - GLASS_WIDTH * 2,
-    SIDEBOARD_HEIGHT - height,
+    SIDEBOARD_HEIGHT - height2,
     0,
     new Vector3(0, 0, -Math.PI / 2),
   );
@@ -700,7 +705,7 @@ const createSideboard = (
     GLASS_WIDTH / 2,
     DECORATIVE_BAFFLE_PLATE_THICKNESS,
     -DECORATIVE_BAFFLE_BACK_PLATE_WIDTH - GLASS_WIDTH,
-    SIDEBOARD_HEIGHT - height,
+    SIDEBOARD_HEIGHT - height2,
     0,
     new Vector3(0, 0, Math.PI),
   );
@@ -712,7 +717,7 @@ const createSideboard = (
     GLASS_WIDTH / 2,
     DECORATIVE_BAFFLE_PLATE_THICKNESS,
     -DECORATIVE_BAFFLE_BACK_PLATE_WIDTH - GLASS_WIDTH * 2,
-    height,
+    height2,
     0,
   );
   // 装饰挡板玻璃下右曲面三角棱柱
@@ -723,7 +728,7 @@ const createSideboard = (
     GLASS_WIDTH / 2,
     DECORATIVE_BAFFLE_PLATE_THICKNESS,
     -DECORATIVE_BAFFLE_BACK_PLATE_WIDTH - GLASS_WIDTH,
-    height,
+    height2,
     0,
     new Vector3(0, 0, Math.PI / 2),
   );

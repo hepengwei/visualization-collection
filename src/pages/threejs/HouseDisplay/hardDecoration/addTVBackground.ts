@@ -39,21 +39,21 @@ const TV_BACKGROUND_POSITON = new Vector3(
 ); // 电视背景的位置
 const BOARD_THICKNESS = 0.04; // 木板的厚度
 // 木格栅
+const PROTUBERANT_WOODEN_STRIP_COUNT = 17; // 凸起木条的列数
 const WOODEN_GRATING_BACK_DEPTH = 0.01; // 深色背板的深度
-const PROTUBERANT_WOODEN_STRIP_WIDTH = 0.02; // 凸起木条的宽度
-const PROTUBERANT_WOODEN_STRIP_DEPTH = 0.02; // 凸起木条的深度
-const PROTUBERANT_WOODEN_STRIP_GAP = 0.01; // 凸起木条的间距
-const PROTUBERANT_WOODEN_STRIP_COUNT = 25; // 凸起木条的列数
+const PROTUBERANT_WOODEN_STRIP_WIDTH = 0.024; // 凸起木条的宽度
+const PROTUBERANT_WOODEN_STRIP_DEPTH = 0.016; // 凸起木条的深度
+const PROTUBERANT_WOODEN_STRIP_GAP = 0.02; // 凸起木条的间距
 const WOODEN_GRATING_WIDTH =
   PROTUBERANT_WOODEN_STRIP_WIDTH * PROTUBERANT_WOODEN_STRIP_COUNT +
   PROTUBERANT_WOODEN_STRIP_GAP * (PROTUBERANT_WOODEN_STRIP_COUNT - 1);
 // 右边柜
-const RIGHT_CABINET_WIDTH = 0.6; // 右边柜的宽度
+const RIGHT_CABINET_WIDTH = 0.54; // 右边柜的宽度
 const CHEST_COUNT = 5; // 右边柜子格数
 const GLASS_THICKNESS = 0.02; // 黑色玻璃厚度
 // 落地柜
 const BASE_CABINET_WIDTH = TV_BACKGROUND_WIDTH - RIGHT_CABINET_WIDTH - 0.1; // 落地柜的宽度
-const BASE_CABINET_HEIGHT = 0.4; // 落地柜的总高度
+const BASE_CABINET_HEIGHT = 0.36; // 落地柜的总高度
 const BASE_CABINET_TOP_THICKNESS = 0.07; // 落地柜上面板子的厚度
 const CHEST_GAP = 0.02; // 柜子之间的缝隙
 const DRAWER_COUNT = 4; // 抽屉数量
@@ -114,13 +114,13 @@ const createTVBackground = (
 
 // 创建木格栅
 const createWoodenGrating = (assetManager: AssetManager) => {
-  // 灰白色木板材质
-  const woodBoardLightMaterial = assetManager.materials.get(
-    "woodBoardLightMaterial",
-  ) as MeshPhysicalMaterial;
   // 深灰色木板材质
   const woodBoardDarkMaterial = assetManager.materials.get(
     "woodBoardDarkMaterial",
+  ) as MeshPhysicalMaterial;
+  // 更深色木板材质
+  const woodBoardMoreDarkMaterial = assetManager.materials.get(
+    "woodBoardMoreDarkMaterial",
   ) as MeshPhysicalMaterial;
 
   const woodenGratingGroup = new Group();
@@ -129,7 +129,7 @@ const createWoodenGrating = (assetManager: AssetManager) => {
   addBox(
     woodenGratingGroup,
     assetManager,
-    woodBoardDarkMaterial,
+    woodBoardMoreDarkMaterial,
     WOODEN_GRATING_WIDTH,
     TV_BACKGROUND_HEIGHT,
     WOODEN_GRATING_BACK_DEPTH,
@@ -147,7 +147,7 @@ const createWoodenGrating = (assetManager: AssetManager) => {
     addBox(
       woodenGratingGroup,
       assetManager,
-      woodBoardLightMaterial,
+      woodBoardDarkMaterial,
       PROTUBERANT_WOODEN_STRIP_WIDTH,
       TV_BACKGROUND_HEIGHT,
       PROTUBERANT_WOODEN_STRIP_DEPTH,
@@ -167,10 +167,6 @@ const createRightCabinet = (
   assetManager: AssetManager,
   lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
 ) => {
-  // 灰白色木板材质
-  const woodBoardLightMaterial = assetManager.materials.get(
-    "woodBoardLightMaterial",
-  ) as MeshPhysicalMaterial;
   // 深灰色木板材质
   const woodBoardDarkMaterial = assetManager.materials.get(
     "woodBoardDarkMaterial",
@@ -185,7 +181,7 @@ const createRightCabinet = (
   addBox(
     rightCabinetGroup,
     assetManager,
-    woodBoardLightMaterial,
+    woodBoardDarkMaterial,
     BOARD_THICKNESS,
     TV_BACKGROUND_HEIGHT,
     TV_BACKGROUND_DEPTH,
@@ -197,7 +193,7 @@ const createRightCabinet = (
   addBox(
     rightCabinetGroup,
     assetManager,
-    woodBoardLightMaterial,
+    woodBoardDarkMaterial,
     BOARD_THICKNESS,
     TV_BACKGROUND_HEIGHT,
     TV_BACKGROUND_DEPTH,
@@ -228,7 +224,7 @@ const createRightCabinet = (
     addBox(
       rightCabinetGroup,
       assetManager,
-      woodBoardLightMaterial,
+      woodBoardDarkMaterial,
       RIGHT_CABINET_WIDTH - BOARD_THICKNESS * 2,
       BOARD_THICKNESS,
       TV_BACKGROUND_DEPTH - BOARD_THICKNESS,
@@ -324,6 +320,7 @@ const createBaseCabinet = (assetManager: AssetManager) => {
     BASE_CABINET_HEIGHT / 2 - BASE_CABINET_TOP_THICKNESS / 2,
     0,
   );
+  topBoard.receiveShadow = true;
   baseCabinetGroup.add(topBoard);
 
   // addPlane(
