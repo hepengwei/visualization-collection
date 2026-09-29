@@ -142,7 +142,6 @@ export const addCurtain = (
   scene: Scene,
   assetManager: AssetManager,
   curtainListRef: MutableRefObject<Group[]>,
-  pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
   mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   // 白纱材质
@@ -178,10 +177,9 @@ export const addCurtain = (
       assetManager,
       { ...customParams, positon },
       curtainType,
+      mouseRaycasterIntersectObjectsRef,
     );
     curtainListRef.current.push(curtain);
-    pointerControlsIntersetObjectsRef.current.push(curtain);
-    mouseRaycasterIntersectObjectsRef.current.push(curtain);
     curtain.position.copy(positon);
     if (rotationY) {
       curtain.rotation.y = rotationY;
@@ -195,6 +193,7 @@ const createCurtain = (
   assetManager: AssetManager,
   customParams: Record<string, any>,
   curtainType: CurtainType,
+  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   const planeGeometry = assetManager.geometries.get("planeGeometry");
   const whiteVoileMaterial = assetManager.materials.get("whiteVoileMaterial");
@@ -232,6 +231,7 @@ const createCurtain = (
     curtainType === "voile" ? whiteVoileMaterial : clothMaterial,
   );
   leftWhiteVoile.name = "窗帘左半边";
+  mouseRaycasterIntersectObjectsRef.current?.push(leftWhiteVoile);
   leftWhiteVoile.renderOrder = 10; // 设置renderOrder，在玻璃窗之后渲染，这样在外面斜着透过玻璃窗才不会看不到半边
   leftWhiteVoile.frustumCulled = false; // 顶点变形后包围球失效，禁用视锥体剔除
   leftWhiteVoile.castShadow = true; // 启用阴影投射
@@ -247,6 +247,7 @@ const createCurtain = (
     curtainType === "voile" ? whiteVoileMaterial : clothMaterial,
   );
   rightWhiteVoile.name = "窗帘右半边";
+  mouseRaycasterIntersectObjectsRef.current?.push(rightWhiteVoile);
   rightWhiteVoile.renderOrder = 10; // 设置renderOrder，在玻璃窗之后渲染，这样在外面斜着透过玻璃窗才不会看不到半边
   rightWhiteVoile.frustumCulled = false; // 顶点变形后包围球失效，禁用视锥体剔除
   rightWhiteVoile.castShadow = true; // 启用阴影投射
@@ -267,6 +268,7 @@ const createCurtain = (
     completelyInvisibleMaterial,
   );
   leftCollisionPlane.name = "窗帘左半边碰撞检测面";
+  mouseRaycasterIntersectObjectsRef.current?.push(leftCollisionPlane);
   let leftCollisionPlaneWidth = expandedWidth + whiteVoileDoublicationWidth;
   let leftCollisionPlanePositionX = -expandedWidth / 2;
   if (switchStatus === "ON") {
@@ -287,6 +289,7 @@ const createCurtain = (
     completelyInvisibleMaterial,
   );
   rightCollisionPlane.name = "窗帘右半边碰撞检测面";
+  mouseRaycasterIntersectObjectsRef.current?.push(rightCollisionPlane);
   let rightCollisionPlaneWidth = expandedWidth + whiteVoileDoublicationWidth;
   let rightCollisionPlanePositionX = expandedWidth / 2;
   if (switchStatus === "ON") {
@@ -304,22 +307,15 @@ const createCurtain = (
   curtainGroup.add(rightCollisionPlane);
 
   // 初始化一次窗帘左右两个半边的各顶点位置
-  updateWhiteVoile(
-    leftWhiteVoile,
-    switchStatus === "ON" ? 0 : 1,
-    true,
-  );
-  updateWhiteVoile(
-    rightWhiteVoile,
-    switchStatus === "ON" ? 0 : 1,
-    false,
-  );
+  updateWhiteVoile(leftWhiteVoile, switchStatus === "ON" ? 0 : 1, true);
+  updateWhiteVoile(rightWhiteVoile, switchStatus === "ON" ? 0 : 1, false);
 
   return curtainGroup;
 };
 
 // 窗帘点击后的回调
-export const onClickCurtain = (curtain: Group) => {
+export const onClickCurtain = (halfCurtain: Mesh) => {
+  const curtain = halfCurtain?.parent;
   // @ts-ignore
   if (curtain && !curtain.customParams.isAnimating) {
     // @ts-ignore
@@ -351,11 +347,7 @@ export const curtainAnimationRender = (curtainList: Group[]) => {
             if ((child as Mesh).isMesh) {
               if (child.name.startsWith("窗帘左半边")) {
                 if (child.name === "窗帘左半边") {
-                  updateWhiteVoile(
-                    child as Mesh,
-                    openAmt,
-                    true,
-                  );
+                  updateWhiteVoile(child as Mesh, openAmt, true);
                 } else {
                   // @ts-ignore
                   const { expandedWidth, stackedWidth } = child.customParams;
@@ -366,11 +358,7 @@ export const curtainAnimationRender = (curtainList: Group[]) => {
                 }
               } else if (child.name.startsWith("窗帘右半边")) {
                 if (child.name === "窗帘右半边") {
-                  updateWhiteVoile(
-                    child as Mesh,
-                    openAmt,
-                    false,
-                  );
+                  updateWhiteVoile(child as Mesh, openAmt, false);
                 } else {
                   // @ts-ignore
                   const { expandedWidth, stackedWidth } = child.customParams;
@@ -404,11 +392,7 @@ export const curtainAnimationRender = (curtainList: Group[]) => {
  * @param openAmt  半边当前的的展开程度，0为完全未展开，1为完全展开
  * @param isLeft  是否是窗帘的左边半边
  */
-const updateWhiteVoile = (
-  mesh: Mesh,
-  openAmt: number,
-  isLeft: boolean,
-) => {
+const updateWhiteVoile = (mesh: Mesh, openAmt: number, isLeft: boolean) => {
   // @ts-ignore
   const { curtainHeight, expandedWidth, stackedWidth } = mesh.customParams;
   const pos = mesh.geometry.attributes.position;

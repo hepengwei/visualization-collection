@@ -20,7 +20,7 @@ import {
   addBox,
   addLightStrip,
   addRectAreaLighting,
-  addLightingRoundLight,
+  addRoundLight,
 } from "../utils";
 import {
   WALL_HEIGHT,
@@ -98,9 +98,7 @@ const GLASS_THICKNESS = 0.06; // 装饰挡板中间玻璃厚度
 const addSideboard = (
   scene: Scene,
   assetManager: AssetManager,
-  pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
-  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
-  lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
+  lightStripLightingMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
 ) => {
   // 艺术玻璃材质
   const frostedArtGlassMaterial = new MeshPhysicalMaterial({
@@ -131,10 +129,8 @@ const addSideboard = (
     frostedArtGlassMaterial,
   );
 
-  const sideboard = createSideboard(assetManager, lightingStripLightMapRef);
+  const sideboard = createSideboard(assetManager, lightStripLightingMapRef);
   sideboard.name = "餐边柜";
-  pointerControlsIntersetObjectsRef.current.push(sideboard);
-  mouseRaycasterIntersectObjectsRef.current.push(sideboard);
   sideboard.position.copy(SIDEBOARD_POSITON);
   scene.add(sideboard);
 };
@@ -142,7 +138,7 @@ const addSideboard = (
 // 创建餐边柜
 const createSideboard = (
   assetManager: AssetManager,
-  lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
+  lightStripLightingMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
 ) => {
   const boxGeometry = assetManager.geometries.get("boxGeometry");
   // 灰白色木板材质
@@ -465,7 +461,7 @@ const createSideboard = (
     false,
   );
   light2 && lightList.push(light2);
-  lightingStripLightMapRef.current[LIGHT_GROUP_FIELD.SIDEBOARD] = lightList;
+  lightStripLightingMapRef.current[LIGHT_GROUP_FIELD.SIDEBOARD] = lightList;
 
   /**第四层抽屉门*/
   for (let i = 0; i < CHEST_COL_COUNT / 2; i++) {
@@ -745,7 +741,7 @@ const createSideboard = (
   );
 
   // 添加圆形筒灯
-  addLightingRoundLight(
+  addRoundLight(
     decorativeBafflePlate,
     assetManager,
     (width - 0.02) / 2,

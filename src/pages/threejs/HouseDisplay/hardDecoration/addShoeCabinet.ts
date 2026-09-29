@@ -73,12 +73,10 @@ const CHEST_WIDTH =
 const addShoeCabinet = (
   scene: Scene,
   assetManager: AssetManager,
-  pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
-  lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
+  lightStripLightingMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
 ) => {
-  const shoeCabinet = createShoeCabinet(assetManager, lightingStripLightMapRef);
+  const shoeCabinet = createShoeCabinet(assetManager, lightStripLightingMapRef);
   shoeCabinet.name = "鞋柜";
-  pointerControlsIntersetObjectsRef.current.push(shoeCabinet);
   shoeCabinet.rotation.y = -Math.PI / 2;
   shoeCabinet.position.copy(SHOE_CABINET_POSITON);
   scene.add(shoeCabinet);
@@ -87,7 +85,7 @@ const addShoeCabinet = (
 // 创建鞋柜
 const createShoeCabinet = (
   assetManager: AssetManager,
-  lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
+  lightStripLightingMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
 ) => {
   // 灰白色木板材质
   const woodBoardLightMaterial = assetManager.materials.get(
@@ -457,7 +455,7 @@ const createShoeCabinet = (
     false,
   );
   light3 && lightList.push(light3);
-  lightingStripLightMapRef.current[LIGHT_GROUP_FIELD.SHOE_CABINET] = lightList;
+  lightStripLightingMapRef.current[LIGHT_GROUP_FIELD.SHOE_CABINET] = lightList;
 
   return shoeCabinetGroup;
 };

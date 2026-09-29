@@ -12,6 +12,7 @@ import {
   Group,
   Raycaster,
   RectAreaLight,
+  PointLight,
 } from "three";
 import Stats from 'stats.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
@@ -21,7 +22,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { useGlobalContext } from "hooks/useGlobalContext";
 import useInitialize from "hooks/threejs/useInitialize";
 import type { AssetManager } from 'hooks/threejs/useInitialize';
-import useDualComposer from './function/useDualComposer';
+import useComposer from './function/useComposer';
 import { generateSkyTexture, initAssetManager } from './utils';
 import {
   useModeToggle,
@@ -71,7 +72,6 @@ const HouseDisplay = () => {
   const cameraRef = useRef<PerspectiveCamera | null>(null);
   const orbitControlsRef = useRef<OrbitControls | null>(null); // 轨道控制器
   const mainComposerRef = useRef<EffectComposer | null>(null);
-  const bloomComposerRef = useRef<EffectComposer | null>(null);
   const tvVideoRef = useRef<HTMLVideoElement>(null); // 电视屏幕播放的视频
   const phoneVideoRef = useRef<HTMLVideoElement>(null); // 手机屏幕播放的视频
   const phoneScreenRef = useRef<Mesh | null>(null); // 手机屏幕
@@ -82,13 +82,14 @@ const HouseDisplay = () => {
   const doorListRef = useRef<Mesh[]>([]); // 所有房门的列表
   const groundGlassDoorListRef = useRef<Group[]>([]); // 所有磨砂玻璃门的列表
   const lampListRef = useRef<Group[]>([]); // 所有吊灯的列表
+  const lampLightingListRef = useRef<PointLight[]>([]); // 所有吊灯光源的列表
   const lampSwitchListRef = useRef<Group[]>([]); // 所有吊灯开关的列表
   const raycasterRef = useRef<Raycaster | null>(null); // 鼠标准星射线
   const mouseRaycasterIntersectObjectsRef = useRef<Object3D[]>([]); // 鼠标射线可接受的检测对象列表
   const mouseRaycasterIntersectedRef = useRef<Object3D | null>(null); // 当前鼠标射线命中的物体
   const curtainListRef = useRef<Group[]>([]); // 所有窗帘的列表
   const fridgeDoorListRef = useRef<Group[]>([]); // 冰箱门的列表
-  const lightingStripLightMapRef = useRef<Record<string, RectAreaLight[]>>({}); // 所有要进行动态控制的灯带的光(按不同的物件划分不同的数组)
+  const lightStripLightingMapRef = useRef<Record<string, RectAreaLight[]>>({}); // 所有要进行动态控制的灯带的光(按不同的物件划分不同的数组)
   const statsRef1 = useRef<Stats | null>(null);
   const statsRef2 = useRef<Stats | null>(null);
   const statsRef3 = useRef<Stats | null>(null);
@@ -206,15 +207,13 @@ const HouseDisplay = () => {
       addTVBackground(
         scene,
         assetManager,
-        pointerControlsIntersetObjectsRef,
-        lightingStripLightMapRef,
+        lightStripLightingMapRef,
       )
 
       // 添加电视
       addTV(
         scene,
         assetManager,
-        pointerControlsIntersetObjectsRef,
         mouseRaycasterIntersectObjectsRef,
         tvVideoRef.current,
       )
@@ -223,17 +222,14 @@ const HouseDisplay = () => {
       addSideboard(
         scene,
         assetManager,
-        pointerControlsIntersetObjectsRef,
-        mouseRaycasterIntersectObjectsRef,
-        lightingStripLightMapRef,
+        lightStripLightingMapRef,
       )
 
       // 添加鞋柜
       addShoeCabinet(
         scene,
         assetManager,
-        pointerControlsIntersetObjectsRef,
-        lightingStripLightMapRef,
+        lightStripLightingMapRef,
       )
 
       // 添加所有房间吊灯
@@ -241,6 +237,7 @@ const HouseDisplay = () => {
         scene,
         assetManager,
         lampListRef,
+        lampLightingListRef,
         lampSwitchListRef,
         mouseRaycasterIntersectObjectsRef,
       );
@@ -259,7 +256,7 @@ const HouseDisplay = () => {
         suspendedCeilingListRef.current,
         lampListRef.current,
         lampSwitchListRef.current,
-        lightingStripLightMapRef.current,
+        lightStripLightingMapRef.current,
       );
 
       // 添加鼠标准星
@@ -273,7 +270,6 @@ const HouseDisplay = () => {
         scene,
         assetManager,
         curtainListRef,
-        pointerControlsIntersetObjectsRef,
         mouseRaycasterIntersectObjectsRef,
       );
 
@@ -282,40 +278,35 @@ const HouseDisplay = () => {
         scene,
         assetManager,
         fridgeDoorListRef,
-        pointerControlsIntersetObjectsRef,
         mouseRaycasterIntersectObjectsRef,
       );
 
       // 添加哑光钢化玻璃白板
-      addGlassWhiteboard(scene, renderer, assetManager, pointerControlsIntersetObjectsRef);
+      addGlassWhiteboard(scene, renderer, assetManager);
 
       // 添加装饰背景板
-      addDecorateBackgroundPanel(scene, assetManager, pointerControlsIntersetObjectsRef, lightingStripLightMapRef);
+      addDecorateBackgroundPanel(scene, assetManager, lightStripLightingMapRef);
 
       // 添加客厅柜
       addLivingRoomCabinet(
         scene,
         assetManager,
-        pointerControlsIntersetObjectsRef,
-        mouseRaycasterIntersectObjectsRef,
-        lightingStripLightMapRef
+        lightStripLightingMapRef
       );
 
       // 添加儿童衣柜
       addKidsWardrobe(
         scene,
         assetManager,
-        pointerControlsIntersetObjectsRef,
-        lightingStripLightMapRef
+        lightStripLightingMapRef
       )
 
-      // 启用双后处理器架构
-      useDualComposer(
+      // 启用后处理器架构（单 composer，手动渲染场景替代 RenderPass）
+      useComposer(
         scene,
         camera,
         renderer,
         mainComposerRef,
-        bloomComposerRef,
         containerRef,
         outlinePassRef,
       );
@@ -375,8 +366,8 @@ const HouseDisplay = () => {
       camera,
       animatingRef,
       viewModeRef,
-      lightingStripLightMapRef.current,
-      lampListRef.current
+      lightStripLightingMapRef.current,
+      lampLightingListRef.current
     );
 
     // 鼠标准星渲染
@@ -391,11 +382,8 @@ const HouseDisplay = () => {
       mouseRaycasterIntersectedRef,
     );
 
-    // Bloom效果渲染
-    camera.layers.set(1);
-    bloomComposerRef.current?.render();
-    camera.layers.enableAll();
-    mainComposerRef.current?.render();
+    // 后处理器渲染（Bloom + Outline + SMAA + Output）
+    (mainComposerRef.current as any)?.__customRender?.();
 
     if (showStats) {
       if (statsRef1.current) {
@@ -492,7 +480,7 @@ const HouseDisplay = () => {
             suspendedCeilingListRef.current,
             lampListRef.current,
             lampSwitchListRef.current,
-            lightingStripLightMapRef.current,
+            lightStripLightingMapRef.current,
           )
         }
         tabIndex={-1}

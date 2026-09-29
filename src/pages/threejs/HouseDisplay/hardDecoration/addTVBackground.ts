@@ -61,15 +61,13 @@ const DRAWER_COUNT = 4; // 抽屉数量
 const addTVBackground = (
   scene: Scene,
   assetManager: AssetManager,
-  pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
-  lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
+  lightStripLightingMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
 ) => {
   const tvBackground = createTVBackground(
     assetManager,
-    lightingStripLightMapRef,
+    lightStripLightingMapRef,
   );
   tvBackground.name = "电视背景";
-  pointerControlsIntersetObjectsRef.current.push(tvBackground);
   tvBackground.rotation.y = Math.PI;
   tvBackground.position.copy(TV_BACKGROUND_POSITON);
   scene.add(tvBackground);
@@ -78,7 +76,7 @@ const addTVBackground = (
 // 创建电视背景
 const createTVBackground = (
   assetManager: AssetManager,
-  lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
+  lightStripLightingMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
 ) => {
   const tvBackgroundGroup = new Group();
   // 木格栅
@@ -92,7 +90,7 @@ const createTVBackground = (
   // 右边柜
   const rightCabinet = createRightCabinet(
     assetManager,
-    lightingStripLightMapRef,
+    lightStripLightingMapRef,
   );
   rightCabinet.position.set(
     TV_BACKGROUND_WIDTH / 2 - RIGHT_CABINET_WIDTH / 2,
@@ -165,7 +163,7 @@ const createWoodenGrating = (assetManager: AssetManager) => {
 // 创建右边柜
 const createRightCabinet = (
   assetManager: AssetManager,
-  lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
+  lightStripLightingMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
 ) => {
   // 深灰色木板材质
   const woodBoardDarkMaterial = assetManager.materials.get(
@@ -252,7 +250,7 @@ const createRightCabinet = (
       light && lightList.push(light);
     }
   }
-  lightingStripLightMapRef.current[LIGHT_GROUP_FIELD.TV_BACKGROUND] = lightList;
+  lightStripLightingMapRef.current[LIGHT_GROUP_FIELD.TV_BACKGROUND] = lightList;
 
   // 黑色玻璃门
   addBox(

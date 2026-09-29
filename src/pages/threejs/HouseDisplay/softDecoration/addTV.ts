@@ -42,14 +42,12 @@ let videoIsPlay = false;
 export const addTV = (
   scene: Scene,
   assetManager: AssetManager,
-  pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
   mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
   tvVideo?: HTMLVideoElement | null,
 ) => {
   const tv = createTV(assetManager, mouseRaycasterIntersectObjectsRef, tvVideo);
   tv.position.copy(TV_POSITION);
   tv.rotation.y = Math.PI;
-  pointerControlsIntersetObjectsRef.current?.push(tv);
   scene.add(tv);
   if (tvVideo) {
     safePlay(tvVideo);
@@ -145,7 +143,6 @@ const createTVScreen = (
     TV_HEIGHT - TV_SCREEN_PANDDING,
   );
   screen.position.set(0, 0, TV_DEPTH + 0.01);
-  screen.layers.enable(1); // 为了让电视的光能够单独增强
   return screen;
 };
 

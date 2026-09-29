@@ -105,10 +105,10 @@ const loadSofa = (scene: Scene, gltfLoader: GLTFLoader) => {
       scene.add(sofa);
     },
     (progress) => {
-      console.log(
-        "沙发加载进度:",
-        ((progress.loaded / progress.total) * 100).toFixed(2) + "%",
-      );
+      // console.log(
+      //   "沙发加载进度:",
+      //   ((progress.loaded / progress.total) * 100).toFixed(2) + "%",
+      // );
     },
     (error) => {
       console.error("沙发模型加载失败:", error);
@@ -194,10 +194,10 @@ const loadBeds = (
       scene.add(bed3);
     },
     (progress) => {
-      console.log(
-        "床加载进度:",
-        ((progress.loaded / progress.total) * 100).toFixed(2) + "%",
-      );
+      // console.log(
+      //   "床加载进度:",
+      //   ((progress.loaded / progress.total) * 100).toFixed(2) + "%",
+      // );
     },
     (error) => {
       console.error("床模型加载失败:", error);
@@ -246,10 +246,10 @@ const loadTable = (
       addVase(table, assetManager, VASE_POSITION);
     },
     (progress) => {
-      console.log(
-        "餐桌加载进度:",
-        ((progress.loaded / progress.total) * 100).toFixed(2) + "%",
-      );
+      // console.log(
+      //   "餐桌加载进度:",
+      //   ((progress.loaded / progress.total) * 100).toFixed(2) + "%",
+      // );
     },
     (error) => {
       console.error("餐桌模型加载失败:", error);
@@ -303,10 +303,10 @@ const loadPhone = (
       }
     },
     (progress) => {
-      console.log(
-        "餐桌加载进度:",
-        ((progress.loaded / progress.total) * 100).toFixed(2) + "%",
-      );
+      // console.log(
+      //   "餐桌加载进度:",
+      //   ((progress.loaded / progress.total) * 100).toFixed(2) + "%",
+      // );
     },
     (error) => {
       console.error("餐桌模型加载失败:", error);
