@@ -82,17 +82,13 @@ const SECRET_COMPARTENT_WIDTH =
 const addLivingRoomCabinet = (
   scene: Scene,
   assetManager: AssetManager,
-  pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
-  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
-  lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
+  lightStripLightingMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
 ) => {
   const livingRoomCabinet = createLivingRoomCabinet(
     assetManager,
-    lightingStripLightMapRef,
+    lightStripLightingMapRef,
   );
   livingRoomCabinet.name = "客厅柜";
-  pointerControlsIntersetObjectsRef.current.push(livingRoomCabinet);
-  mouseRaycasterIntersectObjectsRef.current.push(livingRoomCabinet);
   livingRoomCabinet.rotation.y = Math.PI;
   livingRoomCabinet.position.copy(LIVING_ROOM_CABINET_POSITON);
   scene.add(livingRoomCabinet);

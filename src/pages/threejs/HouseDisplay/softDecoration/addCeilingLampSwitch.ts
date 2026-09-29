@@ -170,21 +170,28 @@ export const addCeilingLampSwitch = (
       // @ts-ignore
       switchStatus = lampList[index].switchStatus;
     }
-    const ceilingLampSwitch = createSwitch(assetManager, switchStatus);
-    ceilingLampSwitch.name = name;
+    const ceilingLampSwitch = createSwitch(
+      assetManager,
+      switchStatus,
+      name,
+      mouseRaycasterIntersectObjectsRef,
+    );
     if (rotationY) {
       ceilingLampSwitch.rotation.y = rotationY;
     }
     ceilingLampSwitch.position.copy(position);
-
-    mouseRaycasterIntersectObjectsRef.current.push(ceilingLampSwitch);
     lampSwitchListRef.current.push(ceilingLampSwitch);
     scene.add(ceilingLampSwitch);
   });
 };
 
 // 创建开关
-const createSwitch = (assetManager: AssetManager, switchStatus = "OFF") => {
+const createSwitch = (
+  assetManager: AssetManager,
+  switchStatus = "OFF",
+  name: string,
+  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
+) => {
   const boxGeometry = assetManager.geometries.get("boxGeometry");
   const switchBackBoxMaterial = assetManager.materials.get(
     "switchBackBoxMaterial",
@@ -203,9 +210,12 @@ const createSwitch = (assetManager: AssetManager, switchStatus = "OFF") => {
   );
 
   const switchGroup = new Group();
+  switchGroup.name = name;
 
   // 创建并添加开关的底盒
   const backBox = new Mesh(boxGeometry, switchBackBoxMaterial);
+  backBox.name = `${name}底盒`;
+  mouseRaycasterIntersectObjectsRef.current?.push(backBox);
   backBox.scale.set(SWITCH_WIDTH, SWITCH_HEIGHT, SWITCH_BACK_BOX_THICKNESS);
   switchGroup.add(backBox);
 
@@ -266,9 +276,10 @@ const createSwitch = (assetManager: AssetManager, switchStatus = "OFF") => {
 
 // 吊灯开关点击后的回调
 export const onClickCeilingLampSwitch = (
-  ceilingLampSwitch: Group,
+  ceilingLampSwitchBackBox: Mesh,
   lampList?: Group[],
 ) => {
+  const ceilingLampSwitch = ceilingLampSwitchBackBox?.parent;
   if (ceilingLampSwitch && lampList && lampList?.length > 0) {
     const positionName = ceilingLampSwitch.name.substring(
       0,
@@ -284,7 +295,7 @@ export const onClickCeilingLampSwitch = (
         break;
       }
     }
-    ceilingLampSwitchToggle(ceilingLampSwitch, nextStatus);
+    ceilingLampSwitchToggle(ceilingLampSwitch as Group, nextStatus);
   }
 };
 

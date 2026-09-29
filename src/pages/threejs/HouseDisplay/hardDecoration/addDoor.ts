@@ -208,12 +208,12 @@ const createDoor = (
   doorPanelGroup.position.set(doorPanelGroupPositionX, 0, 0);
   const doorPanel = new Mesh(boxGeometry, woodDoorMaterial);
   doorPanel.name = "门板";
+  doorListRef.current.push(doorPanel);
+  mouseRaycasterIntersectObjectsRef.current.push(doorPanel);
   // @ts-ignore
   doorPanel.customParams = customParams;
   doorPanel.castShadow = true;
   doorPanel.receiveShadow = true;
-  doorListRef.current.push(doorPanel);
-  mouseRaycasterIntersectObjectsRef.current.push(doorPanel);
   doorPanel.scale.set(DOOR_WIDTH, DOOR_HEIGHT, DOOR_THICKNESS);
   let doorPanelPositionX = HALF_DOOR_WIDTH;
   if (handlePosition === "left") {

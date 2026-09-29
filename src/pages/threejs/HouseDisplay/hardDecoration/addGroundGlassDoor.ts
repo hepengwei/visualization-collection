@@ -26,14 +26,13 @@ import {
 } from "./addHouseStructure";
 
 const OPEN_OR_CLOSE_DOOR_DURATION = 800; // 开/关门动画总时长
-const GROUND_GLASS_THICKNESS = 0.04; // 磨砂玻璃的厚度
+const GROUND_GLASS_THICKNESS = 0.04; // 磨砂玻璃门的总厚度
 const FRAME_DEPTH = 0.04; // 包边的厚度
-const GROUND_GLASS_WIDTH = WALL_14_WIDTH - FRAME_DEPTH * 2 + 0.01; // 磨砂玻璃的宽
-const GROUND_GLASS_HEIGHT =
-  BEAM_POSITION_Y - BEAM_HEIGHT / 2 - FRAME_DEPTH + 0.01; // 磨砂玻璃的高
+const GROUND_GLASS_WIDTH = WALL_14_WIDTH + 0.01; // 磨砂玻璃门的总宽
+const GROUND_GLASS_HEIGHT = BEAM_POSITION_Y - BEAM_HEIGHT / 2 + 0.01; // 磨砂玻璃门的总高
 const HANDLE_POSITION_Y = 1.5; // 门把手高度
 const HALF_GROUND_GLASS_WIDTH = GROUND_GLASS_WIDTH / 2;
-const MOVE_DISTANCE = FRAME_DEPTH + GROUND_GLASS_WIDTH - 0.1; // 磨砂玻璃门可移动的距离
+const MOVE_DISTANCE = GROUND_GLASS_WIDTH - FRAME_DEPTH - 0.1; // 磨砂玻璃门可移动的距离
 const doorConfigs = [
   // 主卧厕所门
   {
@@ -87,11 +86,15 @@ export const addGroundGlassDoor = (
 
   doorConfigs.forEach((item) => {
     const { positon, rotationY, customParams } = item;
-    const groundGlassDoor = createGroundGlassDoor(assetManager, {
-      ...customParams,
-      rotationY,
-      originPosition: positon,
-    });
+    const groundGlassDoor = createGroundGlassDoor(
+      assetManager,
+      {
+        ...customParams,
+        rotationY,
+        originPosition: positon,
+      },
+      mouseRaycasterIntersectObjectsRef,
+    );
     groundGlassDoor.position.copy(positon);
     if (rotationY) {
       groundGlassDoor.rotation.y = rotationY;
@@ -105,7 +108,6 @@ export const addGroundGlassDoor = (
     }
     groundGlassDoorListRef.current.push(groundGlassDoor);
     pointerControlsIntersetObjectsRef.current.push(groundGlassDoor);
-    mouseRaycasterIntersectObjectsRef.current.push(groundGlassDoor);
     scene.add(groundGlassDoor);
   });
 };
@@ -114,6 +116,7 @@ export const addGroundGlassDoor = (
 const createGroundGlassDoor = (
   assetManager: AssetManager,
   customParams: Record<string, any>,
+  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   const boxGeometry = assetManager.geometries.get("boxGeometry");
   const groundGlassMaterial = assetManager.materials.get("groundGlassMaterial");
@@ -133,7 +136,7 @@ const createGroundGlassDoor = (
   const leftJamb = new Mesh(boxGeometry, aluminiumAlloyMaterial);
   leftJamb.scale.set(FRAME_DEPTH, GROUND_GLASS_HEIGHT, GROUND_GLASS_THICKNESS);
   leftJamb.position.set(
-    -HALF_GROUND_GLASS_WIDTH - FRAME_DEPTH / 2,
+    -HALF_GROUND_GLASS_WIDTH + FRAME_DEPTH / 2,
     GROUND_GLASS_HEIGHT / 2,
     0,
   );
@@ -145,7 +148,7 @@ const createGroundGlassDoor = (
   const rightJamb = new Mesh(boxGeometry, aluminiumAlloyMaterial);
   rightJamb.scale.set(FRAME_DEPTH, GROUND_GLASS_HEIGHT, GROUND_GLASS_THICKNESS);
   rightJamb.position.set(
-    HALF_GROUND_GLASS_WIDTH + FRAME_DEPTH / 2,
+    HALF_GROUND_GLASS_WIDTH - FRAME_DEPTH / 2,
     GROUND_GLASS_HEIGHT / 2,
     0,
   );
@@ -156,11 +159,11 @@ const createGroundGlassDoor = (
   // 上包边
   const headerMesh = new Mesh(boxGeometry, aluminiumAlloyMaterial);
   headerMesh.scale.set(
-    GROUND_GLASS_WIDTH + FRAME_DEPTH * 2,
+    GROUND_GLASS_WIDTH - FRAME_DEPTH * 2,
     FRAME_DEPTH,
     GROUND_GLASS_THICKNESS,
   );
-  headerMesh.position.set(0, GROUND_GLASS_HEIGHT + FRAME_DEPTH / 2, 0);
+  headerMesh.position.set(0, GROUND_GLASS_HEIGHT - FRAME_DEPTH / 2, 0);
   headerMesh.castShadow = true;
   headerMesh.receiveShadow = true;
   frameGroup.add(headerMesh);
@@ -168,10 +171,12 @@ const createGroundGlassDoor = (
 
   /** 磨砂玻璃部分*/
   const groundGlass = new Mesh(boxGeometry, groundGlassMaterial);
+  groundGlass.name = "磨砂玻璃门板";
+  mouseRaycasterIntersectObjectsRef.current?.push(groundGlass);
   groundGlass.scale.set(
-    GROUND_GLASS_WIDTH,
+    GROUND_GLASS_WIDTH - 0.002,
     GROUND_GLASS_HEIGHT,
-    GROUND_GLASS_THICKNESS,
+    GROUND_GLASS_THICKNESS - 0.002,
   );
   groundGlass.position.set(0, GROUND_GLASS_HEIGHT / 2, 0);
   groundGlass.castShadow = true;
@@ -180,14 +185,19 @@ const createGroundGlassDoor = (
 
   /** 门把手部分*/
   const doorknob = createDoorknob(assetManager);
-  doorknob.position.set(HALF_GROUND_GLASS_WIDTH - 0.04, HANDLE_POSITION_Y, 0);
+  doorknob.position.set(
+    HALF_GROUND_GLASS_WIDTH - FRAME_DEPTH - 0.04,
+    HANDLE_POSITION_Y,
+    0,
+  );
   groundGlassDoorGroup.add(doorknob);
 
   return groundGlassDoorGroup;
 };
 
 // 磨砂玻璃门点击后的回调
-export const onClickGroundGlassDoor = (groundGlassDoor: Group) => {
+export const onClickGroundGlassDoor = (groundGlass: Mesh) => {
+  const groundGlassDoor = groundGlass?.parent;
   // @ts-ignore
   if (groundGlassDoor && !groundGlassDoor.customParams.isAnimating) {
     // @ts-ignore

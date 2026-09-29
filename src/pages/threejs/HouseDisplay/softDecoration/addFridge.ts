@@ -45,7 +45,6 @@ export const addFridge = (
   scene: Scene,
   assetManager: AssetManager,
   fridgeDoorListRef: MutableRefObject<Group[]>,
-  pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
   mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   // 冰箱外壳材质
@@ -86,9 +85,11 @@ export const addFridge = (
   });
   assetManager.materials.set("fridgeGlassMaterial", fridgeGlassMaterial);
 
-  const fridge = createFridge(assetManager, fridgeDoorListRef);
-  pointerControlsIntersetObjectsRef.current.push(fridge);
-  mouseRaycasterIntersectObjectsRef.current.push(fridge);
+  const fridge = createFridge(
+    assetManager,
+    fridgeDoorListRef,
+    mouseRaycasterIntersectObjectsRef,
+  );
   fridge.scale.set(1.3, 1.3, 1.3);
   fridge.position.copy(FRIDGE_POSITON);
   scene.add(fridge);
@@ -98,6 +99,7 @@ export const addFridge = (
 const createFridge = (
   assetManager: AssetManager,
   fridgeDoorListRef: MutableRefObject<Group[]>,
+  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   const boxGeometry = assetManager.geometries.get("boxGeometry");
   const fridgeOuterShellMaterial = assetManager.materials.get(
@@ -182,24 +184,33 @@ const createFridge = (
 
   /** 冰箱门部分*/
   // 上半部分的双开门
-  const topDoubleDoor = createDoubleDoor(assetManager, TOP_DOOR_HEIGHT);
+  const topDoubleDoor = createDoubleDoor(
+    assetManager,
+    TOP_DOOR_HEIGHT,
+    mouseRaycasterIntersectObjectsRef,
+  );
   topDoubleDoor.name = "冰箱上门";
   topDoubleDoor.position.set(
     0,
     FRIDGE_HEIGHT - TOP_DOOR_HEIGHT / 2,
     FRIDGE_THICKNESS - FRIDGE_DOOR_THICKNESS / 2,
   );
-  fridgeDoorListRef.current.push(topDoubleDoor);
+  fridgeDoorListRef.current?.push(topDoubleDoor);
+
   fridgeGroup.add(topDoubleDoor);
   // 下半部分的双开门
-  const bottomDoubleDoor = createDoubleDoor(assetManager, BOTTOM_DOOR_HEIGHT);
+  const bottomDoubleDoor = createDoubleDoor(
+    assetManager,
+    BOTTOM_DOOR_HEIGHT,
+    mouseRaycasterIntersectObjectsRef,
+  );
   bottomDoubleDoor.name = "冰箱下门";
   bottomDoubleDoor.position.set(
     0,
     BOTTOM_DOOR_HEIGHT / 2,
     FRIDGE_THICKNESS - FRIDGE_DOOR_THICKNESS / 2,
   );
-  fridgeDoorListRef.current.push(bottomDoubleDoor);
+  fridgeDoorListRef.current?.push(bottomDoubleDoor);
   fridgeGroup.add(bottomDoubleDoor);
 
   /**中间和下方的铝合金厚隔板*/
@@ -458,6 +469,7 @@ const createFridge = (
 export const createDoubleDoor = (
   assetManager: AssetManager,
   height: number,
+  mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   const boxGeometry = assetManager.geometries.get("boxGeometry");
   const fridgeOuterShellMaterial = assetManager.materials.get(
@@ -478,6 +490,8 @@ export const createDoubleDoor = (
     FRIDGE_DOOR_THICKNESS,
   );
   const leftDoubleDoor = new Mesh(boxGeometry, fridgeOuterShellMaterial);
+  leftDoubleDoor.name = "冰箱门左半边";
+  mouseRaycasterIntersectObjectsRef.current?.push(leftDoubleDoor);
   leftDoubleDoor.scale.copy(halfDoubleDoorScale);
   leftDoubleDoor.position.set(
     halfDoubleDoorScale.x / 2,
@@ -499,7 +513,6 @@ export const createDoubleDoor = (
     -DOOR_INNER_WALL_THICKNESS / 2,
   );
   const leftDoubleDoorGroup = new Group();
-  leftDoubleDoorGroup.name = "冰箱门左半边";
   leftDoubleDoorGroup.add(leftDoubleDoor);
   leftDoubleDoorGroup.add(leftDoubleDoorInnerWall);
   leftDoubleDoorGroup.position.set(
@@ -510,6 +523,8 @@ export const createDoubleDoor = (
   doubleDoor.add(leftDoubleDoorGroup);
 
   const rightDoubleDoor = new Mesh(boxGeometry, fridgeOuterShellMaterial);
+  rightDoubleDoor.name = "冰箱门右半边";
+  mouseRaycasterIntersectObjectsRef.current?.push(rightDoubleDoor);
   rightDoubleDoor.scale.copy(halfDoubleDoorScale);
   rightDoubleDoor.position.set(
     -halfDoubleDoorScale.x / 2,
@@ -531,7 +546,6 @@ export const createDoubleDoor = (
     -DOOR_INNER_WALL_THICKNESS / 2,
   );
   const rightDoubleDoorGroup = new Group();
-  rightDoubleDoorGroup.name = "冰箱门右半边";
   rightDoubleDoorGroup.add(rightDoubleDoor);
   rightDoubleDoorGroup.add(rightDoubleDoorInnerWall);
   rightDoubleDoorGroup.position.set(
@@ -545,7 +559,8 @@ export const createDoubleDoor = (
 };
 
 // 冰箱门点击后的回调
-export const onClickFridgeDoor = (fridgeDoor: Group) => {
+export const onClickFridgeDoor = (fridgeHalfDoor: Mesh) => {
+  const fridgeDoor = fridgeHalfDoor?.parent?.parent;
   // @ts-ignore
   if (fridgeDoor && !fridgeDoor.customParams.isAnimating) {
     // @ts-ignore
@@ -573,17 +588,21 @@ export const fridgeDoorAnimationRender = (fridgeDoorList: Group[]) => {
           const easeProgress = getEaseProgress(progress);
 
           fridgeDoor.traverse((child) => {
-            if (child.name === "冰箱门左半边") {
-              if (switchStatus === "OFF") {
-                child.rotation.y = -OPEN_DOOR_MAX_ANGLE * easeProgress;
-              } else {
-                child.rotation.y = -OPEN_DOOR_MAX_ANGLE * (1 - easeProgress);
-              }
-            } else if (child.name === "冰箱门右半边") {
-              if (switchStatus === "OFF") {
-                child.rotation.y = OPEN_DOOR_MAX_ANGLE * easeProgress;
-              } else {
-                child.rotation.y = OPEN_DOOR_MAX_ANGLE * (1 - easeProgress);
+            if (child.parent) {
+              if (child.name === "冰箱门左半边") {
+                if (switchStatus === "OFF") {
+                  child.parent.rotation.y = -OPEN_DOOR_MAX_ANGLE * easeProgress;
+                } else {
+                  child.parent.rotation.y =
+                    -OPEN_DOOR_MAX_ANGLE * (1 - easeProgress);
+                }
+              } else if (child.name === "冰箱门右半边") {
+                if (switchStatus === "OFF") {
+                  child.parent.rotation.y = OPEN_DOOR_MAX_ANGLE * easeProgress;
+                } else {
+                  child.parent.rotation.y =
+                    OPEN_DOOR_MAX_ANGLE * (1 - easeProgress);
+                }
               }
             }
           });

@@ -4,46 +4,38 @@
 </div>
 
 ## 在线体验(PC端)
+
 #### 体验地址：[http://hepengwei.cn](http://hepengwei.cn)
 
 #### Vue版本：[https://github.com/hepengwei/visualization-collection-vue](https://github.com/hepengwei/visualization-collection-vue)
 
 #### 复合组件示例库项目：[https://github.com/hepengwei/composite-component-library](https://github.com/hepengwei/composite-component-library)
+
 <br/>
 
 ## 应用展示(部分效果)
+
 * 视觉设计
-<img src="./src/images/readme/visualDesign.gif" alt="" width={1200}/>
-
+  <img src="./src/images/readme/visualDesign.gif" alt="" width={1200}/>
 * 交互设计
-<img src="./src/images/readme/interactiveDesign1.gif" alt="" width={1200}/>
-
-<img src="./src/images/readme/interactiveDesign2.gif" alt="" width={1200}/>
-
-<img src="./src/images/readme/interactiveDesign3.gif" alt="" width={1200}/>
-
+  <img src="./src/images/readme/interactiveDesign1.gif" alt="" width={1200}/>
+  <img src="./src/images/readme/interactiveDesign2.gif" alt="" width={1200}/>
 * Canvas动效
-<img src="./src/images/readme/canvas1.gif" alt="" width={1200}/>
-
-<img src="./src/images/readme/canvas2.gif" alt="" width={1200}/>
-
-<img src="./src/images/readme/canvas3.gif" alt="" width={1200}/>
-
-<img src="./src/images/readme/canvas4.gif" alt="" width={1200}/>
-
-<img src="./src/images/readme/canvas5.gif" alt="" width={1200}/>
-
+  <img src="./src/images/readme/canvas1.gif" alt="" width={1200}/>
+  <img src="./src/images/readme/canvas2.gif" alt="" width={1200}/>
 * 量子纠缠效果(隐藏款)
-<img src="./src/images/readme/quantumEntanglement.gif" alt="" width={1200}/>
-<br/>
+  <img src="./src/images/readme/quantumEntanglement.gif" alt="" width={1200}/>
+  <br/>
 
 ## 本地启动
+
 ```
 yarn
 npm run dev
 ```
 
 ## 最新运行环境
+
 node：v22.16.0
 <br/>
 npm：v10.9.0
@@ -54,3 +46,4 @@ node-gyp：v10.1.0
 <br/>
 
 ## 持续更新，敬请关注
+

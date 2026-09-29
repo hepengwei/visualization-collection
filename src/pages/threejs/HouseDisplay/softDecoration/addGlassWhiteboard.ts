@@ -55,7 +55,6 @@ const addGlassWhiteboard = (
   scene: Scene,
   renderer: WebGLRenderer,
   assetManager: AssetManager,
-  pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   const planeGeometry = assetManager.geometries.get("planeGeometry");
   const whitePanelMaterial = assetManager.materials.get("whitePanelMaterial");
@@ -81,7 +80,6 @@ const addGlassWhiteboard = (
   glassWhiteboardGroup.name = "哑光钢化玻璃白板";
   glassWhiteboardGroup.position.copy(GLASS_WHITEBOARD_POSITION);
   glassWhiteboardGroup.rotation.y = Math.PI;
-  pointerControlsIntersetObjectsRef.current.push(glassWhiteboardGroup);
   scene.add(glassWhiteboardGroup);
 
   const roundedBoxGeometry1 = generateRoundedBoxGeometry(

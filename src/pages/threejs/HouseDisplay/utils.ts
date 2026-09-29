@@ -138,7 +138,7 @@ export const initAssetManager = (assetManager: AssetManager) => {
   const yellowWhitePanelMaterial = new MeshPhysicalMaterial({
     color: LIGHT_STRIP_COLOR,
     emissive: LIGHT_STRIP_COLOR, // 自发光颜色
-    emissiveIntensity: 1.0, // 自发光强度，使其不受环境光影响变灰
+    emissiveIntensity: 0.8, // 自发光强度，使其不受环境光影响变灰
     roughness: 0.5,
     metalness: 0.0,
     side: FrontSide,
@@ -166,11 +166,11 @@ export const initAssetManager = (assetManager: AssetManager) => {
     yellowWhitePanelMaterial2,
   );
 
-  // 创建深色木板对应的更深的线条材质（不受光影响）
-  const woodBoardDarkLineMaterial = new MeshPhysicalMaterial({
+  // 创建深色木板对应的更深的线条材质（受光影响）
+  const woodBoardDarkLineMaterial = new MeshStandardMaterial({
     color: WOOD_DARK_LINE_COLOR,
-    emissive: WOOD_DARK_LINE_COLOR, // 自发光颜色
-    emissiveIntensity: 1.0, // 自发光强度，使其不受环境光影响变灰
+    // emissive: WOOD_DARK_LINE_COLOR, // 自发光颜色
+    // emissiveIntensity: 1.0, // 自发光强度，使其不受环境光影响变灰
     roughness: 0.5,
     metalness: 0.0,
     side: FrontSide,
@@ -830,7 +830,7 @@ export const addLightStrip = (
   z: number,
   lightVisible = true, // 灯光默认显示还是隐藏
   rotation = new Vector3(Math.PI / 2, 0, 0), // 默认面向地面
-  intensity = 1.5 * Math.PI,
+  intensity = 0.5 * Math.PI,
 ) => {
   const planeGeometry = assetManager.geometries.get("planeGeometry");
   const yellowWhitePanelMaterial = assetManager.materials.get(
@@ -840,7 +840,6 @@ export const addLightStrip = (
   lightingStrip.scale.set(w, h);
   lightingStrip.position.set(x, y, z);
   lightingStrip.rotation.set(rotation.x, rotation.y, rotation.z);
-  lightingStrip.layers.enable(1); // 为了让灯带的光能够单独增强
   parent.add(lightingStrip);
   if (intensity > 0) {
     // 添加发光灯带的光源
@@ -868,7 +867,7 @@ export const addRectAreaLighting = (
   z: number,
   visible: boolean = true,
   rotation?: Vector3,
-  intensity = 1.5 * Math.PI,
+  intensity = 0.5 * Math.PI,
 ) => {
   const light = new RectAreaLight(
     LIGHT_STRIP_COLOR, // 暖黄白
@@ -888,7 +887,7 @@ export const addRectAreaLighting = (
 };
 
 // 创建并添加圆形射灯
-export const addLightingRoundLight = (
+export const addRoundLight = (
   parent: Group,
   assetManager: AssetManager,
   radius: number,
@@ -914,17 +913,16 @@ export const addLightingRoundLight = (
   roundLightGroup.add(innerCircle);
   roundLightGroup.position.set(x, y, z);
   roundLightGroup.rotation.x = Math.PI / 2; // 面向地面
-  roundLightGroup.layers.enable(1); // 为了让灯带的光能够单独增强
   parent.add(roundLightGroup);
 
   if (distance) {
     // 添加圆形射灯光源
-    addRoundLight(parent, x, y - 0.01, z, -x, 0, z, distance);
+    addRoundLighting(parent, x, y - 0.01, z, -x, 0, z, distance);
   }
 };
 
 // 添加圆形射灯光源
-export const addRoundLight = (
+export const addRoundLighting = (
   parent: Group,
   x: number,
   y: number,
@@ -933,7 +931,7 @@ export const addRoundLight = (
   ty: number,
   tz: number,
   distance: number,
-  intensity = 0.8 * Math.PI,
+  intensity = 0.6 * Math.PI,
 ) => {
   const light = new SpotLight(
     LIGHT_STRIP_COLOR, // 暖黄白
@@ -1062,7 +1060,6 @@ export const addCircleLightingStrip = (
   const lightingStrip = new Mesh(stripGeometry, yellowWhitePanelMaterial);
   lightingStrip.position.set(x, y, z);
   lightingStrip.rotation.set(rotation.x, rotation.y, rotation.z);
-  lightingStrip.layers.enable(1); // 为了让灯带的光能够单独增强
   parent.add(lightingStrip);
 
   // 计算 mesh 的旋转矩阵，用于将灯光从局部空间转换到世界空间

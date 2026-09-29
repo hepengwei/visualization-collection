@@ -70,13 +70,11 @@ const RIGHT_CHEST_DOOR_WIDTH =
 const addKidsWardrobe = (
   scene: Scene,
   assetManager: AssetManager,
-  pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
-  lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
+  lightStripLightingMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
 ) => {
   const lightList: RectAreaLight[] = [];
   const kidsWardrobe = createKidsWardrobe(assetManager, lightList);
   kidsWardrobe.name = "儿童衣柜";
-  pointerControlsIntersetObjectsRef.current.push(kidsWardrobe);
   kidsWardrobe.rotation.y = Math.PI / 2;
   kidsWardrobe.position.copy(KIDS_WARDROBE_POSITON);
   scene.add(kidsWardrobe);
@@ -86,7 +84,7 @@ const addKidsWardrobe = (
   rightTable.position.set(KIDS_WARDROBE_WIDTH / 2, 0, WARDROBE_DEPTH);
   kidsWardrobe.add(rightTable);
 
-  lightingStripLightMapRef.current[LIGHT_GROUP_FIELD.KIDS_BEDROOM] = lightList;
+  lightStripLightingMapRef.current[LIGHT_GROUP_FIELD.KIDS_BEDROOM] = lightList;
 };
 
 // 创建儿童衣柜

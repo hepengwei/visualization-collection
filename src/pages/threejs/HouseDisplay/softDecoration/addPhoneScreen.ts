@@ -80,7 +80,6 @@ const createPhoneScreen = (
   screen.name = "手机屏幕";
   screen.scale.set(size.x, size.y);
   screen.position.copy(pos);
-  screen.layers.enable(1); // 为了让手机的光能够单独增强
   return screen;
 };
 

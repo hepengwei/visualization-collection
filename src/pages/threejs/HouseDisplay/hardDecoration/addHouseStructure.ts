@@ -141,7 +141,7 @@ const WALL_27_WIDTH = WALL_20_WIDTH - WALL_18_WIDTH - WALL_15_WIDTH;
 const WALL_27_POSITION_X =
   WALL_25_POSITION_X + WALL_15_WIDTH / 2 + WALL_27_WIDTH / 2;
 export const WALL_28_POSITION_X =
-  WALL_27_POSITION_X + WALL_17_WIDTH / 2 - WALL_THICKNESS / 2;
+  WALL_27_POSITION_X + WALL_27_WIDTH / 2 - WALL_THICKNESS / 2;
 const WALL_29_WIDTH = WALL_THICKNESS;
 const WALL_33_WIDTH = 6.2;
 export const WALL_33_POSITION_X =
@@ -1178,12 +1178,7 @@ const addHouseStructure = (
   );
 
   // 创建并添加所有垭口包边
-  addPassEdgeBinding(
-    scene,
-    assetManager,
-    pointerControlsIntersetObjectsRef,
-    mouseRaycasterIntersectObjectsRef,
-  );
+  addPassEdgeBinding(scene, assetManager);
 };
 
 // 创建并添加所有的墙体和玻璃窗
@@ -1695,12 +1690,7 @@ const addMarbleFloor = (scene: Scene, assetManager: AssetManager) => {
 };
 
 // 创建并添加所有的垭口包边
-const addPassEdgeBinding = (
-  scene: Scene,
-  assetManager: AssetManager,
-  pointerControlsIntersetObjectsRef: RefObject<Object3D[]>,
-  mouseRaycasterIntersectObjectsRef: RefObject<Object3D[]>,
-) => {
+const addPassEdgeBinding = (scene: Scene, assetManager: AssetManager) => {
   const boxGeometry = assetManager.geometries.get("boxGeometry");
   const aluminiumAlloyMaterial = assetManager.materials.get(
     "aluminiumAlloyMaterial",
@@ -1711,8 +1701,6 @@ const addPassEdgeBinding = (
     passEdgeBinding.name = "垭口包边";
     passEdgeBinding.scale.set(item[0], item[1], item[2]);
     passEdgeBinding.position.set(item[3], item[4], item[5]);
-    mouseRaycasterIntersectObjectsRef.current?.push(passEdgeBinding);
-    pointerControlsIntersetObjectsRef.current?.push(passEdgeBinding);
     scene.add(passEdgeBinding);
   });
 };
