@@ -38,6 +38,7 @@ export const WOOD_LIGHT_COLOR = 0xefebe7; // 浅色木头
 export const WOOD_DARK_COLOR = 0xa5acb7; // 深色木头(浅蓝色)
 export const WOOD_DARK_LINE_COLOR = 0x505762; // 深色木头对应更深的线条颜色
 const WOOD_LIGHT_YELLOW_COLOR = 0xfffaf0; // 浅黄白色木头
+const WOOD_CHAMPAGNE_COLOR = 0xf7e7ce; // 香槟色木头
 export const ALUMINIUM_ALLOY_COLOR = 0xbfc3c7; // 铝合金颜色
 export const DOOR_COLOR = new Color(165, 173, 183); // 门扇的颜色
 export const LIGHT_STRIP_HEIGHT = 0.034; // 发光灯带的默认高度
@@ -111,6 +112,8 @@ export const initAssetManager = (assetManager: AssetManager) => {
   const woodBoardLightYellowMaterial = makeWoodBoardMaterial(
     WOOD_LIGHT_YELLOW_COLOR,
   ); // 浅黄白色
+  const woodBoardChampagneMaterial =
+    makeWoodBoardMaterial(WOOD_CHAMPAGNE_COLOR); // 香槟色
   assetManager.materials.set("woodBoardLightMaterial", woodBoardLightMaterial);
   assetManager.materials.set("woodBoardDarkMaterial", woodBoardDarkMaterial);
   assetManager.materials.set(
@@ -120,6 +123,10 @@ export const initAssetManager = (assetManager: AssetManager) => {
   assetManager.materials.set(
     "woodBoardLightYellowMaterial",
     woodBoardLightYellowMaterial,
+  );
+  assetManager.materials.set(
+    "woodBoardChampagneMaterial",
+    woodBoardChampagneMaterial,
   );
 
   // 创建白色面板材质（受光影响）

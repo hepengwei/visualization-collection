@@ -93,6 +93,7 @@ export const addGroundGlassDoor = (
         rotationY,
         originPosition: positon,
       },
+      pointerControlsIntersetObjectsRef,
       mouseRaycasterIntersectObjectsRef,
     );
     groundGlassDoor.position.copy(positon);
@@ -107,7 +108,6 @@ export const addGroundGlassDoor = (
       }
     }
     groundGlassDoorListRef.current.push(groundGlassDoor);
-    pointerControlsIntersetObjectsRef.current.push(groundGlassDoor);
     scene.add(groundGlassDoor);
   });
 };
@@ -116,6 +116,7 @@ export const addGroundGlassDoor = (
 const createGroundGlassDoor = (
   assetManager: AssetManager,
   customParams: Record<string, any>,
+  pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
   mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   const boxGeometry = assetManager.geometries.get("boxGeometry");
@@ -172,6 +173,7 @@ const createGroundGlassDoor = (
   /** 磨砂玻璃部分*/
   const groundGlass = new Mesh(boxGeometry, groundGlassMaterial);
   groundGlass.name = "磨砂玻璃门板";
+  pointerControlsIntersetObjectsRef.current?.push(groundGlass);
   mouseRaycasterIntersectObjectsRef.current?.push(groundGlass);
   groundGlass.scale.set(
     GROUND_GLASS_WIDTH - 0.002,

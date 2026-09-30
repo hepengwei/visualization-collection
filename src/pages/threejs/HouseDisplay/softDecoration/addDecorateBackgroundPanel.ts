@@ -86,13 +86,17 @@ const createDecorateBackgroundPanel = (
   assetManager: AssetManager,
   lightingStripLightMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
 ) => {
-  // 灰白色木板材质
+  // 浅黄白色木板材质
   const woodBoardLightYellowMaterial = assetManager.materials.get(
     "woodBoardLightYellowMaterial",
   ) as MeshPhysicalMaterial;
   // 深灰色木板材质
   const woodBoardDarkMaterial = assetManager.materials.get(
     "woodBoardDarkMaterial",
+  ) as MeshPhysicalMaterial;
+  // 香槟色木板材质
+  const woodBoardChampagneMaterial = assetManager.materials.get(
+    "woodBoardChampagneMaterial",
   ) as MeshPhysicalMaterial;
 
   const decorateBackgroundPanelGroup = new Group();
@@ -300,6 +304,20 @@ const createDecorateBackgroundPanel = (
       LEFT_OR_RIGHT_WIDTH +
       BOTTOM_RADIUS * (1 - BOTTOM_CYLINDER_RATIO) +
       BOTTOM_RADIUS * BOTTOM_CYLINDER_RATIO,
+    BACK_PANEL_THICKNESS + FRONT_PANEL_THICKNESS / 2,
+    new Vector3(Math.PI / 2, 0, 0),
+  );
+
+  // 上方圆面
+  const radius = BOTTOM_RADIUS * BOTTOM_CYLINDER_RATIO * 0.6;
+  addCylinder(
+    decorateBackgroundPanelGroup,
+    assetManager,
+    woodBoardChampagneMaterial,
+    radius,
+    FRONT_PANEL_THICKNESS,
+    -0.25,
+    PANEL_HEIGHT / 2 - LEFT_TOP_RADIUS - 0.3 - radius / 2,
     BACK_PANEL_THICKNESS + FRONT_PANEL_THICKNESS / 2,
     new Vector3(Math.PI / 2, 0, 0),
   );

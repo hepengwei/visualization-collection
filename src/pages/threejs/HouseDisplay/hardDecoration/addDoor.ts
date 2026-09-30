@@ -127,9 +127,9 @@ export const addDoor = (
       assetManager,
       doorListRef,
       customParams,
+      pointerControlsIntersetObjectsRef,
       mouseRaycasterIntersectObjectsRef,
     );
-    pointerControlsIntersetObjectsRef.current.push(door);
     door.position.copy(positon);
     if (rotationY) {
       door.rotation.y = rotationY;
@@ -143,6 +143,7 @@ const createDoor = (
   assetManager: AssetManager,
   doorListRef: MutableRefObject<Mesh[]>,
   customParams: Record<string, any>,
+  pointerControlsIntersetObjectsRef: MutableRefObject<Object3D[]>,
   mouseRaycasterIntersectObjectsRef: MutableRefObject<Object3D[]>,
 ) => {
   const boxGeometry = assetManager.geometries.get("boxGeometry");
@@ -209,7 +210,8 @@ const createDoor = (
   const doorPanel = new Mesh(boxGeometry, woodDoorMaterial);
   doorPanel.name = "门板";
   doorListRef.current.push(doorPanel);
-  mouseRaycasterIntersectObjectsRef.current.push(doorPanel);
+  pointerControlsIntersetObjectsRef.current?.push(doorPanel);
+  mouseRaycasterIntersectObjectsRef.current?.push(doorPanel);
   // @ts-ignore
   doorPanel.customParams = customParams;
   doorPanel.castShadow = true;
