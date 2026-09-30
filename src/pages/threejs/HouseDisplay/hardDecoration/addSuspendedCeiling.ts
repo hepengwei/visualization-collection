@@ -7,40 +7,66 @@ import type { AssetManager } from "hooks/threejs/useInitialize";
 import {
   WALL_HEIGHT,
   WALL_THICKNESS,
+  WALL_2_WIDTH,
+  WALL_7_WIDTH,
+  WALL_33_WIDTH,
+  WALL_36_WIDTH,
   WALL_11_POSITION_X,
   WALL_28_POSITION_X,
   WALL_35_POSITION_X,
+  WALL_39_POSITION_X,
   WALL_56_POSITION_X,
   WALL_66_POSITION_X,
   WALL_72_POSITION_X,
+  WALL_1_POSITION_Z,
   WALL_10_POSITION_Z,
   WALL_20_POSITION_Z,
   WALL_55_POSITION_Z,
   WALL_67_POSITION_Z,
   WALL_73_POSITION_Z,
 } from "./addHouseStructure";
-import { SUSPENDED_CEILING_HEIGHT, SIDEBOARD_DEPTH } from "./addHouseStructure";
+import {
+  SUSPENDED_CEILING_HEIGHT,
+  SIDEBOARD_DEPTH,
+  WARDROBE_DEPTH,
+} from "./addHouseStructure";
 import { CURTAIN_DEPTH } from "../softDecoration/addCurtain";
+import { RIGHT_CHEST_DEPTH } from "./addKidsWardrobe";
 import { addLightStrip, addBox, addRoundLight } from "../utils";
 
 type SuspendedCeilingType = "front" | "back" | "left" | "right";
 
-export const SUSPENDED_CEILING_DEPTH = 0.52; // 吊顶总深度
-const SINGLE_SKIN_PANEL_THICKNESS = 0.04; // 单层板厚度
-const SINGLE_SKIN_PANEL_DEPTH_GAP = 0.06; // 单层板深度的间隔
+const DOUBLE_EYELID_SUSPENDED_CEILING_DEPTH = 0.52; // 双眼皮吊顶总深度
+const SINGLE_SKIN_PANEL_THICKNESS = 0.04; // 双眼皮单层板厚度
+const SINGLE_SKIN_PANEL_DEPTH_GAP = 0.06; // 双眼皮单层板深度的间隔
 const LIGHT_STRIP_HEIGHT = 0.1; // 灯带的宽度
-const HOLE_HEIGHT = SUSPENDED_CEILING_HEIGHT - SINGLE_SKIN_PANEL_THICKNESS * 2; // 吊顶的洞高度
+const HOLE_HEIGHT = SUSPENDED_CEILING_HEIGHT - SINGLE_SKIN_PANEL_THICKNESS * 2; // 双眼皮吊顶的洞高度
 const HOLE_DEPTH =
-  SUSPENDED_CEILING_DEPTH - SINGLE_SKIN_PANEL_DEPTH_GAP - LIGHT_STRIP_HEIGHT; // 吊顶的洞深度
+  DOUBLE_EYELID_SUSPENDED_CEILING_DEPTH -
+  SINGLE_SKIN_PANEL_DEPTH_GAP -
+  LIGHT_STRIP_HEIGHT; // 双眼皮吊顶的洞深度
 const DOWNLIGHT_RADIUS = 0.05; // 筒灯的半径
+const WELT_SUSPENDED_CEILING_INNER_THICKNESS = 0.04; // 极简贴边吊顶内层板厚度
+const WELT_SUSPENDED_CEILING_OUTER_THICKNESS = 0.02; // 极简贴边吊顶外层板厚度
+const SINGLE_SKIN_PANEL_HEIGHT_GAP = 0.04; // 极简贴边单层板高度的间隔
+const WELT_SUSPENDED_CEILING_OUTER_HEIGHT =
+  SUSPENDED_CEILING_HEIGHT - SINGLE_SKIN_PANEL_HEIGHT_GAP; // 极简贴边吊顶外层板高度
 // 所有吊顶的尺寸和位置
 const length1 = WALL_55_POSITION_Z - WALL_10_POSITION_Z - WALL_THICKNESS;
 const length2 = WALL_66_POSITION_X - WALL_56_POSITION_X;
 const length3 =
   WALL_73_POSITION_Z - WALL_10_POSITION_Z - WALL_THICKNESS - SIDEBOARD_DEPTH;
 const length4 = WALL_35_POSITION_X - WALL_72_POSITION_X - CURTAIN_DEPTH;
+const length5 =
+  WALL_10_POSITION_Z - WALL_1_POSITION_Z - WALL_THICKNESS - RIGHT_CHEST_DEPTH;
+const length6 =
+  WALL_33_WIDTH - CURTAIN_DEPTH - WALL_7_WIDTH - WALL_THICKNESS * 2;
+const length7 = WALL_33_WIDTH - WALL_7_WIDTH - WALL_THICKNESS * 2;
+const length8 = WALL_7_WIDTH + WALL_THICKNESS;
 const x1 = WALL_72_POSITION_X - WALL_THICKNESS / 2 + length4 / 2;
-const suspendedCeilingInfoList: [
+
+// 双眼皮吊顶的配置信息
+const doubleEyelidSuspendedCeilingInfoList: [
   number,
   number,
   number,
@@ -115,43 +141,110 @@ const suspendedCeilingInfoList: [
     2,
   ],
 ];
+// 贴边吊顶的配置信息
+const weldSuspendedCeilingInfoList: [
+  number,
+  number,
+  number,
+  number,
+  SuspendedCeilingType,
+][] = [
+  // 儿童房
+  [
+    length5,
+    WALL_28_POSITION_X + WALL_THICKNESS / 2 + WARDROBE_DEPTH,
+    WALL_HEIGHT,
+    WALL_10_POSITION_Z - WALL_THICKNESS / 2 - length5 / 2,
+    "left",
+  ],
+  [
+    length6,
+    WALL_28_POSITION_X + WALL_THICKNESS / 2 + WARDROBE_DEPTH + length6 / 2,
+    WALL_HEIGHT,
+    WALL_1_POSITION_Z + WALL_THICKNESS / 2 + RIGHT_CHEST_DEPTH,
+    "back",
+  ],
+  [
+    length7,
+    WALL_28_POSITION_X + WALL_THICKNESS / 2 + length7 / 2,
+    WALL_HEIGHT,
+    WALL_10_POSITION_Z - WALL_THICKNESS / 2,
+    "front",
+  ],
+  [
+    length5,
+    WALL_39_POSITION_X - WALL_THICKNESS / 2,
+    WALL_HEIGHT,
+    WALL_10_POSITION_Z - WALL_THICKNESS / 2 - length5 / 2,
+    "right",
+  ],
+];
 // 所有空余地方吊顶板的尺寸和位置
 const suspendedCeilingBoardPositionY =
   WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT / 2;
 const width2 = WALL_72_POSITION_X - WALL_66_POSITION_X - WALL_THICKNESS;
 const width3 = WALL_28_POSITION_X - WALL_11_POSITION_X - WALL_THICKNESS;
-const length5 = WALL_67_POSITION_Z - WALL_10_POSITION_Z - WALL_THICKNESS;
-const length6 = WALL_10_POSITION_Z - WALL_20_POSITION_Z;
+const length101 = WALL_67_POSITION_Z - WALL_10_POSITION_Z - WALL_THICKNESS;
+const length102 = WALL_10_POSITION_Z - WALL_20_POSITION_Z;
+const length103 = WALL_2_WIDTH * 2 + WALL_36_WIDTH;
 const suspendedCeilingBoardInfoList: [
   number,
   number,
   number,
   number,
   number,
-  number?,
+  number,
 ][] = [
+  // 客厅范围
   [
     width2,
-    length5,
+    SUSPENDED_CEILING_HEIGHT,
+    length101,
     WALL_66_POSITION_X + WALL_THICKNESS / 2 + width2 / 2,
     suspendedCeilingBoardPositionY,
-    WALL_10_POSITION_Z + WALL_THICKNESS / 2 + length5 / 2,
-    3,
+    WALL_10_POSITION_Z + WALL_THICKNESS / 2 + length101 / 2,
   ],
   [
+    width3,
+    SUSPENDED_CEILING_HEIGHT,
+    length102,
+    WALL_11_POSITION_X + WALL_THICKNESS / 2 + width3 / 2,
+    suspendedCeilingBoardPositionY,
+    WALL_10_POSITION_Z + WALL_THICKNESS / 2 - length102 / 2,
+  ],
+  // 餐厅范围
+  [
     length4,
+    SUSPENDED_CEILING_HEIGHT,
     SIDEBOARD_DEPTH,
     x1,
     suspendedCeilingBoardPositionY,
     WALL_10_POSITION_Z + WALL_THICKNESS / 2 + SIDEBOARD_DEPTH / 2,
   ],
+  // 儿童房范围
   [
-    width3,
-    length6,
-    WALL_11_POSITION_X + WALL_THICKNESS / 2 + width3 / 2,
+    WARDROBE_DEPTH,
+    SUSPENDED_CEILING_HEIGHT,
+    length5,
+    WALL_28_POSITION_X + WALL_THICKNESS / 2 + WARDROBE_DEPTH / 2,
     suspendedCeilingBoardPositionY,
-    WALL_10_POSITION_Z + WALL_THICKNESS / 2 - length6 / 2,
-    2,
+    WALL_10_POSITION_Z - WALL_THICKNESS / 2 - length5 / 2,
+  ],
+  [
+    length6,
+    SUSPENDED_CEILING_HEIGHT,
+    RIGHT_CHEST_DEPTH,
+    WALL_28_POSITION_X + WALL_THICKNESS / 2 + WARDROBE_DEPTH + length6 / 2,
+    suspendedCeilingBoardPositionY,
+    WALL_1_POSITION_Z + WALL_THICKNESS / 2 + RIGHT_CHEST_DEPTH / 2,
+  ],
+  [
+    length8,
+    SUSPENDED_CEILING_HEIGHT,
+    length103,
+    WALL_35_POSITION_X - WALL_THICKNESS / 2 - length8 / 2,
+    suspendedCeilingBoardPositionY,
+    WALL_1_POSITION_Z + WALL_THICKNESS / 2 + length103 / 2,
   ],
 ];
 
@@ -160,10 +253,10 @@ const addSuspendedCeiling = (
   assetManager: AssetManager,
   suspendedCeilingListRef: MutableRefObject<(Group | Mesh)[]>,
 ) => {
-  // 创建并添加所有吊顶
-  suspendedCeilingInfoList.forEach(
+  // 创建并添加所有双眼皮吊顶
+  doubleEyelidSuspendedCeilingInfoList.forEach(
     (item: [number, number, number, number, SuspendedCeilingType, number]) => {
-      addSingleSuspendedCeiling(
+      addDoubleEyelidSuspendedCeiling(
         scene,
         assetManager,
         suspendedCeilingListRef,
@@ -177,20 +270,36 @@ const addSuspendedCeiling = (
     },
   );
 
+  // 创建并添加所有极简贴边吊顶
+  weldSuspendedCeilingInfoList.forEach(
+    (item: [number, number, number, number, SuspendedCeilingType]) => {
+      addWeltSuspendedCeiling(
+        scene,
+        assetManager,
+        suspendedCeilingListRef,
+        item[0],
+        item[1],
+        item[2],
+        item[3],
+        item[4],
+      );
+    },
+  );
+
   // 创建并添加其他空出位置的吊顶板
   const wallMaterial = assetManager.materials.get("wallMaterial");
   suspendedCeilingBoardInfoList.forEach(
-    (item: [number, number, number, number, number, number?]) => {
+    (item: [number, number, number, number, number, number]) => {
       const suspendedCeilingBoard = addBox(
         scene,
         assetManager,
         wallMaterial as MeshStandardMaterial,
         item[0],
-        SUSPENDED_CEILING_HEIGHT,
         item[1],
         item[2],
         item[3],
         item[4],
+        item[5],
         false, // 默认隐藏
       );
       if (suspendedCeilingBoard) {
@@ -203,9 +312,9 @@ const addSuspendedCeiling = (
 };
 
 /**
- * 创建并添加单个吊顶
+ * 创建并添加双眼皮吊顶
  */
-const addSingleSuspendedCeiling = (
+const addDoubleEyelidSuspendedCeiling = (
   scene: Scene,
   assetManager: AssetManager,
   suspendedCeilingListRef: MutableRefObject<(Group | Mesh)[]>,
@@ -234,11 +343,15 @@ const addSingleSuspendedCeiling = (
   suspendedCeilingGroup.add(box1);
 
   const box2 = new Mesh(boxGeometry, wallMaterial);
-  box2.scale.set(length, SINGLE_SKIN_PANEL_THICKNESS, SUSPENDED_CEILING_DEPTH);
+  box2.scale.set(
+    length,
+    SINGLE_SKIN_PANEL_THICKNESS,
+    DOUBLE_EYELID_SUSPENDED_CEILING_DEPTH,
+  );
   box2.position.set(
     0,
     -HOLE_HEIGHT - SINGLE_SKIN_PANEL_THICKNESS / 2,
-    SUSPENDED_CEILING_DEPTH / 2,
+    DOUBLE_EYELID_SUSPENDED_CEILING_DEPTH / 2,
   );
   box2.castShadow = true;
   box2.receiveShadow = true;
@@ -248,12 +361,12 @@ const addSingleSuspendedCeiling = (
   box3.scale.set(
     length,
     SINGLE_SKIN_PANEL_THICKNESS,
-    SUSPENDED_CEILING_DEPTH - SINGLE_SKIN_PANEL_DEPTH_GAP,
+    DOUBLE_EYELID_SUSPENDED_CEILING_DEPTH - SINGLE_SKIN_PANEL_DEPTH_GAP,
   );
   box3.position.set(
     0,
     -HOLE_HEIGHT - (SINGLE_SKIN_PANEL_THICKNESS * 3) / 2,
-    (SUSPENDED_CEILING_DEPTH - SINGLE_SKIN_PANEL_DEPTH_GAP) / 2,
+    (DOUBLE_EYELID_SUSPENDED_CEILING_DEPTH - SINGLE_SKIN_PANEL_DEPTH_GAP) / 2,
   );
   box3.castShadow = true;
   box3.receiveShadow = true;
@@ -295,9 +408,76 @@ const addSingleSuspendedCeiling = (
       DOWNLIGHT_RADIUS,
       positionX,
       -SUSPENDED_CEILING_HEIGHT - 0.01,
-      (SUSPENDED_CEILING_DEPTH - SINGLE_SKIN_PANEL_DEPTH_GAP) / 2,
+      (DOUBLE_EYELID_SUSPENDED_CEILING_DEPTH - SINGLE_SKIN_PANEL_DEPTH_GAP) / 2,
     );
     positionX += gap;
+  }
+};
+
+/**
+ * 创建并添加极简贴边吊顶
+ */
+const addWeltSuspendedCeiling = (
+  scene: Scene,
+  assetManager: AssetManager,
+  suspendedCeilingListRef: MutableRefObject<(Group | Mesh)[]>,
+  length: number,
+  x: number,
+  y: number,
+  z: number,
+  suspendedCeilingType: SuspendedCeilingType,
+) => {
+  const boxGeometry = assetManager.geometries.get("boxGeometry");
+  const wallMaterial = assetManager.materials.get("wallMaterial");
+
+  const suspendedCeilingGroup = new Group();
+  suspendedCeilingGroup.position.set(x, y, z);
+  // 默认隐藏
+  suspendedCeilingGroup.visible = false;
+  suspendedCeilingListRef.current?.push(suspendedCeilingGroup);
+  scene.add(suspendedCeilingGroup);
+
+  const box1 = new Mesh(boxGeometry, wallMaterial);
+  box1.scale.set(
+    length,
+    SUSPENDED_CEILING_HEIGHT,
+    WELT_SUSPENDED_CEILING_INNER_THICKNESS,
+  );
+  box1.position.set(
+    0,
+    -SUSPENDED_CEILING_HEIGHT / 2,
+    WELT_SUSPENDED_CEILING_INNER_THICKNESS / 2,
+  );
+  box1.castShadow = true;
+  box1.receiveShadow = true;
+  suspendedCeilingGroup.add(box1);
+
+  const box2 = new Mesh(boxGeometry, wallMaterial);
+  box2.scale.set(
+    length,
+    WELT_SUSPENDED_CEILING_OUTER_HEIGHT,
+    WELT_SUSPENDED_CEILING_OUTER_THICKNESS,
+  );
+  box2.position.set(
+    0,
+    -WELT_SUSPENDED_CEILING_OUTER_HEIGHT / 2,
+    WELT_SUSPENDED_CEILING_INNER_THICKNESS +
+      WELT_SUSPENDED_CEILING_OUTER_THICKNESS / 2,
+  );
+  box2.castShadow = true;
+  box2.receiveShadow = true;
+  suspendedCeilingGroup.add(box2);
+
+  switch (suspendedCeilingType) {
+    case "front":
+      suspendedCeilingGroup.rotation.y = Math.PI;
+      break;
+    case "left":
+      suspendedCeilingGroup.rotation.y = Math.PI / 2;
+      break;
+    case "right":
+      suspendedCeilingGroup.rotation.y = -Math.PI / 2;
+      break;
   }
 };
 

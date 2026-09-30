@@ -43,7 +43,7 @@ const KIDS_WARDROBE_WIDTH = WALL_19_WIDTH + WALL_THICKNESS + WALL_21_WIDTH; // �
 const CHEST_DOOR_WIDTH = 0.64; // 柜门的宽度
 const CHEST_GAP = 0.01; // 柜子之间的缝隙
 const KIDS_WARDROBE_HEIGHT = WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT; // 儿童衣柜的总高
-const CHEST_DOOR_THICKNESS = 0.02; // 柜门和抽屉门的厚度
+export const CHEST_DOOR_THICKNESS = 0.02; // 柜门和抽屉门的厚度
 const BOTTOM_CHEST_HEIGHT = 1.1; // 下面柜子的高度
 const TOP_CHEST_HEIGHT = KIDS_WARDROBE_HEIGHT - BOTTOM_CHEST_HEIGHT - CHEST_GAP; // 上面柜子的高度(包含镂空的高度)
 const MIDDLE_CHEST_DEPTH =
@@ -55,7 +55,7 @@ const LEFT_SMALL_RADIUS = 0.1; // 最左边柜子的小圆半径
 const LEFT_BIG_RADIUS = 0.24; // 最左边柜子的大圆半径
 
 const RIGHT_CHEST_WIDTH = 0.9; // 右面柜子的总宽
-const RIGHT_CHEST_DEPTH = 0.45; // 右面上方柜子的深度
+export const RIGHT_CHEST_DEPTH = 0.45; // 右面上方柜子的深度
 const RIGHT_TABLE_DEPTH = 0.8; // 右面桌子的深度
 const RIGHT_BOTTOM_STORAGE_AREA_HEIGHT = 0.36; // 右面上方柜子最下面置物格的高度(包含上下两层木板)
 // 最右边剩余的柜门宽度

@@ -30,7 +30,7 @@ export const LIGHT_GROUP_FIELD = {
   DECORATE_BACKGROUND_PANEL: "decorateBackgroundPanel", // 装饰背景板
   LIVING_ROOM_CABINET: "livingRoomCabinet", // 客厅柜
   MASTER_BEDROOM: "masterBedroom", // 主卧
-  KIDS_BEDROOM: "kidsBedroom", // 儿童卧室
+  KIDS_BEDROOM: "kidsBedroom", // 儿童房
   SECONDARY_BEDROOM: "secondaryBedroom", // 次卧
   KITCHEN: "kitchen", // 厨房
 };
@@ -65,7 +65,7 @@ export const dynamicOptimizationLightingStripRender = (
       ]);
       return;
     }
-    // 儿童卧室范围
+    // 儿童房范围
     if (x > WALL_28_POSITION_X && z < WALL_10_POSITION_Z) {
       if (currentZoneIndex === 1) return;
       currentZoneIndex = 1;
