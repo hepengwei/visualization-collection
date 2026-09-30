@@ -1,7 +1,6 @@
 /**
  * 添加哑光钢化玻璃白板
  */
-import { MutableRefObject } from "react";
 import {
   Scene,
   MeshBasicMaterial,
@@ -9,7 +8,6 @@ import {
   Mesh,
   Group,
   Color,
-  Object3D,
   DoubleSide,
   Vector3,
   WebGLRenderer,
@@ -28,14 +26,18 @@ import {
 } from "../hardDecoration/addHouseStructure";
 import { SHOE_CABINET_DEPTH } from "../hardDecoration/addShoeCabinet";
 
-const GLASS_WHITEBOARD_GAP = 0.16; // 边距
+const GLASS_WHITEBOARD_TB_GAP = 0.26; // 上下边距
+const GLASS_WHITEBOARD_LR_GAP = 0.1; // 左右边距
 const GLASS_WHITEBOARD_WIDTH =
   WALL_70_WIDTH +
   WALL_THICKNESS +
   SHOE_CABINET_DEPTH -
-  GLASS_WHITEBOARD_GAP * 2; // 玻璃白板的宽
+  GLASS_WHITEBOARD_LR_GAP * 2; // 玻璃白板的宽
 const GLASS_WHITEBOARD_HEIGHT =
-  WALL_HEIGHT - SKIRTING_LINE_HEIGHT - BEAM_HEIGHT - GLASS_WHITEBOARD_GAP * 2; // 玻璃白板的高
+  WALL_HEIGHT -
+  SKIRTING_LINE_HEIGHT -
+  BEAM_HEIGHT -
+  GLASS_WHITEBOARD_TB_GAP * 2; // 玻璃白板的高
 const GLASS_WHITEBOARD_THICKNESS = 0.01; // 玻璃白板的总厚度
 const GLASS_WHITEBOARD_BG_THICKNESS = 0.002; // 玻璃白板的背景白板的厚度
 const GLASS_THICKNESS =
@@ -45,9 +47,9 @@ const GLASS_WHITEBOARD_POSITION = new Vector3(
   WALL_72_POSITION_X -
     WALL_THICKNESS / 2 -
     SHOE_CABINET_DEPTH +
-    GLASS_WHITEBOARD_GAP +
+    GLASS_WHITEBOARD_LR_GAP +
     GLASS_WHITEBOARD_WIDTH / 2,
-  SKIRTING_LINE_HEIGHT + GLASS_WHITEBOARD_GAP + GLASS_WHITEBOARD_HEIGHT / 2,
+  SKIRTING_LINE_HEIGHT + GLASS_WHITEBOARD_TB_GAP + GLASS_WHITEBOARD_HEIGHT / 2,
   WALL_73_POSITION_Z - WALL_THICKNESS / 2,
 );
 

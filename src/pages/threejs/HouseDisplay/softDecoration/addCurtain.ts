@@ -19,6 +19,7 @@ import { getEaseProgress } from "../utils";
 import {
   WALL_HEIGHT,
   WALL_THICKNESS,
+  SUSPENDED_CEILING_HEIGHT,
   TALL_GRADE_BEAM_HEIGHT,
   WALL_2_WIDTH,
   WALL_3_WIDTH,
@@ -40,7 +41,8 @@ import {
 type CurtainType = "voile" | "cloth";
 
 export const CURTAIN_DEPTH = 0.3; // 窗帘总深度
-const whiteVoileDoublicationWidth = 0.06; // 窗帘半边展开后重合多出的宽度
+const STACKED_WIDTH = 0.3; // 窗帘收起后的单片半边的宽度
+const DOUBLICATION_WIDTH = 0.06; // 窗帘半边展开后重合多出的宽度
 const curtainConfigs = [
   // 客厅窗帘
   {
@@ -53,10 +55,10 @@ const curtainConfigs = [
     customParams: {
       switchStatus: "OFF", // 窗帘的打开/关闭状态，窗帘打开时单片半边是完全收起的，窗帘关闭时单片半边是完全展开的
       isAnimating: false, // 窗帘是否在打开/关闭动画中
-      curtainHeight: WALL_HEIGHT, // 窗帘高度
+      curtainHeight: WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT, // 窗帘高度
       expandedWidth:
         (WALL_49_POSITION_Z - WALL_9_POSITION_Z - WALL_THICKNESS) / 2, // 窗帘单片半边完全展开后的宽度
-      stackedWidth: WALL_2_WIDTH, // 窗帘单片半边完全收起后的宽度
+      stackedWidth: STACKED_WIDTH, // 窗帘单片半边完全收起后的宽度
       animationDuration: 1400, // 开/关窗帘动画总时长
     },
     curtainType: "voile",
@@ -72,9 +74,9 @@ const curtainConfigs = [
     customParams: {
       switchStatus: "ON",
       isAnimating: false,
-      curtainHeight: WALL_HEIGHT,
+      curtainHeight: WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT,
       expandedWidth: (WALL_2_WIDTH * 2 + WALL_42_WIDTH) / 2,
-      stackedWidth: WALL_2_WIDTH,
+      stackedWidth: STACKED_WIDTH,
       animationDuration: 1000,
     },
     curtainType: "voile",
@@ -90,9 +92,9 @@ const curtainConfigs = [
     customParams: {
       switchStatus: "ON",
       isAnimating: false,
-      curtainHeight: WALL_HEIGHT,
+      curtainHeight: WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT,
       expandedWidth: (WALL_2_WIDTH * 2 + WALL_3_WIDTH) / 2,
-      stackedWidth: WALL_2_WIDTH,
+      stackedWidth: STACKED_WIDTH,
       animationDuration: 900,
     },
     curtainType: "cloth",
@@ -108,9 +110,10 @@ const curtainConfigs = [
     customParams: {
       switchStatus: "ON",
       isAnimating: false,
-      curtainHeight: WALL_HEIGHT - TALL_GRADE_BEAM_HEIGHT,
+      curtainHeight:
+        WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT - TALL_GRADE_BEAM_HEIGHT,
       expandedWidth: (WALL_2_WIDTH * 2 + WALL_36_WIDTH) / 2,
-      stackedWidth: WALL_2_WIDTH,
+      stackedWidth: STACKED_WIDTH,
       animationDuration: 700,
     },
     curtainType: "cloth",
@@ -128,10 +131,10 @@ const curtainConfigs = [
     customParams: {
       switchStatus: "ON",
       isAnimating: false,
-      curtainHeight: WALL_HEIGHT,
+      curtainHeight: WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT,
       expandedWidth:
         (WALL_51_POSITION_Z - WALL_55_POSITION_Z - WALL_THICKNESS) / 2,
-      stackedWidth: WALL_2_WIDTH,
+      stackedWidth: STACKED_WIDTH,
       animationDuration: 1000,
     },
     curtainType: "cloth",
@@ -269,7 +272,7 @@ const createCurtain = (
   );
   leftCollisionPlane.name = "窗帘左半边碰撞检测面";
   mouseRaycasterIntersectObjectsRef.current?.push(leftCollisionPlane);
-  let leftCollisionPlaneWidth = expandedWidth + whiteVoileDoublicationWidth;
+  let leftCollisionPlaneWidth = expandedWidth + DOUBLICATION_WIDTH;
   let leftCollisionPlanePositionX = -expandedWidth / 2;
   if (switchStatus === "ON") {
     leftCollisionPlaneWidth = stackedWidth;
@@ -290,7 +293,7 @@ const createCurtain = (
   );
   rightCollisionPlane.name = "窗帘右半边碰撞检测面";
   mouseRaycasterIntersectObjectsRef.current?.push(rightCollisionPlane);
-  let rightCollisionPlaneWidth = expandedWidth + whiteVoileDoublicationWidth;
+  let rightCollisionPlaneWidth = expandedWidth + DOUBLICATION_WIDTH;
   let rightCollisionPlanePositionX = expandedWidth / 2;
   if (switchStatus === "ON") {
     rightCollisionPlaneWidth = stackedWidth;
@@ -403,8 +406,8 @@ const updateWhiteVoile = (mesh: Mesh, openAmt: number, isLeft: boolean) => {
   // 内端位置
   const innerX_closed = isLeft ? outerX + stackedWidth : outerX - stackedWidth;
   const innerX_open = isLeft
-    ? whiteVoileDoublicationWidth // 左片展开到中间偏右
-    : -whiteVoileDoublicationWidth; // 右片展开到中间偏左
+    ? DOUBLICATION_WIDTH // 左片展开到中间偏右
+    : -DOUBLICATION_WIDTH; // 右片展开到中间偏左
   const innerX = innerX_closed + (innerX_open - innerX_closed) * openAmt;
   const curW = Math.abs(innerX - outerX);
 
