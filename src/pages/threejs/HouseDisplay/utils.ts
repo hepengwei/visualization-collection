@@ -209,6 +209,22 @@ export const initAssetManager = (assetManager: AssetManager) => {
     polygonOffsetUnits: 1,
   });
   assetManager.materials.set("blackGlassMaterial", blackGlassMaterial);
+
+  // 创建白色石英石材质
+  const quartzMaterial = new MeshPhysicalMaterial({
+    color: 0xf7f7f5, // 纯白偏一点点冷/暖都可，别用 0xffffff 否则容易死白
+    metalness: 0.0, // 石材是非金属
+    roughness: 0.35, // 0.25~0.45：哑抛/半抛石英石
+    clearcoat: 0.6, // 表面封釉/抛光层
+    clearcoatRoughness: 0.08, // 亮面但不过镜面
+    reflectivity: 0.5, // 非金属基础反射
+    envMapIntensity: 1.0, // 必须有环境贴图才好看
+    ior: 1.5,
+    polygonOffset: true, // 启用深度偏移，防止产生Z-fighting闪烁
+    polygonOffsetFactor: 1,
+    polygonOffsetUnits: 1,
+  });
+  assetManager.materials.set("quartzMaterial", quartzMaterial);
 };
 
 // 创建实木木板材质

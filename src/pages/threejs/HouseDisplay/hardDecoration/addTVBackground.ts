@@ -8,7 +8,6 @@ import {
   Mesh,
   Group,
   Vector3,
-  Object3D,
   FrontSide,
   RectAreaLight,
 } from "three";
