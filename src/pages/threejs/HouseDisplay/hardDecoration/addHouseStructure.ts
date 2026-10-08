@@ -18,6 +18,7 @@ import {
   DynamicDrawUsage,
   Group,
 } from "three";
+import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 
 type SkirtingLineType = "front" | "back" | "double" | "all"; // 如果是竖墙，则"front"为左， "back"为右
@@ -269,7 +270,7 @@ export const WALL_70_WIDTH = WALL_7_WIDTH + WALL_THICKNESS;
 const WALL_70_POSITION_X =
   WALL_68_POSITION_X + WALL_68_WIDTH / 2 + WALL_70_WIDTH / 2;
 const WALL_71_WIDTH =
-  WALL_61_POSITION_Z - WALL_67_POSITION_Z - WALL_THICKNESS * 2.5;
+  WALL_61_POSITION_Z - WALL_67_POSITION_Z - WALL_THICKNESS * 3;
 const WALL_71_POSITION_X =
   WALL_70_POSITION_X + WALL_70_WIDTH / 2 - WALL_THICKNESS / 2;
 const WALL_71_POSITION_Z =
@@ -1184,6 +1185,9 @@ const addHouseStructure = (
 
   // 创建并添加所有垭口包边
   addPassEdgeBinding(scene, assetManager);
+
+  // 创建并添加儿童房石英石台面
+  addKidsBedRoomQuartzCountertop(scene, assetManager);
 };
 
 // 创建并添加所有的墙体和玻璃窗
@@ -1708,6 +1712,31 @@ const addPassEdgeBinding = (scene: Scene, assetManager: AssetManager) => {
     passEdgeBinding.position.set(item[3], item[4], item[5]);
     scene.add(passEdgeBinding);
   });
+};
+
+// 创建并添加儿童房石英石台面
+const addKidsBedRoomQuartzCountertop = (
+  scene: Scene,
+  assetManager: AssetManager,
+) => {
+  const quartzCountertopThickness = 0.08;
+  const quartzMaterial = assetManager.materials.get("quartzMaterial");
+  const roundedBoxGeometry = new RoundedBoxGeometry(
+    WALL_7_WIDTH + WALL_THICKNESS * 2 + quartzCountertopThickness / 2,
+    quartzCountertopThickness,
+    WALL_2_WIDTH * 2 + WALL_36_WIDTH + quartzCountertopThickness,
+    32,
+    quartzCountertopThickness / 2,
+  );
+  const quartzCountertop = new Mesh(roundedBoxGeometry, quartzMaterial);
+  quartzCountertop.position.set(
+    WALL_40_POSITION_X + quartzCountertopThickness / 2,
+    TALL_GRADE_BEAM_HEIGHT - quartzCountertopThickness / 2,
+    WALL_36_POSITION_Z,
+  );
+  quartzCountertop.receiveShadow = true;
+  quartzCountertop.castShadow = true;
+  scene.add(quartzCountertop);
 };
 
 export default addHouseStructure;
