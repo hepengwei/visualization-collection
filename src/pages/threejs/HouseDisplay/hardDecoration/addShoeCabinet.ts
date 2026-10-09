@@ -7,7 +7,6 @@ import {
   MeshPhysicalMaterial,
   Group,
   Vector3,
-  Object3D,
   RectAreaLight,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";

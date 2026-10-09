@@ -672,8 +672,8 @@ const createRightTable = (
     6,
     Math.PI / 2,
     1,
-    false,
     new Vector3(0, 0, Math.PI),
+    false,
   );
   lightList.push(...lightList2);
   const light3 = addLightStrip(

@@ -53,6 +53,7 @@ import addGlassWhiteboard from "./softDecoration/addGlassWhiteboard";
 import addDecorateBackgroundPanel from './softDecoration/addDecorateBackgroundPanel';
 import addLivingRoomCabinet from './hardDecoration/addLivingRoomCabinet';
 import addKidsWardrobe from "./hardDecoration/addKidsWardrobe";
+import renovateKitchen from './hardDecoration/renovateKitchen';
 import { dynamicOptimizationLightingStripRender } from './function/dynamicOptimizationLightingStripRender';
 import styles from "./index.module.scss";
 
@@ -167,7 +168,7 @@ const HouseDisplay = () => {
         assetManager,
         pointerControlsIntersetObjectsRef,
         mouseRaycasterIntersectObjectsRef,
-        false,
+        false, // 是否显示墙体编号标签
       );
 
       // 添加吊顶
@@ -300,6 +301,9 @@ const HouseDisplay = () => {
         assetManager,
         lightStripLightingMapRef
       )
+
+      // 装修厨房
+      renovateKitchen(scene, assetManager);
 
       // 启用后处理器架构（单 composer，手动渲染场景替代 RenderPass）
       useComposer(

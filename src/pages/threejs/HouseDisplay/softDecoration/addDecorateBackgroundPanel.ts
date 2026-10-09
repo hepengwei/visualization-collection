@@ -390,7 +390,6 @@ const addAllLightingStrip = (
     3,
     Math.PI / 2,
     -1,
-    true,
     new Vector3(0, 0, Math.PI),
   );
   lightList = lightList.concat(lightList1);

@@ -7,11 +7,9 @@ import {
   Scene,
   MeshStandardMaterial,
   Mesh,
-  DoubleSide,
   CanvasTexture,
   SpriteMaterial,
   Sprite,
-  MeshPhysicalMaterial,
   SRGBColorSpace,
   InstancedMesh,
   Object3D,
@@ -29,7 +27,7 @@ export const WARDROBE_DEPTH = 0.78; // 衣柜的总深度
 export const WALL_HEIGHT = 3.94; // 墙体高度
 export const WALL_THICKNESS = 0.3; // 墙体厚度
 export const TALL_GRADE_BEAM_HEIGHT = 1.2; // 高地梁的墙体高度
-const TALL_GRADE_BEAM_POSITION_Y = TALL_GRADE_BEAM_HEIGHT / 2; // 高地梁的墙体y位置
+export const TALL_GRADE_BEAM_POSITION_Y = TALL_GRADE_BEAM_HEIGHT / 2; // 高地梁的墙体y位置
 const SHORT_GRADE_BEAM_HEIGHT = 0.2; // 矮地梁的墙体高度
 const SHORT_GRADE_BEAM_POSITION_Y = SHORT_GRADE_BEAM_HEIGHT / 2; // 矮地梁的墙体y位置
 export const BEAM_HEIGHT =
@@ -55,7 +53,7 @@ const PASS_EDGE_BINDING_THICKNESS = 0.016; // 垭口包边厚度
 
 // 所有墙体参数
 const WALL_1_WIDTH = 8.7;
-const WALL_1_POSITION_Y = WALL_HEIGHT / 2;
+export const WALL_1_POSITION_Y = WALL_HEIGHT / 2;
 export const WALL_1_POSITION_Z = -10.5;
 export const WALL_2_WIDTH = 0.1;
 export const WALL_2_POSITION_X = -9.78;
@@ -269,13 +267,13 @@ export const WALL_69_POSITION_X =
 export const WALL_70_WIDTH = WALL_7_WIDTH + WALL_THICKNESS;
 const WALL_70_POSITION_X =
   WALL_68_POSITION_X + WALL_68_WIDTH / 2 + WALL_70_WIDTH / 2;
-const WALL_71_WIDTH =
+export const WALL_71_WIDTH =
   WALL_61_POSITION_Z - WALL_67_POSITION_Z - WALL_THICKNESS * 3;
-const WALL_71_POSITION_X =
+export const WALL_71_POSITION_X =
   WALL_70_POSITION_X + WALL_70_WIDTH / 2 - WALL_THICKNESS / 2;
-const WALL_71_POSITION_Z =
+export const WALL_71_POSITION_Z =
   WALL_67_POSITION_Z + WALL_THICKNESS / 2 + WALL_71_WIDTH / 2;
-const WALL_72_WIDTH =
+export const WALL_72_WIDTH =
   WALL_67_POSITION_Z -
   WALL_44_POSITION_Z -
   WALL_2_WIDTH / 2 -
@@ -288,36 +286,38 @@ export const WALL_73_POSITION_X =
   WALL_72_POSITION_X + WALL_THICKNESS / 2 + WALL_70_WIDTH / 2;
 export const WALL_73_POSITION_Z =
   WALL_72_POSITION_Z - WALL_72_WIDTH / 2 + WALL_THICKNESS / 2;
-const WALL_74_POSITION_X =
-  WALL_35_POSITION_X + WALL_THICKNESS / 2 - WALL_70_WIDTH / 2;
-const WALL_75_WIDTH =
+export const WALL_74_WIDTH = 1.25;
+export const WALL_74_POSITION_X =
+  WALL_35_POSITION_X + WALL_THICKNESS / 2 - WALL_74_WIDTH / 2;
+export const WALL_75_WIDTH =
   WALL_74_POSITION_X -
-  WALL_70_WIDTH / 2 -
+  WALL_74_WIDTH / 2 -
   WALL_73_POSITION_X -
   WALL_70_WIDTH / 2;
 export const WALL_75_POSITION_X =
   WALL_73_POSITION_X + WALL_70_WIDTH / 2 + WALL_75_WIDTH / 2;
-const WALL_76_WIDTH = 0.6;
-const WALL_76_POSITION_Z =
+export const WALL_76_WIDTH = 0.6;
+export const WALL_76_POSITION_Z =
   WALL_73_POSITION_Z + WALL_THICKNESS / 2 + WALL_76_WIDTH / 2;
-const WALL_77_POSITION_Z =
+export const WALL_77_POSITION_Z =
   WALL_76_POSITION_Z + WALL_76_WIDTH / 2 + WALL_15_WIDTH / 2;
-const WALL_79_WIDTH =
+export const WALL_79_WIDTH =
   WALL_71_POSITION_Z +
   WALL_71_WIDTH / 2 -
   WALL_77_POSITION_Z -
   WALL_15_WIDTH / 2;
-const WALL_79_POSITION_Z =
+export const WALL_79_POSITION_Z =
   WALL_77_POSITION_Z + WALL_15_WIDTH / 2 + WALL_79_WIDTH / 2;
-const WALL_80_WIDTH = WALL_35_POSITION_X - WALL_71_POSITION_X + WALL_THICKNESS;
-const WALL_80_POSITION_X =
+export const WALL_80_WIDTH =
+  WALL_35_POSITION_X - WALL_71_POSITION_X + WALL_THICKNESS;
+export const WALL_80_POSITION_X =
   WALL_71_POSITION_X - WALL_THICKNESS / 2 + WALL_80_WIDTH / 2;
-const WALL_80_POSITION_Z =
+export const WALL_80_POSITION_Z =
   WALL_71_POSITION_Z + WALL_71_WIDTH / 2 + WALL_THICKNESS / 2;
 
 // 地板参数
-const TILE_SIZE = 1.5; // 1.5m的地砖
-const GAP_SIZE = 0.005; // 5mm的缝隙
+export const TILE_SIZE = 1.2; // 1.2m的地砖
+export const GAP_SIZE = 0.005; // 5mm的缝隙
 const FLOOR_WIDTH = WALL_35_POSITION_X - WALL_2_POSITION_X + TILE_SIZE * 6; // 地板总宽度
 const FLOOR_DEPTH = WALL_60_POSITION_Z - WALL_1_POSITION_Z + TILE_SIZE * 1.5; // 地板总深度
 
@@ -985,7 +985,7 @@ const wallInfoList: (
     "all",
   ],
   [
-    WALL_70_WIDTH,
+    WALL_74_WIDTH,
     WALL_HEIGHT,
     WALL_THICKNESS,
     WALL_74_POSITION_X,
@@ -1466,7 +1466,7 @@ const addSkirtingLine = (
   }
 };
 
-// 创建并添加墙体标签
+// 创建并添加墙体编号标签
 const addWallLabel = (
   scene: Scene,
   width: number,
@@ -1636,17 +1636,7 @@ const addMarbleFloor = (scene: Scene, assetManager: AssetManager) => {
   const tilesZ = Math.ceil(FLOOR_DEPTH / (TILE_SIZE + GAP_SIZE));
 
   const planeGeometry = assetManager.geometries.get("planeGeometry");
-  // 创建地砖材质
-  const tileMaterial = new MeshPhysicalMaterial({
-    color: 0xf5f5f5, // 白色微偏冷
-    metalness: 0.0, // 瓷砖是非金属
-    roughness: 0.05, // 亮光砖，低粗糙度
-    envMapIntensity: 1.0, // 环境贴图反射强度
-    clearcoat: 1.0, // 釉面清漆层，增加光泽
-    clearcoatRoughness: 0.03, // 釉面清漆层粗糙度
-    side: DoubleSide,
-  });
-  assetManager.materials.set("tileMaterial", tileMaterial);
+  const tileMaterial = assetManager.materials.get("tileMaterial");
 
   // 使用InstancedMesh实例化渲染，提高性能
   const instancedMesh = new InstancedMesh(
