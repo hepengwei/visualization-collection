@@ -89,6 +89,16 @@ export const initAssetManager = (assetManager: AssetManager) => {
     envMapIntensity: 0.3,
   });
   assetManager.materials.set("wallMaterial", wallMaterial);
+  // 瓷砖材质
+  const tileMaterial = new MeshPhysicalMaterial({
+    color: 0xf5f5f5, // 白色微偏冷
+    metalness: 0.0, // 瓷砖是非金属
+    roughness: 0.01, // 亮光砖，低粗糙度
+    clearcoat: 1.0, // 釉面清漆层，增加光泽
+    clearcoatRoughness: 0.01, // 釉面清漆层粗糙度
+    side: DoubleSide,
+  });
+  assetManager.materials.set("tileMaterial", tileMaterial);
   // 创建铝合金材质
   const aluminiumAlloyMaterial = new MeshStandardMaterial({
     color: ALUMINIUM_ALLOY_COLOR,
@@ -1061,6 +1071,7 @@ export const addCircleLightingStrip = (
   angle: number = Math.PI, // 默认为半圆
   fwdSign: 1 | -1 = 1, // 默认内侧
   rotation = new Vector3(0, 0, 0), // 默认在z=0的同一平面
+  lightVisible = true, // 灯光默认显示还是隐藏
   intensity = 0.4 * Math.PI,
 ) => {
   const curvePoints = [];
@@ -1120,6 +1131,7 @@ export const addCircleLightingStrip = (
     const combinedMatrix = meshRotMatrix.clone().multiply(lightRotMatrix);
     light.quaternion.setFromRotationMatrix(combinedMatrix);
 
+    light.visible = lightVisible;
     lightList.push(light);
     parent.add(light);
   }
