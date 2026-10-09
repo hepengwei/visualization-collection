@@ -1060,6 +1060,7 @@ export const addCircleLightingStrip = (
   count: number = 3, // 在灯带上取多少个点
   angle: number = Math.PI, // 默认为半圆
   fwdSign: 1 | -1 = 1, // 默认内侧
+  lightVisible = true, // 灯光默认显示还是隐藏
   rotation = new Vector3(0, 0, 0), // 默认在z=0的同一平面
   intensity = 0.4 * Math.PI,
 ) => {
@@ -1120,6 +1121,7 @@ export const addCircleLightingStrip = (
     const combinedMatrix = meshRotMatrix.clone().multiply(lightRotMatrix);
     light.quaternion.setFromRotationMatrix(combinedMatrix);
 
+    light.visible = lightVisible;
     lightList.push(light);
     parent.add(light);
   }

@@ -1722,7 +1722,7 @@ const addKidsBedRoomQuartzCountertop = (
   const quartzCountertopThickness = 0.08;
   const quartzMaterial = assetManager.materials.get("quartzMaterial");
   const roundedBoxGeometry = new RoundedBoxGeometry(
-    WALL_7_WIDTH + WALL_THICKNESS * 2 + quartzCountertopThickness / 2,
+    WALL_7_WIDTH + WALL_THICKNESS + quartzCountertopThickness / 2,
     quartzCountertopThickness,
     WALL_2_WIDTH * 2 + WALL_36_WIDTH + quartzCountertopThickness,
     32,
@@ -1730,7 +1730,7 @@ const addKidsBedRoomQuartzCountertop = (
   );
   const quartzCountertop = new Mesh(roundedBoxGeometry, quartzMaterial);
   quartzCountertop.position.set(
-    WALL_40_POSITION_X + quartzCountertopThickness / 2,
+    WALL_40_POSITION_X - WALL_THICKNESS / 2 + quartzCountertopThickness / 2,
     TALL_GRADE_BEAM_HEIGHT - quartzCountertopThickness / 2,
     WALL_36_POSITION_Z,
   );
