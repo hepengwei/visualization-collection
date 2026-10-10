@@ -32,14 +32,12 @@ import {
   WALL_33_POSITION_X,
   WALL_34_POSITION_X,
   WALL_55_POSITION_X,
-  WALL_75_POSITION_X,
   WALL_3_POSITION_Z,
   WALL_19_POSITION_Z,
   WALL_40_POSITION_Z,
   WALL_42_POSITION_Z,
   WALL_53_POSITION_Z,
   WALL_58_POSITION_Z,
-  WALL_67_POSITION_Z,
 } from "../hardDecoration/addHouseStructure";
 
 const LAMP_RADIUS = 0.65; // 灯的半径
@@ -90,15 +88,6 @@ const lampConfigList = [
       WALL_53_POSITION_Z + 0.2,
     ),
     scale: new Vector3(0.7, 0.7, 0.7),
-  },
-  {
-    name: "厨房吊灯",
-    position: new Vector3(
-      WALL_75_POSITION_X,
-      CEILING_LAMP_Y,
-      WALL_67_POSITION_Z - 0.6,
-    ),
-    scale: new Vector3(0.5, 0.5, 0.5),
   },
   {
     name: "外厕所吊灯",
@@ -240,6 +229,7 @@ const createLamp = (
   const lampGroup = new Group();
   // 默认隐藏
   lampGroup.visible = false;
+
   const circleGeometry = assetManager.geometries.get("circleGeometry");
   const cylinderGeometry = assetManager.geometries.get("cylinderGeometry");
   const ceilingLampRingGeometry = assetManager.geometries.get(
@@ -312,7 +302,7 @@ const createLamp = (
   lampGroup.add(bottomTorus);
 
   // 添加吊灯光源
-  addLampLight(lampGroup, lampLightingListRef, `${name}光源`);
+  // addLampLight(lampGroup, lampLightingListRef, `${name}光源`);
 
   // 添加自定义属性值
   // @ts-ignore

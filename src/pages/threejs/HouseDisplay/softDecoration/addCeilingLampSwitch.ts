@@ -20,7 +20,6 @@ import {
   WALL_20_WIDTH,
   WALL_23_WIDTH,
   WALL_51_WIDTH,
-  WALL_70_WIDTH,
   WALL_11_POSITION_X,
   WALL_20_POSITION_X,
   WALL_23_POSITION_X,
@@ -81,14 +80,6 @@ const switchConfigList = [
       WALL_55_POSITION_X + WALL_51_WIDTH / 2 - 0.6,
       SWITCH_POSITION_HEIGHT,
       WALL_55_POSITION_Z + WALL_THICKNESS / 2,
-    ),
-  },
-  {
-    name: "厨房吊灯开关",
-    position: new Vector3(
-      WALL_73_POSITION_X + WALL_70_WIDTH / 2 - 0.6,
-      SWITCH_POSITION_HEIGHT,
-      WALL_73_POSITION_Z + WALL_THICKNESS / 2,
     ),
   },
   {
