@@ -50,14 +50,14 @@ const MIDDLE_CHEST_DEPTH =
   WARDROBE_DEPTH - BOARD_THICKNESS - CHEST_DOOR_THICKNESS; // 中间层柜体的深度
 
 const LEFT_CHEST_WIDTH = 0.5; // 最左边柜子的总宽
-const LEFT_HOLLOW_OUT_HEIGHT = 1.4; // 最左边镂空的高度
+const LEFT_HOLLOW_OUT_HEIGHT = 1.5; // 最左边镂空的高度
 const LEFT_SMALL_RADIUS = 0.1; // 最左边柜子的小圆半径
 const LEFT_BIG_RADIUS = 0.24; // 最左边柜子的大圆半径
 
 const RIGHT_CHEST_WIDTH = 0.9; // 右面柜子的总宽
 export const RIGHT_CHEST_DEPTH = 0.45; // 右面上方柜子的深度
 const RIGHT_TABLE_DEPTH = 0.8; // 右面桌子的深度
-const RIGHT_BOTTOM_STORAGE_AREA_HEIGHT = 0.36; // 右面上方柜子最下面置物格的高度(包含上下两层木板)
+const RIGHT_BOTTOM_STORAGE_AREA_HEIGHT = 0.4; // 右面上方柜子最下面置物格的高度(包含上下两层木板)
 // 最右边剩余的柜门宽度
 const RIGHT_CHEST_DOOR_WIDTH =
   KIDS_WARDROBE_WIDTH -
@@ -192,8 +192,8 @@ const createKidsWardrobe = (
     0,
     WARDROBE_DEPTH - CHEST_DOOR_THICKNESS - ARC_BOARD_THICKNESS,
   );
-  quarterCylinder1.castShadow = true;
-  quarterCylinder1.receiveShadow = true;
+  // quarterCylinder1.castShadow = true;
+  // quarterCylinder1.receiveShadow = true;
   kidsWardrobeGroup.add(quarterCylinder1);
 
   // 左下柜体所有抽屉横线
@@ -249,8 +249,8 @@ const createKidsWardrobe = (
     KIDS_WARDROBE_HEIGHT - height1,
     WARDROBE_DEPTH - CHEST_DOOR_THICKNESS,
   );
-  quarterCylinder2.castShadow = true;
-  quarterCylinder2.receiveShadow = true;
+  // quarterCylinder2.castShadow = true;
+  // quarterCylinder2.receiveShadow = true;
   kidsWardrobeGroup.add(quarterCylinder2);
   const width1 = LEFT_CHEST_WIDTH - LEFT_SMALL_RADIUS * 2;
   if (width1 > 0) {
@@ -281,8 +281,8 @@ const createKidsWardrobe = (
     KIDS_WARDROBE_HEIGHT - height1 - LEFT_SMALL_RADIUS,
     WARDROBE_DEPTH - CHEST_DOOR_THICKNESS,
   );
-  curvedSurfaceRightAngledTriangularPrism1.castShadow = true;
-  curvedSurfaceRightAngledTriangularPrism1.receiveShadow = true;
+  // curvedSurfaceRightAngledTriangularPrism1.castShadow = true;
+  // curvedSurfaceRightAngledTriangularPrism1.receiveShadow = true;
   kidsWardrobeGroup.add(curvedSurfaceRightAngledTriangularPrism1);
 
   // 中间柜体
@@ -575,8 +575,8 @@ const createRightTable = (
     y - BOARD_THICKNESS / 2,
     RIGHT_TABLE_DEPTH - ARC_BOARD_THICKNESS,
   );
-  quarterCylinder1.castShadow = true;
-  quarterCylinder1.receiveShadow = true;
+  // quarterCylinder1.castShadow = true;
+  // quarterCylinder1.receiveShadow = true;
   rightTableGroup.add(quarterCylinder1);
 
   const curvedSurfaceRightAngledTriangularPrismGeometry2 =
@@ -595,8 +595,8 @@ const createRightTable = (
     y - BOARD_THICKNESS / 2,
     RIGHT_TABLE_DEPTH,
   );
-  curvedSurfaceRightAngledTriangularPrism2.castShadow = true;
-  curvedSurfaceRightAngledTriangularPrism2.receiveShadow = true;
+  // curvedSurfaceRightAngledTriangularPrism2.castShadow = true;
+  // curvedSurfaceRightAngledTriangularPrism2.receiveShadow = true;
   rightTableGroup.add(curvedSurfaceRightAngledTriangularPrism2);
 
   // 桌子右面的桌腿板
@@ -642,8 +642,8 @@ const createRightTable = (
     woodBoardDarkMaterial,
   );
   curvedSurfaceRightAngledTriangularPrism3.position.set(0, height2, 0);
-  curvedSurfaceRightAngledTriangularPrism3.castShadow = true;
-  curvedSurfaceRightAngledTriangularPrism3.receiveShadow = true;
+  // curvedSurfaceRightAngledTriangularPrism3.castShadow = true;
+  // curvedSurfaceRightAngledTriangularPrism3.receiveShadow = true;
   rightTableGroup.add(curvedSurfaceRightAngledTriangularPrism3);
 
   const height3 =
@@ -918,8 +918,8 @@ const addChestDoor = (
     -h / 2 + LEFT_SMALL_RADIUS,
     -CHEST_DOOR_THICKNESS / 2,
   );
-  quarterCylinder.castShadow = true;
-  quarterCylinder.receiveShadow = true;
+  // quarterCylinder.castShadow = true;
+  // quarterCylinder.receiveShadow = true;
   chestDoorGroup.add(quarterCylinder);
 
   if (rotation) {
@@ -987,8 +987,8 @@ const addChestDoor2 = (
     -CHEST_DOOR_THICKNESS / 2,
   );
   curvedSurfaceRightAngledTriangularPrism.rotation.z = -Math.PI / 2;
-  curvedSurfaceRightAngledTriangularPrism.castShadow = true;
-  curvedSurfaceRightAngledTriangularPrism.receiveShadow = true;
+  // curvedSurfaceRightAngledTriangularPrism.castShadow = true;
+  // curvedSurfaceRightAngledTriangularPrism.receiveShadow = true;
   chestDoorGroup.add(curvedSurfaceRightAngledTriangularPrism);
 
   if (rotation) {

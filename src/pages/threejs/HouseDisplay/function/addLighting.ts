@@ -1,15 +1,20 @@
 /**
  * 添加环境光和太阳光
  */
-import { Scene, AmbientLight, DirectionalLight, HemisphereLight } from "three";
+import {
+  Scene,
+  AmbientLight,
+  DirectionalLight,
+  HemisphereLight,
+} from "three";
 
 const addLighting = (scene: Scene) => {
   // 环境光 - 提供柔和的基础照明（进一步增加强度）
-  const ambientLight = new AmbientLight(0xffffff, 0.6 * Math.PI); // 第二个参数intensity在v0.155版本后必须要乘以Math.PI
+  const ambientLight = new AmbientLight(0xffffff, 0.85 * Math.PI); // 第二个参数intensity在v0.155版本后必须要乘以Math.PI
   scene.add(ambientLight);
 
-  // 主太阳光 - 从左上方（南面）斜照下来，模拟自然阳光（进一步增加强度）
-  const sunLight = new DirectionalLight(0xfffae3, 0.4 * Math.PI); // 暖色调阳光，第二个参数intensity在v0.155版本后必须要乘以Math.PI
+  // // 主太阳光 - 从左上方（南面）斜照下来，模拟自然阳光（进一步增加强度）
+  const sunLight = new DirectionalLight(0xfffae3, 0.3 * Math.PI); // 暖色调阳光，第二个参数intensity在v0.155版本后必须要乘以Math.PI
   sunLight.position.set(-24, 25, 12); // 从左上方照射（左边为南面）
   sunLight.castShadow = true;
   sunLight.shadow.mapSize.set(1024, 1024);
@@ -41,12 +46,12 @@ const addLighting = (scene: Scene) => {
   scene.add(skyLight.target);
 
   // 半球光
-  const hemiLight = new HemisphereLight(
-    0x87ceeb, // 天空颜色（上方）
-    0xd6eaf8, // 地面颜色（下方）
-    0.4, // 强度
-  );
-  scene.add(hemiLight);
+  // const hemiLight = new HemisphereLight(
+  //   0x87ceeb, // 天空颜色（上方）
+  //   0xd6eaf8, // 地面颜色（下方）
+  //   0.4, // 强度
+  // );
+  // scene.add(hemiLight);
 };
 
 export default addLighting;

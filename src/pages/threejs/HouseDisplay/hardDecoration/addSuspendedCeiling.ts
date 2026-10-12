@@ -150,7 +150,7 @@ const doubleEyelidSuspendedCeilingInfoList: [
     2,
   ],
 ];
-// 贴边吊顶的配置信息
+// 极简贴边吊顶的配置信息
 const weldSuspendedCeilingInfoList: [
   number,
   number,
@@ -381,7 +381,6 @@ const addDoubleEyelidSuspendedCeiling = (
   suspendedCeilingType: SuspendedCeilingType,
   downlightNum: number,
 ) => {
-  const boxGeometry = assetManager.geometries.get("boxGeometry");
   const wallMaterial = assetManager.materials.get("wallMaterial");
 
   const suspendedCeilingGroup = new Group();
@@ -391,42 +390,39 @@ const addDoubleEyelidSuspendedCeiling = (
   suspendedCeilingListRef.current?.push(suspendedCeilingGroup);
   scene.add(suspendedCeilingGroup);
 
-  const box1 = new Mesh(boxGeometry, wallMaterial);
-  box1.scale.set(length, HOLE_HEIGHT, HOLE_DEPTH);
-  box1.position.set(0, -HOLE_HEIGHT / 2, HOLE_DEPTH / 2);
-  box1.castShadow = true;
-  box1.receiveShadow = true;
-  suspendedCeilingGroup.add(box1);
-
-  const box2 = new Mesh(boxGeometry, wallMaterial);
-  box2.scale.set(
+  addBox(
+    suspendedCeilingGroup,
+    assetManager,
+    wallMaterial as MeshStandardMaterial,
+    length,
+    HOLE_HEIGHT,
+    HOLE_DEPTH,
+    0,
+    -HOLE_HEIGHT / 2,
+    HOLE_DEPTH / 2,
+  );
+  addBox(
+    suspendedCeilingGroup,
+    assetManager,
+    wallMaterial as MeshStandardMaterial,
     length,
     SINGLE_SKIN_PANEL_THICKNESS,
     DOUBLE_EYELID_SUSPENDED_CEILING_DEPTH,
-  );
-  box2.position.set(
     0,
     -HOLE_HEIGHT - SINGLE_SKIN_PANEL_THICKNESS / 2,
     DOUBLE_EYELID_SUSPENDED_CEILING_DEPTH / 2,
   );
-  box2.castShadow = true;
-  box2.receiveShadow = true;
-  suspendedCeilingGroup.add(box2);
-
-  const box3 = new Mesh(boxGeometry, wallMaterial);
-  box3.scale.set(
+  addBox(
+    suspendedCeilingGroup,
+    assetManager,
+    wallMaterial as MeshStandardMaterial,
     length,
     SINGLE_SKIN_PANEL_THICKNESS,
     DOUBLE_EYELID_SUSPENDED_CEILING_DEPTH - SINGLE_SKIN_PANEL_DEPTH_GAP,
-  );
-  box3.position.set(
     0,
     -HOLE_HEIGHT - (SINGLE_SKIN_PANEL_THICKNESS * 3) / 2,
     (DOUBLE_EYELID_SUSPENDED_CEILING_DEPTH - SINGLE_SKIN_PANEL_DEPTH_GAP) / 2,
   );
-  box3.castShadow = true;
-  box3.receiveShadow = true;
-  suspendedCeilingGroup.add(box3);
 
   switch (suspendedCeilingType) {
     case "front":
@@ -451,7 +447,7 @@ const addDoubleEyelidSuspendedCeiling = (
     HOLE_DEPTH + LIGHT_STRIP_HEIGHT / 2,
     true,
     new Vector3(-Math.PI / 2, 0, 0), // 面向天花板
-    0.2 * Math.PI,
+    0.15 * Math.PI,
   );
 
   const gap = length / downlightNum;
@@ -483,7 +479,6 @@ const addWeltSuspendedCeiling = (
   z: number,
   suspendedCeilingType: SuspendedCeilingType,
 ) => {
-  const boxGeometry = assetManager.geometries.get("boxGeometry");
   const wallMaterial = assetManager.materials.get("wallMaterial");
 
   const suspendedCeilingGroup = new Group();
@@ -493,36 +488,29 @@ const addWeltSuspendedCeiling = (
   suspendedCeilingListRef.current?.push(suspendedCeilingGroup);
   scene.add(suspendedCeilingGroup);
 
-  const box1 = new Mesh(boxGeometry, wallMaterial);
-  box1.scale.set(
+  addBox(
+    suspendedCeilingGroup,
+    assetManager,
+    wallMaterial as MeshStandardMaterial,
     length,
     SUSPENDED_CEILING_HEIGHT,
     WELT_SUSPENDED_CEILING_INNER_THICKNESS,
-  );
-  box1.position.set(
     0,
     -SUSPENDED_CEILING_HEIGHT / 2,
     WELT_SUSPENDED_CEILING_INNER_THICKNESS / 2,
   );
-  box1.castShadow = true;
-  box1.receiveShadow = true;
-  suspendedCeilingGroup.add(box1);
-
-  const box2 = new Mesh(boxGeometry, wallMaterial);
-  box2.scale.set(
+  addBox(
+    suspendedCeilingGroup,
+    assetManager,
+    wallMaterial as MeshStandardMaterial,
     length,
     WELT_SUSPENDED_CEILING_OUTER_HEIGHT,
     WELT_SUSPENDED_CEILING_OUTER_THICKNESS,
-  );
-  box2.position.set(
     0,
     -WELT_SUSPENDED_CEILING_OUTER_HEIGHT / 2,
     WELT_SUSPENDED_CEILING_INNER_THICKNESS +
       WELT_SUSPENDED_CEILING_OUTER_THICKNESS / 2,
   );
-  box2.castShadow = true;
-  box2.receiveShadow = true;
-  suspendedCeilingGroup.add(box2);
 
   switch (suspendedCeilingType) {
     case "front":

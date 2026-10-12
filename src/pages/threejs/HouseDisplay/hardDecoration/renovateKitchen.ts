@@ -144,7 +144,7 @@ const createTileToWall = (
         height / 2 - (tileHeight / 2 + row * (TILE_SIZE + GAP_SIZE)),
         0,
       );
-      tile.receiveShadow = true;
+      // tile.receiveShadow = true;
       wallTileGroup.add(tile);
     }
   }

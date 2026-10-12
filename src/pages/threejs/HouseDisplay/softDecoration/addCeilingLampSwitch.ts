@@ -282,7 +282,7 @@ export const onClickCeilingLampSwitch = (
     for (let i = 0, l = lampList.length; i < l; i++) {
       const lamp = lampList[i];
       if (lamp.name.substring(0, lamp.name.length - 2) === positionName) {
-        ceilingLampSwitchStatusToggle(lamp, nextStatus);
+        ceilingLampSwitchStatusToggle(lamp, nextStatus, true);
         break;
       }
     }

@@ -243,8 +243,6 @@ const createRightCabinet = (
           LIGHT_STRIP_HEIGHT / 2 +
           0.1,
         false,
-        undefined,
-        2 * Math.PI,
       );
       light && lightList.push(light);
     }

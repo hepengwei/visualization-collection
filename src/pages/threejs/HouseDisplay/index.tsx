@@ -54,7 +54,7 @@ import addDecorateBackgroundPanel from './softDecoration/addDecorateBackgroundPa
 import addLivingRoomCabinet from './hardDecoration/addLivingRoomCabinet';
 import addKidsWardrobe from "./hardDecoration/addKidsWardrobe";
 import renovateKitchen from './hardDecoration/renovateKitchen';
-import { dynamicOptimizationLightingStripRender } from './function/dynamicOptimizationLightingStripRender';
+// import { dynamicOptimizationLightingStripRender } from './function/dynamicOptimizationLightingStripRender';
 import styles from "./index.module.scss";
 
 export type SwitchStatus = 'ON' | 'OFF';
@@ -63,7 +63,7 @@ export type SwitchStatus = 'ON' | 'OFF';
 const showStats = false;
 
 // 初始相机位置
-const initialCameraPosition = new Vector3(0, 24, 0);
+const initialCameraPosition = new Vector3(0, 22, 0);
 const initialCameraTarget = new Vector3(0, 0, 0);
 
 const HouseDisplay = () => {
@@ -366,13 +366,13 @@ const HouseDisplay = () => {
     );
 
     // 漫游模式下，根据相机位置实时计算，打开或关闭灯带光源
-    dynamicOptimizationLightingStripRender(
-      camera,
-      animatingRef,
-      viewModeRef,
-      lightStripLightingMapRef.current,
-      lampLightingListRef.current
-    );
+    // dynamicOptimizationLightingStripRender(
+    //   camera,
+    //   animatingRef,
+    //   viewModeRef,
+    //   lightStripLightingMapRef.current,
+    //   lampLightingListRef.current
+    // );
 
     // 鼠标准星渲染
     crosshairRender(

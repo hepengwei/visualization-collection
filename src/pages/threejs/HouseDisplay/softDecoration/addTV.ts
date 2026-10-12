@@ -114,9 +114,9 @@ const createTV = (
     tvGroup.add(tvScreen);
     const tvLight = createTVLight();
     tvGroup.add(tvLight);
-    const tvProjection = createTVProjection(videoTexture);
-    tvGroup.add(tvProjection);
-    tvGroup.add(tvProjection.target);
+    // const tvProjection = createTVProjection(videoTexture);
+    // tvGroup.add(tvProjection);
+    // tvGroup.add(tvProjection.target);
   }
 
   return tvGroup;
