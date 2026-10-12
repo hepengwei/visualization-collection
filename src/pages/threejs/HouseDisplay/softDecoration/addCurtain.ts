@@ -151,7 +151,7 @@ export const addCurtain = (
   const whiteVoileMaterial = new MeshLambertMaterial({
     color: 0xffffff,
     transparent: true,
-    opacity: 0.8,
+    opacity: 0.85,
     depthWrite: false, // 透明物体不写深度，避免遮挡后面的透明物体
     alphaTest: 0.5, // 设置alphaTest阈值，让半透明物体也能投射阴影
     emissive: 0x111111,

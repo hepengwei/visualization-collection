@@ -54,7 +54,7 @@ const PASS_EDGE_BINDING_THICKNESS = 0.016; // 垭口包边厚度
 // 所有墙体参数
 const WALL_1_WIDTH = 8.7;
 export const WALL_1_POSITION_Y = WALL_HEIGHT / 2;
-export const WALL_1_POSITION_Z = -10.5;
+export const WALL_1_POSITION_Z = -9.5;
 export const WALL_2_WIDTH = 0.1;
 export const WALL_2_POSITION_X = -9.78;
 const WALL_2_POSITION_Z =
@@ -318,8 +318,8 @@ export const WALL_80_POSITION_Z =
 // 地板参数
 export const TILE_SIZE = 1.2; // 1.2m的地砖
 export const GAP_SIZE = 0.005; // 5mm的缝隙
-const FLOOR_WIDTH = WALL_35_POSITION_X - WALL_2_POSITION_X + TILE_SIZE * 6; // 地板总宽度
-const FLOOR_DEPTH = WALL_60_POSITION_Z - WALL_1_POSITION_Z + TILE_SIZE * 1.5; // 地板总深度
+const WALL_MAX_WIDTH = WALL_35_POSITION_X - WALL_2_POSITION_X + TILE_SIZE * 6; // 左右墙体最大宽度
+const WALL_MAX_DEPTH = WALL_60_POSITION_Z - WALL_1_POSITION_Z + TILE_SIZE * 1.5; // 前后墙体最大深度
 
 // 所有墙体的尺寸和位置
 const wallInfoList: (
@@ -1222,8 +1222,8 @@ const addAllWall = (
   mouseRaycasterIntersectObjectsRef.current?.push(instancedMesh);
   pointerControlsIntersetObjectsRef.current?.push(instancedMesh);
   instancedMesh.instanceMatrix.setUsage(DynamicDrawUsage);
-  instancedMesh.receiveShadow = true;
-  instancedMesh.castShadow = true;
+  // instancedMesh.receiveShadow = true;
+  // instancedMesh.castShadow = true;
 
   // 添加所有的墙体
   const dummy = new Object3D();
@@ -1632,8 +1632,10 @@ const addGlassWindow = (
 // 创建并添加大理石地板
 const addMarbleFloor = (scene: Scene, assetManager: AssetManager) => {
   // 计算需要多少块砖
-  const tilesX = Math.ceil(FLOOR_WIDTH / (TILE_SIZE + GAP_SIZE));
-  const tilesZ = Math.ceil(FLOOR_DEPTH / (TILE_SIZE + GAP_SIZE));
+  const tilesX = Math.ceil(WALL_MAX_WIDTH / (TILE_SIZE + GAP_SIZE));
+  const tilesZ = Math.ceil(WALL_MAX_DEPTH / (TILE_SIZE + GAP_SIZE));
+  const FLOOR_WIDTH = tilesX * (TILE_SIZE + GAP_SIZE) - GAP_SIZE;
+  const FLOOR_DEPTH = tilesZ * (TILE_SIZE + GAP_SIZE) - GAP_SIZE;
 
   const planeGeometry = assetManager.geometries.get("planeGeometry");
   const tileMaterial = assetManager.materials.get("tileMaterial");
@@ -1684,7 +1686,7 @@ const addMarbleFloor = (scene: Scene, assetManager: AssetManager) => {
   gapFloor.position.y = -0.01; // 低于地砖，作为缝隙（加大间距防止Z-fighting）
   gapFloor.position.z =
     WALL_1_POSITION_Z - WALL_THICKNESS / 2 + FLOOR_DEPTH / 2;
-  gapFloor.receiveShadow = true;
+  // gapFloor.receiveShadow = true;
   scene.add(gapFloor);
 };
 
@@ -1724,8 +1726,8 @@ const addKidsBedRoomQuartzCountertop = (
     TALL_GRADE_BEAM_HEIGHT - quartzCountertopThickness / 2,
     WALL_36_POSITION_Z,
   );
-  quartzCountertop.receiveShadow = true;
-  quartzCountertop.castShadow = true;
+  // quartzCountertop.receiveShadow = true;
+  // quartzCountertop.castShadow = true;
   scene.add(quartzCountertop);
 };
 

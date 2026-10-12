@@ -125,9 +125,8 @@ const createTileToWall = (
   const planeGeometry = assetManager.geometries.get("planeGeometry");
   const tileMaterial = assetManager.materials.get("tileMaterial");
   const wallTileGroup = new Group();
-  const cols = Math.ceil(width / (TILE_SIZE + GAP_SIZE));
   const rows = Math.ceil(height / (TILE_SIZE + GAP_SIZE));
-
+  const cols = Math.ceil(width / (TILE_SIZE + GAP_SIZE));
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
       let tileWidth = TILE_SIZE;
@@ -145,7 +144,7 @@ const createTileToWall = (
         height / 2 - (tileHeight / 2 + row * (TILE_SIZE + GAP_SIZE)),
         0,
       );
-      tile.receiveShadow = true;
+      // tile.receiveShadow = true;
       wallTileGroup.add(tile);
     }
   }

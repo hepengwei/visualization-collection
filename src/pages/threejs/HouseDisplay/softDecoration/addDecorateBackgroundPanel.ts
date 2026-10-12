@@ -223,7 +223,7 @@ const createDecorateBackgroundPanel = (
   box5.receiveShadow = true;
   decorateBackgroundPanelGroup.add(box5);
   const width2 = PANEL_WIDTH - LEFT_TOP_RADIUS - LEFT_OR_RIGHT_WIDTH;
-  addBox(
+  const box6 = addBox(
     decorateBackgroundPanelGroup,
     assetManager,
     woodBoardLightYellowMaterial,
@@ -234,7 +234,10 @@ const createDecorateBackgroundPanel = (
     PANEL_HEIGHT / 2 - LEFT_TOP_RADIUS / 2,
     z,
   );
-  addBox(
+  if (box6) {
+    box6.receiveShadow = true;
+  }
+  const box7 = addBox(
     decorateBackgroundPanelGroup,
     assetManager,
     woodBoardLightYellowMaterial,
@@ -245,42 +248,45 @@ const createDecorateBackgroundPanel = (
     PANEL_HEIGHT / 2 - (PANEL_HEIGHT - PANEL_WIDTH / 2) / 2,
     z,
   );
+  if (box7) {
+    box7.receiveShadow = true;
+  }
   const curvedSurfaceRightAngledTriangularPrismGeometry2 =
     generateCurvedSurfaceRightAngledTriangularPrismGeometry(
       RIGHT_TOP_RADIUS,
       FRONT_PANEL_THICKNESS,
     );
-  const box6 = new Mesh(
+  const box8 = new Mesh(
     curvedSurfaceRightAngledTriangularPrismGeometry2,
     woodBoardLightYellowMaterial,
   );
-  box6.rotation.z = Math.PI;
-  box6.position.set(
+  box8.rotation.z = Math.PI;
+  box8.position.set(
     PANEL_WIDTH / 2 - LEFT_OR_RIGHT_WIDTH,
     PANEL_HEIGHT / 2 - LEFT_TOP_RADIUS,
     BACK_PANEL_THICKNESS + MIDDLE_PANEL_THICKNESS,
   );
-  box6.receiveShadow = true;
-  decorateBackgroundPanelGroup.add(box6);
+  box8.receiveShadow = true;
+  decorateBackgroundPanelGroup.add(box8);
   const generateHalfCircularRingCylinderGeometry2 =
     generateHalfCircularRingCylinderGeometry(
       PANEL_WIDTH / 2,
       BOTTOM_RADIUS,
       FRONT_PANEL_THICKNESS,
     );
-  const box7 = new Mesh(
+  const box9 = new Mesh(
     generateHalfCircularRingCylinderGeometry2,
     woodBoardLightYellowMaterial,
   );
-  box7.rotation.z = Math.PI;
-  box7.position.set(
+  box9.rotation.z = Math.PI;
+  box9.position.set(
     0,
     -PANEL_HEIGHT / 2 + PANEL_WIDTH / 2,
     BACK_PANEL_THICKNESS + MIDDLE_PANEL_THICKNESS,
   );
-  box7.receiveShadow = true;
-  decorateBackgroundPanelGroup.add(box7);
-  addBox(
+  box9.receiveShadow = true;
+  decorateBackgroundPanelGroup.add(box9);
+  const box10 = addBox(
     decorateBackgroundPanelGroup,
     assetManager,
     woodBoardLightYellowMaterial,
@@ -291,6 +297,9 @@ const createDecorateBackgroundPanel = (
     -PANEL_HEIGHT / 2 + PANEL_WIDTH / 2 + WOOD_PANEL_MARGIN_BOTTOM / 2,
     BACK_PANEL_THICKNESS + MIDDLE_PANEL_THICKNESS + FRONT_PANEL_THICKNESS / 2,
   );
+  if (box10) {
+    box10.receiveShadow = true;
+  }
 
   // 圆面
   addCylinder(
@@ -405,7 +414,7 @@ const addAllLightingStrip = (
     z,
     true,
     new Vector3(Math.PI / 2, 0, 0),
-    0.6 * Math.PI,
+    0.3 * Math.PI,
   );
   light1 && lightList.push(light1);
   const radius = RIGHT_TOP_RADIUS + LIGHTING_STRIP_GAP - 0.01;
@@ -439,7 +448,7 @@ const addAllLightingStrip = (
     z,
     true,
     new Vector3(Math.PI / 2, -Math.PI / 2, 0),
-    0.6 * Math.PI,
+    0.3 * Math.PI,
   );
   light2 && lightList.push(light2);
   const radius2 = BOTTOM_RADIUS + LIGHTING_STRIP_GAP - 0.01;
@@ -470,7 +479,7 @@ const addAllLightingStrip = (
     z,
     true,
     new Vector3(Math.PI / 2, Math.PI / 2, 0),
-    0.6 * Math.PI,
+    0.3 * Math.PI,
   );
   light3 && lightList.push(light3);
   lightingStripLightMapRef.current[

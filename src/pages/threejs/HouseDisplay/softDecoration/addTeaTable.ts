@@ -44,8 +44,6 @@ const VASE_POSITION = new Vector3(
 const addTeaTable = (scene: Scene, assetManager: AssetManager) => {
   const teaTableGroup = new Group();
   teaTableGroup.name = "茶几";
-  teaTableGroup.castShadow = true;
-  teaTableGroup.receiveShadow = true;
   teaTableGroup.scale.set(0.5, 0.5, 0.5);
 
   // 圆柱体
@@ -129,7 +127,7 @@ const addTeaTable = (scene: Scene, assetManager: AssetManager) => {
   tablePanel.scale.set(PANEL_LONG_RIDIUS, PANEL_THICKNESS, PANEL_SHORT_RIDIUS);
   tablePanel.position.y = tablePanelPositionY;
   tablePanel.castShadow = true;
-  tablePanel.receiveShadow = true;
+  // tablePanel.receiveShadow = true;
   teaTableGroup.add(tablePanel);
 
   // 主桌面金边

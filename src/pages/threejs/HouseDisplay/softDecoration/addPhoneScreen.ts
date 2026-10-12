@@ -39,8 +39,8 @@ export const addPhoneScreen = (
       videoTexture,
     );
     phone.add(phoneScreen);
-    const phoneLight = createPhoneLight(phoneSize, phonePos);
-    phone.add(phoneLight);
+    // const phoneLight = createPhoneLight(phoneSize, phonePos);
+    // phone.add(phoneLight);
     // const phoneProjection = createPhoneProjection(phonePos, videoTexture);
     // phone.add(phoneProjection);
     // phone.add(phoneProjection.target);

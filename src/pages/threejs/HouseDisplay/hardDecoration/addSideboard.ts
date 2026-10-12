@@ -4,11 +4,12 @@
 import { MutableRefObject } from "react";
 import {
   Scene,
+  MeshStandardMaterial,
   MeshPhysicalMaterial,
+  // Color,
   Mesh,
   Group,
   Vector3,
-  Color,
   DoubleSide,
   RectAreaLight,
 } from "three";
@@ -18,7 +19,7 @@ import {
   LIGHT_STRIP_HEIGHT,
   addBox,
   addLightStrip,
-  addRectAreaLighting,
+  // addRectAreaLighting,
   addRoundLight,
 } from "../utils";
 import {
@@ -100,29 +101,38 @@ const addSideboard = (
   lightStripLightingMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
 ) => {
   // 艺术玻璃材质
-  const frostedArtGlassMaterial = new MeshPhysicalMaterial({
-    color: 0xffffff,
+  const frostedArtGlassMaterial = new MeshStandardMaterial({
+    color: 0x80a7c9,
     metalness: 0.0,
     roughness: 0.35,
-    // —— 半透明核心 ——
-    transmission: 0.85, // 这个必须要
-    thickness: 0.9,
-    ior: 1.52,
-    attenuationColor: new Color(0x4f9bd9),
-    attenuationDistance: 0.55,
-    dispersion: 0.12,
-    // —— 表面质感 ——
-    clearcoat: 0.65,
-    clearcoatRoughness: 0.22,
-    specularIntensity: 1.0,
-    iridescence: 0.1,
-    iridescenceIOR: 1.32,
-    iridescenceThicknessRange: [140, 460],
-    envMapIntensity: 1.25,
     transparent: true,
-    opacity: 1.0, // transmission>0 时必须为 1
+    opacity: 0.9,
     side: DoubleSide,
   });
+  // const frostedArtGlassMaterial = new MeshPhysicalMaterial({
+  //   color: 0xffffff,
+  //   metalness: 0.0,
+  //   roughness: 0.35,
+  //   // —— 半透明核心 ——
+  //   transmission: 0.85, // 这个必须要
+  //   thickness: 0.9,
+  //   ior: 1.52,
+  //   attenuationColor: new Color(0x4f9bd9),
+  //   attenuationDistance: 0.55,
+  //   dispersion: 0.12,
+  //   // —— 表面质感 ——
+  //   clearcoat: 0.65,
+  //   clearcoatRoughness: 0.22,
+  //   specularIntensity: 1.0,
+  //   iridescence: 0.1,
+  //   iridescenceIOR: 1.32,
+  //   iridescenceThicknessRange: [140, 460],
+  //   envMapIntensity: 1.25,
+  //   transparent: true,
+  //   opacity: 1.0, // transmission>0 时必须为 1
+  //   side: DoubleSide,
+  // });
+
   assetManager.materials.set(
     "frostedArtGlassMaterial",
     frostedArtGlassMaterial,
@@ -659,8 +669,8 @@ const createSideboard = (
   );
   halfCylinder.rotation.z = Math.PI / 2;
   halfCylinder.rotation.x = Math.PI / 2;
-  halfCylinder.castShadow = true;
-  halfCylinder.receiveShadow = true;
+  // halfCylinder.castShadow = true;
+  // halfCylinder.receiveShadow = true;
   halfCylinder.position.set(
     -DECORATIVE_BAFFLE_BACK_PLATE_WIDTH -
       GLASS_WIDTH * 3 +
@@ -751,34 +761,34 @@ const createSideboard = (
   );
 
   // 添加装饰挡板玻璃后面的灯光
-  const RectAreaLigthWidth =
-    (DECORATIVE_BAFFLE_PLATE_THICKNESS - GLASS_THICKNESS) / 2;
-  const leftPositionX =
-    -DECORATIVE_BAFFLE_BACK_PLATE_WIDTH - GLASS_WIDTH * 2 + 0.01;
-  const rightPositionX =
-    -DECORATIVE_BAFFLE_BACK_PLATE_WIDTH - GLASS_WIDTH - 0.01;
-  // 玻璃后面的左边灯光
-  addRectAreaLighting(
-    decorativeBafflePlate,
-    RectAreaLigthWidth,
-    GLASS_HEIGHT,
-    leftPositionX,
-    SIDEBOARD_HEIGHT / 2,
-    RectAreaLigthWidth / 2,
-    true,
-    new Vector3(0, -Math.PI / 2, 0),
-  );
-  // 玻璃后面的右边灯光
-  addRectAreaLighting(
-    decorativeBafflePlate,
-    RectAreaLigthWidth,
-    GLASS_HEIGHT,
-    rightPositionX,
-    SIDEBOARD_HEIGHT / 2,
-    RectAreaLigthWidth / 2,
-    true,
-    new Vector3(0, Math.PI / 2, 0),
-  );
+  // const RectAreaLigthWidth =
+  //   (DECORATIVE_BAFFLE_PLATE_THICKNESS - GLASS_THICKNESS) / 2;
+  // const leftPositionX =
+  //   -DECORATIVE_BAFFLE_BACK_PLATE_WIDTH - GLASS_WIDTH * 2 + 0.01;
+  // const rightPositionX =
+  //   -DECORATIVE_BAFFLE_BACK_PLATE_WIDTH - GLASS_WIDTH - 0.01;
+  // // 玻璃后面的左边灯光
+  // addRectAreaLighting(
+  //   decorativeBafflePlate,
+  //   RectAreaLigthWidth,
+  //   GLASS_HEIGHT,
+  //   leftPositionX,
+  //   SIDEBOARD_HEIGHT / 2,
+  //   RectAreaLigthWidth / 2,
+  //   true,
+  //   new Vector3(0, -Math.PI / 2, 0),
+  // );
+  // // 玻璃后面的右边灯光
+  // addRectAreaLighting(
+  //   decorativeBafflePlate,
+  //   RectAreaLigthWidth,
+  //   GLASS_HEIGHT,
+  //   rightPositionX,
+  //   SIDEBOARD_HEIGHT / 2,
+  //   RectAreaLigthWidth / 2,
+  //   true,
+  //   new Vector3(0, Math.PI / 2, 0),
+  // );
 
   return sideboardGroup;
 };
@@ -814,9 +824,10 @@ const addCurvedSurfaceRightAngledTriangularPrism = (
     curvedSurfaceRightAngledTriangularPrism.rotation.z = rotation.z;
   }
   curvedSurfaceRightAngledTriangularPrism.position.set(x, y, z);
-  curvedSurfaceRightAngledTriangularPrism.castShadow = true;
-  curvedSurfaceRightAngledTriangularPrism.receiveShadow = true;
+  // curvedSurfaceRightAngledTriangularPrism.castShadow = true;
+  // curvedSurfaceRightAngledTriangularPrism.receiveShadow = true;
   parent.add(curvedSurfaceRightAngledTriangularPrism);
+  return curvedSurfaceRightAngledTriangularPrism;
 };
 
 export default addSideboard;

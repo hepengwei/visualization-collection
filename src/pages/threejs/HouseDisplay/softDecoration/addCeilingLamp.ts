@@ -32,14 +32,12 @@ import {
   WALL_33_POSITION_X,
   WALL_34_POSITION_X,
   WALL_55_POSITION_X,
-  WALL_75_POSITION_X,
   WALL_3_POSITION_Z,
   WALL_19_POSITION_Z,
   WALL_40_POSITION_Z,
   WALL_42_POSITION_Z,
   WALL_53_POSITION_Z,
   WALL_58_POSITION_Z,
-  WALL_67_POSITION_Z,
 } from "../hardDecoration/addHouseStructure";
 
 const LAMP_RADIUS = 0.65; // 灯的半径
@@ -53,7 +51,6 @@ const lampConfigList = [
       CEILING_LAMP_Y,
       WALL_58_POSITION_Z - 0.2,
     ),
-    noNeedDynamicOptimization: true,
   },
   {
     name: "餐厅吊灯",
@@ -62,7 +59,6 @@ const lampConfigList = [
       CEILING_LAMP_Y,
       WALL_42_POSITION_Z + 0.45,
     ),
-    noNeedDynamicOptimization: true,
   },
   {
     name: "主卧吊灯",
@@ -90,15 +86,6 @@ const lampConfigList = [
       WALL_53_POSITION_Z + 0.2,
     ),
     scale: new Vector3(0.7, 0.7, 0.7),
-  },
-  {
-    name: "厨房吊灯",
-    position: new Vector3(
-      WALL_75_POSITION_X,
-      CEILING_LAMP_Y,
-      WALL_67_POSITION_Z - 0.6,
-    ),
-    scale: new Vector3(0.5, 0.5, 0.5),
   },
   {
     name: "外厕所吊灯",
@@ -180,7 +167,7 @@ export const addCeilingLamp = (
   );
   // 吊灯底部不发光时面板材质
   const ceilingLampBottomDarkPanelMaterial = new MeshBasicMaterial({
-    color: 0xdddddd,
+    color: 0xeeeeee,
     side: DoubleSide,
   });
   assetManager.materials.set(
@@ -240,6 +227,7 @@ const createLamp = (
   const lampGroup = new Group();
   // 默认隐藏
   lampGroup.visible = false;
+
   const circleGeometry = assetManager.geometries.get("circleGeometry");
   const cylinderGeometry = assetManager.geometries.get("cylinderGeometry");
   const ceilingLampRingGeometry = assetManager.geometries.get(
@@ -348,7 +336,7 @@ const addLampLight = (
   name: string,
 ) => {
   const lightColor = kelvinToColor(4000); // 色温，值越大颜色越冷
-  const light = new PointLight(lightColor, 1.4 * Math.PI, 10, 1.2);
+  const light = new PointLight(lightColor, 0.8 * Math.PI, 10, 1.2);
   light.name = name;
   light.position.set(0, -LAMP_THICKNESS / 2 - 0.02, 0);
   light.castShadow = true;
@@ -401,22 +389,24 @@ export const allCeilingLampsVisibleToggle = (
 export const ceilingLampVisibleToggle = (lamp: Group, visible: boolean) => {
   if (lamp.visible === visible) return;
   lamp.visible = visible;
-  const nextStatus = visible ? "ON" : "OFF";
-  ceilingLampSwitchStatusToggle(lamp, nextStatus);
+  // const nextStatus = visible ? "ON" : "OFF";
+  // ceilingLampSwitchStatusToggle(lamp, nextStatus);
 };
 
 // 切换单个吊灯的开关状态
 export const ceilingLampSwitchStatusToggle = (
   lamp: Group,
   nextStatus: "ON" | "OFF",
+  changeLighting = false,
 ) => {
   // @ts-ignore
   lamp.switchStatus = nextStatus;
   lamp.traverse((child) => {
-    if (child instanceof PointLight) {
+    if (changeLighting && child instanceof PointLight) {
       // @ts-ignore
       child.visible = nextStatus === "ON";
-    } else if (child.name === "吊灯底面") {
+    }
+    if (child.name === "吊灯底面") {
       const panel = child as any;
       const newMaterial =
         nextStatus === "ON" ? panel.lightMaterial : panel.darkMaterial;

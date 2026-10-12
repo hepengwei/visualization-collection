@@ -34,7 +34,8 @@ import type { AssetManager } from "hooks/threejs/useInitialize";
 
 const WALL_COLOR = 0xf4f3ef; // 珍珠白乳胶漆颜色
 const LIGHT_STRIP_COLOR = 0xffe8c2; // 灯带和灯光的颜色，暖黄白
-export const WOOD_LIGHT_COLOR = 0xefebe7; // 浅色木头
+// export const WOOD_LIGHT_COLOR = 0xefebe7; // 浅色木头
+export const WOOD_LIGHT_COLOR = 0xf2eeea; // 浅色木头
 export const WOOD_DARK_COLOR = 0xa5acb7; // 深色木头(浅蓝色)
 export const WOOD_DARK_LINE_COLOR = 0x505762; // 深色木头对应更深的线条颜色
 const WOOD_LIGHT_YELLOW_COLOR = 0xfffaf0; // 浅黄白色木头
@@ -81,7 +82,7 @@ export const initAssetManager = (assetManager: AssetManager) => {
     "completelyInvisibleMaterial",
     completelyInvisibleMaterial,
   );
-  // 墙体材质
+  // 创建墙体材质
   const wallMaterial = new MeshStandardMaterial({
     color: WALL_COLOR,
     roughness: 0.85, // 乳胶漆的粗糙度，有轻微漫反射
@@ -89,7 +90,7 @@ export const initAssetManager = (assetManager: AssetManager) => {
     envMapIntensity: 0.3,
   });
   assetManager.materials.set("wallMaterial", wallMaterial);
-  // 瓷砖材质
+  // 创建瓷砖材质
   const tileMaterial = new MeshPhysicalMaterial({
     color: 0xf5f5f5, // 白色微偏冷
     metalness: 0.0, // 瓷砖是非金属
@@ -104,6 +105,9 @@ export const initAssetManager = (assetManager: AssetManager) => {
     color: ALUMINIUM_ALLOY_COLOR,
     metalness: 0.8,
     roughness: 0.3,
+    polygonOffset: true, // 启用深度偏移，防止产生Z-fighting闪烁
+    polygonOffsetFactor: 0.1, 
+    polygonOffsetUnits: 0.1,
   });
   assetManager.materials.set("aluminiumAlloyMaterial", aluminiumAlloyMaterial);
   // 创建哑光工业铝材质
@@ -114,6 +118,22 @@ export const initAssetManager = (assetManager: AssetManager) => {
     envMapIntensity: 1.0, // 有 scene.environment 时才有效果
   });
   assetManager.materials.set("whiteAluminumMaterial", whiteAluminumMaterial);
+  // 创建白色铝扣板材质（不受光影响）
+  const aluminousGussetPlateMaterial = new MeshPhysicalMaterial({
+    color: 0xd7d7d5, // 暖白/冷白都可
+    emissive: 0xd7d7d5, // 自发光颜色
+    emissiveIntensity: 0.8, // 自发光强度，使其不受环境光影响变灰
+    metalness: 0.55, // 铝基底：不是纯金属，也不是塑料
+    roughness: 0.42, // 烤漆铝扣板：半哑光
+    clearcoat: 0.35, // 表面有一层薄漆膜
+    clearcoatRoughness: 0.25, // 漆膜轻微漫反射
+    envMapIntensity: 0.9, // 厨房有环境光/窗光，适度反射
+    reflectivity: 0.5,
+  });
+  assetManager.materials.set(
+    "aluminousGussetPlateMaterial",
+    aluminousGussetPlateMaterial,
+  );
 
   // 创建不同颜色的实木木板材质
   const woodBoardLightMaterial = makeWoodBoardMaterial(WOOD_LIGHT_COLOR); // 灰白色
@@ -139,8 +159,21 @@ export const initAssetManager = (assetManager: AssetManager) => {
     woodBoardChampagneMaterial,
   );
 
+  // 创建白色面板材质（不受光影响）
+  const whitePanelMaterial = new MeshPhysicalMaterial({
+    color: 0xffffff,
+    emissive: 0xffffff, // 自发光颜色
+    emissiveIntensity: 0.8, // 自发光强度，使其不受环境光影响变灰
+    roughness: 0.5,
+    metalness: 0.0,
+    side: FrontSide,
+    polygonOffset: true, // 启用深度偏移，防止产生Z-fighting闪烁
+    polygonOffsetFactor: 0.1,
+    polygonOffsetUnits: 0.1,
+  });
+  assetManager.materials.set("whitePanelMaterial", whitePanelMaterial);
   // 创建白色面板材质（受光影响）
-  const whitePanelMaterial = new MeshStandardMaterial({
+  const whitePanelMaterial2 = new MeshStandardMaterial({
     color: 0xffffff,
     roughness: 0.3,
     metalness: 0.0,
@@ -149,7 +182,21 @@ export const initAssetManager = (assetManager: AssetManager) => {
     polygonOffsetFactor: 0.1,
     polygonOffsetUnits: 0.1,
   });
-  assetManager.materials.set("whitePanelMaterial", whitePanelMaterial);
+  assetManager.materials.set("whitePanelMaterial2", whitePanelMaterial2);
+
+  // 创建白色面板对应的缝隙材质（不受光影响）
+  const whitePanelGapMaterial = new MeshStandardMaterial({
+    color: 0x666666,
+    emissive: 0x666666, // 自发光颜色
+    emissiveIntensity: 0.7, // 自发光强度，使其不受环境光影响变灰
+    roughness: 0.3,
+    metalness: 0.0,
+    side: FrontSide,
+    polygonOffset: true, // 启用深度偏移，防止产生Z-fighting闪烁
+    polygonOffsetFactor: 0.1,
+    polygonOffsetUnits: 0.1,
+  });
+  assetManager.materials.set("whitePanelGapMaterial", whitePanelGapMaterial);
 
   // 创建暖黄白色面板材质（不受光影响）
   const yellowWhitePanelMaterial = new MeshPhysicalMaterial({
@@ -863,7 +910,7 @@ export const addLightStrip = (
   z: number,
   lightVisible = true, // 灯光默认显示还是隐藏
   rotation = new Vector3(Math.PI / 2, 0, 0), // 默认面向地面
-  intensity = 0.5 * Math.PI,
+  intensity = 0, // 默认不带光源
 ) => {
   const planeGeometry = assetManager.geometries.get("planeGeometry");
   const yellowWhitePanelMaterial = assetManager.materials.get(
@@ -919,6 +966,42 @@ export const addRectAreaLighting = (
   return light;
 };
 
+// 创建并添加铝扣板平面灯
+export const addAluminousGussetPlateLight = (
+  parent: Group,
+  assetManager: AssetManager,
+  w: number,
+  h: number,
+  x: number,
+  y: number,
+  z: number,
+  lightVisible = true, // 灯光默认显示还是隐藏
+  rotation = new Vector3(0, 0, 0),
+  intensity = 0,
+) => {
+  const planeGeometry = assetManager.geometries.get("planeGeometry");
+  const whitePanelMaterial = assetManager.materials.get("whitePanelMaterial");
+  const lightingStrip = new Mesh(planeGeometry, whitePanelMaterial);
+  lightingStrip.scale.set(w, h);
+  lightingStrip.position.set(x, y, z);
+  lightingStrip.rotation.set(rotation.x, rotation.y, rotation.z);
+  parent.add(lightingStrip);
+  if (intensity > 0) {
+    // 添加发光灯带的光源
+    return addRectAreaLighting(
+      parent,
+      w,
+      h,
+      x,
+      rotation.x < 0 ? y + 0.01 : y - 0.01,
+      z,
+      lightVisible,
+      new Vector3(-rotation.x, -rotation.y, rotation.z),
+      intensity,
+    );
+  }
+};
+
 // 创建并添加圆形射灯
 export const addRoundLight = (
   parent: Group,
@@ -964,7 +1047,7 @@ export const addRoundLighting = (
   ty: number,
   tz: number,
   distance: number,
-  intensity = 0.6 * Math.PI,
+  intensity = 0.5 * Math.PI,
 ) => {
   const light = new SpotLight(
     LIGHT_STRIP_COLOR, // 暖黄白
@@ -1005,8 +1088,8 @@ export const addBox = (
   const m = new Mesh(boxGeometry, mat);
   m.scale.set(w, h, d);
   m.position.set(x, y, z);
-  m.castShadow = true;
-  m.receiveShadow = receiveShadow;
+  // m.castShadow = true;
+  // m.receiveShadow = receiveShadow;
   m.visible = visible;
   parent.add(m);
   return m;
@@ -1053,7 +1136,7 @@ export const addCylinder = (
   m.scale.set(radius, depth, radius);
   m.position.set(x, y, z);
   m.rotation.set(rotation.x, rotation.y, rotation.z);
-  m.receiveShadow = receiveShadow;
+  // m.receiveShadow = receiveShadow;
   parent.add(m);
   return m;
 };
@@ -1072,7 +1155,7 @@ export const addCircleLightingStrip = (
   fwdSign: 1 | -1 = 1, // 默认内侧
   rotation = new Vector3(0, 0, 0), // 默认在z=0的同一平面
   lightVisible = true, // 灯光默认显示还是隐藏
-  intensity = 0.4 * Math.PI,
+  intensity = 0.2 * Math.PI,
 ) => {
   const curvePoints = [];
   for (let i = 0; i <= count; i++) {

@@ -145,8 +145,8 @@ const createLivingRoomCabinet = (
     LIVING_ROOM_CABINET_HEIGHT - topHeight,
     TOP_STORAGE_AREA_DEPTH - ARC_BOARD_THICKNESS,
   );
-  generateQuarterCylinder1.castShadow = true;
-  generateQuarterCylinder1.receiveShadow = true;
+  // generateQuarterCylinder1.castShadow = true;
+  // generateQuarterCylinder1.receiveShadow = true;
   livingRoomCabinetGroup.add(generateQuarterCylinder1);
   // 左上板右面的深灰色涂层
   addBox(
@@ -189,8 +189,8 @@ const createLivingRoomCabinet = (
     LIVING_ROOM_CABINET_HEIGHT - topHeight,
     TOP_STORAGE_AREA_DEPTH - ARC_BOARD_THICKNESS,
   );
-  generateQuarterCylinder2.castShadow = true;
-  generateQuarterCylinder2.receiveShadow = true;
+  // generateQuarterCylinder2.castShadow = true;
+  // generateQuarterCylinder2.receiveShadow = true;
   livingRoomCabinetGroup.add(generateQuarterCylinder2);
   // 右上板左面的深灰色涂层
   addBox(
@@ -241,8 +241,8 @@ const createLivingRoomCabinet = (
     0,
     LIVING_ROOM_CABINET_DEPTH - ARC_BOARD_THICKNESS,
   );
-  generateQuarterCylinder3.castShadow = true;
-  generateQuarterCylinder3.receiveShadow = true;
+  // generateQuarterCylinder3.castShadow = true;
+  // generateQuarterCylinder3.receiveShadow = true;
   livingRoomCabinetGroup.add(generateQuarterCylinder3);
   // 左下板右面的深灰色涂层
   addBox(
@@ -285,8 +285,8 @@ const createLivingRoomCabinet = (
     0,
     LIVING_ROOM_CABINET_DEPTH - ARC_BOARD_THICKNESS,
   );
-  generateQuarterCylinder4.castShadow = true;
-  generateQuarterCylinder4.receiveShadow = true;
+  // generateQuarterCylinder4.castShadow = true;
+  // generateQuarterCylinder4.receiveShadow = true;
   livingRoomCabinetGroup.add(generateQuarterCylinder4);
   // 右下板左面的深灰色涂层
   addBox(

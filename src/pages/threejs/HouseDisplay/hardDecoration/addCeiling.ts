@@ -41,7 +41,6 @@ const addCeiling = (
     WALL_1_POSITION_Z - WALL_THICKNESS / 2 + CEILING_SCALE.z / 2,
   );
   ceiling.castShadow = true;
-  ceiling.receiveShadow = true;
 
   // 初始位置设置到天空中（隐藏状态）
   ceiling.position.y = 50;

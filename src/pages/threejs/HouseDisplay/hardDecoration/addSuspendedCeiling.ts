@@ -24,6 +24,7 @@ import {
   WALL_55_POSITION_Z,
   WALL_67_POSITION_Z,
   WALL_73_POSITION_Z,
+  WALL_80_POSITION_Z,
 } from "./addHouseStructure";
 import {
   SUSPENDED_CEILING_HEIGHT,
@@ -32,7 +33,12 @@ import {
 } from "./addHouseStructure";
 import { CURTAIN_DEPTH } from "../softDecoration/addCurtain";
 import { RIGHT_CHEST_DEPTH } from "./addKidsWardrobe";
-import { addLightStrip, addBox, addRoundLight } from "../utils";
+import {
+  addLightStrip,
+  addBox,
+  addRoundLight,
+  addAluminousGussetPlateLight,
+} from "../utils";
 
 type SuspendedCeilingType = "front" | "back" | "left" | "right";
 
@@ -51,6 +57,9 @@ const WELT_SUSPENDED_CEILING_OUTER_THICKNESS = 0.02; // 极简贴边吊顶外层
 const SINGLE_SKIN_PANEL_HEIGHT_GAP = 0.04; // 极简贴边单层板高度的间隔
 const WELT_SUSPENDED_CEILING_OUTER_HEIGHT =
   SUSPENDED_CEILING_HEIGHT - SINGLE_SKIN_PANEL_HEIGHT_GAP; // 极简贴边吊顶外层板高度
+const ALUMINOUS_GUSSET_PLATE_WIDTH = 0.78; // 铝扣板的宽度
+const ALUMINOUS_GUSSET_PLATE_HEIGHT = ALUMINOUS_GUSSET_PLATE_WIDTH / 2; // 铝扣板的高度
+const ALUMINOUS_GUSSET_PLATE_GAP = 0.002; // 铝扣板缝隙的宽度
 // 所有吊顶的尺寸和位置
 const length1 = WALL_55_POSITION_Z - WALL_10_POSITION_Z - WALL_THICKNESS;
 const length2 = WALL_66_POSITION_X - WALL_56_POSITION_X;
@@ -141,7 +150,7 @@ const doubleEyelidSuspendedCeilingInfoList: [
     2,
   ],
 ];
-// 贴边吊顶的配置信息
+// 极简贴边吊顶的配置信息
 const weldSuspendedCeilingInfoList: [
   number,
   number,
@@ -247,6 +256,38 @@ const suspendedCeilingBoardInfoList: [
     WALL_1_POSITION_Z + WALL_THICKNESS / 2 + length103 / 2,
   ],
 ];
+// 所有铝扣板吊顶的配置信息
+const length201 = WALL_35_POSITION_X - WALL_72_POSITION_X - WALL_THICKNESS;
+const length202 = WALL_80_POSITION_Z - WALL_73_POSITION_Z - WALL_THICKNESS;
+const aluminousGussetPlateSuspendedCeilingInfoList = [
+  // 厨房
+  {
+    width: length201,
+    height: length202,
+    x: WALL_72_POSITION_X + WALL_THICKNESS / 2 + length201 / 2,
+    z: WALL_73_POSITION_Z + WALL_THICKNESS / 2 + length202 / 2,
+    lightPositions: [
+      [
+        -length201 / 2 +
+          ALUMINOUS_GUSSET_PLATE_WIDTH / 2 +
+          2 * (ALUMINOUS_GUSSET_PLATE_WIDTH + ALUMINOUS_GUSSET_PLATE_GAP),
+        length202 / 2 -
+          ALUMINOUS_GUSSET_PLATE_HEIGHT / 2 -
+          2 * (ALUMINOUS_GUSSET_PLATE_HEIGHT + ALUMINOUS_GUSSET_PLATE_GAP),
+        0.001,
+      ],
+      [
+        -length201 / 2 +
+          ALUMINOUS_GUSSET_PLATE_WIDTH / 2 +
+          5 * (ALUMINOUS_GUSSET_PLATE_WIDTH + ALUMINOUS_GUSSET_PLATE_GAP),
+        length202 / 2 -
+          ALUMINOUS_GUSSET_PLATE_HEIGHT / 2 -
+          2 * (ALUMINOUS_GUSSET_PLATE_HEIGHT + ALUMINOUS_GUSSET_PLATE_GAP),
+        0.001,
+      ],
+    ],
+  },
+];
 
 const addSuspendedCeiling = (
   scene: Scene,
@@ -308,7 +349,22 @@ const addSuspendedCeiling = (
     },
   );
 
-  // 创建并添加所有的筒灯
+  // 创建并添加所有的铝扣板吊顶
+  aluminousGussetPlateSuspendedCeilingInfoList.forEach(
+    (item: Record<string, any>) => {
+      const { width, height, x, z, lightPositions } = item;
+      addAluminousGussetPlateSuspendedCeiling(
+        scene,
+        assetManager,
+        suspendedCeilingListRef,
+        width,
+        height,
+        x,
+        z,
+        lightPositions,
+      );
+    },
+  );
 };
 
 /**
@@ -325,7 +381,6 @@ const addDoubleEyelidSuspendedCeiling = (
   suspendedCeilingType: SuspendedCeilingType,
   downlightNum: number,
 ) => {
-  const boxGeometry = assetManager.geometries.get("boxGeometry");
   const wallMaterial = assetManager.materials.get("wallMaterial");
 
   const suspendedCeilingGroup = new Group();
@@ -335,42 +390,39 @@ const addDoubleEyelidSuspendedCeiling = (
   suspendedCeilingListRef.current?.push(suspendedCeilingGroup);
   scene.add(suspendedCeilingGroup);
 
-  const box1 = new Mesh(boxGeometry, wallMaterial);
-  box1.scale.set(length, HOLE_HEIGHT, HOLE_DEPTH);
-  box1.position.set(0, -HOLE_HEIGHT / 2, HOLE_DEPTH / 2);
-  box1.castShadow = true;
-  box1.receiveShadow = true;
-  suspendedCeilingGroup.add(box1);
-
-  const box2 = new Mesh(boxGeometry, wallMaterial);
-  box2.scale.set(
+  addBox(
+    suspendedCeilingGroup,
+    assetManager,
+    wallMaterial as MeshStandardMaterial,
+    length,
+    HOLE_HEIGHT,
+    HOLE_DEPTH,
+    0,
+    -HOLE_HEIGHT / 2,
+    HOLE_DEPTH / 2,
+  );
+  addBox(
+    suspendedCeilingGroup,
+    assetManager,
+    wallMaterial as MeshStandardMaterial,
     length,
     SINGLE_SKIN_PANEL_THICKNESS,
     DOUBLE_EYELID_SUSPENDED_CEILING_DEPTH,
-  );
-  box2.position.set(
     0,
     -HOLE_HEIGHT - SINGLE_SKIN_PANEL_THICKNESS / 2,
     DOUBLE_EYELID_SUSPENDED_CEILING_DEPTH / 2,
   );
-  box2.castShadow = true;
-  box2.receiveShadow = true;
-  suspendedCeilingGroup.add(box2);
-
-  const box3 = new Mesh(boxGeometry, wallMaterial);
-  box3.scale.set(
+  addBox(
+    suspendedCeilingGroup,
+    assetManager,
+    wallMaterial as MeshStandardMaterial,
     length,
     SINGLE_SKIN_PANEL_THICKNESS,
     DOUBLE_EYELID_SUSPENDED_CEILING_DEPTH - SINGLE_SKIN_PANEL_DEPTH_GAP,
-  );
-  box3.position.set(
     0,
     -HOLE_HEIGHT - (SINGLE_SKIN_PANEL_THICKNESS * 3) / 2,
     (DOUBLE_EYELID_SUSPENDED_CEILING_DEPTH - SINGLE_SKIN_PANEL_DEPTH_GAP) / 2,
   );
-  box3.castShadow = true;
-  box3.receiveShadow = true;
-  suspendedCeilingGroup.add(box3);
 
   switch (suspendedCeilingType) {
     case "front":
@@ -395,7 +447,7 @@ const addDoubleEyelidSuspendedCeiling = (
     HOLE_DEPTH + LIGHT_STRIP_HEIGHT / 2,
     true,
     new Vector3(-Math.PI / 2, 0, 0), // 面向天花板
-    0.2 * Math.PI,
+    0.15 * Math.PI,
   );
 
   const gap = length / downlightNum;
@@ -427,7 +479,6 @@ const addWeltSuspendedCeiling = (
   z: number,
   suspendedCeilingType: SuspendedCeilingType,
 ) => {
-  const boxGeometry = assetManager.geometries.get("boxGeometry");
   const wallMaterial = assetManager.materials.get("wallMaterial");
 
   const suspendedCeilingGroup = new Group();
@@ -437,36 +488,29 @@ const addWeltSuspendedCeiling = (
   suspendedCeilingListRef.current?.push(suspendedCeilingGroup);
   scene.add(suspendedCeilingGroup);
 
-  const box1 = new Mesh(boxGeometry, wallMaterial);
-  box1.scale.set(
+  addBox(
+    suspendedCeilingGroup,
+    assetManager,
+    wallMaterial as MeshStandardMaterial,
     length,
     SUSPENDED_CEILING_HEIGHT,
     WELT_SUSPENDED_CEILING_INNER_THICKNESS,
-  );
-  box1.position.set(
     0,
     -SUSPENDED_CEILING_HEIGHT / 2,
     WELT_SUSPENDED_CEILING_INNER_THICKNESS / 2,
   );
-  box1.castShadow = true;
-  box1.receiveShadow = true;
-  suspendedCeilingGroup.add(box1);
-
-  const box2 = new Mesh(boxGeometry, wallMaterial);
-  box2.scale.set(
+  addBox(
+    suspendedCeilingGroup,
+    assetManager,
+    wallMaterial as MeshStandardMaterial,
     length,
     WELT_SUSPENDED_CEILING_OUTER_HEIGHT,
     WELT_SUSPENDED_CEILING_OUTER_THICKNESS,
-  );
-  box2.position.set(
     0,
     -WELT_SUSPENDED_CEILING_OUTER_HEIGHT / 2,
     WELT_SUSPENDED_CEILING_INNER_THICKNESS +
       WELT_SUSPENDED_CEILING_OUTER_THICKNESS / 2,
   );
-  box2.castShadow = true;
-  box2.receiveShadow = true;
-  suspendedCeilingGroup.add(box2);
 
   switch (suspendedCeilingType) {
     case "front":
@@ -479,6 +523,91 @@ const addWeltSuspendedCeiling = (
       suspendedCeilingGroup.rotation.y = -Math.PI / 2;
       break;
   }
+};
+
+/**
+ * 创建并添加铝扣板吊顶
+ */
+const addAluminousGussetPlateSuspendedCeiling = (
+  scene: Scene,
+  assetManager: AssetManager,
+  suspendedCeilingListRef: MutableRefObject<(Group | Mesh)[]>,
+  width: number,
+  height: number,
+  x: number,
+  z: number,
+  lightPositions?: [number, number, number][],
+) => {
+  const planeGeometry = assetManager.geometries.get("planeGeometry");
+  const aluminousGussetPlateMaterial = assetManager.materials.get(
+    "aluminousGussetPlateMaterial",
+  );
+  const whitePanelGapMaterial = assetManager.materials.get(
+    "whitePanelGapMaterial",
+  );
+
+  const suspendedCeilingGroup = new Group();
+  suspendedCeilingGroup.position.set(
+    x,
+    WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT,
+    z,
+  );
+  suspendedCeilingGroup.rotation.x = Math.PI / 2;
+  suspendedCeilingGroup.rotation.z = Math.PI;
+  // 默认隐藏
+  suspendedCeilingGroup.visible = false;
+  suspendedCeilingListRef.current?.push(suspendedCeilingGroup);
+  scene.add(suspendedCeilingGroup);
+
+  // 添加铝扣板
+  const plane = new Mesh(planeGeometry, aluminousGussetPlateMaterial);
+  plane.scale.set(width, height);
+  suspendedCeilingGroup.add(plane);
+
+  // 添加铝扣板的缝隙线条
+  const rows = Math.floor(
+    height / (ALUMINOUS_GUSSET_PLATE_HEIGHT + ALUMINOUS_GUSSET_PLATE_GAP),
+  );
+  for (let row = 0; row < rows; row++) {
+    const gapLine = new Mesh(planeGeometry, whitePanelGapMaterial);
+    gapLine.scale.set(width, ALUMINOUS_GUSSET_PLATE_GAP);
+    gapLine.position.set(
+      0,
+      height / 2 -
+        (ALUMINOUS_GUSSET_PLATE_HEIGHT + ALUMINOUS_GUSSET_PLATE_GAP / 2) -
+        row * (ALUMINOUS_GUSSET_PLATE_HEIGHT + ALUMINOUS_GUSSET_PLATE_GAP),
+      0.001,
+    );
+    suspendedCeilingGroup.add(gapLine);
+  }
+  const cols = Math.floor(
+    width / (ALUMINOUS_GUSSET_PLATE_WIDTH + ALUMINOUS_GUSSET_PLATE_GAP),
+  );
+  for (let col = 0; col < cols; col++) {
+    const gapLine = new Mesh(planeGeometry, whitePanelGapMaterial);
+    gapLine.scale.set(ALUMINOUS_GUSSET_PLATE_GAP, height);
+    gapLine.position.set(
+      -width / 2 +
+        (ALUMINOUS_GUSSET_PLATE_WIDTH + ALUMINOUS_GUSSET_PLATE_GAP / 2) +
+        col * (ALUMINOUS_GUSSET_PLATE_WIDTH + ALUMINOUS_GUSSET_PLATE_GAP),
+      0,
+      0.001,
+    );
+    suspendedCeilingGroup.add(gapLine);
+  }
+
+  // 添加铝扣板平面灯
+  lightPositions?.forEach((item: [number, number, number]) => {
+    addAluminousGussetPlateLight(
+      suspendedCeilingGroup,
+      assetManager,
+      ALUMINOUS_GUSSET_PLATE_WIDTH,
+      ALUMINOUS_GUSSET_PLATE_HEIGHT,
+      item[0],
+      item[1],
+      item[2],
+    );
+  });
 };
 
 // 切换所有吊顶和吊顶板的显示/隐藏

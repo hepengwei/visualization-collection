@@ -37,7 +37,7 @@ export type ViewMode = "overview" | "roaming";
 
 // 漫游模式配置参数
 const ROAMING_CONFIG = {
-  cameraHeight: 2.2, // 相机离地板的高度（米）
+  cameraHeight: 2.3, // 相机离地板的高度（米）
   moveSpeed: 3, // WASD移动速度
   collisionDistance: 0.01, // 碰撞检测距离（米）
 };
