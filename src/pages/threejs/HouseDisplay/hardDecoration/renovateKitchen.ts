@@ -1,7 +1,17 @@
 /**
  * 装修厨房
  */
-import { Scene, Group, Mesh } from "three";
+import {
+  Scene,
+  Group,
+  Mesh,
+  MeshStandardMaterial,
+  MeshPhysicalMaterial,
+  Vector3,
+  TorusGeometry,
+  CylinderGeometry,
+} from "three";
+import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import {
   TILE_SIZE,
@@ -34,12 +44,511 @@ import {
   WALL_79_POSITION_Z,
   WALL_80_POSITION_Z,
 } from "./addHouseStructure";
+import {
+  SIZE_ENLARGEMENT_RITO,
+  addBox,
+  addPlane,
+  generateCurvedSurfaceRightAngledTriangularPrismGeometry,
+} from "../utils";
 
 const TOP_KITCHEN_CABINET_DEPTH = 0.47; // 上方橱柜的总深度
-const BOTTOM_KITCHEN_CABINET_DEPTH = 0.91; // 下方橱柜的总深度
+const QUARTZ_COUNTERTOP_MAX_HEIGHT = 0.92 * SIZE_ENLARGEMENT_RITO; // 石英石高台面的高度
+const QUARTZ_COUNTERTOP_DEPTH = 0.6 * SIZE_ENLARGEMENT_RITO; // 石英石台面深度
+const QUARTZ_COUNTERTOP_THICKNESS = 0.06; // 石英石台面厚度
+const QUARTZ_COUNTERTOP_OVERSTEP_DEPTH = 0.02; // 石英石台面超出柜体的深度
+const QUARTZ_COUNTERTOP_RADIUS = 0.01; // 石英石台面边缘圆角半径
+const CHEST_DOOR_THICKNESS = 0.02; // 柜门和抽屉门的厚度
+const CHEST_DOOR_OPEN_WOUND_HEIGHT = 0.04; // 柜门拉口空间的高度
+const CHEST_GAP = 0.01; // 柜子之间的缝隙
+const BOTTOM_CHEST_DOOR_MARGING = 0.11; // 下柜门与地面的距离
+const WATER_CHANNEL_WIDTH = 0.88; // 水槽的开口宽度
+const WATER_CHANNEL_HEIGHT = 0.52; // 水槽的开口高度(往墙体方向)
+const WATER_CHANNEL_DEPTH = 0.28; // 水槽的开口深度(往地面方向)
+const WATER_CHANNEL_RADIUS = 0.02; // 水槽的开口圆角半径
+const WATER_PIPE_MARGIN = 0.06; // 水龙头离水槽开口边的距离
+const SMALL_WATER_PIPE_RADIUS = 0.014; // 水龙头的小水管半径
+const BIG_WATER_PIPE_RADIUS = 0.022; // 水龙头的大水管半径
+const WATER_FAUCET_RADIUS = 0.1; // 水龙头的弧度半径
+const LEFT_BOTTOM_CHEST_COUNT = 3; // 左边下柜门数量
+// 左边下柜的总宽
+const LEFT_BOTTOM_CHEST_DOOR_WIDTH_SUM =
+  WALL_80_POSITION_Z -
+  WALL_73_POSITION_Z -
+  WALL_THICKNESS -
+  QUARTZ_COUNTERTOP_DEPTH;
+// 左边下柜门的宽度
+const LEFT_BOTTOM_CHEST_DOOR_WIDTH =
+  (LEFT_BOTTOM_CHEST_DOOR_WIDTH_SUM -
+    CHEST_GAP * (LEFT_BOTTOM_CHEST_COUNT + 1)) /
+  LEFT_BOTTOM_CHEST_COUNT;
 
 const renovateKitchen = (scene: Scene, assetManager: AssetManager) => {
+  // 添加瓷砖
   addTile(scene, assetManager);
+  // 添加石英石台面
+  addQuartzCountertop(scene, assetManager);
+  // 添加下柜体
+  addBottomCabinet(scene, assetManager);
+  // 添加水槽
+  addWaterChannel(scene, assetManager);
+};
+
+// 添加水槽
+const addWaterChannel = (scene: Scene, assetManager: AssetManager) => {
+  // 哑光工业铝材质
+  const whiteAluminumMaterial = assetManager.materials.get(
+    "whiteAluminumMaterial",
+  );
+  const depth1 =
+    CHEST_GAP * 2 + LEFT_BOTTOM_CHEST_DOOR_WIDTH + QUARTZ_COUNTERTOP_THICKNESS;
+  const x1 =
+    WALL_35_POSITION_X -
+    WALL_THICKNESS / 2 -
+    QUARTZ_COUNTERTOP_DEPTH +
+    QUARTZ_COUNTERTOP_THICKNESS +
+    WATER_CHANNEL_HEIGHT / 2;
+  const width1 =
+    QUARTZ_COUNTERTOP_DEPTH -
+    QUARTZ_COUNTERTOP_THICKNESS -
+    WATER_CHANNEL_HEIGHT;
+  const x2 = WALL_35_POSITION_X - WALL_THICKNESS / 2 - width1;
+  const y =
+    QUARTZ_COUNTERTOP_MAX_HEIGHT -
+    QUARTZ_COUNTERTOP_THICKNESS / 2 -
+    WATER_CHANNEL_DEPTH / 2;
+  const z = WALL_73_POSITION_Z + WALL_THICKNESS / 2 + depth1;
+  // 左面
+  addPlane(
+    scene,
+    assetManager,
+    whiteAluminumMaterial as MeshStandardMaterial,
+    WATER_CHANNEL_HEIGHT,
+    WATER_CHANNEL_DEPTH,
+    x1,
+    y,
+    z,
+  );
+  // 前面
+  addPlane(
+    scene,
+    assetManager,
+    whiteAluminumMaterial as MeshStandardMaterial,
+    WATER_CHANNEL_WIDTH,
+    WATER_CHANNEL_DEPTH,
+    x2 - WATER_CHANNEL_HEIGHT,
+    y,
+    z + WATER_CHANNEL_WIDTH / 2,
+    new Vector3(0, Math.PI / 2, 0),
+  );
+  // 后面
+  addPlane(
+    scene,
+    assetManager,
+    whiteAluminumMaterial as MeshStandardMaterial,
+    WATER_CHANNEL_WIDTH,
+    WATER_CHANNEL_DEPTH,
+    x2,
+    y,
+    z + WATER_CHANNEL_WIDTH / 2,
+    new Vector3(0, -Math.PI / 2, 0),
+  );
+  // 右面
+  addPlane(
+    scene,
+    assetManager,
+    whiteAluminumMaterial as MeshStandardMaterial,
+    WATER_CHANNEL_HEIGHT,
+    WATER_CHANNEL_DEPTH,
+    x1,
+    y,
+    z + WATER_CHANNEL_WIDTH,
+    new Vector3(0, Math.PI, 0),
+  );
+  // 底面
+  addPlane(
+    scene,
+    assetManager,
+    whiteAluminumMaterial as MeshStandardMaterial,
+    WATER_CHANNEL_HEIGHT,
+    WATER_CHANNEL_WIDTH,
+    x1,
+    QUARTZ_COUNTERTOP_MAX_HEIGHT -
+      QUARTZ_COUNTERTOP_THICKNESS / 2 -
+      WATER_CHANNEL_DEPTH,
+    z + WATER_CHANNEL_WIDTH / 2,
+    new Vector3(-Math.PI / 2, 0, 0),
+  );
+  // 水龙头
+  const cylinderGeometry = assetManager.geometries.get("cylinderGeometry");
+  const height1 = 0.08;
+  const cylinder1 = new Mesh(cylinderGeometry, whiteAluminumMaterial);
+  cylinder1.scale.set(BIG_WATER_PIPE_RADIUS, height1, BIG_WATER_PIPE_RADIUS);
+  cylinder1.position.set(
+    x2 + WATER_PIPE_MARGIN,
+    QUARTZ_COUNTERTOP_MAX_HEIGHT + height1 / 2,
+    z + WATER_CHANNEL_WIDTH / 2,
+  );
+  scene.add(cylinder1);
+  const height2 = 0.2;
+  const cylinder2 = new Mesh(cylinderGeometry, whiteAluminumMaterial);
+  cylinder2.scale.set(
+    SMALL_WATER_PIPE_RADIUS,
+    height2,
+    SMALL_WATER_PIPE_RADIUS,
+  );
+  cylinder2.position.set(
+    x2 + WATER_PIPE_MARGIN,
+    QUARTZ_COUNTERTOP_MAX_HEIGHT + height1 + height2 / 2,
+    z + WATER_CHANNEL_WIDTH / 2,
+  );
+  scene.add(cylinder2);
+
+  const torusGeometry = new TorusGeometry(
+    WATER_FAUCET_RADIUS,
+    SMALL_WATER_PIPE_RADIUS,
+    16,
+    48,
+    Math.PI,
+  );
+  const harfTorus = new Mesh(torusGeometry, whiteAluminumMaterial);
+  harfTorus.position.set(
+    x2 + WATER_PIPE_MARGIN - WATER_FAUCET_RADIUS,
+    QUARTZ_COUNTERTOP_MAX_HEIGHT + height1 + height2,
+    z + WATER_CHANNEL_WIDTH / 2,
+  );
+  scene.add(harfTorus);
+
+  const height3 = 0.06;
+  const cylinderGeometry2 = new CylinderGeometry(
+    SMALL_WATER_PIPE_RADIUS,
+    BIG_WATER_PIPE_RADIUS,
+    height3,
+  );
+  const cylinder3 = new Mesh(cylinderGeometry2, whiteAluminumMaterial);
+  cylinder3.position.set(
+    x2 + WATER_PIPE_MARGIN - WATER_FAUCET_RADIUS * 2,
+    QUARTZ_COUNTERTOP_MAX_HEIGHT + height1 + height2 - height3 / 2,
+    z + WATER_CHANNEL_WIDTH / 2,
+  );
+  scene.add(cylinder3);
+};
+
+// 添加下柜体
+const addBottomCabinet = (scene: Scene, assetManager: AssetManager) => {
+  // 深灰色木板材质
+  const woodBoardDarkMaterial = assetManager.materials.get(
+    "woodBoardDarkMaterial",
+  ) as MeshPhysicalMaterial;
+  // 铝合金材质
+  const aluminiumAlloyMaterial = assetManager.materials.get(
+    "aluminiumAlloyMaterial",
+  );
+  // 左边下柜体
+  const x1 =
+    WALL_35_POSITION_X -
+    WALL_THICKNESS / 2 -
+    QUARTZ_COUNTERTOP_DEPTH +
+    QUARTZ_COUNTERTOP_OVERSTEP_DEPTH +
+    CHEST_DOOR_THICKNESS;
+  const z1 =
+    WALL_73_POSITION_Z +
+    WALL_THICKNESS / 2 +
+    LEFT_BOTTOM_CHEST_DOOR_WIDTH_SUM / 2;
+  addPlane(
+    scene,
+    assetManager,
+    aluminiumAlloyMaterial as MeshStandardMaterial,
+    LEFT_BOTTOM_CHEST_DOOR_WIDTH_SUM,
+    QUARTZ_COUNTERTOP_MAX_HEIGHT - QUARTZ_COUNTERTOP_THICKNESS,
+    x1,
+    QUARTZ_COUNTERTOP_MAX_HEIGHT / 2,
+    z1,
+    new Vector3(0, -Math.PI / 2, 0),
+  );
+  // 左边下柜门
+  const x2 =
+    WALL_35_POSITION_X -
+    WALL_THICKNESS / 2 -
+    QUARTZ_COUNTERTOP_DEPTH +
+    QUARTZ_COUNTERTOP_OVERSTEP_DEPTH +
+    CHEST_DOOR_THICKNESS / 2;
+  const height1 =
+    QUARTZ_COUNTERTOP_MAX_HEIGHT -
+    QUARTZ_COUNTERTOP_THICKNESS -
+    BOTTOM_CHEST_DOOR_MARGING -
+    CHEST_DOOR_OPEN_WOUND_HEIGHT;
+  for (let i = 0; i < LEFT_BOTTOM_CHEST_COUNT; i++) {
+    addBox(
+      scene,
+      assetManager,
+      woodBoardDarkMaterial,
+      CHEST_DOOR_THICKNESS,
+      height1,
+      LEFT_BOTTOM_CHEST_DOOR_WIDTH,
+      x2,
+      QUARTZ_COUNTERTOP_MAX_HEIGHT -
+        QUARTZ_COUNTERTOP_THICKNESS -
+        CHEST_DOOR_OPEN_WOUND_HEIGHT -
+        height1 / 2,
+      WALL_73_POSITION_Z +
+        WALL_THICKNESS / 2 +
+        CHEST_GAP +
+        LEFT_BOTTOM_CHEST_DOOR_WIDTH / 2 +
+        i * (LEFT_BOTTOM_CHEST_DOOR_WIDTH + CHEST_GAP),
+    );
+  }
+
+  // 前边下柜体
+  const width2 = WALL_35_POSITION_X - WALL_71_POSITION_X - WALL_THICKNESS;
+  const x3 = WALL_35_POSITION_X - WALL_THICKNESS / 2 - width2 / 2;
+  const z2 =
+    WALL_80_POSITION_Z -
+    WALL_THICKNESS / 2 -
+    QUARTZ_COUNTERTOP_DEPTH +
+    QUARTZ_COUNTERTOP_OVERSTEP_DEPTH +
+    CHEST_DOOR_THICKNESS;
+  addPlane(
+    scene,
+    assetManager,
+    aluminiumAlloyMaterial as MeshStandardMaterial,
+    width2,
+    TALL_GRADE_BEAM_HEIGHT - QUARTZ_COUNTERTOP_THICKNESS,
+    x3,
+    TALL_GRADE_BEAM_HEIGHT / 2,
+    z2,
+    new Vector3(0, Math.PI, 0),
+  );
+  // 前边下柜门
+  const frontChestCount = 7;
+  const doorWidth2 =
+    (width2 - QUARTZ_COUNTERTOP_DEPTH - CHEST_GAP * (frontChestCount + 1)) /
+    frontChestCount;
+  const height2 =
+    TALL_GRADE_BEAM_HEIGHT -
+    QUARTZ_COUNTERTOP_THICKNESS -
+    BOTTOM_CHEST_DOOR_MARGING -
+    CHEST_DOOR_OPEN_WOUND_HEIGHT;
+  const z3 =
+    WALL_80_POSITION_Z -
+    WALL_THICKNESS / 2 -
+    QUARTZ_COUNTERTOP_DEPTH +
+    QUARTZ_COUNTERTOP_OVERSTEP_DEPTH +
+    CHEST_DOOR_THICKNESS / 2;
+  for (let i = 0; i < frontChestCount; i++) {
+    addBox(
+      scene,
+      assetManager,
+      woodBoardDarkMaterial,
+      doorWidth2,
+      height2,
+      CHEST_DOOR_THICKNESS,
+      WALL_35_POSITION_X -
+        WALL_THICKNESS / 2 -
+        QUARTZ_COUNTERTOP_DEPTH +
+        QUARTZ_COUNTERTOP_OVERSTEP_DEPTH -
+        CHEST_GAP -
+        doorWidth2 / 2 -
+        i * (doorWidth2 + CHEST_GAP),
+      TALL_GRADE_BEAM_HEIGHT -
+        QUARTZ_COUNTERTOP_THICKNESS -
+        CHEST_DOOR_OPEN_WOUND_HEIGHT -
+        height2 / 2,
+      z3,
+    );
+  }
+};
+
+// 添加石英石台面
+const addQuartzCountertop = (scene: Scene, assetManager: AssetManager) => {
+  const quartzMaterial = assetManager.materials.get("quartzMaterial");
+  // 左边台面
+  const width1 = QUARTZ_COUNTERTOP_DEPTH - QUARTZ_COUNTERTOP_THICKNESS / 2;
+  const depth1 =
+    CHEST_GAP * 2 + LEFT_BOTTOM_CHEST_DOOR_WIDTH + QUARTZ_COUNTERTOP_THICKNESS;
+  const depth2 = WALL_80_POSITION_Z - WALL_73_POSITION_Z - WALL_THICKNESS;
+  const x1 = WALL_35_POSITION_X - WALL_THICKNESS / 2 - width1 / 2;
+  const y = QUARTZ_COUNTERTOP_MAX_HEIGHT - QUARTZ_COUNTERTOP_THICKNESS / 4;
+  addBox(
+    scene,
+    assetManager,
+    quartzMaterial as MeshPhysicalMaterial,
+    width1,
+    QUARTZ_COUNTERTOP_THICKNESS / 2,
+    depth1,
+    x1,
+    y,
+    WALL_73_POSITION_Z + WALL_THICKNESS / 2 + depth1 / 2,
+  );
+  addBox(
+    scene,
+    assetManager,
+    quartzMaterial as MeshPhysicalMaterial,
+    QUARTZ_COUNTERTOP_THICKNESS / 2,
+    QUARTZ_COUNTERTOP_THICKNESS / 2,
+    WATER_CHANNEL_WIDTH,
+    WALL_35_POSITION_X -
+      WALL_THICKNESS / 2 -
+      width1 +
+      QUARTZ_COUNTERTOP_THICKNESS / 4,
+    y,
+    WALL_73_POSITION_Z + WALL_THICKNESS / 2 + depth1 + WATER_CHANNEL_WIDTH / 2,
+  );
+  const width2 =
+    QUARTZ_COUNTERTOP_DEPTH -
+    QUARTZ_COUNTERTOP_THICKNESS -
+    WATER_CHANNEL_HEIGHT;
+  addBox(
+    scene,
+    assetManager,
+    quartzMaterial as MeshPhysicalMaterial,
+    width2,
+    QUARTZ_COUNTERTOP_THICKNESS / 2,
+    WATER_CHANNEL_WIDTH,
+    WALL_35_POSITION_X - WALL_THICKNESS / 2 - width2 / 2,
+    y,
+    WALL_73_POSITION_Z + WALL_THICKNESS / 2 + depth1 + WATER_CHANNEL_WIDTH / 2,
+  );
+  const depth3 =
+    WALL_80_POSITION_Z -
+    WALL_73_POSITION_Z -
+    WALL_THICKNESS -
+    depth1 -
+    WATER_CHANNEL_WIDTH;
+  addBox(
+    scene,
+    assetManager,
+    quartzMaterial as MeshPhysicalMaterial,
+    width1,
+    QUARTZ_COUNTERTOP_THICKNESS / 2,
+    depth3,
+    x1,
+    y,
+    WALL_80_POSITION_Z - WALL_THICKNESS / 2 - depth3 / 2,
+  );
+  // 左边水槽开口的四个圆角
+  const x2 = WALL_35_POSITION_X - WALL_THICKNESS / 2 - width2;
+  const curvedSurfaceRightAngledTriangularPrismGeometry =
+    generateCurvedSurfaceRightAngledTriangularPrismGeometry(
+      WATER_CHANNEL_RADIUS,
+      QUARTZ_COUNTERTOP_THICKNESS / 2,
+    );
+  const curvedSurfaceRightAngledTriangularPrism = new Mesh(
+    curvedSurfaceRightAngledTriangularPrismGeometry,
+    quartzMaterial,
+  );
+  const curvedSurfaceRightAngledTriangularPrism2 =
+    curvedSurfaceRightAngledTriangularPrism.clone();
+  const curvedSurfaceRightAngledTriangularPrism3 =
+    curvedSurfaceRightAngledTriangularPrism.clone();
+  const curvedSurfaceRightAngledTriangularPrism4 =
+    curvedSurfaceRightAngledTriangularPrism.clone();
+
+  curvedSurfaceRightAngledTriangularPrism.rotation.x = -Math.PI / 2;
+  curvedSurfaceRightAngledTriangularPrism.rotation.z = Math.PI;
+  curvedSurfaceRightAngledTriangularPrism.position.set(
+    x2,
+    y - QUARTZ_COUNTERTOP_THICKNESS / 4,
+    WALL_73_POSITION_Z + WALL_THICKNESS / 2 + depth1,
+  );
+  scene.add(curvedSurfaceRightAngledTriangularPrism);
+
+  curvedSurfaceRightAngledTriangularPrism2.rotation.x = -Math.PI / 2;
+  curvedSurfaceRightAngledTriangularPrism2.rotation.z = Math.PI / 2;
+  curvedSurfaceRightAngledTriangularPrism2.position.set(
+    x2,
+    y - QUARTZ_COUNTERTOP_THICKNESS / 4,
+    WALL_73_POSITION_Z + WALL_THICKNESS / 2 + depth1 + WATER_CHANNEL_WIDTH,
+  );
+  scene.add(curvedSurfaceRightAngledTriangularPrism2);
+
+  curvedSurfaceRightAngledTriangularPrism3.rotation.x = -Math.PI / 2;
+  curvedSurfaceRightAngledTriangularPrism3.rotation.z = -Math.PI / 2;
+  curvedSurfaceRightAngledTriangularPrism3.position.set(
+    x2 - WATER_CHANNEL_HEIGHT,
+    y - QUARTZ_COUNTERTOP_THICKNESS / 4,
+    WALL_73_POSITION_Z + WALL_THICKNESS / 2 + depth1,
+  );
+  scene.add(curvedSurfaceRightAngledTriangularPrism3);
+
+  curvedSurfaceRightAngledTriangularPrism4.rotation.x = -Math.PI / 2;
+  curvedSurfaceRightAngledTriangularPrism4.position.set(
+    x2 - WATER_CHANNEL_HEIGHT,
+    y - QUARTZ_COUNTERTOP_THICKNESS / 4,
+    WALL_73_POSITION_Z + WALL_THICKNESS / 2 + depth1 + WATER_CHANNEL_WIDTH,
+  );
+  scene.add(curvedSurfaceRightAngledTriangularPrism4);
+
+  const width3 = QUARTZ_COUNTERTOP_THICKNESS / 2 + QUARTZ_COUNTERTOP_RADIUS;
+  const roundedBoxGeometry1 = new RoundedBoxGeometry(
+    width3,
+    QUARTZ_COUNTERTOP_THICKNESS,
+    depth2,
+    8,
+    QUARTZ_COUNTERTOP_RADIUS,
+  );
+  const quartzCountertop1 = new Mesh(roundedBoxGeometry1, quartzMaterial);
+  quartzCountertop1.position.set(
+    WALL_35_POSITION_X -
+      WALL_THICKNESS / 2 -
+      QUARTZ_COUNTERTOP_DEPTH +
+      width3 / 2,
+    QUARTZ_COUNTERTOP_MAX_HEIGHT - QUARTZ_COUNTERTOP_THICKNESS / 2,
+    WALL_73_POSITION_Z + WALL_THICKNESS / 2 + depth2 / 2,
+  );
+  scene.add(quartzCountertop1);
+  // 前边台面
+  const width11 = WALL_35_POSITION_X - WALL_71_POSITION_X - WALL_THICKNESS;
+  const depth11 = QUARTZ_COUNTERTOP_DEPTH - QUARTZ_COUNTERTOP_THICKNESS / 2;
+  const x3 = WALL_35_POSITION_X - WALL_THICKNESS / 2 - width11 / 2;
+  const z2 = WALL_80_POSITION_Z - WALL_THICKNESS / 2 - depth11 / 2;
+  addBox(
+    scene,
+    assetManager,
+    quartzMaterial as MeshPhysicalMaterial,
+    width11,
+    QUARTZ_COUNTERTOP_THICKNESS / 2,
+    depth11,
+    x3,
+    TALL_GRADE_BEAM_HEIGHT - QUARTZ_COUNTERTOP_THICKNESS / 4,
+    z2,
+  );
+  const roundedBoxGeometry2 = new RoundedBoxGeometry(
+    width11,
+    QUARTZ_COUNTERTOP_THICKNESS,
+    width2,
+    8,
+    QUARTZ_COUNTERTOP_RADIUS,
+  );
+  const quartzCountertop2 = new Mesh(roundedBoxGeometry2, quartzMaterial);
+  quartzCountertop2.position.set(
+    x3,
+    TALL_GRADE_BEAM_HEIGHT - QUARTZ_COUNTERTOP_THICKNESS / 2,
+    WALL_80_POSITION_Z -
+      WALL_THICKNESS / 2 -
+      QUARTZ_COUNTERTOP_DEPTH +
+      width2 / 2,
+  );
+  scene.add(quartzCountertop2);
+  // 高低台面连接面
+  const height =
+    QUARTZ_COUNTERTOP_MAX_HEIGHT -
+    TALL_GRADE_BEAM_HEIGHT -
+    QUARTZ_COUNTERTOP_THICKNESS;
+  addBox(
+    scene,
+    assetManager,
+    quartzMaterial as MeshPhysicalMaterial,
+    QUARTZ_COUNTERTOP_THICKNESS / 2,
+    height,
+    QUARTZ_COUNTERTOP_DEPTH,
+    WALL_35_POSITION_X -
+      WALL_THICKNESS / 2 -
+      QUARTZ_COUNTERTOP_DEPTH +
+      QUARTZ_COUNTERTOP_OVERSTEP_DEPTH +
+      QUARTZ_COUNTERTOP_THICKNESS / 4,
+    TALL_GRADE_BEAM_HEIGHT + height / 2,
+    WALL_80_POSITION_Z - WALL_THICKNESS / 2 - QUARTZ_COUNTERTOP_DEPTH / 2,
+  );
 };
 
 // 添加瓷砖

@@ -149,8 +149,8 @@ const loadBeds = (
         }
       });
 
-      bed1.position.set(WALL_1_POSITION_X - 1, 0.75, WALL_1_POSITION_Z + 1.9);
-      bed1.scale.set(3.6, 3.6, 3.6);
+      bed1.position.set(WALL_1_POSITION_X - 0.5, 0.72, WALL_1_POSITION_Z + 1.9);
+      bed1.scale.set(3.4, 3.4, 3.4);
       bed1.rotation.y = -Math.PI / 2;
       scene.add(bed1);
 
@@ -166,11 +166,11 @@ const loadBeds = (
       });
 
       bed2.position.set(
-        WALL_33_POSITION_X - 0.15,
-        0.72,
+        WALL_33_POSITION_X - 0.3,
+        0.7,
         WALL_1_POSITION_Z + 1.8,
       );
-      bed2.scale.set(3.4, 3.4, 3.4);
+      bed2.scale.set(3.1, 3.2, 3.1);
       bed2.rotation.y = -Math.PI / 2;
       scene.add(bed2);
 

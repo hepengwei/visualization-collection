@@ -18,15 +18,16 @@ import {
 } from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
 import type { AssetManager } from "hooks/threejs/useInitialize";
+import { SIZE_ENLARGEMENT_RITO } from "../utils";
 
 type SkirtingLineType = "front" | "back" | "double" | "all"; // 如果是竖墙，则"front"为左， "back"为右
 
 export const SUSPENDED_CEILING_HEIGHT = 0.3; // 吊顶总高度
-export const SIDEBOARD_DEPTH = 0.62; // 餐边柜的总深度
-export const WARDROBE_DEPTH = 0.78; // 衣柜的总深度
+export const SIDEBOARD_DEPTH = 0.5 * SIZE_ENLARGEMENT_RITO; // 餐边柜的总深度
+export const WARDROBE_DEPTH = 0.6 * SIZE_ENLARGEMENT_RITO; // 衣柜的总深度
 export const WALL_HEIGHT = 3.94; // 墙体高度
 export const WALL_THICKNESS = 0.3; // 墙体厚度
-export const TALL_GRADE_BEAM_HEIGHT = 1.2; // 高地梁的墙体高度
+export const TALL_GRADE_BEAM_HEIGHT = 0.82 * SIZE_ENLARGEMENT_RITO; // 高地梁的墙体高度
 export const TALL_GRADE_BEAM_POSITION_Y = TALL_GRADE_BEAM_HEIGHT / 2; // 高地梁的墙体y位置
 const SHORT_GRADE_BEAM_HEIGHT = 0.2; // 矮地梁的墙体高度
 const SHORT_GRADE_BEAM_POSITION_Y = SHORT_GRADE_BEAM_HEIGHT / 2; // 矮地梁的墙体y位置
@@ -61,12 +62,12 @@ const WALL_2_POSITION_Z =
   WALL_1_POSITION_Z + WALL_THICKNESS / 2 + WALL_2_WIDTH / 2;
 export const WALL_1_POSITION_X =
   WALL_2_POSITION_X - WALL_THICKNESS / 2 + WALL_1_WIDTH / 2;
-export const WALL_3_WIDTH = 3.56;
+export const WALL_3_WIDTH = 3.4;
 export const WALL_3_POSITION_Z =
   WALL_2_POSITION_Z + WALL_2_WIDTH / 2 + WALL_3_WIDTH / 2;
 const WALL_5_POSITION_Z =
   WALL_3_POSITION_Z + WALL_3_WIDTH / 2 + WALL_2_WIDTH / 2;
-const WALL_6_WIDTH = 2.4;
+const WALL_6_WIDTH = 2.56;
 const WALL_6_POSITION_Z =
   WALL_5_POSITION_Z + WALL_2_WIDTH / 2 + WALL_6_WIDTH / 2;
 export const WALL_7_WIDTH = 0.8;
@@ -166,14 +167,14 @@ export const WALL_39_POSITION_Z =
   WALL_40_POSITION_Z - WALL_THICKNESS / 2 + WALL_39_WIDTH / 2;
 const WALL_41_POSITION_Z =
   WALL_10_POSITION_Z + WALL_THICKNESS / 2 + WALL_2_WIDTH / 2;
-export const WALL_42_WIDTH = 4;
+export const WALL_42_WIDTH = 4.1;
 export const WALL_42_POSITION_Z =
   WALL_41_POSITION_Z + WALL_2_WIDTH / 2 + WALL_42_WIDTH / 2;
 const WALL_44_POSITION_Z =
   WALL_42_POSITION_Z + WALL_42_WIDTH / 2 + WALL_2_WIDTH / 2;
 const WALL_45_POSITION_Z =
   WALL_6_POSITION_Z + WALL_39_WIDTH / 2 + WALL_2_WIDTH / 2;
-const WALL_46_WIDTH = 8.4;
+const WALL_46_WIDTH = 8.3;
 export const WALL_46_POSITION_Z =
   WALL_45_POSITION_Z + WALL_2_WIDTH / 2 + WALL_46_WIDTH / 2;
 const WALL_48_POSITION_Z =
@@ -268,7 +269,7 @@ export const WALL_70_WIDTH = WALL_7_WIDTH + WALL_THICKNESS;
 const WALL_70_POSITION_X =
   WALL_68_POSITION_X + WALL_68_WIDTH / 2 + WALL_70_WIDTH / 2;
 export const WALL_71_WIDTH =
-  WALL_61_POSITION_Z - WALL_67_POSITION_Z - WALL_THICKNESS * 3;
+  WALL_61_POSITION_Z - WALL_67_POSITION_Z - WALL_THICKNESS * 4;
 export const WALL_71_POSITION_X =
   WALL_70_POSITION_X + WALL_70_WIDTH / 2 - WALL_THICKNESS / 2;
 export const WALL_71_POSITION_Z =
@@ -314,6 +315,8 @@ export const WALL_80_POSITION_X =
   WALL_71_POSITION_X - WALL_THICKNESS / 2 + WALL_80_WIDTH / 2;
 export const WALL_80_POSITION_Z =
   WALL_71_POSITION_Z + WALL_71_WIDTH / 2 + WALL_THICKNESS / 2;
+
+console.log(444444444, WALL_10_POSITION_Z - WALL_1_POSITION_Z);
 
 // 地板参数
 export const TILE_SIZE = 1.2; // 1.2m的地砖
@@ -1711,7 +1714,7 @@ const addKidsBedRoomQuartzCountertop = (
   scene: Scene,
   assetManager: AssetManager,
 ) => {
-  const quartzCountertopThickness = 0.08;
+  const quartzCountertopThickness = 0.06;
   const quartzMaterial = assetManager.materials.get("quartzMaterial");
   const roundedBoxGeometry = new RoundedBoxGeometry(
     WALL_7_WIDTH + WALL_THICKNESS + quartzCountertopThickness / 2,

@@ -52,7 +52,7 @@ const MIDDLE_CHEST_DEPTH =
 const LEFT_CHEST_WIDTH = 0.5; // 最左边柜子的总宽
 const LEFT_HOLLOW_OUT_HEIGHT = 1.5; // 最左边镂空的高度
 const LEFT_SMALL_RADIUS = 0.1; // 最左边柜子的小圆半径
-const LEFT_BIG_RADIUS = 0.24; // 最左边柜子的大圆半径
+const LEFT_BIG_RADIUS = 0.2; // 最左边柜子的大圆半径
 
 const RIGHT_CHEST_WIDTH = 0.9; // 右面柜子的总宽
 export const RIGHT_CHEST_DEPTH = 0.45; // 右面上方柜子的深度
@@ -78,10 +78,10 @@ const addKidsWardrobe = (
   kidsWardrobe.position.copy(KIDS_WARDROBE_POSITON);
   scene.add(kidsWardrobe);
 
-  const rightTable = createRightTable(assetManager, lightList);
-  rightTable.rotation.y = -Math.PI / 2;
-  rightTable.position.set(KIDS_WARDROBE_WIDTH / 2, 0, WARDROBE_DEPTH);
-  kidsWardrobe.add(rightTable);
+  // const rightTable = createRightTable(assetManager, lightList);
+  // rightTable.rotation.y = -Math.PI / 2;
+  // rightTable.position.set(KIDS_WARDROBE_WIDTH / 2, 0, WARDROBE_DEPTH);
+  // kidsWardrobe.add(rightTable);
 
   lightStripLightingMapRef.current[LIGHT_GROUP_FIELD.KIDS_BEDROOM] = lightList;
 };
