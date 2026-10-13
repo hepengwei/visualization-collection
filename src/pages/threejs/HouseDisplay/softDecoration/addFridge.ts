@@ -12,7 +12,7 @@ import {
   DoubleSide,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
-import { getEaseProgress } from "../utils";
+import { SIZE_ENLARGEMENT_RITO, getEaseProgress } from "../utils";
 import {
   WALL_THICKNESS,
   WALL_10_POSITION_Z,
@@ -90,7 +90,11 @@ export const addFridge = (
     fridgeDoorListRef,
     mouseRaycasterIntersectObjectsRef,
   );
-  fridge.scale.set(1.3, 1.3, 1.3);
+  fridge.scale.set(
+    SIZE_ENLARGEMENT_RITO,
+    SIZE_ENLARGEMENT_RITO,
+    SIZE_ENLARGEMENT_RITO,
+  );
   fridge.position.copy(FRIDGE_POSITON);
   scene.add(fridge);
 };

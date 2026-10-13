@@ -37,7 +37,6 @@ const useComposer = (
     format: RGBAFormat,
   };
   const mainRT = new WebGLRenderTarget(rtWidth, rtHeight, rtOptions);
-  // const mainRT = new WebGLRenderTarget(rtWidth, rtHeight);
 
   // 创建单个 composer，不含 RenderPass（手动渲染替代）
   const mainComposer = new EffectComposer(renderer, mainRT);

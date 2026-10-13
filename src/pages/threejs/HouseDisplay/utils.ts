@@ -32,6 +32,7 @@ import { ParametricGeometry } from "three/examples/jsm/geometries/ParametricGeom
 import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils";
 import type { AssetManager } from "hooks/threejs/useInitialize";
 
+export const SIZE_ENLARGEMENT_RITO = 1.58; // 各物体尺寸放大比例
 const WALL_COLOR = 0xf4f3ef; // 珍珠白乳胶漆颜色
 const LIGHT_STRIP_COLOR = 0xffe8c2; // 灯带和灯光的颜色，暖黄白
 // export const WOOD_LIGHT_COLOR = 0xefebe7; // 浅色木头
@@ -106,16 +107,16 @@ export const initAssetManager = (assetManager: AssetManager) => {
     metalness: 0.8,
     roughness: 0.3,
     polygonOffset: true, // 启用深度偏移，防止产生Z-fighting闪烁
-    polygonOffsetFactor: 0.1, 
+    polygonOffsetFactor: 0.1,
     polygonOffsetUnits: 0.1,
   });
   assetManager.materials.set("aluminiumAlloyMaterial", aluminiumAlloyMaterial);
   // 创建哑光工业铝材质
   const whiteAluminumMaterial = new MeshStandardMaterial({
-    color: 0xf2f5f8,
-    metalness: 0.9, // 金属度，0.85~1.0
-    roughness: 0.6, // 哑光工业铝
-    envMapIntensity: 1.0, // 有 scene.environment 时才有效果
+    color: 0xffffff,
+    metalness: 0.85, // 金属度，0.85~1.0
+    roughness: 0.55, // 哑光工业铝
+    envMapIntensity: 1.2, // 增强环境反射
   });
   assetManager.materials.set("whiteAluminumMaterial", whiteAluminumMaterial);
   // 创建白色铝扣板材质（不受光影响）
