@@ -21,6 +21,7 @@ import {
   TALL_GRADE_BEAM_POSITION_Y,
   BEAM_HEIGHT,
   BEAM_POSITION_Y,
+  SUSPENDED_CEILING_HEIGHT,
   WALL_THICKNESS,
   WALL_15_WIDTH,
   WALL_70_WIDTH,
@@ -51,7 +52,8 @@ import {
   generateCurvedSurfaceRightAngledTriangularPrismGeometry,
 } from "../utils";
 
-const TOP_KITCHEN_CABINET_DEPTH = 0.47; // 上方橱柜的总深度
+const TOP_KITCHEN_CABINET_DEPTH = 0.36 * SIZE_ENLARGEMENT_RITO; // 上方橱柜的总深度
+const TOP_KITCHEN_CABINET_HEIGHT = 1; // 上方橱柜的总高度
 const QUARTZ_COUNTERTOP_MAX_HEIGHT = 0.92 * SIZE_ENLARGEMENT_RITO; // 石英石高台面的高度
 const QUARTZ_COUNTERTOP_DEPTH = 0.6 * SIZE_ENLARGEMENT_RITO; // 石英石台面深度
 const QUARTZ_COUNTERTOP_THICKNESS = 0.06; // 石英石台面厚度
@@ -62,35 +64,128 @@ const CHEST_DOOR_OPEN_WOUND_HEIGHT = 0.04; // 柜门拉口空间的高度
 const CHEST_GAP = 0.01; // 柜子之间的缝隙
 const BOTTOM_CHEST_DOOR_MARGING = 0.11; // 下柜门与地面的距离
 const WATER_CHANNEL_WIDTH = 0.88; // 水槽的开口宽度
-const WATER_CHANNEL_HEIGHT = 0.52; // 水槽的开口高度(往墙体方向)
+const WATER_CHANNEL_HEIGHT = 0.53; // 水槽的开口高度(往墙体方向)
 const WATER_CHANNEL_DEPTH = 0.28; // 水槽的开口深度(往地面方向)
 const WATER_CHANNEL_RADIUS = 0.02; // 水槽的开口圆角半径
 const WATER_PIPE_MARGIN = 0.06; // 水龙头离水槽开口边的距离
 const SMALL_WATER_PIPE_RADIUS = 0.014; // 水龙头的小水管半径
 const BIG_WATER_PIPE_RADIUS = 0.022; // 水龙头的大水管半径
 const WATER_FAUCET_RADIUS = 0.1; // 水龙头的弧度半径
-const LEFT_BOTTOM_CHEST_COUNT = 3; // 左边下柜门数量
-// 左边下柜的总宽
+const LEFT_CHEST_COUNT = 3; // 左边柜门数量
+const FRONT_CHEST_COUNT = 7; // 前边柜门数量
+const AUTOMATIC_DISHWASHER_WIDTH = 0.9; // 自动洗碗机的宽度
+// 左边柜的总宽
 const LEFT_BOTTOM_CHEST_DOOR_WIDTH_SUM =
   WALL_80_POSITION_Z -
   WALL_73_POSITION_Z -
   WALL_THICKNESS -
   QUARTZ_COUNTERTOP_DEPTH;
-// 左边下柜门的宽度
+// 左边柜门的宽度
 const LEFT_BOTTOM_CHEST_DOOR_WIDTH =
-  (LEFT_BOTTOM_CHEST_DOOR_WIDTH_SUM -
-    CHEST_GAP * (LEFT_BOTTOM_CHEST_COUNT + 1)) /
-  LEFT_BOTTOM_CHEST_COUNT;
+  (LEFT_BOTTOM_CHEST_DOOR_WIDTH_SUM - CHEST_GAP * (LEFT_CHEST_COUNT + 1)) /
+  LEFT_CHEST_COUNT;
 
 const renovateKitchen = (scene: Scene, assetManager: AssetManager) => {
   // 添加瓷砖
   addTile(scene, assetManager);
   // 添加石英石台面
   addQuartzCountertop(scene, assetManager);
-  // 添加下柜体
+  // 添加下厨柜
   addBottomCabinet(scene, assetManager);
   // 添加水槽
   addWaterChannel(scene, assetManager);
+  // 添加上厨柜
+  addTopCabinet(scene, assetManager);
+};
+
+// 添加上厨柜
+const addTopCabinet = (scene: Scene, assetManager: AssetManager) => {
+  // 灰白木板材质
+  const woodBoardLightMaterial = assetManager.materials.get(
+    "woodBoardLightMaterial",
+  ) as MeshPhysicalMaterial;
+  // 铝合金材质
+  const aluminiumAlloyMaterial = assetManager.materials.get(
+    "aluminiumAlloyMaterial",
+  );
+
+  // 上柜体
+  const width =
+    WALL_35_POSITION_X -
+    WALL_71_POSITION_X -
+    WALL_THICKNESS -
+    QUARTZ_COUNTERTOP_DEPTH;
+  const doorWidth =
+    (width - CHEST_GAP * (FRONT_CHEST_COUNT + 1)) / FRONT_CHEST_COUNT;
+  const x = WALL_71_POSITION_X + WALL_THICKNESS / 2 + width / 2;
+  const y =
+    WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT - TOP_KITCHEN_CABINET_HEIGHT / 2;
+  const z =
+    WALL_80_POSITION_Z -
+    WALL_THICKNESS / 2 -
+    TOP_KITCHEN_CABINET_DEPTH +
+    CHEST_DOOR_THICKNESS;
+  const z2 =
+    WALL_80_POSITION_Z -
+    WALL_THICKNESS / 2 -
+    (TOP_KITCHEN_CABINET_DEPTH - CHEST_DOOR_THICKNESS) / 2;
+  addPlane(
+    scene,
+    assetManager,
+    aluminiumAlloyMaterial as MeshStandardMaterial,
+    width,
+    TOP_KITCHEN_CABINET_HEIGHT - QUARTZ_COUNTERTOP_OVERSTEP_DEPTH,
+    x,
+    y,
+    z,
+    new Vector3(0, Math.PI, 0),
+  );
+  addPlane(
+    scene,
+    assetManager,
+    woodBoardLightMaterial as MeshStandardMaterial,
+    width,
+    TOP_KITCHEN_CABINET_DEPTH - CHEST_DOOR_THICKNESS,
+    x,
+    WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT,
+    z2,
+    new Vector3(-Math.PI / 2, 0, 0),
+  );
+  addPlane(
+    scene,
+    assetManager,
+    woodBoardLightMaterial as MeshStandardMaterial,
+    width,
+    TOP_KITCHEN_CABINET_DEPTH - CHEST_DOOR_THICKNESS,
+    x,
+    WALL_HEIGHT -
+      SUSPENDED_CEILING_HEIGHT -
+      TOP_KITCHEN_CABINET_HEIGHT +
+      QUARTZ_COUNTERTOP_OVERSTEP_DEPTH,
+    z2,
+    new Vector3(Math.PI / 2, 0, 0),
+  );
+  // 上柜门
+  const z3 =
+    WALL_80_POSITION_Z - WALL_THICKNESS / 2 - TOP_KITCHEN_CABINET_DEPTH;
+  for (let i = 0; i < FRONT_CHEST_COUNT; i++) {
+    addBox(
+      scene,
+      assetManager,
+      woodBoardLightMaterial,
+      doorWidth,
+      TOP_KITCHEN_CABINET_HEIGHT,
+      CHEST_DOOR_THICKNESS,
+      WALL_35_POSITION_X -
+        WALL_THICKNESS / 2 -
+        QUARTZ_COUNTERTOP_DEPTH -
+        CHEST_GAP -
+        doorWidth / 2 -
+        i * (doorWidth + CHEST_GAP),
+      y,
+      z3,
+    );
+  }
 };
 
 // 添加水槽
@@ -233,7 +328,7 @@ const addWaterChannel = (scene: Scene, assetManager: AssetManager) => {
   scene.add(cylinder3);
 };
 
-// 添加下柜体
+// 添加下厨柜
 const addBottomCabinet = (scene: Scene, assetManager: AssetManager) => {
   // 深灰色木板材质
   const woodBoardDarkMaterial = assetManager.materials.get(
@@ -243,6 +338,9 @@ const addBottomCabinet = (scene: Scene, assetManager: AssetManager) => {
   const aluminiumAlloyMaterial = assetManager.materials.get(
     "aluminiumAlloyMaterial",
   );
+  // 黑色玻璃材质
+  const blackGlassMaterial = assetManager.materials.get("blackGlassMaterial");
+
   // 左边下柜体
   const x1 =
     WALL_35_POSITION_X -
@@ -277,7 +375,7 @@ const addBottomCabinet = (scene: Scene, assetManager: AssetManager) => {
     QUARTZ_COUNTERTOP_THICKNESS -
     BOTTOM_CHEST_DOOR_MARGING -
     CHEST_DOOR_OPEN_WOUND_HEIGHT;
-  for (let i = 0; i < LEFT_BOTTOM_CHEST_COUNT; i++) {
+  for (let i = 0; i < LEFT_CHEST_COUNT; i++) {
     addBox(
       scene,
       assetManager,
@@ -300,6 +398,10 @@ const addBottomCabinet = (scene: Scene, assetManager: AssetManager) => {
 
   // 前边下柜体
   const width2 = WALL_35_POSITION_X - WALL_71_POSITION_X - WALL_THICKNESS;
+  const doorWidth2 =
+    (width2 - QUARTZ_COUNTERTOP_DEPTH - CHEST_GAP * (FRONT_CHEST_COUNT + 1)) /
+    FRONT_CHEST_COUNT;
+  const width3 = doorWidth2 * 2 + CHEST_GAP - AUTOMATIC_DISHWASHER_WIDTH; // 自动洗碗机右边剩余的宽度
   const x3 = WALL_35_POSITION_X - WALL_THICKNESS / 2 - width2 / 2;
   const z2 =
     WALL_80_POSITION_Z -
@@ -319,10 +421,6 @@ const addBottomCabinet = (scene: Scene, assetManager: AssetManager) => {
     new Vector3(0, Math.PI, 0),
   );
   // 前边下柜门
-  const frontChestCount = 7;
-  const doorWidth2 =
-    (width2 - QUARTZ_COUNTERTOP_DEPTH - CHEST_GAP * (frontChestCount + 1)) /
-    frontChestCount;
   const height2 =
     TALL_GRADE_BEAM_HEIGHT -
     QUARTZ_COUNTERTOP_THICKNESS -
@@ -334,7 +432,58 @@ const addBottomCabinet = (scene: Scene, assetManager: AssetManager) => {
     QUARTZ_COUNTERTOP_DEPTH +
     QUARTZ_COUNTERTOP_OVERSTEP_DEPTH +
     CHEST_DOOR_THICKNESS / 2;
-  for (let i = 0; i < frontChestCount; i++) {
+  const bowlBasketGap = 0.06; // 碗篮抽屉上下间距
+  const bowlBasketWidth = doorWidth2 * 2 + CHEST_GAP;
+  const bowlBasketHeight = (height2 - bowlBasketGap) / 2;
+  for (let i = 0; i < FRONT_CHEST_COUNT - 2; i++) {
+    // 第2和3个门位置做碗篮抽屉
+    if (i === 1) {
+      addBox(
+        scene,
+        assetManager,
+        woodBoardDarkMaterial,
+        bowlBasketWidth,
+        bowlBasketHeight,
+        CHEST_DOOR_THICKNESS,
+        WALL_35_POSITION_X -
+          WALL_THICKNESS / 2 -
+          QUARTZ_COUNTERTOP_DEPTH +
+          QUARTZ_COUNTERTOP_OVERSTEP_DEPTH -
+          CHEST_GAP * 2 -
+          doorWidth2 -
+          bowlBasketWidth / 2,
+        TALL_GRADE_BEAM_HEIGHT -
+          QUARTZ_COUNTERTOP_THICKNESS -
+          CHEST_DOOR_OPEN_WOUND_HEIGHT -
+          bowlBasketHeight / 2,
+        z3,
+      );
+      continue;
+    }
+    if (i === 2) {
+      addBox(
+        scene,
+        assetManager,
+        woodBoardDarkMaterial,
+        bowlBasketWidth,
+        bowlBasketHeight,
+        CHEST_DOOR_THICKNESS,
+        WALL_35_POSITION_X -
+          WALL_THICKNESS / 2 -
+          QUARTZ_COUNTERTOP_DEPTH +
+          QUARTZ_COUNTERTOP_OVERSTEP_DEPTH -
+          CHEST_GAP * 2 -
+          doorWidth2 -
+          bowlBasketWidth / 2,
+        TALL_GRADE_BEAM_HEIGHT -
+          QUARTZ_COUNTERTOP_THICKNESS -
+          CHEST_DOOR_OPEN_WOUND_HEIGHT -
+          (bowlBasketHeight * 3) / 2 -
+          bowlBasketGap,
+        z3,
+      );
+      continue;
+    }
     addBox(
       scene,
       assetManager,
@@ -356,6 +505,64 @@ const addBottomCabinet = (scene: Scene, assetManager: AssetManager) => {
       z3,
     );
   }
+  // 最后两个门的位置添加自动洗碗机
+  const height3 = 0.1;
+  const height4 = 0.04;
+  const height5 = height2 - height3 - height4;
+  const automaticDishwasherPositionX =
+    WALL_35_POSITION_X -
+    WALL_THICKNESS / 2 -
+    QUARTZ_COUNTERTOP_DEPTH +
+    QUARTZ_COUNTERTOP_OVERSTEP_DEPTH -
+    CHEST_GAP -
+    AUTOMATIC_DISHWASHER_WIDTH / 2 -
+    5 * (doorWidth2 + CHEST_GAP);
+  addBox(
+    scene,
+    assetManager,
+    blackGlassMaterial as MeshPhysicalMaterial,
+    AUTOMATIC_DISHWASHER_WIDTH,
+    height3,
+    CHEST_DOOR_THICKNESS,
+    automaticDishwasherPositionX,
+    TALL_GRADE_BEAM_HEIGHT -
+      QUARTZ_COUNTERTOP_THICKNESS -
+      CHEST_DOOR_OPEN_WOUND_HEIGHT -
+      height3 / 2,
+    z3,
+  );
+  addBox(
+    scene,
+    assetManager,
+    blackGlassMaterial as MeshPhysicalMaterial,
+    AUTOMATIC_DISHWASHER_WIDTH,
+    height5,
+    CHEST_DOOR_THICKNESS,
+    automaticDishwasherPositionX,
+    TALL_GRADE_BEAM_HEIGHT -
+      QUARTZ_COUNTERTOP_THICKNESS -
+      CHEST_DOOR_OPEN_WOUND_HEIGHT -
+      height3 -
+      height4 -
+      height5 / 2,
+    z3,
+  );
+
+  // 剩余的位置装一个
+  addBox(
+    scene,
+    assetManager,
+    woodBoardDarkMaterial,
+    width3,
+    height2,
+    CHEST_DOOR_THICKNESS,
+    WALL_71_POSITION_X + WALL_THICKNESS / 2 + CHEST_GAP + width3 / 2,
+    TALL_GRADE_BEAM_HEIGHT -
+      QUARTZ_COUNTERTOP_THICKNESS -
+      CHEST_DOOR_OPEN_WOUND_HEIGHT -
+      height2 / 2,
+    z3,
+  );
 };
 
 // 添加石英石台面

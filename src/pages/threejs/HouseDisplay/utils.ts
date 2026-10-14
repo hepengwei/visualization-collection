@@ -114,8 +114,8 @@ export const initAssetManager = (assetManager: AssetManager) => {
   // 创建哑光工业铝材质
   const whiteAluminumMaterial = new MeshStandardMaterial({
     color: 0xffffff,
-    metalness: 0.85, // 金属度，0.85~1.0
-    roughness: 0.55, // 哑光工业铝
+    metalness: 0.8, // 金属度
+    roughness: 0.45, // 哑光工业铝
     envMapIntensity: 1.2, // 增强环境反射
   });
   assetManager.materials.set("whiteAluminumMaterial", whiteAluminumMaterial);
@@ -254,7 +254,7 @@ export const initAssetManager = (assetManager: AssetManager) => {
     metalness: 0.0, // 玻璃是非金属
     roughness: 0.2, // 玻璃表面很光滑
     transparent: true,
-    opacity: 0.7, // 透明度，越小越透明
+    opacity: 0.8, // 透明度，越小越透明
     depthWrite: false, // 半透明薄片防深度排序问题
     thickness: 0.3, // 玻璃厚度，影响折射和焦散感
     clearcoat: 1.0, // 玻璃表面清漆层
