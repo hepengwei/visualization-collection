@@ -254,7 +254,7 @@ export const initAssetManager = (assetManager: AssetManager) => {
     metalness: 0.0, // 玻璃是非金属
     roughness: 0.2, // 玻璃表面很光滑
     transparent: true,
-    opacity: 0.8, // 透明度，越小越透明
+    opacity: 0.78, // 透明度，越小越透明  
     depthWrite: false, // 半透明薄片防深度排序问题
     thickness: 0.3, // 玻璃厚度，影响折射和焦散感
     clearcoat: 1.0, // 玻璃表面清漆层
@@ -906,9 +906,9 @@ export const addLightStrip = (
   assetManager: AssetManager,
   w: number,
   h: number,
-  x: number,
-  y: number,
-  z: number,
+  x = 0,
+  y = 0,
+  z = 0,
   lightVisible = true, // 灯光默认显示还是隐藏
   rotation = new Vector3(Math.PI / 2, 0, 0), // 默认面向地面
   intensity = 0, // 默认不带光源
@@ -943,9 +943,9 @@ export const addRectAreaLighting = (
   parent: Group,
   w: number,
   h: number,
-  x: number,
-  y: number,
-  z: number,
+  x = 0,
+  y = 0,
+  z = 0,
   visible: boolean = true,
   rotation?: Vector3,
   intensity = 0.5 * Math.PI,
@@ -973,9 +973,9 @@ export const addAluminousGussetPlateLight = (
   assetManager: AssetManager,
   w: number,
   h: number,
-  x: number,
-  y: number,
-  z: number,
+  x = 0,
+  y = 0,
+  z = 0,
   lightVisible = true, // 灯光默认显示还是隐藏
   rotation = new Vector3(0, 0, 0),
   intensity = 0,
@@ -1008,9 +1008,9 @@ export const addRoundLight = (
   parent: Group,
   assetManager: AssetManager,
   radius: number,
-  x: number,
-  y: number,
-  z: number,
+  x = 0,
+  y = 0,
+  z = 0,
   distance?: number,
 ) => {
   const circleGeometry = assetManager.geometries.get("circleGeometry");
@@ -1078,19 +1078,16 @@ export const addBox = (
   w: number,
   h: number,
   d: number,
-  x: number,
-  y: number,
-  z: number,
+  x = 0,
+  y = 0,
+  z = 0,
   visible = true,
-  receiveShadow = true,
 ): Mesh | null => {
   if (!mat) return null;
   const boxGeometry = assetManager.geometries.get("boxGeometry");
   const m = new Mesh(boxGeometry, mat);
   m.scale.set(w, h, d);
   m.position.set(x, y, z);
-  // m.castShadow = true;
-  // m.receiveShadow = receiveShadow;
   m.visible = visible;
   parent.add(m);
   return m;
@@ -1103,9 +1100,9 @@ export const addPlane = (
   mat: MeshPhysicalMaterial | MeshStandardMaterial,
   w: number,
   h: number,
-  x: number,
-  y: number,
-  z: number,
+  x = 0,
+  y = 0,
+  z = 0,
   rotation = new Vector3(0, 0, 0),
 ): Mesh | null => {
   if (!mat) return null;
@@ -1125,11 +1122,10 @@ export const addCylinder = (
   mat: MeshPhysicalMaterial | MeshStandardMaterial,
   radius: number,
   depth: number,
-  x: number,
-  y: number,
-  z: number,
+  x = 0,
+  y = 0,
+  z = 0,
   rotation = new Vector3(0, 0, 0),
-  receiveShadow = true,
 ): Mesh | null => {
   if (!mat) return null;
   const cylinderGeometry = assetManager.geometries.get("cylinderGeometry");
@@ -1137,7 +1133,6 @@ export const addCylinder = (
   m.scale.set(radius, depth, radius);
   m.position.set(x, y, z);
   m.rotation.set(rotation.x, rotation.y, rotation.z);
-  // m.receiveShadow = receiveShadow;
   parent.add(m);
   return m;
 };
@@ -1148,9 +1143,9 @@ export const addCircleLightingStrip = (
   assetManager: AssetManager,
   radius: number,
   w: number,
-  x: number,
-  y: number,
-  z: number,
+  x = 0,
+  y = 0,
+  z = 0,
   count: number = 3, // 在灯带上取多少个点
   angle: number = Math.PI, // 默认为半圆
   fwdSign: 1 | -1 = 1, // 默认内侧
