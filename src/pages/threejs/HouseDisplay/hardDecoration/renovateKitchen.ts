@@ -51,6 +51,7 @@ import {
   addPlane,
   generateCurvedSurfaceRightAngledTriangularPrismGeometry,
 } from "../utils";
+import createGasStove, { GAS_STOVE_HEIGHT } from "./createGasStove";
 
 const TOP_KITCHEN_CABINET_DEPTH = 0.36 * SIZE_ENLARGEMENT_RITO; // 上方橱柜的总深度
 const TOP_KITCHEN_CABINET_HEIGHT = 1; // 上方橱柜的总高度
@@ -75,15 +76,39 @@ const LEFT_CHEST_COUNT = 3; // 左边柜门数量
 const FRONT_CHEST_COUNT = 7; // 前边柜门数量
 const AUTOMATIC_DISHWASHER_WIDTH = 0.9; // 自动洗碗机的宽度
 // 左边柜的总宽
-const LEFT_BOTTOM_CHEST_DOOR_WIDTH_SUM =
+const LEFT_CHEST_DOOR_WIDTH_SUM =
   WALL_80_POSITION_Z -
   WALL_73_POSITION_Z -
   WALL_THICKNESS -
   QUARTZ_COUNTERTOP_DEPTH;
 // 左边柜门的宽度
-const LEFT_BOTTOM_CHEST_DOOR_WIDTH =
-  (LEFT_BOTTOM_CHEST_DOOR_WIDTH_SUM - CHEST_GAP * (LEFT_CHEST_COUNT + 1)) /
+const LEFT_CHEST_DOOR_WIDTH =
+  (LEFT_CHEST_DOOR_WIDTH_SUM - CHEST_GAP * (LEFT_CHEST_COUNT + 1)) /
   LEFT_CHEST_COUNT;
+// 前边柜门宽度
+const FRONT_CHEST_DOOR_WIDTH =
+  (WALL_35_POSITION_X -
+    WALL_71_POSITION_X -
+    WALL_THICKNESS -
+    QUARTZ_COUNTERTOP_DEPTH -
+    CHEST_GAP * (FRONT_CHEST_COUNT + 1)) /
+  FRONT_CHEST_COUNT;
+// 燃气灶位置
+const GAS_STOVE_POSITION = new Vector3(
+  WALL_35_POSITION_X -
+    WALL_THICKNESS / 2 -
+    QUARTZ_COUNTERTOP_DEPTH +
+    QUARTZ_COUNTERTOP_OVERSTEP_DEPTH -
+    CHEST_GAP -
+    FRONT_CHEST_DOOR_WIDTH -
+    3 * (FRONT_CHEST_DOOR_WIDTH + CHEST_GAP),
+  TALL_GRADE_BEAM_HEIGHT,
+  WALL_80_POSITION_Z -
+    WALL_THICKNESS / 2 -
+    QUARTZ_COUNTERTOP_DEPTH +
+    QUARTZ_COUNTERTOP_THICKNESS * 2 +
+    GAS_STOVE_HEIGHT / 2,
+);
 
 const renovateKitchen = (scene: Scene, assetManager: AssetManager) => {
   // 添加瓷砖
@@ -173,15 +198,15 @@ const addTopCabinet = (scene: Scene, assetManager: AssetManager) => {
       scene,
       assetManager,
       woodBoardLightMaterial,
-      doorWidth,
+      FRONT_CHEST_DOOR_WIDTH,
       TOP_KITCHEN_CABINET_HEIGHT,
       CHEST_DOOR_THICKNESS,
       WALL_35_POSITION_X -
         WALL_THICKNESS / 2 -
         QUARTZ_COUNTERTOP_DEPTH -
         CHEST_GAP -
-        doorWidth / 2 -
-        i * (doorWidth + CHEST_GAP),
+        FRONT_CHEST_DOOR_WIDTH / 2 -
+        i * (FRONT_CHEST_DOOR_WIDTH + CHEST_GAP),
       y,
       z3,
     );
@@ -195,7 +220,7 @@ const addWaterChannel = (scene: Scene, assetManager: AssetManager) => {
     "whiteAluminumMaterial",
   );
   const depth1 =
-    CHEST_GAP * 2 + LEFT_BOTTOM_CHEST_DOOR_WIDTH + QUARTZ_COUNTERTOP_THICKNESS;
+    CHEST_GAP * 2 + LEFT_CHEST_DOOR_WIDTH + QUARTZ_COUNTERTOP_THICKNESS;
   const x1 =
     WALL_35_POSITION_X -
     WALL_THICKNESS / 2 -
@@ -349,14 +374,12 @@ const addBottomCabinet = (scene: Scene, assetManager: AssetManager) => {
     QUARTZ_COUNTERTOP_OVERSTEP_DEPTH +
     CHEST_DOOR_THICKNESS;
   const z1 =
-    WALL_73_POSITION_Z +
-    WALL_THICKNESS / 2 +
-    LEFT_BOTTOM_CHEST_DOOR_WIDTH_SUM / 2;
+    WALL_73_POSITION_Z + WALL_THICKNESS / 2 + LEFT_CHEST_DOOR_WIDTH_SUM / 2;
   addPlane(
     scene,
     assetManager,
     aluminiumAlloyMaterial as MeshStandardMaterial,
-    LEFT_BOTTOM_CHEST_DOOR_WIDTH_SUM,
+    LEFT_CHEST_DOOR_WIDTH_SUM,
     QUARTZ_COUNTERTOP_MAX_HEIGHT - QUARTZ_COUNTERTOP_THICKNESS,
     x1,
     QUARTZ_COUNTERTOP_MAX_HEIGHT / 2,
@@ -382,7 +405,7 @@ const addBottomCabinet = (scene: Scene, assetManager: AssetManager) => {
       woodBoardDarkMaterial,
       CHEST_DOOR_THICKNESS,
       height1,
-      LEFT_BOTTOM_CHEST_DOOR_WIDTH,
+      LEFT_CHEST_DOOR_WIDTH,
       x2,
       QUARTZ_COUNTERTOP_MAX_HEIGHT -
         QUARTZ_COUNTERTOP_THICKNESS -
@@ -391,17 +414,15 @@ const addBottomCabinet = (scene: Scene, assetManager: AssetManager) => {
       WALL_73_POSITION_Z +
         WALL_THICKNESS / 2 +
         CHEST_GAP +
-        LEFT_BOTTOM_CHEST_DOOR_WIDTH / 2 +
-        i * (LEFT_BOTTOM_CHEST_DOOR_WIDTH + CHEST_GAP),
+        LEFT_CHEST_DOOR_WIDTH / 2 +
+        i * (LEFT_CHEST_DOOR_WIDTH + CHEST_GAP),
     );
   }
 
   // 前边下柜体
   const width2 = WALL_35_POSITION_X - WALL_71_POSITION_X - WALL_THICKNESS;
-  const doorWidth2 =
-    (width2 - QUARTZ_COUNTERTOP_DEPTH - CHEST_GAP * (FRONT_CHEST_COUNT + 1)) /
-    FRONT_CHEST_COUNT;
-  const width3 = doorWidth2 * 2 + CHEST_GAP - AUTOMATIC_DISHWASHER_WIDTH; // 自动洗碗机右边剩余的宽度
+  const width3 =
+    FRONT_CHEST_DOOR_WIDTH * 2 + CHEST_GAP - AUTOMATIC_DISHWASHER_WIDTH; // 自动洗碗机右边剩余的宽度
   const x3 = WALL_35_POSITION_X - WALL_THICKNESS / 2 - width2 / 2;
   const z2 =
     WALL_80_POSITION_Z -
@@ -433,7 +454,7 @@ const addBottomCabinet = (scene: Scene, assetManager: AssetManager) => {
     QUARTZ_COUNTERTOP_OVERSTEP_DEPTH +
     CHEST_DOOR_THICKNESS / 2;
   const bowlBasketGap = 0.06; // 碗篮抽屉上下间距
-  const bowlBasketWidth = doorWidth2 * 2 + CHEST_GAP;
+  const bowlBasketWidth = FRONT_CHEST_DOOR_WIDTH * 2 + CHEST_GAP;
   const bowlBasketHeight = (height2 - bowlBasketGap) / 2;
   for (let i = 0; i < FRONT_CHEST_COUNT - 2; i++) {
     // 第2和3个门位置做碗篮抽屉
@@ -450,7 +471,7 @@ const addBottomCabinet = (scene: Scene, assetManager: AssetManager) => {
           QUARTZ_COUNTERTOP_DEPTH +
           QUARTZ_COUNTERTOP_OVERSTEP_DEPTH -
           CHEST_GAP * 2 -
-          doorWidth2 -
+          FRONT_CHEST_DOOR_WIDTH -
           bowlBasketWidth / 2,
         TALL_GRADE_BEAM_HEIGHT -
           QUARTZ_COUNTERTOP_THICKNESS -
@@ -473,7 +494,7 @@ const addBottomCabinet = (scene: Scene, assetManager: AssetManager) => {
           QUARTZ_COUNTERTOP_DEPTH +
           QUARTZ_COUNTERTOP_OVERSTEP_DEPTH -
           CHEST_GAP * 2 -
-          doorWidth2 -
+          FRONT_CHEST_DOOR_WIDTH -
           bowlBasketWidth / 2,
         TALL_GRADE_BEAM_HEIGHT -
           QUARTZ_COUNTERTOP_THICKNESS -
@@ -488,7 +509,7 @@ const addBottomCabinet = (scene: Scene, assetManager: AssetManager) => {
       scene,
       assetManager,
       woodBoardDarkMaterial,
-      doorWidth2,
+      FRONT_CHEST_DOOR_WIDTH,
       height2,
       CHEST_DOOR_THICKNESS,
       WALL_35_POSITION_X -
@@ -496,8 +517,8 @@ const addBottomCabinet = (scene: Scene, assetManager: AssetManager) => {
         QUARTZ_COUNTERTOP_DEPTH +
         QUARTZ_COUNTERTOP_OVERSTEP_DEPTH -
         CHEST_GAP -
-        doorWidth2 / 2 -
-        i * (doorWidth2 + CHEST_GAP),
+        FRONT_CHEST_DOOR_WIDTH / 2 -
+        i * (FRONT_CHEST_DOOR_WIDTH + CHEST_GAP),
       TALL_GRADE_BEAM_HEIGHT -
         QUARTZ_COUNTERTOP_THICKNESS -
         CHEST_DOOR_OPEN_WOUND_HEIGHT -
@@ -516,7 +537,7 @@ const addBottomCabinet = (scene: Scene, assetManager: AssetManager) => {
     QUARTZ_COUNTERTOP_OVERSTEP_DEPTH -
     CHEST_GAP -
     AUTOMATIC_DISHWASHER_WIDTH / 2 -
-    5 * (doorWidth2 + CHEST_GAP);
+    5 * (FRONT_CHEST_DOOR_WIDTH + CHEST_GAP);
   addBox(
     scene,
     assetManager,
@@ -548,7 +569,7 @@ const addBottomCabinet = (scene: Scene, assetManager: AssetManager) => {
     z3,
   );
 
-  // 剩余的位置装一个
+  // 剩余的位置装一个柜门
   addBox(
     scene,
     assetManager,
@@ -563,6 +584,12 @@ const addBottomCabinet = (scene: Scene, assetManager: AssetManager) => {
       height2 / 2,
     z3,
   );
+
+  // 添加燃气灶
+  const gasStove = createGasStove(assetManager);
+  gasStove.position.copy(GAS_STOVE_POSITION);
+  gasStove.rotation.y = Math.PI;
+  scene.add(gasStove);
 };
 
 // 添加石英石台面
@@ -571,7 +598,7 @@ const addQuartzCountertop = (scene: Scene, assetManager: AssetManager) => {
   // 左边台面
   const width1 = QUARTZ_COUNTERTOP_DEPTH - QUARTZ_COUNTERTOP_THICKNESS / 2;
   const depth1 =
-    CHEST_GAP * 2 + LEFT_BOTTOM_CHEST_DOOR_WIDTH + QUARTZ_COUNTERTOP_THICKNESS;
+    CHEST_GAP * 2 + LEFT_CHEST_DOOR_WIDTH + QUARTZ_COUNTERTOP_THICKNESS;
   const depth2 = WALL_80_POSITION_Z - WALL_73_POSITION_Z - WALL_THICKNESS;
   const x1 = WALL_35_POSITION_X - WALL_THICKNESS / 2 - width1 / 2;
   const y = QUARTZ_COUNTERTOP_MAX_HEIGHT - QUARTZ_COUNTERTOP_THICKNESS / 4;
