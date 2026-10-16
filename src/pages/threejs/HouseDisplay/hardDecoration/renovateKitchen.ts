@@ -52,9 +52,10 @@ import {
   generateCurvedSurfaceRightAngledTriangularPrismGeometry,
 } from "../utils";
 import createGasStove, { GAS_STOVE_HEIGHT } from "./createGasStove";
+import createKitchenHood from "./createKitchenHood";
 
 const TOP_KITCHEN_CABINET_DEPTH = 0.36 * SIZE_ENLARGEMENT_RITO; // 上方橱柜的总深度
-const TOP_KITCHEN_CABINET_HEIGHT = 1; // 上方橱柜的总高度
+const TOP_KITCHEN_CABINET_HEIGHT = 1; // 上方橱柜的总高度（不包括柜门下方漏出的高度）
 const QUARTZ_COUNTERTOP_MAX_HEIGHT = 0.92 * SIZE_ENLARGEMENT_RITO; // 石英石高台面的高度
 const QUARTZ_COUNTERTOP_DEPTH = 0.6 * SIZE_ENLARGEMENT_RITO; // 石英石台面深度
 const QUARTZ_COUNTERTOP_THICKNESS = 0.06; // 石英石台面厚度
@@ -67,7 +68,7 @@ const BOTTOM_CHEST_DOOR_MARGING = 0.11; // 下柜门与地面的距离
 const WATER_CHANNEL_WIDTH = 0.88; // 水槽的开口宽度
 const WATER_CHANNEL_HEIGHT = 0.53; // 水槽的开口高度(往墙体方向)
 const WATER_CHANNEL_DEPTH = 0.28; // 水槽的开口深度(往地面方向)
-const WATER_CHANNEL_RADIUS = 0.02; // 水槽的开口圆角半径
+const WATER_CHANNEL_RADIUS = 0.03; // 水槽的开口圆角半径
 const WATER_PIPE_MARGIN = 0.06; // 水龙头离水槽开口边的距离
 const SMALL_WATER_PIPE_RADIUS = 0.014; // 水龙头的小水管半径
 const BIG_WATER_PIPE_RADIUS = 0.022; // 水龙头的大水管半径
@@ -108,6 +109,15 @@ const GAS_STOVE_POSITION = new Vector3(
     QUARTZ_COUNTERTOP_DEPTH +
     QUARTZ_COUNTERTOP_THICKNESS * 2 +
     GAS_STOVE_HEIGHT / 2,
+);
+// 油烟机位置
+const KITCHEN_HOOD_POSITION = new Vector3(
+  WALL_35_POSITION_X -
+    WALL_THICKNESS / 2 -
+    QUARTZ_COUNTERTOP_DEPTH -
+    4 * (FRONT_CHEST_DOOR_WIDTH + CHEST_GAP),
+  WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT - TOP_KITCHEN_CABINET_HEIGHT,
+  WALL_80_POSITION_Z - WALL_THICKNESS / 2 - 0.01,
 );
 
 const renovateKitchen = (scene: Scene, assetManager: AssetManager) => {
@@ -590,6 +600,13 @@ const addBottomCabinet = (scene: Scene, assetManager: AssetManager) => {
   gasStove.position.copy(GAS_STOVE_POSITION);
   gasStove.rotation.y = Math.PI;
   scene.add(gasStove);
+
+  // 添加油烟机
+  const kitchenHood = createKitchenHood(assetManager);
+  // kitchenHood.position.set(8, 3, 5);
+  kitchenHood.position.copy(KITCHEN_HOOD_POSITION);
+  kitchenHood.rotation.y = Math.PI;
+  scene.add(kitchenHood);
 };
 
 // 添加石英石台面

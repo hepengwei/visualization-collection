@@ -18,7 +18,7 @@ import {
 
 const GAS_STOVE_WIDTH = 1.1;
 export const GAS_STOVE_HEIGHT = 0.6;
-const GAS_STOVE_GLASS_THICKNESS = 0.012;
+const GAS_STOVE_GLASS_THICKNESS = 0.012; // 底部黑色玻璃厚度
 const SINGLE_HEARTH_SIZE = 0.28; // 单个灶台的宽高
 const SINGLE_HEARTH_MARGIN = 0.08; // 单个灶台的距离左右边间距
 const SINGLE_HEARTH_BOTTOM_THICKNESS = 0.006; // 单个灶台的底部厚度

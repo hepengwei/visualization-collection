@@ -254,7 +254,7 @@ export const initAssetManager = (assetManager: AssetManager) => {
     metalness: 0.0, // 玻璃是非金属
     roughness: 0.2, // 玻璃表面很光滑
     transparent: true,
-    opacity: 0.78, // 透明度，越小越透明  
+    opacity: 0.78, // 透明度，越小越透明
     depthWrite: false, // 半透明薄片防深度排序问题
     thickness: 0.3, // 玻璃厚度，影响折射和焦散感
     clearcoat: 1.0, // 玻璃表面清漆层
@@ -1082,12 +1082,14 @@ export const addBox = (
   y = 0,
   z = 0,
   visible = true,
+  rotation = new Vector3(0, 0, 0),
 ): Mesh | null => {
   if (!mat) return null;
   const boxGeometry = assetManager.geometries.get("boxGeometry");
   const m = new Mesh(boxGeometry, mat);
   m.scale.set(w, h, d);
   m.position.set(x, y, z);
+  m.rotation.set(rotation.x, rotation.y, rotation.z);
   m.visible = visible;
   parent.add(m);
   return m;
