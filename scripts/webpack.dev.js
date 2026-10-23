@@ -12,7 +12,7 @@ const devConfig = {
     },
     hot: true,
     compress: false,
-    port: 3002,
+    port: 3008,
     open: true,
   },
   plugins: [

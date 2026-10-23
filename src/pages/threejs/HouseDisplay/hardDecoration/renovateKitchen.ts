@@ -33,11 +33,13 @@ import {
   WALL_80_WIDTH,
   WALL_35_POSITION_X,
   WALL_71_POSITION_X,
+  WALL_72_POSITION_X,
   WALL_73_POSITION_X,
   WALL_74_POSITION_X,
   WALL_75_POSITION_X,
   WALL_80_POSITION_X,
   WALL_1_POSITION_Y,
+  WALL_67_POSITION_Z,
   WALL_71_POSITION_Z,
   WALL_73_POSITION_Z,
   WALL_76_POSITION_Z,
@@ -55,7 +57,7 @@ import createGasStove, { GAS_STOVE_HEIGHT } from "./createGasStove";
 import createKitchenHood from "./createKitchenHood";
 
 const TOP_KITCHEN_CABINET_DEPTH = 0.36 * SIZE_ENLARGEMENT_RITO; // 上方橱柜的总深度
-const TOP_KITCHEN_CABINET_HEIGHT = 1.1; // 上方橱柜的总高度（不包括柜门下方漏出的高度）
+const TOP_KITCHEN_CABINET_HEIGHT = 1.1; // 上方橱柜的总高度（包括柜门下方漏出的高度）
 const QUARTZ_COUNTERTOP_MAX_HEIGHT = 0.92 * SIZE_ENLARGEMENT_RITO; // 石英石高台面的高度
 const QUARTZ_COUNTERTOP_DEPTH = 0.6 * SIZE_ENLARGEMENT_RITO; // 石英石台面深度
 const QUARTZ_COUNTERTOP_THICKNESS = 0.06; // 石英石台面厚度
@@ -78,6 +80,14 @@ const FRONT_CHEST_COUNT = 7; // 前边柜门数量
 const AUTOMATIC_DISHWASHER_WIDTH = 0.9; // 自动洗碗机的宽度
 const CORNER_CABINET_STORAGE_AREA_DEPTH = 0.15 * SIZE_ENLARGEMENT_RITO; // 左上角转角柜下方开放格的深度（包含背板）
 const CORNER_CABINET_STORAGE_AREA_BOARD_COUNT = 4; // 左上角转角柜下方开放格横板数量(包括顶板和底板)
+const RIGHR_CABINET_RIGHT_COL_WIDTH = 0.56 * SIZE_ENLARGEMENT_RITO; // 右边柜子右边列的宽度(包含两边的木板)
+const OVEN_HEIGHT = 0.39 * SIZE_ENLARGEMENT_RITO; // 烤箱开放格的高度
+const ELECTRIC_COOKER_HEIGHT = 0.4 * SIZE_ENLARGEMENT_RITO; // 电饭煲开放格的高度
+const PRESSURE_COOKER_HEIGHT = 0.33 * SIZE_ENLARGEMENT_RITO; // 高压锅开放格的高度
+const RIGHR_CABINET_RIGHT_COL_BOTTOM_DRAWER_HEIGHT =
+  0.366 * SIZE_ENLARGEMENT_RITO; // 右边柜子右边列底部抽屉门的高度 
+const RIGHR_CABINET_RIGHT_COL_STORAGE_AREA_HEIGHT = 0.1; // 右边柜子右边列开放格外挡板高度
+
 // 左边柜的总宽
 const LEFT_CHEST_DOOR_WIDTH_SUM =
   WALL_80_POSITION_Z -
@@ -135,6 +145,416 @@ const renovateKitchen = (scene: Scene, assetManager: AssetManager) => {
   addTopCabinet(scene, assetManager);
   // 添加左上角转角柜
   addCornerCabinet(scene, assetManager);
+  // 添加右边柜子
+  addRightCabinet(scene, assetManager);
+};
+
+// 添加右边柜子
+const addRightCabinet = (scene: Scene, assetManager: AssetManager) => {
+  // 灰白木板材质
+  const woodBoardLightMaterial = assetManager.materials.get(
+    "woodBoardLightMaterial",
+  ) as MeshPhysicalMaterial;
+  // 深灰色木板材质
+  const woodBoardDarkMaterial = assetManager.materials.get(
+    "woodBoardDarkMaterial",
+  ) as MeshPhysicalMaterial;
+  // 石英石材质
+  const quartzMaterial = assetManager.materials.get("quartzMaterial");
+  // 铝合金材质
+  const aluminiumAlloyMaterial = assetManager.materials.get(
+    "aluminiumAlloyMaterial",
+  );
+
+  const rightCabinetGroup = new Group();
+
+  const width1 = WALL_67_POSITION_Z - WALL_73_POSITION_Z - WALL_THICKNESS;
+  const height1 = WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT;
+  // 两个竖版
+  addBox(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardLightMaterial,
+    CHEST_DOOR_THICKNESS,
+    height1 - CHEST_DOOR_THICKNESS,
+    WALL_70_WIDTH - WALL_THICKNESS,
+    width1 - RIGHR_CABINET_RIGHT_COL_WIDTH + CHEST_DOOR_THICKNESS / 2,
+    (height1 - CHEST_DOOR_THICKNESS) / 2,
+    (WALL_70_WIDTH - WALL_THICKNESS) / 2,
+  );
+  addBox(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardLightMaterial,
+    CHEST_DOOR_THICKNESS,
+    height1 - CHEST_DOOR_THICKNESS,
+    WALL_70_WIDTH - WALL_THICKNESS,
+    width1 - CHEST_DOOR_THICKNESS / 2,
+    (height1 - CHEST_DOOR_THICKNESS) / 2,
+    (WALL_70_WIDTH - WALL_THICKNESS) / 2,
+  );
+  // 顶板
+  addBox(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardLightMaterial,
+    width1,
+    CHEST_DOOR_THICKNESS,
+    WALL_70_WIDTH - WALL_THICKNESS,
+    width1 / 2,
+    height1 - CHEST_DOOR_THICKNESS / 2,
+    (WALL_70_WIDTH - WALL_THICKNESS) / 2,
+  );
+  // 左上柜底板
+  addBox(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardLightMaterial,
+    width1 - RIGHR_CABINET_RIGHT_COL_WIDTH,
+    CHEST_DOOR_THICKNESS,
+    WALL_70_WIDTH - WALL_THICKNESS,
+    (width1 - RIGHR_CABINET_RIGHT_COL_WIDTH) / 2,
+    height1 -
+      TOP_KITCHEN_CABINET_HEIGHT +
+      QUARTZ_COUNTERTOP_OVERSTEP_DEPTH +
+      CHEST_DOOR_THICKNESS / 2,
+    (WALL_70_WIDTH - WALL_THICKNESS) / 2,
+  );
+  // 左上柜背板面
+  addPlane(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardDarkMaterial,
+    width1 - RIGHR_CABINET_RIGHT_COL_WIDTH,
+    TOP_KITCHEN_CABINET_HEIGHT - QUARTZ_COUNTERTOP_OVERSTEP_DEPTH,
+    (width1 - RIGHR_CABINET_RIGHT_COL_WIDTH) / 2,
+    height1 -
+      (TOP_KITCHEN_CABINET_HEIGHT - QUARTZ_COUNTERTOP_OVERSTEP_DEPTH) / 2,
+    0.001,
+  );
+  // 左上柜上板面
+  addPlane(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardDarkMaterial,
+    width1 - RIGHR_CABINET_RIGHT_COL_WIDTH,
+    WALL_70_WIDTH - WALL_THICKNESS,
+    (width1 - RIGHR_CABINET_RIGHT_COL_WIDTH) / 2,
+    height1 - CHEST_DOOR_THICKNESS - 0.001,
+    (WALL_70_WIDTH - WALL_THICKNESS) / 2,
+    new Vector3(Math.PI / 2, 0, 0),
+  );
+  // 左上柜左板面
+  addPlane(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardDarkMaterial,
+    WALL_70_WIDTH - WALL_THICKNESS,
+    TOP_KITCHEN_CABINET_HEIGHT - QUARTZ_COUNTERTOP_OVERSTEP_DEPTH,
+    0.001,
+    height1 -
+      (TOP_KITCHEN_CABINET_HEIGHT - QUARTZ_COUNTERTOP_OVERSTEP_DEPTH) / 2,
+    (WALL_70_WIDTH - WALL_THICKNESS) / 2,
+    new Vector3(0, Math.PI / 2, 0),
+  );
+  // 左上柜右板面
+  addPlane(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardDarkMaterial,
+    WALL_70_WIDTH - WALL_THICKNESS,
+    TOP_KITCHEN_CABINET_HEIGHT - QUARTZ_COUNTERTOP_OVERSTEP_DEPTH,
+    width1 - RIGHR_CABINET_RIGHT_COL_WIDTH - 0.001,
+    height1 -
+      (TOP_KITCHEN_CABINET_HEIGHT - QUARTZ_COUNTERTOP_OVERSTEP_DEPTH) / 2,
+    (WALL_70_WIDTH - WALL_THICKNESS) / 2,
+    new Vector3(0, -Math.PI / 2, 0),
+  );
+  // 左上柜门
+  addBox(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardLightMaterial,
+    width1 - RIGHR_CABINET_RIGHT_COL_WIDTH - CHEST_GAP * 2,
+    TOP_KITCHEN_CABINET_HEIGHT,
+    CHEST_DOOR_THICKNESS,
+    (width1 - RIGHR_CABINET_RIGHT_COL_WIDTH) / 2,
+    height1 - TOP_KITCHEN_CABINET_HEIGHT / 2,
+    WALL_70_WIDTH - WALL_THICKNESS - CHEST_DOOR_THICKNESS / 2,
+  );
+
+  // 左下石英石台面
+  addBox(
+    rightCabinetGroup,
+    assetManager,
+    quartzMaterial as MeshPhysicalMaterial,
+    width1 - RIGHR_CABINET_RIGHT_COL_WIDTH,
+    QUARTZ_COUNTERTOP_THICKNESS,
+    WALL_70_WIDTH - WALL_THICKNESS,
+    (width1 - RIGHR_CABINET_RIGHT_COL_WIDTH) / 2,
+    TALL_GRADE_BEAM_HEIGHT - QUARTZ_COUNTERTOP_THICKNESS / 2,
+    (WALL_70_WIDTH - WALL_THICKNESS) / 2,
+  );
+  // 左下柜体面
+  const height2 =
+    TALL_GRADE_BEAM_HEIGHT -
+    QUARTZ_COUNTERTOP_THICKNESS -
+    BOTTOM_CHEST_DOOR_MARGING;
+  addPlane(
+    rightCabinetGroup,
+    assetManager,
+    aluminiumAlloyMaterial as MeshStandardMaterial,
+    width1 - RIGHR_CABINET_RIGHT_COL_WIDTH,
+    height2,
+    (width1 - RIGHR_CABINET_RIGHT_COL_WIDTH) / 2,
+    TALL_GRADE_BEAM_HEIGHT - QUARTZ_COUNTERTOP_THICKNESS - height2 / 2,
+    WALL_70_WIDTH - WALL_THICKNESS - CHEST_DOOR_THICKNESS,
+  );
+  // 左下柜门
+  const height3 =
+    TALL_GRADE_BEAM_HEIGHT -
+    QUARTZ_COUNTERTOP_THICKNESS -
+    CHEST_DOOR_OPEN_WOUND_HEIGHT -
+    BOTTOM_CHEST_DOOR_MARGING;
+  addBox(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardLightMaterial,
+    width1 - RIGHR_CABINET_RIGHT_COL_WIDTH - CHEST_GAP * 2,
+    height3,
+    CHEST_DOOR_THICKNESS,
+    (width1 - RIGHR_CABINET_RIGHT_COL_WIDTH) / 2,
+    BOTTOM_CHEST_DOOR_MARGING + height3 / 2,
+    WALL_70_WIDTH - WALL_THICKNESS - CHEST_DOOR_THICKNESS / 2,
+  );
+
+  const width2 = RIGHR_CABINET_RIGHT_COL_WIDTH - CHEST_DOOR_THICKNESS * 2;
+  const width3 = width2 - CHEST_GAP * 2;
+  const height4 =
+    height1 -
+    BOTTOM_CHEST_DOOR_MARGING -
+    RIGHR_CABINET_RIGHT_COL_BOTTOM_DRAWER_HEIGHT -
+    CHEST_DOOR_OPEN_WOUND_HEIGHT -
+    CHEST_DOOR_THICKNESS * 3 -
+    PRESSURE_COOKER_HEIGHT -
+    ELECTRIC_COOKER_HEIGHT -
+    OVEN_HEIGHT;
+  const x = width1 - CHEST_DOOR_THICKNESS - width2 / 2;
+  // 右上柜底板
+  addBox(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardLightMaterial,
+    width2,
+    CHEST_DOOR_THICKNESS,
+    WALL_70_WIDTH - WALL_THICKNESS,
+    x,
+    height1 - height4 + CHEST_DOOR_THICKNESS / 2,
+    (WALL_70_WIDTH - WALL_THICKNESS) / 2,
+  );
+  // 右上柜背板面
+  addPlane(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardDarkMaterial,
+    width2,
+    height4,
+    x,
+    height1 - height4 / 2,
+    0.001,
+  );
+  // 右上柜上板面
+  addPlane(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardDarkMaterial,
+    width2,
+    WALL_70_WIDTH - WALL_THICKNESS,
+    x,
+    height1 - CHEST_DOOR_THICKNESS - 0.001,
+    (WALL_70_WIDTH - WALL_THICKNESS) / 2,
+    new Vector3(Math.PI / 2, 0, 0),
+  );
+  // 右上柜左板面
+  addPlane(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardDarkMaterial,
+    WALL_70_WIDTH - WALL_THICKNESS,
+    height4,
+    width1 - RIGHR_CABINET_RIGHT_COL_WIDTH + CHEST_DOOR_THICKNESS + 0.001,
+    height1 - height4 / 2,
+    (WALL_70_WIDTH - WALL_THICKNESS) / 2,
+    new Vector3(0, Math.PI / 2, 0),
+  );
+  // 右上柜右板面
+  addPlane(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardDarkMaterial,
+    WALL_70_WIDTH - WALL_THICKNESS,
+    height4,
+    width1 - CHEST_DOOR_THICKNESS - 0.001,
+    height1 - height4 / 2,
+    (WALL_70_WIDTH - WALL_THICKNESS) / 2,
+    new Vector3(0, -Math.PI / 2, 0),
+  );
+  // 右上柜门
+  addBox(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardLightMaterial,
+    width3,
+    height4 + CHEST_DOOR_OPEN_WOUND_HEIGHT,
+    CHEST_DOOR_THICKNESS,
+    x,
+    height1 - (height4 + CHEST_DOOR_OPEN_WOUND_HEIGHT) / 2,
+    WALL_70_WIDTH - WALL_THICKNESS - CHEST_DOOR_THICKNESS / 2,
+  );
+
+  const z = WALL_70_WIDTH - WALL_THICKNESS - CHEST_DOOR_THICKNESS / 2;
+  // 烤箱开放格底板
+  addBox(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardLightMaterial,
+    width3,
+    CHEST_DOOR_THICKNESS,
+    WALL_70_WIDTH - WALL_THICKNESS,
+    x,
+    height1 - height4 - OVEN_HEIGHT - CHEST_DOOR_THICKNESS / 2,
+    (WALL_70_WIDTH - WALL_THICKNESS) / 2,
+  );
+  // 烤箱开放格外挡板
+  addBox(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardLightMaterial,
+    width3,
+    RIGHR_CABINET_RIGHT_COL_STORAGE_AREA_HEIGHT,
+    CHEST_DOOR_THICKNESS,
+    x,
+    height1 -
+      height4 -
+      OVEN_HEIGHT -
+      CHEST_DOOR_THICKNESS +
+      RIGHR_CABINET_RIGHT_COL_STORAGE_AREA_HEIGHT / 2,
+    z,
+  );
+
+  // 电饭煲开放格底板
+  addBox(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardLightMaterial,
+    width3,
+    CHEST_DOOR_THICKNESS,
+    WALL_70_WIDTH - WALL_THICKNESS,
+    x,
+    height1 -
+      height4 -
+      OVEN_HEIGHT -
+      -CHEST_DOOR_THICKNESS -
+      ELECTRIC_COOKER_HEIGHT -
+      CHEST_DOOR_THICKNESS / 2,
+    (WALL_70_WIDTH - WALL_THICKNESS) / 2,
+  );
+  // 电饭煲开放格外挡板
+  addBox(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardLightMaterial,
+    width3,
+    RIGHR_CABINET_RIGHT_COL_STORAGE_AREA_HEIGHT,
+    CHEST_DOOR_THICKNESS,
+    x,
+    height1 -
+      height4 -
+      OVEN_HEIGHT -
+      CHEST_DOOR_THICKNESS -
+      ELECTRIC_COOKER_HEIGHT -
+      CHEST_DOOR_THICKNESS +
+      RIGHR_CABINET_RIGHT_COL_STORAGE_AREA_HEIGHT / 2,
+    z,
+  );
+
+  // 高压锅开放格底板
+  addBox(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardLightMaterial,
+    width3,
+    CHEST_DOOR_THICKNESS,
+    WALL_70_WIDTH - WALL_THICKNESS,
+    x,
+    height1 -
+      height4 -
+      OVEN_HEIGHT -
+      CHEST_DOOR_THICKNESS -
+      ELECTRIC_COOKER_HEIGHT -
+      CHEST_DOOR_THICKNESS -
+      PRESSURE_COOKER_HEIGHT -
+      CHEST_DOOR_THICKNESS / 2,
+    (WALL_70_WIDTH - WALL_THICKNESS) / 2,
+  );
+  // 高压锅开放格外挡板
+  addBox(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardLightMaterial,
+    width3,
+    RIGHR_CABINET_RIGHT_COL_STORAGE_AREA_HEIGHT,
+    CHEST_DOOR_THICKNESS,
+    x,
+    height1 -
+      height4 -
+      OVEN_HEIGHT -
+      CHEST_DOOR_THICKNESS -
+      ELECTRIC_COOKER_HEIGHT -
+      CHEST_DOOR_THICKNESS -
+      PRESSURE_COOKER_HEIGHT -
+      CHEST_DOOR_THICKNESS +
+      RIGHR_CABINET_RIGHT_COL_STORAGE_AREA_HEIGHT / 2,
+    z,
+  );
+
+  // 右底部柜体面
+  const height5 =
+    BOTTOM_CHEST_DOOR_MARGING +
+    RIGHR_CABINET_RIGHT_COL_BOTTOM_DRAWER_HEIGHT +
+    CHEST_DOOR_OPEN_WOUND_HEIGHT;
+  addPlane(
+    rightCabinetGroup,
+    assetManager,
+    aluminiumAlloyMaterial as MeshStandardMaterial,
+    width2,
+    height5,
+    x,
+    height5 / 2,
+    WALL_70_WIDTH - WALL_THICKNESS - CHEST_DOOR_THICKNESS,
+  );
+
+  // 右底部柜门
+  addBox(
+    rightCabinetGroup,
+    assetManager,
+    woodBoardLightMaterial,
+    width3,
+    RIGHR_CABINET_RIGHT_COL_BOTTOM_DRAWER_HEIGHT,
+    CHEST_DOOR_THICKNESS,
+    x,
+    BOTTOM_CHEST_DOOR_MARGING +
+      RIGHR_CABINET_RIGHT_COL_BOTTOM_DRAWER_HEIGHT / 2,
+    z,
+  );
+
+  rightCabinetGroup.position.set(
+    WALL_72_POSITION_X + WALL_THICKNESS / 2,
+    0,
+    WALL_67_POSITION_Z - WALL_THICKNESS / 2,
+  );
+  rightCabinetGroup.rotation.y = Math.PI / 2;
+  scene.add(rightCabinetGroup);
 };
 
 // 添加左上角转角柜
@@ -147,57 +567,54 @@ const addCornerCabinet = (scene: Scene, assetManager: AssetManager) => {
   const woodBoardDarkMaterial = assetManager.materials.get(
     "woodBoardDarkMaterial",
   ) as MeshPhysicalMaterial;
-  // 铝合金材质
-  const aluminiumAlloyMaterial = assetManager.materials.get(
-    "aluminiumAlloyMaterial",
-  );
   const cornerCabinetGroup = new Group();
 
   const height1 =
     WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT - QUARTZ_COUNTERTOP_MAX_HEIGHT;
-  // 左边背板
-  addBox(
-    cornerCabinetGroup,
-    assetManager,
-    woodBoardLightMaterial,
-    CHEST_DOOR_THICKNESS,
-    height1,
-    QUARTZ_COUNTERTOP_DEPTH,
-    CHEST_DOOR_THICKNESS / 2,
-    -height1 / 2,
-    QUARTZ_COUNTERTOP_DEPTH / 2,
-  );
-  // 背板
-  addBox(
-    cornerCabinetGroup,
-    assetManager,
-    woodBoardLightMaterial,
-    QUARTZ_COUNTERTOP_DEPTH - CHEST_DOOR_THICKNESS - CHEST_GAP,
-    height1,
-    CHEST_DOOR_THICKNESS,
-    (CHEST_DOOR_THICKNESS + QUARTZ_COUNTERTOP_DEPTH + CHEST_GAP) / 2,
-    -height1 / 2,
-    CHEST_DOOR_THICKNESS / 2,
-  );
+  // 左边背板面
   addPlane(
     cornerCabinetGroup,
     assetManager,
-    aluminiumAlloyMaterial as MeshStandardMaterial,
+    woodBoardDarkMaterial,
+    QUARTZ_COUNTERTOP_DEPTH,
+    height1,
+    0.001,
+    -height1 / 2,
+    QUARTZ_COUNTERTOP_DEPTH / 2,
+    new Vector3(0, Math.PI / 2, 0),
+  );
+  // 背板面
+  addPlane(
+    cornerCabinetGroup,
+    assetManager,
+    woodBoardDarkMaterial,
     QUARTZ_COUNTERTOP_DEPTH - CHEST_DOOR_THICKNESS - CHEST_GAP,
     height1,
     (CHEST_DOOR_THICKNESS + QUARTZ_COUNTERTOP_DEPTH + CHEST_GAP) / 2,
     -height1 / 2,
-    CHEST_DOOR_THICKNESS + 0.01,
+    0.001,
+  );
+  // 上顶板
+  addBox(
+    cornerCabinetGroup,
+    assetManager,
+    woodBoardLightMaterial as MeshStandardMaterial,
+    QUARTZ_COUNTERTOP_DEPTH,
+    CHEST_DOOR_THICKNESS,
+    QUARTZ_COUNTERTOP_DEPTH,
+    QUARTZ_COUNTERTOP_DEPTH / 2,
+    -CHEST_DOOR_THICKNESS / 2,
+    QUARTZ_COUNTERTOP_DEPTH / 2,
   );
   //上底面
   addPlane(
     cornerCabinetGroup,
     assetManager,
-    aluminiumAlloyMaterial as MeshStandardMaterial,
+    woodBoardDarkMaterial as MeshStandardMaterial,
     QUARTZ_COUNTERTOP_DEPTH,
     QUARTZ_COUNTERTOP_DEPTH,
     QUARTZ_COUNTERTOP_DEPTH / 2,
-    -0.01,
+    -CHEST_DOOR_THICKNESS - 0.01,
     QUARTZ_COUNTERTOP_DEPTH / 2,
     new Vector3(Math.PI / 2, 0, 0),
   );
@@ -205,7 +622,7 @@ const addCornerCabinet = (scene: Scene, assetManager: AssetManager) => {
   addPlane(
     cornerCabinetGroup,
     assetManager,
-    aluminiumAlloyMaterial as MeshStandardMaterial,
+    woodBoardDarkMaterial as MeshStandardMaterial,
     QUARTZ_COUNTERTOP_DEPTH,
     QUARTZ_COUNTERTOP_DEPTH,
     QUARTZ_COUNTERTOP_DEPTH / 2,
@@ -350,10 +767,10 @@ const addTopCabinet = (scene: Scene, assetManager: AssetManager) => {
   const woodBoardLightMaterial = assetManager.materials.get(
     "woodBoardLightMaterial",
   ) as MeshPhysicalMaterial;
-  // 铝合金材质
-  const aluminiumAlloyMaterial = assetManager.materials.get(
-    "aluminiumAlloyMaterial",
-  );
+  // 深灰色木板材质
+  const woodBoardDarkMaterial = assetManager.materials.get(
+    "woodBoardDarkMaterial",
+  ) as MeshPhysicalMaterial;
 
   // 上柜体
   const width =
@@ -361,8 +778,6 @@ const addTopCabinet = (scene: Scene, assetManager: AssetManager) => {
     WALL_71_POSITION_X -
     WALL_THICKNESS -
     QUARTZ_COUNTERTOP_DEPTH;
-  const doorWidth =
-    (width - CHEST_GAP * (FRONT_CHEST_COUNT + 1)) / FRONT_CHEST_COUNT;
   const x = WALL_71_POSITION_X + WALL_THICKNESS / 2 + width / 2;
   const y =
     WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT - TOP_KITCHEN_CABINET_HEIGHT / 2;
@@ -378,7 +793,7 @@ const addTopCabinet = (scene: Scene, assetManager: AssetManager) => {
   addPlane(
     scene,
     assetManager,
-    aluminiumAlloyMaterial as MeshStandardMaterial,
+    woodBoardDarkMaterial as MeshStandardMaterial,
     width,
     TOP_KITCHEN_CABINET_HEIGHT - QUARTZ_COUNTERTOP_OVERSTEP_DEPTH,
     x,
@@ -822,6 +1237,7 @@ const addBottomCabinet = (scene: Scene, assetManager: AssetManager) => {
 
 // 添加石英石台面
 const addQuartzCountertop = (scene: Scene, assetManager: AssetManager) => {
+  // 石英石材质
   const quartzMaterial = assetManager.materials.get("quartzMaterial");
   // 左边台面
   const width1 = QUARTZ_COUNTERTOP_DEPTH - QUARTZ_COUNTERTOP_THICKNESS / 2;
