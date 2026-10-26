@@ -53,8 +53,8 @@ import {
   addPlane,
   generateCurvedSurfaceRightAngledTriangularPrismGeometry,
 } from "../utils";
-import createGasStove, { GAS_STOVE_HEIGHT } from "./createGasStove";
-import createKitchenHood from "./createKitchenHood";
+import createGasStove, { GAS_STOVE_HEIGHT } from "../goods/createGasStove";
+import createKitchenHood from "../goods/createKitchenHood";
 
 const TOP_KITCHEN_CABINET_DEPTH = 0.36 * SIZE_ENLARGEMENT_RITO; // 上方橱柜的总深度
 const TOP_KITCHEN_CABINET_HEIGHT = 1.1; // 上方橱柜的总高度（包括柜门下方漏出的高度）
