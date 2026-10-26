@@ -19,6 +19,8 @@ import {
   WALL_72_POSITION_X,
   WALL_72_POSITION_Z,
 } from "./addHouseStructure";
+import createClothingHook from "../goods/createClothingHook";
+import createMirror from "../goods/createMirror";
 import { LIGHT_GROUP_FIELD } from "../function/dynamicOptimizationLightingStripRender";
 
 export const SHOE_CABINET_DEPTH = 0.62; // 鞋柜的总深度
@@ -38,6 +40,10 @@ const TOP_CHEST_HEIGHT = 1; // 第一层柜子的高度
 const STORAGE_AREA_HEIGHT = 0.6; // 第二层置物区的高度（空白，深灰）
 const PUT_SHOE_AREA_HEIGHT = 0.15; // 第五层的摆鞋区的高度（空白，深灰）
 const PUT_SHOE_AREA_HEIGHT2 = 0.25; // 第六层的摆鞋区的高度（空白，深灰）
+const CLOTHING_HOOK_MARGIN = 0.24; // 挂衣钩与左右边的间距
+const CLOTHING_HOOK_MARGIN_TOP = 0.12; // 挂衣钩与左右边的间距
+const MIRROR_WIDTH = 0.8; // 镜子的宽度
+const MIRROR_HEIGHT = 1.8; // 镜子的高度
 // 抽屉的宽度
 const DRAWER_WIDTH =
   (SHOE_CABINET_WIDTH -
@@ -66,8 +72,8 @@ const BOTTOM_CHEST_HEIGHT =
 // 柜子宽度
 const CHEST_WIDTH =
   (SHOE_CABINET_WIDTH -
-    BOARD_THICKNESS * 2 -
-    CHEST_GAP * (CHEST_COL_COUNT + 1)) /
+    BOARD_THICKNESS * 3 -
+    CHEST_GAP * (CHEST_COL_COUNT + 2)) /
   CHEST_COL_COUNT;
 
 const addShoeCabinet = (
@@ -201,14 +207,16 @@ const createShoeCabinet = (
       BOARD_THICKNESS / 2,
     (SHOE_CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
+  const width = (SHOE_CABINET_WIDTH - BOARD_THICKNESS * 3) / 2;
+  const x = -SHOE_CABINET_WIDTH / 2 + BOARD_THICKNESS * 2 + (width * 3) / 2;
   addBox(
     shoeCabinetGroup,
     assetManager,
     woodBoardDarkMaterial,
-    SHOE_CABINET_WIDTH - BOARD_THICKNESS * 2,
+    width,
     BOARD_THICKNESS,
     SHOE_CABINET_DEPTH - BOARD_THICKNESS,
-    0,
+    x,
     SHOE_CABINET_HEIGHT -
       BOARD_THICKNESS -
       CHEST_GAP -
@@ -223,10 +231,10 @@ const createShoeCabinet = (
     shoeCabinetGroup,
     assetManager,
     woodBoardLightMaterial,
-    SHOE_CABINET_WIDTH - BOARD_THICKNESS * 2,
+    width,
     BOARD_THICKNESS,
     SHOE_CABINET_DEPTH - BOARD_THICKNESS,
-    0,
+    x,
     SHOE_CABINET_HEIGHT -
       BOARD_THICKNESS -
       CHEST_GAP -
@@ -246,10 +254,10 @@ const createShoeCabinet = (
     shoeCabinetGroup,
     assetManager,
     woodBoardDarkMaterial,
-    SHOE_CABINET_WIDTH - BOARD_THICKNESS * 2,
+    width,
     BOARD_COATING_THICKNESS,
     SHOE_CABINET_DEPTH - BOARD_THICKNESS,
-    0,
+    x,
     SHOE_CABINET_HEIGHT -
       BOARD_THICKNESS -
       CHEST_GAP -
@@ -268,10 +276,10 @@ const createShoeCabinet = (
     shoeCabinetGroup,
     assetManager,
     woodBoardDarkMaterial,
-    SHOE_CABINET_WIDTH - BOARD_THICKNESS * 2,
+    width,
     BOARD_COATING_THICKNESS,
     SHOE_CABINET_DEPTH - BOARD_THICKNESS,
-    0,
+    x,
     SHOE_CABINET_HEIGHT -
       BOARD_THICKNESS -
       CHEST_GAP -
@@ -290,7 +298,7 @@ const createShoeCabinet = (
   addBox(
     shoeCabinetGroup,
     assetManager,
-    woodBoardLightMaterial,
+    woodBoardDarkMaterial,
     SHOE_CABINET_WIDTH - BOARD_THICKNESS * 2,
     BOARD_THICKNESS,
     SHOE_CABINET_DEPTH - BOARD_THICKNESS,
@@ -325,18 +333,37 @@ const createShoeCabinet = (
     (SHOE_CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 第四层横板上面的深灰色涂层
+  // addBox(
+  //   shoeCabinetGroup,
+  //   assetManager,
+  //   woodBoardDarkMaterial,
+  //   SHOE_CABINET_WIDTH - BOARD_THICKNESS * 2,
+  //   BOARD_COATING_THICKNESS,
+  //   SHOE_CABINET_DEPTH - BOARD_THICKNESS,
+  //   0,
+  //   PUT_SHOE_AREA_HEIGHT2 +
+  //     PUT_SHOE_AREA_HEIGHT +
+  //     BOARD_THICKNESS * 2 +
+  //     BOARD_COATING_THICKNESS / 2 +
+  //     0.002,
+  //   (SHOE_CABINET_DEPTH + BOARD_THICKNESS) / 2,
+  // );
+  // 正中间竖版
+  const height =
+    SHOE_CABINET_HEIGHT -
+    BOARD_THICKNESS * 3 -
+    CHEST_GAP -
+    PUT_SHOE_AREA_HEIGHT -
+    PUT_SHOE_AREA_HEIGHT2;
   addBox(
     shoeCabinetGroup,
     assetManager,
     woodBoardDarkMaterial,
-    SHOE_CABINET_WIDTH - BOARD_THICKNESS * 2,
-    BOARD_COATING_THICKNESS,
+    BOARD_THICKNESS,
+    height,
     SHOE_CABINET_DEPTH - BOARD_THICKNESS,
     0,
-    PUT_SHOE_AREA_HEIGHT2 +
-      PUT_SHOE_AREA_HEIGHT +
-      BOARD_THICKNESS * 2 +
-      BOARD_COATING_THICKNESS / 2,
+    SHOE_CABINET_HEIGHT - BOARD_THICKNESS - CHEST_GAP - height / 2,
     (SHOE_CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
 
@@ -344,7 +371,9 @@ const createShoeCabinet = (
   for (let i = 0; i < CHEST_COL_COUNT; i++) {
     let x =
       BOARD_THICKNESS + CHEST_GAP + CHEST_WIDTH / 2 - SHOE_CABINET_WIDTH / 2;
-    if (i > 0) {
+    if (i >= 2) {
+      x += i * (CHEST_GAP + CHEST_WIDTH) + BOARD_THICKNESS + CHEST_GAP;
+    } else if (i > 0) {
       x += i * (CHEST_GAP + CHEST_WIDTH);
     }
     addBox(
@@ -361,57 +390,58 @@ const createShoeCabinet = (
   }
 
   /**第三层抽屉门*/
-  for (let i = 0; i < CHEST_COL_COUNT / 2; i++) {
-    let x =
-      BOARD_THICKNESS + CHEST_GAP + DRAWER_WIDTH / 2 - SHOE_CABINET_WIDTH / 2;
-    if (i > 0) {
-      x += i * (CHEST_GAP + DRAWER_WIDTH);
-    }
-    addBox(
-      shoeCabinetGroup,
-      assetManager,
-      woodBoardLightMaterial,
-      DRAWER_WIDTH,
-      DRAWER_HEIGHT,
-      CHEST_DOOR_THICKNESS,
-      x,
-      SHOE_CABINET_HEIGHT -
-        BOARD_THICKNESS -
-        CHEST_GAP -
-        TOP_CHEST_HEIGHT -
-        CHEST_GAP -
-        BOARD_THICKNESS -
-        STORAGE_AREA_HEIGHT -
-        BOARD_THICKNESS -
-        CHEST_GAP -
-        DRAWER_HEIGHT / 2,
-      SHOE_CABINET_DEPTH - BOARD_THICKNESS / 2,
-    );
-  }
+  addBox(
+    shoeCabinetGroup,
+    assetManager,
+    woodBoardLightMaterial,
+    width - CHEST_GAP * 2,
+    DRAWER_HEIGHT,
+    CHEST_DOOR_THICKNESS,
+    x,
+    SHOE_CABINET_HEIGHT -
+      BOARD_THICKNESS -
+      CHEST_GAP -
+      TOP_CHEST_HEIGHT -
+      CHEST_GAP -
+      BOARD_THICKNESS -
+      STORAGE_AREA_HEIGHT -
+      BOARD_THICKNESS -
+      CHEST_GAP -
+      DRAWER_HEIGHT / 2,
+    SHOE_CABINET_DEPTH - BOARD_THICKNESS / 2,
+  );
 
   /**第四层柜子柜门*/
-  for (let i = 0; i < CHEST_COL_COUNT; i++) {
-    let x =
-      BOARD_THICKNESS + CHEST_GAP + CHEST_WIDTH / 2 - SHOE_CABINET_WIDTH / 2;
-    if (i > 0) {
-      x += i * (CHEST_GAP + CHEST_WIDTH);
-    }
-    addBox(
-      shoeCabinetGroup,
-      assetManager,
-      woodBoardLightMaterial,
-      CHEST_WIDTH,
-      BOTTOM_CHEST_HEIGHT,
-      CHEST_DOOR_THICKNESS,
-      x,
-      PUT_SHOE_AREA_HEIGHT2 +
-        PUT_SHOE_AREA_HEIGHT +
-        BOARD_THICKNESS * 2 +
-        CHEST_GAP +
-        BOTTOM_CHEST_HEIGHT / 2,
-      SHOE_CABINET_DEPTH - BOARD_THICKNESS / 2,
-    );
-  }
+  addBox(
+    shoeCabinetGroup,
+    assetManager,
+    woodBoardLightMaterial,
+    CHEST_WIDTH,
+    BOTTOM_CHEST_HEIGHT,
+    CHEST_DOOR_THICKNESS,
+    x - CHEST_GAP / 2 - CHEST_WIDTH / 2,
+    PUT_SHOE_AREA_HEIGHT2 +
+      PUT_SHOE_AREA_HEIGHT +
+      BOARD_THICKNESS * 2 +
+      CHEST_GAP +
+      BOTTOM_CHEST_HEIGHT / 2,
+    SHOE_CABINET_DEPTH - BOARD_THICKNESS / 2,
+  );
+  addBox(
+    shoeCabinetGroup,
+    assetManager,
+    woodBoardLightMaterial,
+    CHEST_WIDTH,
+    BOTTOM_CHEST_HEIGHT,
+    CHEST_DOOR_THICKNESS,
+    x + CHEST_GAP / 2 + CHEST_WIDTH / 2,
+    PUT_SHOE_AREA_HEIGHT2 +
+      PUT_SHOE_AREA_HEIGHT +
+      BOARD_THICKNESS * 2 +
+      CHEST_GAP +
+      BOTTOM_CHEST_HEIGHT / 2,
+    SHOE_CABINET_DEPTH - BOARD_THICKNESS / 2,
+  );
 
   /**第二层置物区添加发光灯带*/
   const lightList: RectAreaLight[] = [];
@@ -456,6 +486,52 @@ const createShoeCabinet = (
   );
   light3 && lightList.push(light3);
   lightStripLightingMapRef.current[LIGHT_GROUP_FIELD.SHOE_CABINET] = lightList;
+
+  // 添加挂衣钩
+  const clothingHook1 = createClothingHook(assetManager);
+  clothingHook1.position.set(
+    -SHOE_CABINET_WIDTH / 2 + CLOTHING_HOOK_MARGIN,
+    SHOE_CABINET_HEIGHT -
+      BOARD_THICKNESS -
+      CHEST_GAP -
+      TOP_CHEST_HEIGHT -
+      CHEST_GAP -
+      BOARD_THICKNESS -
+      CLOTHING_HOOK_MARGIN_TOP,
+    BOARD_THICKNESS,
+  );
+  shoeCabinetGroup.add(clothingHook1);
+
+  const clothingHook2 = createClothingHook(assetManager);
+  clothingHook2.position.set(
+    -SHOE_CABINET_WIDTH / 2 + BOARD_THICKNESS + width - CLOTHING_HOOK_MARGIN,
+    SHOE_CABINET_HEIGHT -
+      BOARD_THICKNESS -
+      CHEST_GAP -
+      TOP_CHEST_HEIGHT -
+      CHEST_GAP -
+      BOARD_THICKNESS -
+      CLOTHING_HOOK_MARGIN_TOP,
+    BOARD_THICKNESS,
+  );
+  shoeCabinetGroup.add(clothingHook2);
+
+  // 添加镜子
+  const mirror = createMirror(assetManager, MIRROR_WIDTH, MIRROR_HEIGHT);
+  mirror.position.set(
+    -SHOE_CABINET_WIDTH / 2 + BOARD_THICKNESS + width / 2,
+    SHOE_CABINET_HEIGHT -
+      BOARD_THICKNESS -
+      CHEST_GAP -
+      TOP_CHEST_HEIGHT -
+      CHEST_GAP -
+      BOARD_THICKNESS -
+      CLOTHING_HOOK_MARGIN_TOP -
+      0.06 -
+      MIRROR_HEIGHT / 2,
+    BOARD_THICKNESS + 0.001,
+  );
+  shoeCabinetGroup.add(mirror);
 
   return shoeCabinetGroup;
 };
