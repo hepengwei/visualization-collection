@@ -25,6 +25,7 @@ type SkirtingLineType = "front" | "back" | "double" | "all"; // 如果是竖墙�
 export const SUSPENDED_CEILING_HEIGHT = 0.3; // 吊顶总高度
 export const SIDEBOARD_DEPTH = 0.5 * SIZE_ENLARGEMENT_RITO; // 餐边柜的总深度
 export const WARDROBE_DEPTH = 0.6 * SIZE_ENLARGEMENT_RITO; // 衣柜的总深度
+export const CABINET_DEPTH = 0.4 * SIZE_ENLARGEMENT_RITO; // 常规置物柜的总深度
 export const WALL_HEIGHT = 3.92; // 墙体高度
 export const WALL_THICKNESS = 0.3; // 墙体厚度
 export const TALL_GRADE_BEAM_HEIGHT = 0.82 * SIZE_ENLARGEMENT_RITO; // 高地梁的墙体高度

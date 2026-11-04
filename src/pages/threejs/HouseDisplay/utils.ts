@@ -38,7 +38,9 @@ const LIGHT_STRIP_COLOR = 0xffe8c2; // 灯带和灯光的颜色，暖黄白
 // export const WOOD_LIGHT_COLOR = 0xefebe7; // 浅色木头
 export const WOOD_LIGHT_COLOR = 0xf2eeea; // 浅色木头
 export const WOOD_DARK_COLOR = 0xa5acb7; // 深色木头(浅蓝色)
-export const WOOD_DARK_LINE_COLOR = 0x505762; // 深色木头对应更深的线条颜色
+export const WOOD_DARK_LINE_COLOR = 0x505762; // 深色木头(浅蓝色)对应更深的线条颜色
+export const WOOD_DARK_COLOR2 = 0xc6c9b1; // 深色木头(浅绿色)
+export const WOOD_DARK_LINE_COLOR2 = 0xa4a78f; // 深色木头(浅绿色)对应更深的线条颜色
 const WOOD_LIGHT_YELLOW_COLOR = 0xfffaf0; // 浅黄白色木头
 const WOOD_CHAMPAGNE_COLOR = 0xf7e7ce; // 香槟色木头
 export const ALUMINIUM_ALLOY_COLOR = 0xbfc3c7; // 铝合金颜色
@@ -138,8 +140,12 @@ export const initAssetManager = (assetManager: AssetManager) => {
 
   // 创建不同颜色的实木木板材质
   const woodBoardLightMaterial = makeWoodBoardMaterial(WOOD_LIGHT_COLOR); // 灰白色
-  const woodBoardDarkMaterial = makeWoodBoardMaterial(WOOD_DARK_COLOR); // 深色
-  const woodBoardMoreDarkMaterial = makeWoodBoardMaterial(WOOD_DARK_LINE_COLOR); // 比深色更深
+  const woodBoardDarkMaterial = makeWoodBoardMaterial(WOOD_DARK_COLOR); // 深色(浅蓝色)
+  const woodBoardMoreDarkMaterial = makeWoodBoardMaterial(WOOD_DARK_LINE_COLOR); // 比深色(浅蓝色)更深
+  const woodBoardDarkMaterial2 = makeWoodBoardMaterial(WOOD_DARK_COLOR2); // 深色(浅绿色)
+  const woodBoardMoreDarkMaterial2 = makeWoodBoardMaterial(
+    WOOD_DARK_LINE_COLOR2,
+  ); // 比深色(浅绿色)更深
   const woodBoardLightYellowMaterial = makeWoodBoardMaterial(
     WOOD_LIGHT_YELLOW_COLOR,
   ); // 浅黄白色
@@ -150,6 +156,11 @@ export const initAssetManager = (assetManager: AssetManager) => {
   assetManager.materials.set(
     "woodBoardMoreDarkMaterial",
     woodBoardMoreDarkMaterial,
+  );
+  assetManager.materials.set("woodBoardDarkMaterial2", woodBoardDarkMaterial2);
+  assetManager.materials.set(
+    "woodBoardMoreDarkMaterial2",
+    woodBoardMoreDarkMaterial2,
   );
   assetManager.materials.set(
     "woodBoardLightYellowMaterial",
@@ -234,8 +245,6 @@ export const initAssetManager = (assetManager: AssetManager) => {
   // 创建深色木板对应的更深的线条材质（受光影响）
   const woodBoardDarkLineMaterial = new MeshStandardMaterial({
     color: WOOD_DARK_LINE_COLOR,
-    // emissive: WOOD_DARK_LINE_COLOR, // 自发光颜色
-    // emissiveIntensity: 1.0, // 自发光强度，使其不受环境光影响变灰
     roughness: 0.5,
     metalness: 0.0,
     side: FrontSide,
@@ -246,6 +255,21 @@ export const initAssetManager = (assetManager: AssetManager) => {
   assetManager.materials.set(
     "woodBoardDarkLineMaterial",
     woodBoardDarkLineMaterial,
+  );
+
+  // 创建深色木板对应的更深的线条材质（受光影响）
+  const woodBoardDarkLineMaterial2 = new MeshStandardMaterial({
+    color: WOOD_DARK_LINE_COLOR2,
+    roughness: 0.5,
+    metalness: 0.0,
+    side: FrontSide,
+    polygonOffset: true, // 启用深度偏移，防止与地砖产生Z-fighting闪烁
+    polygonOffsetFactor: 0.4,
+    polygonOffsetUnits: 0.4,
+  });
+  assetManager.materials.set(
+    "woodBoardDarkLineMaterial2",
+    woodBoardDarkLineMaterial2,
   );
 
   // 创建黑色玻璃材质

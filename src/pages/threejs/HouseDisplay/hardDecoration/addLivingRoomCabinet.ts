@@ -7,7 +7,6 @@ import {
   MeshPhysicalMaterial,
   Group,
   Vector3,
-  Object3D,
   RectAreaLight,
   Mesh,
 } from "three";
@@ -24,10 +23,10 @@ import {
   WALL_55_POSITION_Z,
   WALL_64_POSITION_X,
 } from "./addHouseStructure";
-import { SUSPENDED_CEILING_HEIGHT } from "./addHouseStructure";
+import { SUSPENDED_CEILING_HEIGHT, CABINET_DEPTH } from "./addHouseStructure";
 import { LIGHT_GROUP_FIELD } from "../function/dynamicOptimizationLightingStripRender";
+import { SIZE_ENLARGEMENT_RITO } from "../utils";
 
-export const LIVING_ROOM_CABINET_DEPTH = 0.62; // 客厅柜的总深度
 export const BOARD_THICKNESS = 0.03; // 木板的厚度
 const ARC_BOARD_THICKNESS = 0.08; // 圆弧边木板的厚度
 // 客厅柜的位置
@@ -44,7 +43,7 @@ const BOARD_COATING_THICKNESS = 0.002; // 木板深灰色涂层的厚度
 const CHEST_DOOR_THICKNESS = 0.01; // 柜门和抽屉门的厚度
 const TOP_CHEST_HEIGHT = 1.16; // 第一层柜子的高度
 const TOP_STORAGE_AREA_HEIGHT = 0.2; // 第二层暗格置物区的高度（空白，深灰）
-const TOP_STORAGE_AREA_DEPTH = LIVING_ROOM_CABINET_DEPTH - 0.16; // 第二层暗格置物区的深度
+const TOP_STORAGE_AREA_DEPTH = CABINET_DEPTH - 0.1 * SIZE_ENLARGEMENT_RITO; // 第二层暗格置物区的深度
 const STORAGE_AREA_HEIGHT = 0.55; // 第三层置物区的高度（空白，深灰）
 // 第四层抽屉的宽度
 const DRAWER_WIDTH =
@@ -220,10 +219,10 @@ const createLivingRoomCabinet = (
     woodBoardLightMaterial,
     ARC_BOARD_THICKNESS,
     bottomHeight,
-    LIVING_ROOM_CABINET_DEPTH,
+    CABINET_DEPTH,
     (ARC_BOARD_THICKNESS - LIVING_ROOM_CABINET_WIDTH) / 2,
     bottomHeight / 2,
-    LIVING_ROOM_CABINET_DEPTH / 2 - ARC_BOARD_THICKNESS,
+    CABINET_DEPTH / 2 - ARC_BOARD_THICKNESS,
   );
   // 左下四分之一圆柱
   const generateQuarterCylinderGeometry3 = generateQuarterCylinderGeometry(
@@ -239,7 +238,7 @@ const createLivingRoomCabinet = (
   generateQuarterCylinder3.position.set(
     ARC_BOARD_THICKNESS - LIVING_ROOM_CABINET_WIDTH / 2,
     0,
-    LIVING_ROOM_CABINET_DEPTH - ARC_BOARD_THICKNESS,
+    CABINET_DEPTH - ARC_BOARD_THICKNESS,
   );
   // generateQuarterCylinder3.castShadow = true;
   // generateQuarterCylinder3.receiveShadow = true;
@@ -251,11 +250,11 @@ const createLivingRoomCabinet = (
     woodBoardDarkMaterial,
     BOARD_COATING_THICKNESS,
     bottomHeight,
-    LIVING_ROOM_CABINET_DEPTH,
+    CABINET_DEPTH,
     ARC_BOARD_THICKNESS +
       (BOARD_COATING_THICKNESS - LIVING_ROOM_CABINET_WIDTH) / 2,
     bottomHeight / 2,
-    LIVING_ROOM_CABINET_DEPTH / 2,
+    CABINET_DEPTH / 2,
   );
   // 右下板
   addBox(
@@ -264,10 +263,10 @@ const createLivingRoomCabinet = (
     woodBoardLightMaterial,
     ARC_BOARD_THICKNESS,
     bottomHeight,
-    LIVING_ROOM_CABINET_DEPTH,
+    CABINET_DEPTH,
     (LIVING_ROOM_CABINET_WIDTH - ARC_BOARD_THICKNESS) / 2,
     bottomHeight / 2,
-    LIVING_ROOM_CABINET_DEPTH / 2 - ARC_BOARD_THICKNESS,
+    CABINET_DEPTH / 2 - ARC_BOARD_THICKNESS,
   );
   // 右下四分之一圆柱
   const generateQuarterCylinderGeometry4 = generateQuarterCylinderGeometry(
@@ -283,7 +282,7 @@ const createLivingRoomCabinet = (
   generateQuarterCylinder4.position.set(
     LIVING_ROOM_CABINET_WIDTH / 2 - ARC_BOARD_THICKNESS,
     0,
-    LIVING_ROOM_CABINET_DEPTH - ARC_BOARD_THICKNESS,
+    CABINET_DEPTH - ARC_BOARD_THICKNESS,
   );
   // generateQuarterCylinder4.castShadow = true;
   // generateQuarterCylinder4.receiveShadow = true;
@@ -295,11 +294,11 @@ const createLivingRoomCabinet = (
     woodBoardDarkMaterial,
     BOARD_COATING_THICKNESS,
     bottomHeight,
-    LIVING_ROOM_CABINET_DEPTH,
+    CABINET_DEPTH,
     (LIVING_ROOM_CABINET_WIDTH - BOARD_COATING_THICKNESS) / 2 -
       ARC_BOARD_THICKNESS,
     bottomHeight / 2,
-    LIVING_ROOM_CABINET_DEPTH / 2,
+    CABINET_DEPTH / 2,
   );
   // 顶板
   addBox(
@@ -320,10 +319,10 @@ const createLivingRoomCabinet = (
     woodBoardDarkMaterial,
     LIVING_ROOM_CABINET_WIDTH - ARC_BOARD_THICKNESS * 2,
     BOARD_THICKNESS,
-    LIVING_ROOM_CABINET_DEPTH - CHEST_DOOR_THICKNESS,
+    CABINET_DEPTH - CHEST_DOOR_THICKNESS,
     0,
     BOARD_THICKNESS / 2,
-    LIVING_ROOM_CABINET_DEPTH / 2,
+    CABINET_DEPTH / 2,
   );
   // 背板
   addBox(
@@ -371,7 +370,7 @@ const createLivingRoomCabinet = (
     woodBoardDarkMaterial,
     LIVING_ROOM_CABINET_WIDTH - ARC_BOARD_THICKNESS * 2,
     BOARD_THICKNESS,
-    LIVING_ROOM_CABINET_DEPTH - BOARD_THICKNESS,
+    CABINET_DEPTH - BOARD_THICKNESS,
     0,
     LIVING_ROOM_CABINET_HEIGHT -
       TOP_CHEST_HEIGHT -
@@ -380,7 +379,7 @@ const createLivingRoomCabinet = (
       BOARD_THICKNESS -
       STORAGE_AREA_HEIGHT -
       BOARD_THICKNESS / 2,
-    (LIVING_ROOM_CABINET_DEPTH + BOARD_THICKNESS) / 2,
+    (CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
   addBox(
     livingRoomCabinetGroup,
@@ -388,7 +387,7 @@ const createLivingRoomCabinet = (
     woodBoardLightMaterial,
     LIVING_ROOM_CABINET_WIDTH - ARC_BOARD_THICKNESS * 2,
     BOARD_THICKNESS,
-    LIVING_ROOM_CABINET_DEPTH - BOARD_THICKNESS,
+    CABINET_DEPTH - BOARD_THICKNESS,
     0,
     LIVING_ROOM_CABINET_HEIGHT -
       TOP_CHEST_HEIGHT -
@@ -400,7 +399,7 @@ const createLivingRoomCabinet = (
       DRAWER_HEIGHT -
       CHEST_GAP -
       BOARD_THICKNESS / 2,
-    (LIVING_ROOM_CABINET_DEPTH + BOARD_THICKNESS) / 2,
+    (CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 第四层横板上面的深灰色涂层
   addBox(
@@ -409,7 +408,7 @@ const createLivingRoomCabinet = (
     woodBoardDarkMaterial,
     LIVING_ROOM_CABINET_WIDTH - ARC_BOARD_THICKNESS * 2,
     BOARD_COATING_THICKNESS,
-    LIVING_ROOM_CABINET_DEPTH - BOARD_THICKNESS,
+    CABINET_DEPTH - BOARD_THICKNESS,
     0,
     LIVING_ROOM_CABINET_HEIGHT -
       TOP_CHEST_HEIGHT -
@@ -422,7 +421,7 @@ const createLivingRoomCabinet = (
       CHEST_GAP -
       BOARD_COATING_THICKNESS / 2 +
       0.01,
-    (LIVING_ROOM_CABINET_DEPTH + BOARD_THICKNESS) / 2,
+    (CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
 
   /**第一层柜子柜门*/
@@ -535,7 +534,7 @@ const createLivingRoomCabinet = (
         BOARD_THICKNESS +
         CHEST_GAP +
         DRAWER_HEIGHT / 2,
-      LIVING_ROOM_CABINET_DEPTH - CHEST_DOOR_THICKNESS / 2,
+      CABINET_DEPTH - CHEST_DOOR_THICKNESS / 2,
     );
   }
 
@@ -558,7 +557,7 @@ const createLivingRoomCabinet = (
       CHEST_DOOR_THICKNESS,
       x,
       BOTTOM_CHEST_HEIGHT / 2,
-      LIVING_ROOM_CABINET_DEPTH - CHEST_DOOR_THICKNESS / 2,
+      CABINET_DEPTH - CHEST_DOOR_THICKNESS / 2,
     );
   }
 

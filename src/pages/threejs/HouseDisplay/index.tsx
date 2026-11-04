@@ -53,6 +53,7 @@ import addGlassWhiteboard from "./softDecoration/addGlassWhiteboard";
 import addDecorateBackgroundPanel from './softDecoration/addDecorateBackgroundPanel';
 import addLivingRoomCabinet from './hardDecoration/addLivingRoomCabinet';
 import addKidsWardrobe from "./hardDecoration/addKidsWardrobe";
+import addKidsBookCabinet from './hardDecoration/addKidsBookCabinet';
 import renovateKitchen from './hardDecoration/renovateKitchen';
 // import { dynamicOptimizationLightingStripRender } from './function/dynamicOptimizationLightingStripRender';
 import styles from "./index.module.scss";
@@ -300,7 +301,13 @@ const HouseDisplay = () => {
         scene,
         assetManager,
         lightStripLightingMapRef
-      )
+      );
+
+      // 添加儿童书柜
+      addKidsBookCabinet(
+        scene,
+        assetManager,
+      );
 
       // 装修厨房
       renovateKitchen(scene, assetManager);
