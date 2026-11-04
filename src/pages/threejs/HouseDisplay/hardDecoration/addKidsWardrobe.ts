@@ -96,12 +96,12 @@ const createKidsWardrobe = (
     "woodBoardLightMaterial",
   ) as MeshPhysicalMaterial;
   // 深灰色木板材质
-  const woodBoardDarkMaterial = assetManager.materials.get(
-    "woodBoardDarkMaterial",
+  const woodBoardDarkMaterial2 = assetManager.materials.get(
+    "woodBoardDarkMaterial2",
   ) as MeshPhysicalMaterial;
   // 深色木板对应的更深的线条材质
-  const woodBoardDarkLineMaterial = assetManager.materials.get(
-    "woodBoardDarkLineMaterial",
+  const woodBoardDarkLineMaterial2 = assetManager.materials.get(
+    "woodBoardDarkLineMaterial2",
   ) as MeshPhysicalMaterial;
 
   const kidsWardrobeGroup = new Group();
@@ -110,7 +110,7 @@ const createKidsWardrobe = (
   addBox(
     kidsWardrobeGroup,
     assetManager,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
     KIDS_WARDROBE_WIDTH,
     KIDS_WARDROBE_HEIGHT,
     BOARD_THICKNESS,
@@ -125,7 +125,7 @@ const createKidsWardrobe = (
   addBox(
     kidsWardrobeGroup,
     assetManager,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
     LEFT_CHEST_WIDTH,
     height1,
     MIDDLE_CHEST_DEPTH,
@@ -152,7 +152,7 @@ const createKidsWardrobe = (
   addBox(
     kidsWardrobeGroup,
     assetManager,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
     LEFT_CHEST_WIDTH,
     BOTTOM_CHEST_HEIGHT,
     depth1,
@@ -165,7 +165,7 @@ const createKidsWardrobe = (
   addBox(
     kidsWardrobeGroup,
     assetManager,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
     LEFT_CHEST_WIDTH - ARC_BOARD_THICKNESS,
     BOTTOM_CHEST_HEIGHT,
     ARC_BOARD_THICKNESS,
@@ -183,7 +183,7 @@ const createKidsWardrobe = (
   );
   const quarterCylinder1 = new Mesh(
     quarterCylinderGeometry1,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
   );
   quarterCylinder1.rotation.x = -Math.PI / 2;
   quarterCylinder1.rotation.z = Math.PI;
@@ -202,7 +202,7 @@ const createKidsWardrobe = (
     addPlane(
       kidsWardrobeGroup,
       assetManager,
-      woodBoardDarkLineMaterial,
+      woodBoardDarkLineMaterial2,
       depth1,
       CHEST_GAP * 2,
       -KIDS_WARDROBE_WIDTH / 2,
@@ -289,7 +289,7 @@ const createKidsWardrobe = (
   addBox(
     kidsWardrobeGroup,
     assetManager,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
     CHEST_DOOR_WIDTH * 2 + CHEST_GAP * 2,
     KIDS_WARDROBE_HEIGHT,
     MIDDLE_CHEST_DEPTH,
@@ -362,7 +362,7 @@ const createKidsWardrobe = (
   addBox(
     kidsWardrobeGroup,
     assetManager,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
     width2,
     LEFT_HOLLOW_OUT_HEIGHT,
     MIDDLE_CHEST_DEPTH,
@@ -374,7 +374,7 @@ const createKidsWardrobe = (
   addBox(
     kidsWardrobeGroup,
     assetManager,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
     width2,
     BOTTOM_CHEST_HEIGHT + CHEST_GAP + BOARD_THICKNESS,
     MIDDLE_CHEST_DEPTH,
@@ -445,13 +445,25 @@ const createKidsWardrobe = (
   addBox(
     kidsWardrobeGroup,
     assetManager,
-    woodBoardDarkMaterial,
+    woodBoardLightMaterial,
     BOARD_THICKNESS,
     KIDS_WARDROBE_HEIGHT,
     WARDROBE_DEPTH - BOARD_THICKNESS,
     KIDS_WARDROBE_WIDTH / 2 - BOARD_THICKNESS / 2,
     KIDS_WARDROBE_HEIGHT / 2,
     (WARDROBE_DEPTH + BOARD_THICKNESS) / 2,
+  );
+  // 右边左边的深色涂层
+  addPlane(
+    kidsWardrobeGroup,
+    assetManager,
+    woodBoardDarkMaterial2,
+    WARDROBE_DEPTH - BOARD_THICKNESS,
+    KIDS_WARDROBE_HEIGHT,
+    KIDS_WARDROBE_WIDTH / 2 - BOARD_THICKNESS - 0.001,
+    KIDS_WARDROBE_HEIGHT / 2,
+    (WARDROBE_DEPTH + BOARD_THICKNESS) / 2,
+    new Vector3(0, -Math.PI / 2, 0),
   );
 
   // 右边中间置物区横板
@@ -464,7 +476,7 @@ const createKidsWardrobe = (
   addBox(
     kidsWardrobeGroup,
     assetManager,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
     width2,
     BOARD_THICKNESS,
     MIDDLE_CHEST_DEPTH,
@@ -510,8 +522,8 @@ const createRightTable = (
   lightList: RectAreaLight[],
 ) => {
   // 深灰色木板材质
-  const woodBoardDarkMaterial = assetManager.materials.get(
-    "woodBoardDarkMaterial",
+  const woodBoardDarkMaterial2 = assetManager.materials.get(
+    "woodBoardDarkMaterial2",
   ) as MeshPhysicalMaterial;
 
   // 注意：左下角为坐标原点
@@ -526,7 +538,7 @@ const createRightTable = (
   addBox(
     rightTableGroup,
     assetManager,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
     RIGHT_CHEST_WIDTH,
     height2,
     BOARD_THICKNESS,
@@ -540,7 +552,7 @@ const createRightTable = (
   addBox(
     rightTableGroup,
     assetManager,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
     width,
     BOARD_THICKNESS,
     RIGHT_TABLE_DEPTH - BOARD_THICKNESS,
@@ -551,7 +563,7 @@ const createRightTable = (
   addBox(
     rightTableGroup,
     assetManager,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
     ARC_BOARD_THICKNESS,
     BOARD_THICKNESS,
     RIGHT_TABLE_DEPTH - BOARD_THICKNESS - ARC_BOARD_THICKNESS,
@@ -566,7 +578,7 @@ const createRightTable = (
   );
   const quarterCylinder1 = new Mesh(
     quarterCylinderGeometry3,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
   );
   quarterCylinder1.rotation.x = -Math.PI / 2;
   quarterCylinder1.rotation.z = -Math.PI / 2;
@@ -586,7 +598,7 @@ const createRightTable = (
     );
   const curvedSurfaceRightAngledTriangularPrism2 = new Mesh(
     curvedSurfaceRightAngledTriangularPrismGeometry2,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
   );
   curvedSurfaceRightAngledTriangularPrism2.rotation.x = -Math.PI / 2;
   curvedSurfaceRightAngledTriangularPrism2.rotation.z = -Math.PI / 2;
@@ -639,7 +651,7 @@ const createRightTable = (
     );
   const curvedSurfaceRightAngledTriangularPrism3 = new Mesh(
     curvedSurfaceRightAngledTriangularPrismGeometry3,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
   );
   curvedSurfaceRightAngledTriangularPrism3.position.set(0, height2, 0);
   // curvedSurfaceRightAngledTriangularPrism3.castShadow = true;
@@ -694,7 +706,7 @@ const createRightTable = (
   addBox(
     rightTableGroup,
     assetManager,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
     RIGHT_CHEST_WIDTH - BOARD_THICKNESS,
     LEFT_HOLLOW_OUT_HEIGHT,
     BOARD_THICKNESS,
@@ -714,7 +726,7 @@ const createRightTable = (
   addBox(
     rightTableGroup,
     assetManager,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
     width2,
     BOARD_THICKNESS,
     depth,
@@ -736,7 +748,7 @@ const createRightTable = (
   addBox(
     rightTableGroup,
     assetManager,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
     width3,
     BOARD_THICKNESS,
     depth,
@@ -769,7 +781,7 @@ const createRightTable = (
   addBox(
     rightTableGroup,
     assetManager,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
     width2,
     BOARD_THICKNESS,
     depth,
@@ -796,7 +808,7 @@ const createRightTable = (
   addBox(
     rightTableGroup,
     assetManager,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
     width2,
     BOARD_THICKNESS,
     depth,
@@ -809,7 +821,7 @@ const createRightTable = (
   addBox(
     rightTableGroup,
     assetManager,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
     BOARD_THICKNESS,
     height,
     depth,
@@ -820,7 +832,7 @@ const createRightTable = (
   addBox(
     rightTableGroup,
     assetManager,
-    woodBoardDarkMaterial,
+    woodBoardDarkMaterial2,
     BOARD_THICKNESS,
     LEFT_HOLLOW_OUT_HEIGHT,
     depth,

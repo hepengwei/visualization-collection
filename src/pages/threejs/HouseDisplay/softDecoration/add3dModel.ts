@@ -165,11 +165,7 @@ const loadBeds = (
         }
       });
 
-      bed2.position.set(
-        WALL_33_POSITION_X - 0.3,
-        0.7,
-        WALL_1_POSITION_Z + 1.8,
-      );
+      bed2.position.set(WALL_33_POSITION_X, 0.7, WALL_1_POSITION_Z + 1.8);
       bed2.scale.set(3.1, 3.2, 3.1);
       bed2.rotation.y = -Math.PI / 2;
       scene.add(bed2);

@@ -319,7 +319,7 @@ const addRightCabinet = (scene: Scene, assetManager: AssetManager) => {
   addBox(
     rightCabinetGroup,
     assetManager,
-    woodBoardLightMaterial,
+    woodBoardDarkMaterial,
     width1 - RIGHR_CABINET_RIGHT_COL_WIDTH - CHEST_GAP * 2,
     height3,
     CHEST_DOOR_THICKNESS,
@@ -538,7 +538,7 @@ const addRightCabinet = (scene: Scene, assetManager: AssetManager) => {
   addBox(
     rightCabinetGroup,
     assetManager,
-    woodBoardLightMaterial,
+    woodBoardDarkMaterial,
     width3,
     RIGHR_CABINET_RIGHT_COL_BOTTOM_DRAWER_HEIGHT,
     CHEST_DOOR_THICKNESS,
