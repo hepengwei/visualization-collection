@@ -25,13 +25,11 @@ import {
   WALL_23_POSITION_X,
   WALL_28_POSITION_X,
   WALL_55_POSITION_X,
-  WALL_73_POSITION_X,
   WALL_10_POSITION_Z,
   WALL_20_POSITION_Z,
   WALL_55_POSITION_Z,
-  WALL_73_POSITION_Z,
 } from "../hardDecoration/addHouseStructure";
-import { BOARD_THICKNESS } from "../hardDecoration/addSideboard";
+import { BOARD_THICKNESS } from "../utils";
 
 const SWITCH_POSITION_HEIGHT = 1.65; // 开关的位置高度
 const SWITCH_WIDTH = 0.2; // 开关的宽

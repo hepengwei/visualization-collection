@@ -46,6 +46,10 @@ const WOOD_CHAMPAGNE_COLOR = 0xf7e7ce; // 香槟色木头
 export const ALUMINIUM_ALLOY_COLOR = 0xbfc3c7; // 铝合金颜色
 export const DOOR_COLOR = new Color(165, 173, 183); // 门扇的颜色
 export const LIGHT_STRIP_HEIGHT = 0.034; // 发光灯带的默认高度
+export const BOARD_THICKNESS = 0.03; // 所有木板的厚度(个别除外)
+export const ARC_BOARD_THICKNESS = 0.08; // 所有圆弧边木板的厚度
+export const CHEST_DOOR_THICKNESS = 0.02; // 所有柜门/抽屉厚度
+export const ROUNDED_CORNER_CABINET_DOOR_RADIUS = 0.1; // 带圆弧角柜门的圆弧半径
 
 // 初始化资源管理器，将所有公共的几何体和部分公共材质预先创建并存到资源管理器中
 export const initAssetManager = (assetManager: AssetManager) => {
@@ -1278,4 +1282,79 @@ const buildRibbon = (
   geo.setIndex(idx);
   geo.computeVertexNormals();
   return geo;
+};
+
+// 创建并添加带一个圆弧角的柜门
+export const addWithARoundedCornerCabinetDoor = (
+  parent: Group,
+  assetManager: AssetManager,
+  w: number,
+  h: number,
+  x: number,
+  y: number,
+  z: number,
+  rotation?: Vector3,
+) => {
+  // 灰白色木板材质
+  const woodBoardLightMaterial = assetManager.materials.get(
+    "woodBoardLightMaterial",
+  ) as MeshPhysicalMaterial;
+
+  const chestDoorGroup = new Group();
+
+  addBox(
+    chestDoorGroup,
+    assetManager,
+    woodBoardLightMaterial,
+    w - ROUNDED_CORNER_CABINET_DOOR_RADIUS,
+    h - ROUNDED_CORNER_CABINET_DOOR_RADIUS,
+    CHEST_DOOR_THICKNESS,
+    -ROUNDED_CORNER_CABINET_DOOR_RADIUS / 2,
+    ROUNDED_CORNER_CABINET_DOOR_RADIUS / 2,
+    0,
+  );
+  addBox(
+    chestDoorGroup,
+    assetManager,
+    woodBoardLightMaterial,
+    ROUNDED_CORNER_CABINET_DOOR_RADIUS,
+    h - ROUNDED_CORNER_CABINET_DOOR_RADIUS,
+    CHEST_DOOR_THICKNESS,
+    w / 2 - ROUNDED_CORNER_CABINET_DOOR_RADIUS / 2,
+    ROUNDED_CORNER_CABINET_DOOR_RADIUS / 2,
+    0,
+  );
+  addBox(
+    chestDoorGroup,
+    assetManager,
+    woodBoardLightMaterial,
+    w - ROUNDED_CORNER_CABINET_DOOR_RADIUS,
+    ROUNDED_CORNER_CABINET_DOOR_RADIUS,
+    CHEST_DOOR_THICKNESS,
+    -ROUNDED_CORNER_CABINET_DOOR_RADIUS / 2,
+    -h / 2 + ROUNDED_CORNER_CABINET_DOOR_RADIUS / 2,
+    0,
+  );
+  const quarterCylinderGeometry = generateQuarterCylinderGeometry(
+    ROUNDED_CORNER_CABINET_DOOR_RADIUS,
+    CHEST_DOOR_THICKNESS,
+  );
+  const quarterCylinder = new Mesh(
+    quarterCylinderGeometry,
+    woodBoardLightMaterial,
+  );
+  quarterCylinder.rotation.z = -Math.PI / 2;
+  quarterCylinder.position.set(
+    w / 2 - ROUNDED_CORNER_CABINET_DOOR_RADIUS,
+    -h / 2 + ROUNDED_CORNER_CABINET_DOOR_RADIUS,
+    -CHEST_DOOR_THICKNESS / 2,
+  );
+  chestDoorGroup.add(quarterCylinder);
+
+  if (rotation) {
+    chestDoorGroup.rotation.x = rotation.x;
+    chestDoorGroup.rotation.z = rotation.z;
+  }
+  chestDoorGroup.position.set(x, y, z);
+  parent.add(chestDoorGroup);
 };
