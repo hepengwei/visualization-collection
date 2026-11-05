@@ -13,12 +13,16 @@ import {
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import {
   LIGHT_STRIP_HEIGHT,
+  BOARD_THICKNESS,
+  ARC_BOARD_THICKNESS,
+  CHEST_DOOR_THICKNESS,
   addBox,
   addPlane,
   generateQuarterCylinderGeometry,
   generateCurvedSurfaceRightAngledTriangularPrismGeometry,
   addLightStrip,
   addCircleLightingStrip,
+  addWithARoundedCornerCabinetDoor,
 } from "../utils";
 import {
   WALL_HEIGHT,
@@ -31,8 +35,6 @@ import {
 import { WARDROBE_DEPTH, SUSPENDED_CEILING_HEIGHT } from "./addHouseStructure";
 import { LIGHT_GROUP_FIELD } from "../function/dynamicOptimizationLightingStripRender";
 
-export const BOARD_THICKNESS = 0.03; // 木板的厚度
-const ARC_BOARD_THICKNESS = 0.08; // 圆弧边木板的厚度
 // 儿童衣柜的位置
 const KIDS_WARDROBE_POSITON = new Vector3(
   WALL_28_POSITION_X + WALL_THICKNESS / 2,
@@ -43,7 +45,6 @@ const KIDS_WARDROBE_WIDTH = WALL_19_WIDTH + WALL_THICKNESS + WALL_21_WIDTH; // �
 const CHEST_DOOR_WIDTH = 0.64; // 柜门的宽度
 const CHEST_GAP = 0.01; // 柜子之间的缝隙
 const KIDS_WARDROBE_HEIGHT = WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT; // 儿童衣柜的总高
-export const CHEST_DOOR_THICKNESS = 0.02; // 柜门和抽屉门的厚度
 const BOTTOM_CHEST_HEIGHT = 1.1; // 下面柜子的高度
 const TOP_CHEST_HEIGHT = KIDS_WARDROBE_HEIGHT - BOTTOM_CHEST_HEIGHT - CHEST_GAP; // 上面柜子的高度(包含镂空的高度)
 const MIDDLE_CHEST_DEPTH =
@@ -301,7 +302,7 @@ const createKidsWardrobe = (
   );
 
   // 中间柜体所有门板
-  addChestDoor(
+  addWithARoundedCornerCabinetDoor(
     kidsWardrobeGroup,
     assetManager,
     CHEST_DOOR_WIDTH,
@@ -313,7 +314,7 @@ const createKidsWardrobe = (
     KIDS_WARDROBE_HEIGHT - TOP_CHEST_HEIGHT / 2,
     WARDROBE_DEPTH - CHEST_DOOR_THICKNESS / 2,
   );
-  addChestDoor(
+  addWithARoundedCornerCabinetDoor(
     kidsWardrobeGroup,
     assetManager,
     CHEST_DOOR_WIDTH,
@@ -328,7 +329,7 @@ const createKidsWardrobe = (
     WARDROBE_DEPTH - CHEST_DOOR_THICKNESS / 2,
     new Vector3(Math.PI, 0, Math.PI),
   );
-  addChestDoor(
+  addWithARoundedCornerCabinetDoor(
     kidsWardrobeGroup,
     assetManager,
     CHEST_DOOR_WIDTH,
@@ -341,7 +342,7 @@ const createKidsWardrobe = (
     WARDROBE_DEPTH - CHEST_DOOR_THICKNESS / 2,
     new Vector3(Math.PI, 0, 0),
   );
-  addChestDoor(
+  addWithARoundedCornerCabinetDoor(
     kidsWardrobeGroup,
     assetManager,
     CHEST_DOOR_WIDTH,
@@ -863,83 +864,6 @@ const createRightTable = (
   );
 
   return rightTableGroup;
-};
-
-// 创建并添加带一个圆缺角的柜门
-const addChestDoor = (
-  parent: Group,
-  assetManager: AssetManager,
-  w: number,
-  h: number,
-  x: number,
-  y: number,
-  z: number,
-  rotation?: Vector3,
-) => {
-  // 灰白色木板材质
-  const woodBoardLightMaterial = assetManager.materials.get(
-    "woodBoardLightMaterial",
-  ) as MeshPhysicalMaterial;
-
-  const chestDoorGroup = new Group();
-
-  addBox(
-    chestDoorGroup,
-    assetManager,
-    woodBoardLightMaterial,
-    w - LEFT_SMALL_RADIUS,
-    h - LEFT_SMALL_RADIUS,
-    CHEST_DOOR_THICKNESS,
-    -LEFT_SMALL_RADIUS / 2,
-    LEFT_SMALL_RADIUS / 2,
-    0,
-  );
-  addBox(
-    chestDoorGroup,
-    assetManager,
-    woodBoardLightMaterial,
-    LEFT_SMALL_RADIUS,
-    h - LEFT_SMALL_RADIUS,
-    CHEST_DOOR_THICKNESS,
-    w / 2 - LEFT_SMALL_RADIUS / 2,
-    LEFT_SMALL_RADIUS / 2,
-    0,
-  );
-  addBox(
-    chestDoorGroup,
-    assetManager,
-    woodBoardLightMaterial,
-    w - LEFT_SMALL_RADIUS,
-    LEFT_SMALL_RADIUS,
-    CHEST_DOOR_THICKNESS,
-    -LEFT_SMALL_RADIUS / 2,
-    -h / 2 + LEFT_SMALL_RADIUS / 2,
-    0,
-  );
-  const quarterCylinderGeometry = generateQuarterCylinderGeometry(
-    LEFT_SMALL_RADIUS,
-    CHEST_DOOR_THICKNESS,
-  );
-  const quarterCylinder = new Mesh(
-    quarterCylinderGeometry,
-    woodBoardLightMaterial,
-  );
-  quarterCylinder.rotation.z = -Math.PI / 2;
-  quarterCylinder.position.set(
-    w / 2 - LEFT_SMALL_RADIUS,
-    -h / 2 + LEFT_SMALL_RADIUS,
-    -CHEST_DOOR_THICKNESS / 2,
-  );
-  // quarterCylinder.castShadow = true;
-  // quarterCylinder.receiveShadow = true;
-  chestDoorGroup.add(quarterCylinder);
-
-  if (rotation) {
-    chestDoorGroup.rotation.x = rotation.x;
-    chestDoorGroup.rotation.z = rotation.z;
-  }
-  chestDoorGroup.position.set(x, y, z);
-  parent.add(chestDoorGroup);
 };
 
 // 创建并添加带一个内凹缺角的柜门

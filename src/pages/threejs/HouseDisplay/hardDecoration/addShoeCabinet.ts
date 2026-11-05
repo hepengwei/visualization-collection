@@ -10,7 +10,13 @@ import {
   RectAreaLight,
 } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
-import { LIGHT_STRIP_HEIGHT, addBox, addLightStrip } from "../utils";
+import {
+  LIGHT_STRIP_HEIGHT,
+  BOARD_THICKNESS,
+  CHEST_DOOR_THICKNESS,
+  addBox,
+  addLightStrip,
+} from "../utils";
 import {
   WALL_HEIGHT,
   SUSPENDED_CEILING_HEIGHT,
@@ -33,9 +39,7 @@ const CHEST_COL_COUNT = 4; // 柜子的列数,保证为偶数
 const SHOE_CABINET_WIDTH = WALL_72_WIDTH - 0.02; // 鞋柜柜体的总宽
 const CHEST_GAP = 0.006; // 柜子之间的缝隙
 const SHOE_CABINET_HEIGHT = WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT; // 鞋柜的总高
-const BOARD_THICKNESS = 0.03; // 木板的厚度
 const BOARD_COATING_THICKNESS = 0.002; // 木板深灰色涂层的厚度
-const CHEST_DOOR_THICKNESS = 0.01; // 柜门和抽屉门的厚度
 const TOP_CHEST_HEIGHT = 1; // 第一层柜子的高度
 const STORAGE_AREA_HEIGHT = 0.7; // 第二层置物区的高度（空白，深灰）
 const PUT_SHOE_AREA_HEIGHT = 0.15; // 第五层的摆鞋区的高度（空白，深灰）
@@ -44,12 +48,6 @@ const CLOTHING_HOOK_MARGIN = 0.24; // 挂衣钩与左右边的间距
 const CLOTHING_HOOK_MARGIN_TOP = 0.12; // 挂衣钩与左右边的间距
 const MIRROR_WIDTH = 0.8; // 镜子的宽度
 const MIRROR_HEIGHT = 1.8; // 镜子的高度
-// 抽屉的宽度
-const DRAWER_WIDTH =
-  (SHOE_CABINET_WIDTH -
-    BOARD_THICKNESS * 2 -
-    CHEST_GAP * (CHEST_COL_COUNT / 2 + 1)) /
-  (CHEST_COL_COUNT / 2);
 const DRAWER_HEIGHT = 0.25; // 抽屉的高度
 // 最下面柜子的高度
 const BOTTOM_CHEST_HEIGHT =

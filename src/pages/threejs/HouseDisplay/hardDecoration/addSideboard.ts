@@ -17,6 +17,8 @@ import type { AssetManager } from "hooks/threejs/useInitialize";
 import addVase from "../softDecoration/addVase";
 import {
   LIGHT_STRIP_HEIGHT,
+  BOARD_THICKNESS,
+  CHEST_DOOR_THICKNESS,
   addBox,
   addLightStrip,
   // addRectAreaLighting,
@@ -31,7 +33,6 @@ import {
 import { SIDEBOARD_DEPTH, SUSPENDED_CEILING_HEIGHT } from "./addHouseStructure";
 import { LIGHT_GROUP_FIELD } from "../function/dynamicOptimizationLightingStripRender";
 
-export const BOARD_THICKNESS = 0.03; // 木板的厚度
 // 餐边柜的位置
 const SIDEBOARD_POSITON = new Vector3(
   WALL_34_POSITION_X - 0.7,
@@ -43,7 +44,6 @@ const SIDEBOARD_WIDTH = 3.5; // 餐边柜柜体的总宽（不包含左右两边
 const CHEST_GAP = 0.01; // 柜子之间的缝隙
 const SIDEBOARD_HEIGHT = WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT; // 餐边柜的总高
 const BOARD_COATING_THICKNESS = 0.002; // 木板深灰色涂层的厚度
-const CHEST_DOOR_THICKNESS = 0.01; // 柜门和抽屉门的厚度
 const TOP_CHEST_HEIGHT = 1.1; // 第一层柜子的高度
 const TOP_STORAGE_AREA_HEIGHT = 0.2; // 第二层暗格置物区的高度（空白，深灰）
 const TOP_STORAGE_AREA_DEPTH = SIDEBOARD_DEPTH - 0.16; // 第二层暗格置物区的深度

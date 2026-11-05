@@ -7,6 +7,7 @@ import type { AssetManager } from "hooks/threejs/useInitialize";
 import {
   WALL_HEIGHT,
   WALL_THICKNESS,
+  CABINET_DEPTH,
   WALL_2_WIDTH,
   WALL_7_WIDTH,
   WALL_33_WIDTH,
@@ -32,7 +33,6 @@ import {
   WARDROBE_DEPTH,
 } from "./addHouseStructure";
 import { CURTAIN_DEPTH } from "../softDecoration/addCurtain";
-import { RIGHT_CHEST_DEPTH } from "./addKidsWardrobe";
 import {
   addLightStrip,
   addBox,
@@ -66,8 +66,7 @@ const length2 = WALL_66_POSITION_X - WALL_56_POSITION_X;
 const length3 =
   WALL_73_POSITION_Z - WALL_10_POSITION_Z - WALL_THICKNESS - SIDEBOARD_DEPTH;
 const length4 = WALL_35_POSITION_X - WALL_72_POSITION_X - CURTAIN_DEPTH;
-const length5 =
-  WALL_10_POSITION_Z - WALL_1_POSITION_Z - WALL_THICKNESS - RIGHT_CHEST_DEPTH;
+const length5 = WALL_10_POSITION_Z - WALL_1_POSITION_Z - WALL_THICKNESS;
 const length6 =
   WALL_33_WIDTH - CURTAIN_DEPTH - WALL_7_WIDTH - WALL_THICKNESS * 2;
 const length7 = WALL_33_WIDTH - WALL_7_WIDTH - WALL_THICKNESS * 2;
@@ -170,14 +169,14 @@ const weldSuspendedCeilingInfoList: [
     length6,
     WALL_28_POSITION_X + WALL_THICKNESS / 2 + WARDROBE_DEPTH + length6 / 2,
     WALL_HEIGHT,
-    WALL_1_POSITION_Z + WALL_THICKNESS / 2 + RIGHT_CHEST_DEPTH,
+    WALL_1_POSITION_Z + WALL_THICKNESS / 2,
     "back",
   ],
   [
     length7,
     WALL_28_POSITION_X + WALL_THICKNESS / 2 + length7 / 2,
     WALL_HEIGHT,
-    WALL_10_POSITION_Z - WALL_THICKNESS / 2,
+    WALL_10_POSITION_Z - WALL_THICKNESS / 2 - CABINET_DEPTH,
     "front",
   ],
   [
@@ -242,10 +241,10 @@ const suspendedCeilingBoardInfoList: [
   [
     length6,
     SUSPENDED_CEILING_HEIGHT,
-    RIGHT_CHEST_DEPTH,
+    CABINET_DEPTH,
     WALL_28_POSITION_X + WALL_THICKNESS / 2 + WARDROBE_DEPTH + length6 / 2,
     suspendedCeilingBoardPositionY,
-    WALL_1_POSITION_Z + WALL_THICKNESS / 2 + RIGHT_CHEST_DEPTH / 2,
+    WALL_10_POSITION_Z - WALL_THICKNESS / 2 - CABINET_DEPTH / 2,
   ],
   [
     length8,

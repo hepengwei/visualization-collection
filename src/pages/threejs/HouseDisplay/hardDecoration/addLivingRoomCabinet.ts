@@ -13,6 +13,9 @@ import {
 import type { AssetManager } from "hooks/threejs/useInitialize";
 import {
   LIGHT_STRIP_HEIGHT,
+  BOARD_THICKNESS,
+  ARC_BOARD_THICKNESS,
+  CHEST_DOOR_THICKNESS,
   addBox,
   addLightStrip,
   generateQuarterCylinderGeometry,
@@ -27,8 +30,6 @@ import { SUSPENDED_CEILING_HEIGHT, CABINET_DEPTH } from "./addHouseStructure";
 import { LIGHT_GROUP_FIELD } from "../function/dynamicOptimizationLightingStripRender";
 import { SIZE_ENLARGEMENT_RITO } from "../utils";
 
-export const BOARD_THICKNESS = 0.03; // 木板的厚度
-const ARC_BOARD_THICKNESS = 0.08; // 圆弧边木板的厚度
 // 客厅柜的位置
 const LIVING_ROOM_CABINET_POSITON = new Vector3(
   WALL_64_POSITION_X + 0.2,
@@ -40,7 +41,6 @@ const LIVING_ROOM_CABINET_WIDTH = 2; // 客厅柜体的总宽（不包含左右�
 const CHEST_GAP = 0.008; // 柜子之间的缝隙
 const LIVING_ROOM_CABINET_HEIGHT = WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT; // 客厅柜的总高
 const BOARD_COATING_THICKNESS = 0.002; // 木板深灰色涂层的厚度
-const CHEST_DOOR_THICKNESS = 0.01; // 柜门和抽屉门的厚度
 const TOP_CHEST_HEIGHT = 1.16; // 第一层柜子的高度
 const TOP_STORAGE_AREA_HEIGHT = 0.2; // 第二层暗格置物区的高度（空白，深灰）
 const TOP_STORAGE_AREA_DEPTH = CABINET_DEPTH - 0.1 * SIZE_ENLARGEMENT_RITO; // 第二层暗格置物区的深度
@@ -129,12 +129,12 @@ const createLivingRoomCabinet = (
     (TOP_STORAGE_AREA_DEPTH - ARC_BOARD_THICKNESS) / 2,
   );
   // 左上四分之一圆柱
-  const generateQuarterCylinderGeometry1 = generateQuarterCylinderGeometry(
+  const quarterCylinderGeometry1 = generateQuarterCylinderGeometry(
     ARC_BOARD_THICKNESS,
     topHeight,
   );
   const generateQuarterCylinder1 = new Mesh(
-    generateQuarterCylinderGeometry1,
+    quarterCylinderGeometry1,
     woodBoardLightMaterial,
   );
   generateQuarterCylinder1.rotation.x = -Math.PI / 2;
@@ -173,12 +173,12 @@ const createLivingRoomCabinet = (
     (TOP_STORAGE_AREA_DEPTH - ARC_BOARD_THICKNESS) / 2,
   );
   // 右上四分之一圆柱
-  const generateQuarterCylinderGeometry2 = generateQuarterCylinderGeometry(
+  const quarterCylinderGeometry2 = generateQuarterCylinderGeometry(
     ARC_BOARD_THICKNESS,
     topHeight,
   );
   const generateQuarterCylinder2 = new Mesh(
-    generateQuarterCylinderGeometry2,
+    quarterCylinderGeometry2,
     woodBoardLightMaterial,
   );
   generateQuarterCylinder2.rotation.x = -Math.PI / 2;
@@ -225,12 +225,12 @@ const createLivingRoomCabinet = (
     CABINET_DEPTH / 2 - ARC_BOARD_THICKNESS,
   );
   // 左下四分之一圆柱
-  const generateQuarterCylinderGeometry3 = generateQuarterCylinderGeometry(
+  const quarterCylinderGeometry3 = generateQuarterCylinderGeometry(
     ARC_BOARD_THICKNESS,
     bottomHeight,
   );
   const generateQuarterCylinder3 = new Mesh(
-    generateQuarterCylinderGeometry3,
+    quarterCylinderGeometry3,
     woodBoardLightMaterial,
   );
   generateQuarterCylinder3.rotation.x = -Math.PI / 2;
@@ -269,12 +269,12 @@ const createLivingRoomCabinet = (
     CABINET_DEPTH / 2 - ARC_BOARD_THICKNESS,
   );
   // 右下四分之一圆柱
-  const generateQuarterCylinderGeometry4 = generateQuarterCylinderGeometry(
+  const quarterCylinderGeometry4 = generateQuarterCylinderGeometry(
     ARC_BOARD_THICKNESS,
     bottomHeight,
   );
   const generateQuarterCylinder4 = new Mesh(
-    generateQuarterCylinderGeometry4,
+    quarterCylinderGeometry4,
     woodBoardLightMaterial,
   );
   generateQuarterCylinder4.rotation.x = -Math.PI / 2;

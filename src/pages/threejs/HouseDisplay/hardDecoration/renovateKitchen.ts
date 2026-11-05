@@ -49,6 +49,7 @@ import {
 } from "./addHouseStructure";
 import {
   SIZE_ENLARGEMENT_RITO,
+  CHEST_DOOR_THICKNESS,
   addBox,
   addPlane,
   generateCurvedSurfaceRightAngledTriangularPrismGeometry,
@@ -63,7 +64,6 @@ const QUARTZ_COUNTERTOP_DEPTH = 0.6 * SIZE_ENLARGEMENT_RITO; // 石英石台面�
 const QUARTZ_COUNTERTOP_THICKNESS = 0.06; // 石英石台面厚度
 const QUARTZ_COUNTERTOP_OVERSTEP_DEPTH = 0.02; // 石英石台面超出柜体的深度
 const QUARTZ_COUNTERTOP_RADIUS = 0.01; // 石英石台面边缘圆角半径
-const CHEST_DOOR_THICKNESS = 0.02; // 柜门和抽屉门的厚度
 const CHEST_DOOR_OPEN_WOUND_HEIGHT = 0.04; // 柜门拉口空间的高度
 const CHEST_GAP = 0.01; // 柜子之间的缝隙
 const BOTTOM_CHEST_DOOR_MARGING = 0.11; // 下柜门与地面的距离
@@ -85,7 +85,7 @@ const OVEN_HEIGHT = 0.39 * SIZE_ENLARGEMENT_RITO; // 烤箱开放格的高度
 const ELECTRIC_COOKER_HEIGHT = 0.4 * SIZE_ENLARGEMENT_RITO; // 电饭煲开放格的高度
 const PRESSURE_COOKER_HEIGHT = 0.33 * SIZE_ENLARGEMENT_RITO; // 高压锅开放格的高度
 const RIGHR_CABINET_RIGHT_COL_BOTTOM_DRAWER_HEIGHT =
-  0.366 * SIZE_ENLARGEMENT_RITO; // 右边柜子右边列底部抽屉门的高度 
+  0.366 * SIZE_ENLARGEMENT_RITO; // 右边柜子右边列底部抽屉门的高度
 const RIGHR_CABINET_RIGHT_COL_STORAGE_AREA_HEIGHT = 0.1; // 右边柜子右边列开放格外挡板高度
 
 // 左边柜的总宽

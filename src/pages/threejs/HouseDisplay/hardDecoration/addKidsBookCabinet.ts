@@ -1,14 +1,16 @@
 /**
  * 添加儿童书柜
  */
-import {
-  Scene,
-  MeshPhysicalMaterial,
-  Group,
-  Vector3,
-} from "three";
+import { Scene, MeshPhysicalMaterial, Group, Vector3, Mesh } from "three";
 import type { AssetManager } from "hooks/threejs/useInitialize";
-import { addBox } from "../utils";
+import {
+  SIZE_ENLARGEMENT_RITO,
+  BOARD_THICKNESS,
+  ARC_BOARD_THICKNESS,
+  CHEST_DOOR_THICKNESS,
+  addBox,
+  generateQuarterCylinderGeometry,
+} from "../utils";
 import {
   WALL_HEIGHT,
   WALL_THICKNESS,
@@ -16,9 +18,7 @@ import {
   WALL_34_POSITION_X,
 } from "./addHouseStructure";
 import { SUSPENDED_CEILING_HEIGHT, CABINET_DEPTH } from "./addHouseStructure";
-import { SIZE_ENLARGEMENT_RITO } from "../utils";
 
-const BOARD_THICKNESS = 0.03; // 木板的厚度
 // 儿童书柜的位置
 const KIDS_BOOK_CABINET_POSITON = new Vector3(
   WALL_34_POSITION_X + 0.81,
@@ -30,7 +30,6 @@ const KIDS_BOOK_CABINET_WIDTH = 1.5 * SIZE_ENLARGEMENT_RITO; // 儿童书柜体�
 const CHEST_GAP = 0.008; // 柜子之间的缝隙
 const KIDS_BOOK_CABINET_HEIGHT = WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT; // 儿童书柜的总高
 const BOARD_COATING_THICKNESS = 0.002; // 木板深灰色涂层的厚度
-const CHEST_DOOR_THICKNESS = 0.01; // 柜门和抽屉门的厚度
 const LEFT_STORAGE_AREA_WIDTH = 0.5 * SIZE_ENLARGEMENT_RITO; // 左边的开放格的宽度(不包含左右两边板子宽)
 const LEFT_STORAGE_AREA_COUNT = 4; // 左边的开放格的格数
 const TOP_CHEST_HEIGHT = 1.16; // 第一层柜子的高度
@@ -40,7 +39,8 @@ const STORAGE_AREA_HEIGHT = 0.7; // 第三层置物区的高度（空白，深�
 // 第四层抽屉的宽度
 const DRAWER_WIDTH =
   (KIDS_BOOK_CABINET_WIDTH -
-    BOARD_THICKNESS * 2 -
+    BOARD_THICKNESS -
+    ARC_BOARD_THICKNESS -
     CHEST_GAP * (CHEST_COL_COUNT / 2 + 1)) /
   (CHEST_COL_COUNT / 2);
 const DRAWER_HEIGHT = 0.25; // 第四层抽屉的高度
@@ -59,20 +59,16 @@ const BOTTOM_CHEST_HEIGHT =
   CHEST_GAP -
   BOARD_THICKNESS -
   CHEST_GAP;
-// 柜子宽度
-const CHEST_WIDTH =
+// 下方柜门宽度
+const CHEST_DOOR_WIDTH =
   (KIDS_BOOK_CABINET_WIDTH -
-    BOARD_THICKNESS * 2 -
+    BOARD_THICKNESS -
+    ARC_BOARD_THICKNESS -
     CHEST_GAP * (CHEST_COL_COUNT + 1)) /
   CHEST_COL_COUNT;
 
-const addKidsBookCabinet = (
-  scene: Scene,
-  assetManager: AssetManager,
-) => {
-  const kidsBookCabinet = createKidsBookCabinet(
-    assetManager,
-  );
+const addKidsBookCabinet = (scene: Scene, assetManager: AssetManager) => {
+  const kidsBookCabinet = createKidsBookCabinet(assetManager);
   kidsBookCabinet.name = "儿童书柜";
   kidsBookCabinet.rotation.y = Math.PI;
   kidsBookCabinet.position.copy(KIDS_BOOK_CABINET_POSITON);
@@ -80,9 +76,7 @@ const addKidsBookCabinet = (
 };
 
 // 创建儿童书柜
-const createKidsBookCabinet = (
-  assetManager: AssetManager,
-) => {
+const createKidsBookCabinet = (assetManager: AssetManager) => {
   // 灰白色木板材质
   const woodBoardLightMaterial = assetManager.materials.get(
     "woodBoardLightMaterial",
@@ -95,17 +89,16 @@ const createKidsBookCabinet = (
   const kidsBookCabinetGroup = new Group();
 
   /** 外壳部分*/
-  const height = KIDS_BOOK_CABINET_HEIGHT - BOARD_THICKNESS;
   // 左板
   addBox(
     kidsBookCabinetGroup,
     assetManager,
     woodBoardLightMaterial,
     BOARD_THICKNESS,
-    height,
+    KIDS_BOOK_CABINET_HEIGHT,
     CABINET_DEPTH,
     (BOARD_THICKNESS - KIDS_BOOK_CABINET_WIDTH) / 2,
-    height / 2,
+    KIDS_BOOK_CABINET_HEIGHT / 2,
     CABINET_DEPTH / 2,
   );
 
@@ -115,10 +108,10 @@ const createKidsBookCabinet = (
     assetManager,
     woodBoardDarkMaterial2,
     BOARD_COATING_THICKNESS,
-    height,
+    KIDS_BOOK_CABINET_HEIGHT,
     CABINET_DEPTH,
     BOARD_THICKNESS + (BOARD_COATING_THICKNESS - KIDS_BOOK_CABINET_WIDTH) / 2,
-    height / 2,
+    KIDS_BOOK_CABINET_HEIGHT / 2,
     CABINET_DEPTH / 2,
   );
   // 右板
@@ -126,34 +119,55 @@ const createKidsBookCabinet = (
     kidsBookCabinetGroup,
     assetManager,
     woodBoardLightMaterial,
-    BOARD_THICKNESS,
-    height,
-    CABINET_DEPTH,
-    (KIDS_BOOK_CABINET_WIDTH - BOARD_THICKNESS) / 2,
-    height / 2,
-    CABINET_DEPTH / 2,
+    ARC_BOARD_THICKNESS,
+    KIDS_BOOK_CABINET_HEIGHT,
+    CABINET_DEPTH - ARC_BOARD_THICKNESS,
+    (KIDS_BOOK_CABINET_WIDTH - ARC_BOARD_THICKNESS) / 2,
+    KIDS_BOOK_CABINET_HEIGHT / 2,
+    (CABINET_DEPTH - ARC_BOARD_THICKNESS) / 2,
   );
+  // 右边四分之一圆柱
+  const quarterCylinderGeometry = generateQuarterCylinderGeometry(
+    ARC_BOARD_THICKNESS,
+    KIDS_BOOK_CABINET_HEIGHT,
+  );
+  const generateQuarterCylinder = new Mesh(
+    quarterCylinderGeometry,
+    woodBoardLightMaterial,
+  );
+  generateQuarterCylinder.rotation.x = -Math.PI / 2;
+  generateQuarterCylinder.rotation.z = -Math.PI / 2;
+  generateQuarterCylinder.position.set(
+    KIDS_BOOK_CABINET_WIDTH / 2 - ARC_BOARD_THICKNESS,
+    0,
+    CABINET_DEPTH - ARC_BOARD_THICKNESS,
+  );
+  kidsBookCabinetGroup.add(generateQuarterCylinder);
   // 右上板左面的深灰色涂层
   addBox(
     kidsBookCabinetGroup,
     assetManager,
     woodBoardDarkMaterial2,
     BOARD_COATING_THICKNESS,
-    height,
+    KIDS_BOOK_CABINET_HEIGHT,
     CABINET_DEPTH,
-    (KIDS_BOOK_CABINET_WIDTH - BOARD_COATING_THICKNESS) / 2 - BOARD_THICKNESS,
-    height / 2,
+    (KIDS_BOOK_CABINET_WIDTH - BOARD_COATING_THICKNESS) / 2 -
+      ARC_BOARD_THICKNESS,
+    KIDS_BOOK_CABINET_HEIGHT / 2,
     CABINET_DEPTH / 2,
   );
+  const width1 =
+    KIDS_BOOK_CABINET_WIDTH - BOARD_THICKNESS - ARC_BOARD_THICKNESS;
+  const x1 = -KIDS_BOOK_CABINET_WIDTH / 2 + BOARD_THICKNESS + width1 / 2;
   // 顶板
   addBox(
     kidsBookCabinetGroup,
     assetManager,
     woodBoardDarkMaterial2,
-    KIDS_BOOK_CABINET_WIDTH,
+    width1,
     BOARD_THICKNESS,
     CABINET_DEPTH,
-    0,
+    x1,
     KIDS_BOOK_CABINET_HEIGHT - BOARD_THICKNESS / 2,
     CABINET_DEPTH / 2,
   );
@@ -162,10 +176,10 @@ const createKidsBookCabinet = (
     kidsBookCabinetGroup,
     assetManager,
     woodBoardDarkMaterial2,
-    KIDS_BOOK_CABINET_WIDTH - BOARD_THICKNESS * 2,
+    width1,
     BOARD_THICKNESS,
     CABINET_DEPTH - BOARD_THICKNESS - CHEST_DOOR_THICKNESS,
-    0,
+    x1,
     BOARD_THICKNESS / 2,
     BOARD_THICKNESS +
       (CABINET_DEPTH - BOARD_THICKNESS - CHEST_DOOR_THICKNESS) / 2,
@@ -184,17 +198,20 @@ const createKidsBookCabinet = (
   );
 
   /**儿童书柜里面每层横向隔板（不包括左边的开放格）*/
-  const width1 =
-    KIDS_BOOK_CABINET_WIDTH - BOARD_THICKNESS * 3 - LEFT_STORAGE_AREA_WIDTH;
-  const x1 = KIDS_BOOK_CABINET_WIDTH / 2 - BOARD_THICKNESS - width1 / 2;
+  const width2 =
+    KIDS_BOOK_CABINET_WIDTH -
+    BOARD_THICKNESS * 2 -
+    ARC_BOARD_THICKNESS -
+    LEFT_STORAGE_AREA_WIDTH;
+  const x2 = KIDS_BOOK_CABINET_WIDTH / 2 - ARC_BOARD_THICKNESS - width2 / 2;
   addBox(
     kidsBookCabinetGroup,
     assetManager,
     woodBoardDarkMaterial2,
-    width1,
+    width2,
     BOARD_THICKNESS,
     TOP_STORAGE_AREA_DEPTH - BOARD_THICKNESS,
-    x1,
+    x2,
     KIDS_BOOK_CABINET_HEIGHT - TOP_CHEST_HEIGHT - BOARD_THICKNESS / 2,
     (TOP_STORAGE_AREA_DEPTH + BOARD_THICKNESS) / 2,
   );
@@ -202,10 +219,10 @@ const createKidsBookCabinet = (
     kidsBookCabinetGroup,
     assetManager,
     woodBoardDarkMaterial2,
-    width1,
+    width2,
     BOARD_THICKNESS,
     TOP_STORAGE_AREA_DEPTH - BOARD_THICKNESS,
-    x1,
+    x2,
     KIDS_BOOK_CABINET_HEIGHT -
       TOP_CHEST_HEIGHT -
       BOARD_THICKNESS -
@@ -217,10 +234,10 @@ const createKidsBookCabinet = (
     kidsBookCabinetGroup,
     assetManager,
     woodBoardDarkMaterial2,
-    KIDS_BOOK_CABINET_WIDTH - BOARD_THICKNESS * 2,
+    width1,
     BOARD_THICKNESS,
     CABINET_DEPTH - BOARD_THICKNESS,
-    0,
+    x1,
     KIDS_BOOK_CABINET_HEIGHT -
       BOARD_THICKNESS -
       CHEST_GAP -
@@ -236,10 +253,10 @@ const createKidsBookCabinet = (
     kidsBookCabinetGroup,
     assetManager,
     woodBoardLightMaterial,
-    KIDS_BOOK_CABINET_WIDTH - BOARD_THICKNESS * 2,
+    width1,
     BOARD_THICKNESS,
     CABINET_DEPTH - BOARD_THICKNESS,
-    0,
+    x1,
     KIDS_BOOK_CABINET_HEIGHT -
       BOARD_THICKNESS -
       CHEST_GAP -
@@ -259,10 +276,10 @@ const createKidsBookCabinet = (
     kidsBookCabinetGroup,
     assetManager,
     woodBoardDarkMaterial2,
-    KIDS_BOOK_CABINET_WIDTH - BOARD_THICKNESS * 2,
+    width1,
     BOARD_COATING_THICKNESS,
     CABINET_DEPTH - BOARD_THICKNESS,
-    0,
+    x1,
     KIDS_BOOK_CABINET_HEIGHT -
       BOARD_THICKNESS -
       CHEST_GAP -
@@ -304,7 +321,7 @@ const createKidsBookCabinet = (
   const height3 =
     (height2 - BOARD_THICKNESS * (LEFT_STORAGE_AREA_COUNT - 1)) /
     LEFT_STORAGE_AREA_COUNT;
-  const x =
+  const x3 =
     -KIDS_BOOK_CABINET_WIDTH / 2 +
     BOARD_THICKNESS +
     LEFT_STORAGE_AREA_WIDTH / 2;
@@ -324,25 +341,25 @@ const createKidsBookCabinet = (
       LEFT_STORAGE_AREA_WIDTH,
       BOARD_THICKNESS,
       CABINET_DEPTH - BOARD_THICKNESS,
-      x,
+      x3,
       y,
       (CABINET_DEPTH + BOARD_THICKNESS) / 2,
     );
   }
 
   /**第一层柜子柜门*/
-  const width2 = (width1 - CHEST_GAP * 3) / 2;
+  const width3 = (width2 - CHEST_GAP * 3) / 2;
   addBox(
     kidsBookCabinetGroup,
     assetManager,
     woodBoardLightMaterial,
-    width2,
+    width3,
     TOP_CHEST_HEIGHT,
     CHEST_DOOR_THICKNESS,
     KIDS_BOOK_CABINET_WIDTH / 2 -
-      BOARD_THICKNESS -
+      ARC_BOARD_THICKNESS -
       CHEST_GAP * 2 -
-      (width2 * 3) / 2,
+      (width3 * 3) / 2,
     KIDS_BOOK_CABINET_HEIGHT -
       BOARD_THICKNESS -
       CHEST_GAP -
@@ -353,10 +370,10 @@ const createKidsBookCabinet = (
     kidsBookCabinetGroup,
     assetManager,
     woodBoardLightMaterial,
-    width2,
+    width3,
     TOP_CHEST_HEIGHT,
     CHEST_DOOR_THICKNESS,
-    KIDS_BOOK_CABINET_WIDTH / 2 - BOARD_THICKNESS - CHEST_GAP - width2 / 2,
+    KIDS_BOOK_CABINET_WIDTH / 2 - ARC_BOARD_THICKNESS - CHEST_GAP - width3 / 2,
     KIDS_BOOK_CABINET_HEIGHT -
       BOARD_THICKNESS -
       CHEST_GAP -
@@ -396,16 +413,16 @@ const createKidsBookCabinet = (
     let x =
       BOARD_THICKNESS +
       CHEST_GAP +
-      CHEST_WIDTH / 2 -
+      CHEST_DOOR_WIDTH / 2 -
       KIDS_BOOK_CABINET_WIDTH / 2;
     if (i > 0) {
-      x += i * (CHEST_GAP + CHEST_WIDTH);
+      x += i * (CHEST_GAP + CHEST_DOOR_WIDTH);
     }
     addBox(
       kidsBookCabinetGroup,
       assetManager,
       woodBoardLightMaterial,
-      CHEST_WIDTH,
+      CHEST_DOOR_WIDTH,
       BOTTOM_CHEST_HEIGHT,
       CHEST_DOOR_THICKNESS,
       x,
