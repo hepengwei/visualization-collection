@@ -17,6 +17,7 @@ import {
   ARC_BOARD_THICKNESS,
   CHEST_DOOR_THICKNESS,
   addBox,
+  addPlane,
   addLightStrip,
   generateQuarterCylinderGeometry,
 } from "../utils";
@@ -40,7 +41,6 @@ const CHEST_COL_COUNT = 4; // 柜子的列数,保证为偶数
 const LIVING_ROOM_CABINET_WIDTH = 2; // 客厅柜体的总宽（不包含左右两边多出的部分）
 const CHEST_GAP = 0.008; // 柜子之间的缝隙
 const LIVING_ROOM_CABINET_HEIGHT = WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT; // 客厅柜的总高
-const BOARD_COATING_THICKNESS = 0.002; // 木板深灰色涂层的厚度
 const TOP_CHEST_HEIGHT = 1.16; // 第一层柜子的高度
 const TOP_STORAGE_AREA_HEIGHT = 0.2; // 第二层暗格置物区的高度（空白，深灰）
 const TOP_STORAGE_AREA_DEPTH = CABINET_DEPTH - 0.1 * SIZE_ENLARGEMENT_RITO; // 第二层暗格置物区的深度
@@ -112,7 +112,6 @@ const createLivingRoomCabinet = (
   /** 外壳部分*/
   const topHeight =
     TOP_CHEST_HEIGHT +
-    CHEST_GAP +
     BOARD_THICKNESS +
     TOP_STORAGE_AREA_HEIGHT +
     BOARD_THICKNESS;
@@ -148,17 +147,16 @@ const createLivingRoomCabinet = (
   // generateQuarterCylinder1.receiveShadow = true;
   livingRoomCabinetGroup.add(generateQuarterCylinder1);
   // 左上板右面的深灰色涂层
-  addBox(
+  addPlane(
     livingRoomCabinetGroup,
     assetManager,
     woodBoardDarkMaterial,
-    BOARD_COATING_THICKNESS,
-    topHeight,
     TOP_STORAGE_AREA_DEPTH,
-    ARC_BOARD_THICKNESS +
-      (BOARD_COATING_THICKNESS - LIVING_ROOM_CABINET_WIDTH) / 2,
+    topHeight,
+    -LIVING_ROOM_CABINET_WIDTH / 2 + ARC_BOARD_THICKNESS + 0.001,
     LIVING_ROOM_CABINET_HEIGHT - topHeight / 2,
     TOP_STORAGE_AREA_DEPTH / 2,
+    new Vector3(0, Math.PI / 2, 0),
   );
   // 右上板
   addBox(
@@ -192,17 +190,16 @@ const createLivingRoomCabinet = (
   // generateQuarterCylinder2.receiveShadow = true;
   livingRoomCabinetGroup.add(generateQuarterCylinder2);
   // 右上板左面的深灰色涂层
-  addBox(
+  addPlane(
     livingRoomCabinetGroup,
     assetManager,
     woodBoardDarkMaterial,
-    BOARD_COATING_THICKNESS,
-    topHeight,
     TOP_STORAGE_AREA_DEPTH,
-    (LIVING_ROOM_CABINET_WIDTH - BOARD_COATING_THICKNESS) / 2 -
-      ARC_BOARD_THICKNESS,
+    topHeight,
+    LIVING_ROOM_CABINET_WIDTH / 2 - ARC_BOARD_THICKNESS - 0.001,
     LIVING_ROOM_CABINET_HEIGHT - topHeight / 2,
     TOP_STORAGE_AREA_DEPTH / 2,
+    new Vector3(0, -Math.PI / 2, 0),
   );
   const bottomHeight =
     BOARD_THICKNESS +
@@ -244,17 +241,16 @@ const createLivingRoomCabinet = (
   // generateQuarterCylinder3.receiveShadow = true;
   livingRoomCabinetGroup.add(generateQuarterCylinder3);
   // 左下板右面的深灰色涂层
-  addBox(
+  addPlane(
     livingRoomCabinetGroup,
     assetManager,
     woodBoardDarkMaterial,
-    BOARD_COATING_THICKNESS,
-    bottomHeight,
     CABINET_DEPTH,
-    ARC_BOARD_THICKNESS +
-      (BOARD_COATING_THICKNESS - LIVING_ROOM_CABINET_WIDTH) / 2,
+    bottomHeight,
+    -LIVING_ROOM_CABINET_WIDTH / 2 + ARC_BOARD_THICKNESS,
     bottomHeight / 2,
     CABINET_DEPTH / 2,
+    new Vector3(0, Math.PI / 2, 0),
   );
   // 右下板
   addBox(
@@ -288,17 +284,16 @@ const createLivingRoomCabinet = (
   // generateQuarterCylinder4.receiveShadow = true;
   livingRoomCabinetGroup.add(generateQuarterCylinder4);
   // 右下板左面的深灰色涂层
-  addBox(
+  addPlane(
     livingRoomCabinetGroup,
     assetManager,
     woodBoardDarkMaterial,
-    BOARD_COATING_THICKNESS,
-    bottomHeight,
     CABINET_DEPTH,
-    (LIVING_ROOM_CABINET_WIDTH - BOARD_COATING_THICKNESS) / 2 -
-      ARC_BOARD_THICKNESS,
+    bottomHeight,
+    LIVING_ROOM_CABINET_WIDTH / 2 - ARC_BOARD_THICKNESS - 0.001,
     bottomHeight / 2,
     CABINET_DEPTH / 2,
+    new Vector3(0, -Math.PI / 2, 0),
   );
   // 顶板
   addBox(
@@ -402,12 +397,11 @@ const createLivingRoomCabinet = (
     (CABINET_DEPTH + BOARD_THICKNESS) / 2,
   );
   // 第四层横板上面的深灰色涂层
-  addBox(
+  addPlane(
     livingRoomCabinetGroup,
     assetManager,
     woodBoardDarkMaterial,
     LIVING_ROOM_CABINET_WIDTH - ARC_BOARD_THICKNESS * 2,
-    BOARD_COATING_THICKNESS,
     CABINET_DEPTH - BOARD_THICKNESS,
     0,
     LIVING_ROOM_CABINET_HEIGHT -
@@ -418,10 +412,10 @@ const createLivingRoomCabinet = (
       STORAGE_AREA_HEIGHT -
       BOARD_THICKNESS -
       DRAWER_HEIGHT -
-      CHEST_GAP -
-      BOARD_COATING_THICKNESS / 2 +
-      0.01,
+      CHEST_GAP +
+      0.001,
     (CABINET_DEPTH + BOARD_THICKNESS) / 2,
+    new Vector3(-Math.PI / 2, 0, 0),
   );
 
   /**第一层柜子柜门*/
@@ -467,7 +461,6 @@ const createLivingRoomCabinet = (
       x,
       LIVING_ROOM_CABINET_HEIGHT -
         TOP_CHEST_HEIGHT -
-        CHEST_GAP -
         BOARD_THICKNESS -
         TOP_STORAGE_AREA_HEIGHT / 2,
       (TOP_STORAGE_AREA_DEPTH + BOARD_THICKNESS) / 2,
@@ -484,7 +477,6 @@ const createLivingRoomCabinet = (
     0,
     LIVING_ROOM_CABINET_HEIGHT -
       TOP_CHEST_HEIGHT -
-      CHEST_GAP -
       BOARD_THICKNESS -
       0.001,
     BOARD_THICKNESS + LIGHT_STRIP_HEIGHT / 2 + 0.1,
@@ -499,7 +491,6 @@ const createLivingRoomCabinet = (
     0,
     LIVING_ROOM_CABINET_HEIGHT -
       TOP_CHEST_HEIGHT -
-      CHEST_GAP -
       BOARD_THICKNESS -
       TOP_STORAGE_AREA_HEIGHT -
       BOARD_THICKNESS -

@@ -22,24 +22,24 @@ import {
 } from "./addHouseStructure";
 import { WARDROBE_DEPTH, SUSPENDED_CEILING_HEIGHT } from "./addHouseStructure";
 
-const KIDS_WARDROBE_WIDTH =
+const SECONDARY_BEDROOM_WARDROBE_WIDTH =
   WALL_51_POSITION_Z - WALL_61_POSITION_Z + CABINET_DEPTH; // 次卧衣柜体的总宽
 // 次卧衣柜的位置
 const KIDS_WARDROBE_POSITON = new Vector3(
   WALL_59_POSITION_X - WALL_THICKNESS / 2,
   0,
-  WALL_51_POSITION_Z - WALL_THICKNESS / 2 - KIDS_WARDROBE_WIDTH / 2,
+  WALL_51_POSITION_Z - WALL_THICKNESS / 2 - SECONDARY_BEDROOM_WARDROBE_WIDTH / 2,
 );
 const CHEST_GAP = 0.01; // 柜子之间的缝隙
 const CHEST_DOOR_WIDTH =
-  (KIDS_WARDROBE_WIDTH -
+  (SECONDARY_BEDROOM_WARDROBE_WIDTH -
     ARC_BOARD_THICKNESS -
     BOARD_THICKNESS -
     CHEST_GAP * 5) /
   4; // 柜门的宽度
-const KIDS_WARDROBE_HEIGHT = WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT; // 次卧衣柜的总高
+const SECONDARY_BEDROOM_WARDROBE_HEIGHT = WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT; // 次卧衣柜的总高
 const BOTTOM_CHEST_HEIGHT = 0.9 * SIZE_ENLARGEMENT_RITO; // 下面柜子的高度
-const TOP_CHEST_HEIGHT = KIDS_WARDROBE_HEIGHT - BOTTOM_CHEST_HEIGHT - CHEST_GAP; // 上面柜子的高度(包含镂空的高度)
+const TOP_CHEST_HEIGHT = SECONDARY_BEDROOM_WARDROBE_HEIGHT - BOTTOM_CHEST_HEIGHT - CHEST_GAP; // 上面柜子的高度(包含镂空的高度)
 const MIDDLE_CHEST_DEPTH = WARDROBE_DEPTH - CHEST_DOOR_THICKNESS; // 中间层柜体的深度
 
 const addSecondaryBedroomWardrobe = (
@@ -66,8 +66,8 @@ const createWardrobe = (assetManager: AssetManager) => {
 
   const wardrobeGroup = new Group();
 
-  const width1 = KIDS_WARDROBE_WIDTH - ARC_BOARD_THICKNESS - BOARD_THICKNESS;
-  const x1 = KIDS_WARDROBE_WIDTH / 2 - BOARD_THICKNESS - width1 / 2;
+  const width1 = SECONDARY_BEDROOM_WARDROBE_WIDTH - ARC_BOARD_THICKNESS - BOARD_THICKNESS;
+  const x1 = SECONDARY_BEDROOM_WARDROBE_WIDTH / 2 - BOARD_THICKNESS - width1 / 2;
 
   // 左板
   addBox(
@@ -75,16 +75,16 @@ const createWardrobe = (assetManager: AssetManager) => {
     assetManager,
     woodBoardLightMaterial,
     ARC_BOARD_THICKNESS,
-    KIDS_WARDROBE_HEIGHT,
+    SECONDARY_BEDROOM_WARDROBE_HEIGHT,
     WARDROBE_DEPTH - ARC_BOARD_THICKNESS,
-    -KIDS_WARDROBE_WIDTH / 2 + ARC_BOARD_THICKNESS / 2,
-    KIDS_WARDROBE_HEIGHT / 2,
+    -SECONDARY_BEDROOM_WARDROBE_WIDTH / 2 + ARC_BOARD_THICKNESS / 2,
+    SECONDARY_BEDROOM_WARDROBE_HEIGHT / 2,
     (WARDROBE_DEPTH - ARC_BOARD_THICKNESS) / 2,
   );
   // 右边四分之一圆柱
   const quarterCylinderGeometry = generateQuarterCylinderGeometry(
     ARC_BOARD_THICKNESS,
-    KIDS_WARDROBE_HEIGHT,
+    SECONDARY_BEDROOM_WARDROBE_HEIGHT,
   );
   const generateQuarterCylinder = new Mesh(
     quarterCylinderGeometry,
@@ -93,7 +93,7 @@ const createWardrobe = (assetManager: AssetManager) => {
   generateQuarterCylinder.rotation.x = -Math.PI / 2;
   generateQuarterCylinder.rotation.z = Math.PI;
   generateQuarterCylinder.position.set(
-    -KIDS_WARDROBE_WIDTH / 2 + ARC_BOARD_THICKNESS,
+    -SECONDARY_BEDROOM_WARDROBE_WIDTH / 2 + ARC_BOARD_THICKNESS,
     0,
     WARDROBE_DEPTH - ARC_BOARD_THICKNESS,
   );
@@ -105,10 +105,10 @@ const createWardrobe = (assetManager: AssetManager) => {
     assetManager,
     woodBoardDarkMaterial2,
     width1,
-    KIDS_WARDROBE_HEIGHT,
+    SECONDARY_BEDROOM_WARDROBE_HEIGHT,
     MIDDLE_CHEST_DEPTH,
     x1,
-    KIDS_WARDROBE_HEIGHT / 2,
+    SECONDARY_BEDROOM_WARDROBE_HEIGHT / 2,
     MIDDLE_CHEST_DEPTH / 2,
   );
 
@@ -118,10 +118,10 @@ const createWardrobe = (assetManager: AssetManager) => {
     assetManager,
     woodBoardLightMaterial,
     BOARD_THICKNESS,
-    KIDS_WARDROBE_HEIGHT,
+    SECONDARY_BEDROOM_WARDROBE_HEIGHT,
     WARDROBE_DEPTH,
-    KIDS_WARDROBE_WIDTH / 2 - BOARD_THICKNESS / 2,
-    KIDS_WARDROBE_HEIGHT / 2,
+    SECONDARY_BEDROOM_WARDROBE_WIDTH / 2 - BOARD_THICKNESS / 2,
+    SECONDARY_BEDROOM_WARDROBE_HEIGHT / 2,
     WARDROBE_DEPTH / 2,
   );
 
@@ -131,11 +131,11 @@ const createWardrobe = (assetManager: AssetManager) => {
     assetManager,
     CHEST_DOOR_WIDTH,
     TOP_CHEST_HEIGHT,
-    -KIDS_WARDROBE_WIDTH / 2 +
+    -SECONDARY_BEDROOM_WARDROBE_WIDTH / 2 +
       ARC_BOARD_THICKNESS +
       CHEST_GAP +
       CHEST_DOOR_WIDTH / 2,
-    KIDS_WARDROBE_HEIGHT - TOP_CHEST_HEIGHT / 2,
+    SECONDARY_BEDROOM_WARDROBE_HEIGHT - TOP_CHEST_HEIGHT / 2,
     WARDROBE_DEPTH - CHEST_DOOR_THICKNESS / 2,
   );
   addWithARoundedCornerCabinetDoor(
@@ -143,13 +143,13 @@ const createWardrobe = (assetManager: AssetManager) => {
     assetManager,
     CHEST_DOOR_WIDTH,
     TOP_CHEST_HEIGHT,
-    -KIDS_WARDROBE_WIDTH / 2 +
+    -SECONDARY_BEDROOM_WARDROBE_WIDTH / 2 +
       ARC_BOARD_THICKNESS +
       CHEST_GAP +
       CHEST_DOOR_WIDTH +
       CHEST_GAP +
       CHEST_DOOR_WIDTH / 2,
-    KIDS_WARDROBE_HEIGHT - TOP_CHEST_HEIGHT / 2,
+    SECONDARY_BEDROOM_WARDROBE_HEIGHT - TOP_CHEST_HEIGHT / 2,
     WARDROBE_DEPTH - CHEST_DOOR_THICKNESS / 2,
     new Vector3(Math.PI, 0, Math.PI),
   );
@@ -158,7 +158,7 @@ const createWardrobe = (assetManager: AssetManager) => {
     assetManager,
     CHEST_DOOR_WIDTH,
     BOTTOM_CHEST_HEIGHT,
-    -KIDS_WARDROBE_WIDTH / 2 +
+    -SECONDARY_BEDROOM_WARDROBE_WIDTH / 2 +
       ARC_BOARD_THICKNESS +
       CHEST_GAP +
       CHEST_DOOR_WIDTH / 2,
@@ -171,7 +171,7 @@ const createWardrobe = (assetManager: AssetManager) => {
     assetManager,
     CHEST_DOOR_WIDTH,
     BOTTOM_CHEST_HEIGHT,
-    -KIDS_WARDROBE_WIDTH / 2 +
+    -SECONDARY_BEDROOM_WARDROBE_WIDTH / 2 +
       ARC_BOARD_THICKNESS +
       CHEST_GAP +
       CHEST_DOOR_WIDTH +
@@ -188,12 +188,12 @@ const createWardrobe = (assetManager: AssetManager) => {
     assetManager,
     CHEST_DOOR_WIDTH,
     TOP_CHEST_HEIGHT,
-    -KIDS_WARDROBE_WIDTH / 2 +
+    -SECONDARY_BEDROOM_WARDROBE_WIDTH / 2 +
       ARC_BOARD_THICKNESS +
       CHEST_GAP +
       (CHEST_DOOR_WIDTH + CHEST_GAP) * 2 +
       CHEST_DOOR_WIDTH / 2,
-    KIDS_WARDROBE_HEIGHT - TOP_CHEST_HEIGHT / 2,
+    SECONDARY_BEDROOM_WARDROBE_HEIGHT - TOP_CHEST_HEIGHT / 2,
     WARDROBE_DEPTH - CHEST_DOOR_THICKNESS / 2,
   );
   addWithARoundedCornerCabinetDoor(
@@ -201,12 +201,12 @@ const createWardrobe = (assetManager: AssetManager) => {
     assetManager,
     CHEST_DOOR_WIDTH,
     TOP_CHEST_HEIGHT,
-    -KIDS_WARDROBE_WIDTH / 2 +
+    -SECONDARY_BEDROOM_WARDROBE_WIDTH / 2 +
       ARC_BOARD_THICKNESS +
       CHEST_GAP +
       (CHEST_DOOR_WIDTH + CHEST_GAP) * 3 +
       CHEST_DOOR_WIDTH / 2,
-    KIDS_WARDROBE_HEIGHT - TOP_CHEST_HEIGHT / 2,
+    SECONDARY_BEDROOM_WARDROBE_HEIGHT - TOP_CHEST_HEIGHT / 2,
     WARDROBE_DEPTH - CHEST_DOOR_THICKNESS / 2,
     new Vector3(Math.PI, 0, Math.PI),
   );
@@ -215,7 +215,7 @@ const createWardrobe = (assetManager: AssetManager) => {
     assetManager,
     CHEST_DOOR_WIDTH,
     BOTTOM_CHEST_HEIGHT,
-    -KIDS_WARDROBE_WIDTH / 2 +
+    -SECONDARY_BEDROOM_WARDROBE_WIDTH / 2 +
       ARC_BOARD_THICKNESS +
       CHEST_GAP +
       (CHEST_DOOR_WIDTH + CHEST_GAP) * 2 +
@@ -229,7 +229,7 @@ const createWardrobe = (assetManager: AssetManager) => {
     assetManager,
     CHEST_DOOR_WIDTH,
     BOTTOM_CHEST_HEIGHT,
-    -KIDS_WARDROBE_WIDTH / 2 +
+    -SECONDARY_BEDROOM_WARDROBE_WIDTH / 2 +
       ARC_BOARD_THICKNESS +
       CHEST_GAP +
       (CHEST_DOOR_WIDTH + CHEST_GAP) * 3 +
