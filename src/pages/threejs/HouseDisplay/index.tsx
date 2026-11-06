@@ -56,6 +56,7 @@ import addKidsWardrobe from "./hardDecoration/addKidsWardrobe";
 import addKidsBookCabinet from './hardDecoration/addKidsBookCabinet';
 import renovateKitchen from './hardDecoration/renovateKitchen';
 import addSecondaryBedroomWardrobe from "./hardDecoration/addSecondaryBedroomWardrobe";
+import addSecondaryBedroomBookCabinet from './hardDecoration/addSecondaryBedroomBookCabinet';
 // import { dynamicOptimizationLightingStripRender } from './function/dynamicOptimizationLightingStripRender';
 import styles from "./index.module.scss";
 
@@ -315,6 +316,9 @@ const HouseDisplay = () => {
 
       // 添加次卧衣柜
       addSecondaryBedroomWardrobe(scene, assetManager);
+
+      // 添加次卧书柜
+      addSecondaryBedroomBookCabinet(scene, assetManager, lightStripLightingMapRef);
 
       // 启用后处理器架构（单 composer，手动渲染场景替代 RenderPass）
       useComposer(

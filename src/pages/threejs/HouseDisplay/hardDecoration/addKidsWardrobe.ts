@@ -73,11 +73,11 @@ const addKidsWardrobe = (
   lightStripLightingMapRef: MutableRefObject<Record<string, RectAreaLight[]>>,
 ) => {
   const lightList: RectAreaLight[] = [];
-  const kidsWardrobe = createKidsWardrobe(assetManager, lightList);
-  kidsWardrobe.name = "儿童衣柜";
-  kidsWardrobe.rotation.y = Math.PI / 2;
-  kidsWardrobe.position.copy(KIDS_WARDROBE_POSITON);
-  scene.add(kidsWardrobe);
+  const wardrobe = createWardrobe(assetManager, lightList);
+  wardrobe.name = "儿童衣柜";
+  wardrobe.rotation.y = Math.PI / 2;
+  wardrobe.position.copy(KIDS_WARDROBE_POSITON);
+  scene.add(wardrobe);
 
   // const rightTable = createRightTable(assetManager, lightList);
   // rightTable.rotation.y = -Math.PI / 2;
@@ -88,7 +88,7 @@ const addKidsWardrobe = (
 };
 
 // 创建儿童衣柜
-const createKidsWardrobe = (
+const createWardrobe = (
   assetManager: AssetManager,
   lightList: RectAreaLight[],
 ) => {
@@ -105,11 +105,11 @@ const createKidsWardrobe = (
     "woodBoardDarkLineMaterial2",
   ) as MeshPhysicalMaterial;
 
-  const kidsWardrobeGroup = new Group();
+  const wardrobeGroup = new Group();
 
   // 背板
   addBox(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     woodBoardDarkMaterial2,
     KIDS_WARDROBE_WIDTH,
@@ -124,7 +124,7 @@ const createKidsWardrobe = (
   const height1 =
     KIDS_WARDROBE_HEIGHT - LEFT_HOLLOW_OUT_HEIGHT - BOTTOM_CHEST_HEIGHT;
   addBox(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     woodBoardDarkMaterial2,
     LEFT_CHEST_WIDTH,
@@ -136,7 +136,7 @@ const createKidsWardrobe = (
   );
 
   const light1 = addLightStrip(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     MIDDLE_CHEST_DEPTH,
     LIGHT_STRIP_HEIGHT,
@@ -151,7 +151,7 @@ const createKidsWardrobe = (
   // 左下柜体
   const depth1 = MIDDLE_CHEST_DEPTH - ARC_BOARD_THICKNESS - CHEST_GAP;
   addBox(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     woodBoardDarkMaterial2,
     LEFT_CHEST_WIDTH,
@@ -164,7 +164,7 @@ const createKidsWardrobe = (
 
   // 左下圆弧边
   addBox(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     woodBoardDarkMaterial2,
     LEFT_CHEST_WIDTH - ARC_BOARD_THICKNESS,
@@ -195,13 +195,13 @@ const createKidsWardrobe = (
   );
   // quarterCylinder1.castShadow = true;
   // quarterCylinder1.receiveShadow = true;
-  kidsWardrobeGroup.add(quarterCylinder1);
+  wardrobeGroup.add(quarterCylinder1);
 
   // 左下柜体所有抽屉横线
   for (let i = 1; i < 3; i++) {
     const y = (BOTTOM_CHEST_HEIGHT / 3) * i;
     addPlane(
-      kidsWardrobeGroup,
+      wardrobeGroup,
       assetManager,
       woodBoardDarkLineMaterial2,
       depth1,
@@ -215,7 +215,7 @@ const createKidsWardrobe = (
 
   // 最左边柜子的整体门板
   addBox(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     woodBoardLightMaterial,
     LEFT_CHEST_WIDTH - LEFT_SMALL_RADIUS,
@@ -226,7 +226,7 @@ const createKidsWardrobe = (
     WARDROBE_DEPTH - CHEST_DOOR_THICKNESS / 2,
   );
   addBox(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     woodBoardLightMaterial,
     LEFT_SMALL_RADIUS,
@@ -252,11 +252,11 @@ const createKidsWardrobe = (
   );
   // quarterCylinder2.castShadow = true;
   // quarterCylinder2.receiveShadow = true;
-  kidsWardrobeGroup.add(quarterCylinder2);
+  wardrobeGroup.add(quarterCylinder2);
   const width1 = LEFT_CHEST_WIDTH - LEFT_SMALL_RADIUS * 2;
   if (width1 > 0) {
     addBox(
-      kidsWardrobeGroup,
+      wardrobeGroup,
       assetManager,
       woodBoardLightMaterial,
       width1,
@@ -284,11 +284,11 @@ const createKidsWardrobe = (
   );
   // curvedSurfaceRightAngledTriangularPrism1.castShadow = true;
   // curvedSurfaceRightAngledTriangularPrism1.receiveShadow = true;
-  kidsWardrobeGroup.add(curvedSurfaceRightAngledTriangularPrism1);
+  wardrobeGroup.add(curvedSurfaceRightAngledTriangularPrism1);
 
   // 中间柜体
   addBox(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     woodBoardDarkMaterial2,
     CHEST_DOOR_WIDTH * 2 + CHEST_GAP * 2,
@@ -303,7 +303,7 @@ const createKidsWardrobe = (
 
   // 中间柜体所有门板
   addWithARoundedCornerCabinetDoor(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     CHEST_DOOR_WIDTH,
     TOP_CHEST_HEIGHT,
@@ -315,7 +315,7 @@ const createKidsWardrobe = (
     WARDROBE_DEPTH - CHEST_DOOR_THICKNESS / 2,
   );
   addWithARoundedCornerCabinetDoor(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     CHEST_DOOR_WIDTH,
     TOP_CHEST_HEIGHT,
@@ -330,7 +330,7 @@ const createKidsWardrobe = (
     new Vector3(Math.PI, 0, Math.PI),
   );
   addWithARoundedCornerCabinetDoor(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     CHEST_DOOR_WIDTH,
     BOTTOM_CHEST_HEIGHT,
@@ -343,7 +343,7 @@ const createKidsWardrobe = (
     new Vector3(Math.PI, 0, 0),
   );
   addWithARoundedCornerCabinetDoor(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     CHEST_DOOR_WIDTH,
     BOTTOM_CHEST_HEIGHT,
@@ -361,7 +361,7 @@ const createKidsWardrobe = (
   // 右上柜体
   const width2 = CHEST_DOOR_WIDTH + RIGHT_CHEST_DOOR_WIDTH + CHEST_GAP * 3;
   addBox(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     woodBoardDarkMaterial2,
     width2,
@@ -373,7 +373,7 @@ const createKidsWardrobe = (
   );
   // 右下柜体
   addBox(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     woodBoardDarkMaterial2,
     width2,
@@ -397,7 +397,7 @@ const createKidsWardrobe = (
     CHEST_GAP -
     RIGHT_CHEST_DOOR_WIDTH / 2;
   addBox(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     woodBoardLightMaterial,
     CHEST_DOOR_WIDTH,
@@ -408,7 +408,7 @@ const createKidsWardrobe = (
     WARDROBE_DEPTH - CHEST_DOOR_THICKNESS / 2,
   );
   addBox(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     woodBoardLightMaterial,
     RIGHT_CHEST_DOOR_WIDTH,
@@ -420,7 +420,7 @@ const createKidsWardrobe = (
   );
   // 右下柜体所有门板
   addBox(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     woodBoardLightMaterial,
     CHEST_DOOR_WIDTH,
@@ -431,7 +431,7 @@ const createKidsWardrobe = (
     WARDROBE_DEPTH - CHEST_DOOR_THICKNESS / 2,
   );
   addBox(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     woodBoardLightMaterial,
     RIGHT_CHEST_DOOR_WIDTH,
@@ -444,7 +444,7 @@ const createKidsWardrobe = (
 
   // 右板
   addBox(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     woodBoardLightMaterial,
     BOARD_THICKNESS,
@@ -456,7 +456,7 @@ const createKidsWardrobe = (
   );
   // 右边左边的深色涂层
   addPlane(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     woodBoardDarkMaterial2,
     WARDROBE_DEPTH - BOARD_THICKNESS,
@@ -475,7 +475,7 @@ const createKidsWardrobe = (
     BOARD_THICKNESS -
     LEFT_HOLLOW_OUT_HEIGHT;
   addBox(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     woodBoardDarkMaterial2,
     width2,
@@ -487,7 +487,7 @@ const createKidsWardrobe = (
   );
 
   const light2 = addLightStrip(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     width2,
     LIGHT_STRIP_HEIGHT,
@@ -499,7 +499,7 @@ const createKidsWardrobe = (
   light2 && lightList.push(light2);
 
   const light3 = addLightStrip(
-    kidsWardrobeGroup,
+    wardrobeGroup,
     assetManager,
     width2,
     LIGHT_STRIP_HEIGHT,
@@ -514,7 +514,7 @@ const createKidsWardrobe = (
   );
   light3 && lightList.push(light3);
 
-  return kidsWardrobeGroup;
+  return wardrobeGroup;
 };
 
 // 创建右面墙部分(书桌和柜子)
