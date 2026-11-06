@@ -16,13 +16,18 @@ import {
   WALL_28_POSITION_X,
   WALL_35_POSITION_X,
   WALL_39_POSITION_X,
+  WALL_52_POSITION_X,
   WALL_56_POSITION_X,
+  WALL_59_POSITION_X,
+  WALL_65_POSITION_X,
   WALL_66_POSITION_X,
   WALL_72_POSITION_X,
   WALL_1_POSITION_Z,
   WALL_10_POSITION_Z,
   WALL_20_POSITION_Z,
+  WALL_51_POSITION_Z,
   WALL_55_POSITION_Z,
+  WALL_61_POSITION_Z,
   WALL_67_POSITION_Z,
   WALL_73_POSITION_Z,
   WALL_80_POSITION_Z,
@@ -71,6 +76,9 @@ const length6 =
   WALL_33_WIDTH - CURTAIN_DEPTH - WALL_7_WIDTH - WALL_THICKNESS * 2;
 const length7 = WALL_33_WIDTH - WALL_7_WIDTH - WALL_THICKNESS * 2;
 const length8 = WALL_7_WIDTH + WALL_THICKNESS;
+const length9 = WALL_51_POSITION_Z - WALL_55_POSITION_Z - WALL_THICKNESS;
+const length10 =
+  WALL_59_POSITION_X - WALL_52_POSITION_X - WALL_THICKNESS - WARDROBE_DEPTH;
 const x1 = WALL_72_POSITION_X - WALL_THICKNESS / 2 + length4 / 2;
 
 // 双眼皮吊顶的配置信息
@@ -186,6 +194,35 @@ const weldSuspendedCeilingInfoList: [
     WALL_10_POSITION_Z - WALL_THICKNESS / 2 - length5 / 2,
     "right",
   ],
+  // 次卧
+  [
+    length9,
+    WALL_52_POSITION_X + WALL_THICKNESS / 2,
+    WALL_HEIGHT,
+    WALL_51_POSITION_Z - WALL_THICKNESS / 2 - length9 / 2,
+    "left",
+  ],
+  [
+    length10,
+    WALL_52_POSITION_X + WALL_THICKNESS / 2 + length10 / 2,
+    WALL_HEIGHT,
+    WALL_55_POSITION_Z + WALL_THICKNESS / 2,
+    "back",
+  ],
+  [
+    length10,
+    WALL_52_POSITION_X + WALL_THICKNESS / 2 + length10 / 2,
+    WALL_HEIGHT,
+    WALL_51_POSITION_Z - WALL_THICKNESS / 2,
+    "front",
+  ],
+  [
+    length9,
+    WALL_59_POSITION_X - WALL_THICKNESS / 2 - WARDROBE_DEPTH,
+    WALL_HEIGHT,
+    WALL_51_POSITION_Z - WALL_THICKNESS / 2 - length9 / 2,
+    "right",
+  ],
 ];
 // 所有空余地方吊顶板的尺寸和位置
 const suspendedCeilingBoardPositionY =
@@ -195,6 +232,8 @@ const width3 = WALL_28_POSITION_X - WALL_11_POSITION_X - WALL_THICKNESS;
 const length101 = WALL_67_POSITION_Z - WALL_10_POSITION_Z - WALL_THICKNESS;
 const length102 = WALL_10_POSITION_Z - WALL_20_POSITION_Z;
 const length103 = WALL_2_WIDTH * 2 + WALL_36_WIDTH;
+const length104 = WALL_65_POSITION_X - WALL_59_POSITION_X;
+const length105 = WALL_61_POSITION_Z - WALL_55_POSITION_Z - WALL_THICKNESS;
 const suspendedCeilingBoardInfoList: [
   number,
   number,
@@ -253,6 +292,23 @@ const suspendedCeilingBoardInfoList: [
     WALL_35_POSITION_X - WALL_THICKNESS / 2 - length8 / 2,
     suspendedCeilingBoardPositionY,
     WALL_1_POSITION_Z + WALL_THICKNESS / 2 + length103 / 2,
+  ],
+  // 次卧范围
+  [
+    length104,
+    SUSPENDED_CEILING_HEIGHT,
+    length105,
+    WALL_65_POSITION_X - WALL_THICKNESS / 2 - length104 / 2,
+    suspendedCeilingBoardPositionY,
+    WALL_61_POSITION_Z - WALL_THICKNESS / 2 - length105 / 2,
+  ],
+  [
+    WARDROBE_DEPTH,
+    SUSPENDED_CEILING_HEIGHT,
+    length9,
+    WALL_59_POSITION_X - WALL_THICKNESS / 2 - WARDROBE_DEPTH / 2,
+    suspendedCeilingBoardPositionY,
+    WALL_51_POSITION_Z - WALL_THICKNESS / 2 - length9 / 2,
   ],
 ];
 // 所有铝扣板吊顶的配置信息

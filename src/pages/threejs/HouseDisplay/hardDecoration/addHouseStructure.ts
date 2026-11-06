@@ -317,8 +317,6 @@ export const WALL_80_POSITION_X =
 export const WALL_80_POSITION_Z =
   WALL_71_POSITION_Z + WALL_71_WIDTH / 2 + WALL_THICKNESS / 2;
 
-console.log(444444444, WALL_10_POSITION_Z - WALL_1_POSITION_Z);
-
 // 地板参数
 export const TILE_SIZE = 1.2; // 1.2m的地砖
 export const GAP_SIZE = 0.005; // 5mm的缝隙
