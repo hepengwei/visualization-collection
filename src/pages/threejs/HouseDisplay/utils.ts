@@ -35,12 +35,13 @@ import type { AssetManager } from "hooks/threejs/useInitialize";
 export const SIZE_ENLARGEMENT_RITO = 1.58; // 各物体尺寸放大比例
 const WALL_COLOR = 0xf4f3ef; // 珍珠白乳胶漆颜色
 const LIGHT_STRIP_COLOR = 0xffe8c2; // 灯带和灯光的颜色，暖黄白
-// export const WOOD_LIGHT_COLOR = 0xefebe7; // 浅色木头
 export const WOOD_LIGHT_COLOR = 0xf2eeea; // 浅色木头
 export const WOOD_DARK_COLOR = 0xa5acb7; // 深色木头(浅蓝色)
 export const WOOD_DARK_LINE_COLOR = 0x505762; // 深色木头(浅蓝色)对应更深的线条颜色
-export const WOOD_DARK_COLOR2 = 0xc6c9b1; // 深色木头(浅绿色)
-export const WOOD_DARK_LINE_COLOR2 = 0xa4a78f; // 深色木头(浅绿色)对应更深的线条颜色
+export const WOOD_DARK_COLOR2 = 0xa6b2a8; // 深色木头(绿色)
+export const WOOD_DARK_LINE_COLOR2 = 0x849086; // 深色木头(绿色)对应更深的线条颜色
+// export const WOOD_DARK_COLOR2 = 0xc6c9b1; // 深色木头(浅绿色)
+// export const WOOD_DARK_LINE_COLOR2 = 0xa4a78f; // 深色木头(浅绿色)对应更深的线条颜色
 const WOOD_LIGHT_YELLOW_COLOR = 0xfffaf0; // 浅黄白色木头
 const WOOD_CHAMPAGNE_COLOR = 0xf7e7ce; // 香槟色木头
 export const ALUMINIUM_ALLOY_COLOR = 0xbfc3c7; // 铝合金颜色
