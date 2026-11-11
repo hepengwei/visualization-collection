@@ -102,11 +102,11 @@ const addSideboard = (
 ) => {
   // 艺术玻璃材质
   const frostedArtGlassMaterial = new MeshStandardMaterial({
-    color: 0x80a7c9,
+    color: 0xa0c7d9,
     metalness: 0.0,
     roughness: 0.35,
     transparent: true,
-    opacity: 0.9,
+    opacity: 0.7,
     side: DoubleSide,
   });
   // const frostedArtGlassMaterial = new MeshPhysicalMaterial({
