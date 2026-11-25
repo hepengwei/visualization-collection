@@ -14,7 +14,7 @@ import {
   WALL_65_POSITION_X,
   WALL_72_POSITION_X,
   WALL_10_POSITION_Z,
-  WALL_20_POSITION_Z,
+  WALL_14_POSITION_Z,
   WALL_55_POSITION_Z,
   WALL_58_POSITION_Z,
   WALL_73_POSITION_Z,
@@ -56,7 +56,7 @@ export const dynamicOptimizationLightingStripRender = (
     // 主卧和主卧厕所范围
     if (
       (x < WALL_11_POSITION_X && z < WALL_10_POSITION_Z) ||
-      (x < WALL_19_POSITION_X && z < WALL_20_POSITION_Z)
+      (x < WALL_19_POSITION_X && z < WALL_14_POSITION_Z)
     ) {
       if (currentZoneIndex === 0) return;
       currentZoneIndex = 0;

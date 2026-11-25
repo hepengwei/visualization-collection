@@ -21,7 +21,6 @@ import {
   WALL_13_POSITION_X,
   WALL_14_WIDTH,
   WALL_14_POSITION_Z,
-  WALL_20_POSITION_Z,
   WALL_24_POSITION_X,
 } from "./addHouseStructure";
 
@@ -37,22 +36,22 @@ const doorConfigs = [
   // 主卧厕所门
   {
     positon: new Vector3(
-      WALL_13_POSITION_X + WALL_THICKNESS / 2 + FRAME_DEPTH / 2 - 0.02,
+      WALL_13_POSITION_X - WALL_THICKNESS / 2,
       0,
       WALL_14_POSITION_Z,
     ),
-    rotationY: -Math.PI / 2,
     customParams: {
       switchStatus: "OFF",
       isAnimating: false,
+      openDoorMaxAngle: (Math.PI * 16) / 36,
     },
   },
   // 外厕所门
   {
     positon: new Vector3(
-      WALL_24_POSITION_X,
+      WALL_24_POSITION_X - GROUND_GLASS_WIDTH / 2,
       0,
-      WALL_20_POSITION_Z - WALL_THICKNESS / 2 - FRAME_DEPTH / 2 + 0.02,
+      WALL_14_POSITION_Z - WALL_THICKNESS / 2 - FRAME_DEPTH / 2 + 0.02,
     ),
     customParams: {
       switchStatus: "OFF",
@@ -84,31 +83,37 @@ export const addGroundGlassDoor = (
   });
   assetManager.materials.set("groundGlassMaterial", groundGlassMaterial);
 
-  doorConfigs.forEach((item) => {
+  doorConfigs.forEach((item: Record<string, any>) => {
     const { positon, rotationY, customParams } = item;
     const groundGlassDoor = createGroundGlassDoor(
       assetManager,
       {
         ...customParams,
         rotationY,
-        originPosition: positon,
+        originPosition: new Vector3(
+          GROUND_GLASS_WIDTH / 2,
+          0,
+          GROUND_GLASS_WIDTH / 2,
+        ),
       },
       pointerControlsIntersetObjectsRef,
       mouseRaycasterIntersectObjectsRef,
     );
-    groundGlassDoor.position.copy(positon);
-    if (rotationY) {
-      groundGlassDoor.rotation.y = rotationY;
-      if (customParams.switchStatus === "ON") {
-        groundGlassDoor.position.z = positon.z - MOVE_DISTANCE;
+    if (groundGlassDoor.parent) {
+      groundGlassDoor.parent.position.copy(positon);
+      if (rotationY) {
+        groundGlassDoor.parent.rotation.y = rotationY;
+        if (customParams.switchStatus === "ON") {
+          groundGlassDoor.parent.position.z = positon.z - MOVE_DISTANCE;
+        }
+      } else {
+        if (customParams.switchStatus === "ON") {
+          groundGlassDoor.parent.position.x = positon.x - MOVE_DISTANCE;
+        }
       }
-    } else {
-      if (customParams.switchStatus === "ON") {
-        groundGlassDoor.position.x = positon.x - MOVE_DISTANCE;
-      }
+      groundGlassDoorListRef.current.push(groundGlassDoor);
+      scene.add(groundGlassDoor.parent);
     }
-    groundGlassDoorListRef.current.push(groundGlassDoor);
-    scene.add(groundGlassDoor);
   });
 };
 
@@ -127,8 +132,12 @@ const createGroundGlassDoor = (
 
   const groundGlassDoorGroup = new Group();
   groundGlassDoorGroup.name = "磨砂玻璃门";
+
+  const groundGlassDoorContentGroup = new Group();
   // @ts-ignore
-  groundGlassDoorGroup.customParams = customParams;
+  groundGlassDoorContentGroup.customParams = customParams;
+  groundGlassDoorContentGroup.position.set(GROUND_GLASS_WIDTH / 2, 0, 0);
+  groundGlassDoorGroup.add(groundGlassDoorContentGroup);
 
   /** 磨砂玻璃门包边部分*/
   const frameGroup = new Group();
@@ -168,7 +177,7 @@ const createGroundGlassDoor = (
   headerMesh.castShadow = true;
   headerMesh.receiveShadow = true;
   frameGroup.add(headerMesh);
-  groundGlassDoorGroup.add(frameGroup);
+  groundGlassDoorContentGroup.add(frameGroup);
 
   /** 磨砂玻璃部分*/
   const groundGlass = new Mesh(boxGeometry, groundGlassMaterial);
@@ -183,7 +192,7 @@ const createGroundGlassDoor = (
   groundGlass.position.set(0, GROUND_GLASS_HEIGHT / 2, 0);
   groundGlass.castShadow = true;
   groundGlass.receiveShadow = true;
-  groundGlassDoorGroup.add(groundGlass);
+  groundGlassDoorContentGroup.add(groundGlass);
 
   /** 门把手部分*/
   const doorknob = createDoorknob(assetManager);
@@ -192,9 +201,9 @@ const createGroundGlassDoor = (
     HANDLE_POSITION_Y,
     0,
   );
-  groundGlassDoorGroup.add(doorknob);
+  groundGlassDoorContentGroup.add(doorknob);
 
-  return groundGlassDoorGroup;
+  return groundGlassDoorContentGroup;
 };
 
 // 磨砂玻璃门点击后的回调
@@ -209,7 +218,7 @@ export const onClickGroundGlassDoor = (groundGlass: Mesh) => {
   }
 };
 
-// 磨砂玻璃门开/关动画过程渲染
+// 磨砂玻璃门推拉开/关动画过程渲染
 export const groundGlassDoorAnimationRender = (
   groundGlassDoorList: Group[],
 ) => {
@@ -221,6 +230,7 @@ export const groundGlassDoorAnimationRender = (
         startTime,
         rotationY,
         originPosition,
+        openDoorMaxAngle,
       } =
         // @ts-ignore
         groundGlassDoor.customParams || {};
@@ -233,22 +243,34 @@ export const groundGlassDoorAnimationRender = (
         if (progress < 1) {
           // 使用缓动函数,先慢后快
           const easeProgress = getEaseProgress(progress);
-
-          if (switchStatus === "OFF") {
-            if (rotationY === -Math.PI / 2) {
-              groundGlassDoor.position.z =
-                originPosition.z - MOVE_DISTANCE * easeProgress;
+          if (openDoorMaxAngle) {
+            if (!groundGlassDoor.parent) return;
+            // 旋转开关门
+            if (switchStatus === "OFF") {
+              groundGlassDoor.parent.rotation.y =
+                openDoorMaxAngle * easeProgress;
             } else {
-              groundGlassDoor.position.x =
-                originPosition.x - MOVE_DISTANCE * easeProgress;
+              groundGlassDoor.parent.rotation.y =
+                openDoorMaxAngle * (1 - easeProgress);
             }
           } else {
-            if (rotationY === -Math.PI / 2) {
-              groundGlassDoor.position.z =
-                originPosition.z + MOVE_DISTANCE * (easeProgress - 1);
+            // 横向推拉开关门
+            if (switchStatus === "OFF") {
+              if (rotationY === -Math.PI / 2) {
+                groundGlassDoor.position.z =
+                  originPosition.z - MOVE_DISTANCE * easeProgress;
+              } else {
+                groundGlassDoor.position.x =
+                  originPosition.x - MOVE_DISTANCE * easeProgress;
+              }
             } else {
-              groundGlassDoor.position.x =
-                originPosition.x + MOVE_DISTANCE * (easeProgress - 1);
+              if (rotationY === -Math.PI / 2) {
+                groundGlassDoor.position.z =
+                  originPosition.z + MOVE_DISTANCE * (easeProgress - 1);
+              } else {
+                groundGlassDoor.position.x =
+                  originPosition.x + MOVE_DISTANCE * (easeProgress - 1);
+              }
             }
           }
         } else {
