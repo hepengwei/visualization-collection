@@ -28,7 +28,7 @@ import {
   SUSPENDED_CEILING_HEIGHT,
   WALL_THICKNESS,
   WALL_19_POSITION_X,
-  WALL_20_POSITION_Z,
+  WALL_14_POSITION_Z,
 } from "../hardDecoration/addHouseStructure";
 import addVase from "../softDecoration/addVase";
 import { LIGHT_GROUP_FIELD } from "../function/dynamicOptimizationLightingStripRender";
@@ -37,7 +37,7 @@ import { LIGHT_GROUP_FIELD } from "../function/dynamicOptimizationLightingStripR
 const TV_BACKGROUND_POSITON = new Vector3(
   WALL_19_POSITION_X,
   (WALL_HEIGHT - SUSPENDED_CEILING_HEIGHT) / 2,
-  WALL_20_POSITION_Z + WALL_THICKNESS / 2,
+  WALL_14_POSITION_Z + WALL_THICKNESS / 2,
 );
 const PANEL_WIDTH = 1.1; // 装饰背景板的总宽度
 const PANEL_HEIGHT = 2.1; // 装饰背景板的总高度

@@ -21,12 +21,13 @@ import {
   WALL_23_WIDTH,
   WALL_51_WIDTH,
   WALL_11_POSITION_X,
+  WALL_13_POSITION_X,
   WALL_20_POSITION_X,
   WALL_23_POSITION_X,
   WALL_28_POSITION_X,
   WALL_55_POSITION_X,
   WALL_10_POSITION_Z,
-  WALL_20_POSITION_Z,
+  WALL_14_POSITION_Z,
   WALL_55_POSITION_Z,
 } from "../hardDecoration/addHouseStructure";
 import { BOARD_THICKNESS } from "../utils";
@@ -58,17 +59,18 @@ const switchConfigList = [
   {
     name: "主卧吊灯开关",
     position: new Vector3(
-      WALL_11_POSITION_X - WALL_THICKNESS / 2 - 0.8,
+      WALL_13_POSITION_X - (WALL_THICKNESS * 3) / 2 - 0.05,
       SWITCH_POSITION_HEIGHT,
-      WALL_20_POSITION_Z + WALL_THICKNESS / 2,
+      WALL_14_POSITION_Z - 0.04,
     ),
+    rotationY: -Math.PI / 2,
   },
   {
     name: "儿童房吊灯开关",
     position: new Vector3(
       WALL_28_POSITION_X + WALL_THICKNESS / 2 + 0.05,
       SWITCH_POSITION_HEIGHT,
-      WALL_20_POSITION_Z - 0.04,
+      WALL_14_POSITION_Z - 0.04,
     ),
     rotationY: Math.PI / 2,
   },
@@ -85,7 +87,7 @@ const switchConfigList = [
     position: new Vector3(
       WALL_23_POSITION_X + WALL_23_WIDTH / 2 - 0.6,
       SWITCH_POSITION_HEIGHT,
-      WALL_20_POSITION_Z - WALL_THICKNESS / 2,
+      WALL_14_POSITION_Z - WALL_THICKNESS / 2,
     ),
     rotationY: Math.PI,
   },
@@ -94,7 +96,7 @@ const switchConfigList = [
     position: new Vector3(
       WALL_20_POSITION_X - WALL_20_WIDTH / 2 + 0.8,
       SWITCH_POSITION_HEIGHT,
-      WALL_20_POSITION_Z - WALL_THICKNESS / 2,
+      WALL_14_POSITION_Z - WALL_THICKNESS / 2,
     ),
     rotationY: Math.PI,
   },
